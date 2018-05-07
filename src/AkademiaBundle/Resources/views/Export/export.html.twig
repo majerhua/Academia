@@ -254,7 +254,7 @@
 	}
 
 
-	{% if app.user.idPerfil == 1 %}
+	{% if app.user.idPerfil == 1 or app.user.idPerfil == 3 %}
 		let obIdDepartamento = {'value': $selectDepartamento.val() };
 		cambiarDepartamentoExport(obIdDepartamento);
 
@@ -262,7 +262,7 @@
 		cambiarComplejoDeportivoExport(obIdComplejo);		
 	{% endif %}
 
-	{% if app.user.idPerfil == 1 %}
+	{% if app.user.idPerfil == 1 or app.user.idPerfil == 3 %}
 
 		$containerAnalista.hide();
 		//$containerDepartamento.css('visibility','hidden');

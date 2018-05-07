@@ -18,7 +18,7 @@
 	        <br>
 	        <ul class="nav navbar-nav navbar-right">
 
-	            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') %}	
+	            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') or is_granted('ROLE_DOCENTE') %}	
 	            	
 	            	<!--<li><a href="{{url('akademia_homepage')}}">Inscripción directa</a></li>
                 	<li><a href="{{url('akademia_inscritos')}}">Inscritos</a></li>
@@ -37,7 +37,7 @@
 	    </div>
 	</div>
 	</nav>
-	{% if  is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') %}
+	{% if  is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') or is_granted('ROLE_DOCENTE') %}
 	<br>
 	<div style="width:93%">
 		<p class="text-right" style="color:grey" >Usuario: {{ app.user.username}} </p>
@@ -122,7 +122,7 @@
 
 <section  id="inscribete"  class="proceso-inscripcion">
 	<div class="progreso">
-		{% if  is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') %}
+		{% if  is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') or is_granted('ROLE_DOCENTE') %}
 
 			<div class="progreso_container">
 				<div class="progreso__barraInscripcion">

@@ -35,6 +35,7 @@
 		{% else %}
 			<h1>CP {{nombre[0]['nombreComplejo']}}</h1>
 		{% endif %}
+
 		<h4 style="color:grey">PANEL DE ADMINISTRACIÓN</h4>
 		<hr>
 		<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px; margin-bottom: 20px;">
@@ -68,7 +69,6 @@
 			<div id="option-horarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
 				<a href="{{url('akademia_horarios')}}">
 					<div class="card">
-
 						<img src="{{ asset('assets/images/icon_horarios.png') }}" width="120" height="120">
 						<p class="title-card">Horarios y beneficiarios</p>
 					</div>
@@ -76,15 +76,16 @@
 			</div>
 
 			<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
-					<a href="{{url('akademia_exportData')}}">
-						<div class="card">
-							<img src="{{ asset('assets/images/icon_data.png') }}" width="120" height="120">
-							<p class="title-card">Exportación de datos </p>
-						</div>
-					</a>
-				</div>	
+				<a href="{{url('akademia_exportData')}}">
+					<div class="card">
+						<img src="{{ asset('assets/images/icon_data.png') }}" width="120" height="120">
+						<p class="title-card">Exportación de datos </p>
+					</div>
+				</a>
+			</div>	
 			
-			{% else %}
+			{% elseif is_granted('ROLE_ANALISTA') %}
+
 				<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
 					<a href="{{url('akademia_exportData')}}">
 						<div class="card">
@@ -110,6 +111,46 @@
 						</div>
 					</a>
 				</div>
+
+			{% elseif is_granted('ROLE_DOCENTE')%}
+
+				<div id="option-beneficiarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
+					<a href="{{url('akademia_homepage')}}">
+						<div class="card">
+							
+							<img src="{{ asset('assets/images/preinscripcion-directa.png') }}" width="120" height="120">
+							<p class="title-card">Pre-Inscripción directa</p>
+						</div>
+					</a>
+				</div>
+
+				<div id="option-validacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
+					<a href="{{url('akademia_inscritos')}}">
+						<div class="card">
+
+							<img src="{{ asset('assets/images/icon_confirmar.png') }}" width="120" height="120">
+							<p class="title-card">Validar Inscripción</p>
+						</div>
+					</a>
+				</div>
+
+				<div id="option-horarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
+					<a href="{{url('akademia_horarios')}}">
+						<div class="card">
+							<img src="{{ asset('assets/images/icon_horarios.png') }}" width="120" height="120">
+							<p class="title-card">Horarios y beneficiarios</p>
+						</div>
+					</a>
+				</div>
+
+				<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
+					<a href="{{url('akademia_exportData')}}">
+						<div class="card">
+							<img src="{{ asset('assets/images/icon_data.png') }}" width="120" height="120">
+							<p class="title-card">Exportación de datos </p>
+						</div>
+					</a>
+				</div>	
 
 			{% endif %}
 		</div>

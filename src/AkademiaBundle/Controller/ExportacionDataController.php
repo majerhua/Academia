@@ -156,7 +156,7 @@ class ExportacionDataController extends Controller
         $mdlDepartamentosExport = $em->getRepository('AkademiaBundle:Departamento')->departamentosExport();		
     		$mdlComplejoDeportivoExport = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejoDeportivoExport();
     
-    	}else if($perfil == 1) {
+    	}else if($perfil == 1 or $perfil == 3) {
 
 
       $mdlDepartamentosExport = $em->getRepository('AkademiaBundle:Departamento')->departamentosExportFind2($idComplejo);        

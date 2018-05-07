@@ -120,9 +120,16 @@
 
 													<td id="8h{{horario['idHorario']}}" class="text-center">{{horario['inscritos']}}</td>
 
-													<td><button  title="Editar horario" type="button" id="{{horario['idHorario']}}" onclick="editarHorario({{horario['idHorario']}},{{horario['idDisciplina']}} )" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1em; margin-top:5px; color:white" ></i></button></td>
+													{% if is_granted('ROLE_DOCENTE')%}
+													
+													<td colspan="2" ><a href="{{url('akademia_beneficiarios',{idHorario:horario['idHorario']})}}"  title="Mostrar Inscritos" type="button" class="btn btn-primary"><i class="icon-checklist"></i></a></td>
 
+													{% else %}
+													
+													<td><button  title="Editar horario" type="button" id="{{horario['idHorario']}}" onclick="editarHorario({{horario['idHorario']}},{{horario['idDisciplina']}} )" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1em; margin-top:5px; color:white" ></i></button></td>
+													
 													<td><a href="{{url('akademia_beneficiarios',{idHorario:horario['idHorario']})}}"  title="Mostrar Inscritos" type="button" class="btn btn-default"><i class="icon-checklist" style="font-size: 1.3em;"></i></a></td>
+													{% endif %}
 												</tr> 
 												<input type="hidden" value="{{horario['idDisciplina']}}">				
 												
@@ -135,10 +142,11 @@
 								</div>
 							</div>
 							<hr>
-							<div class="row text-right">
-								
-								<button type="button" data-toggle="modal" data-target="#modal-crear" id="Crear-Nuevo-Horario"  class="btn btn-danger" style="margin-right: 18px;" onclick="disciplina({{complejosDisciplina['idDisciplina']}});">Crear nuevo horario</button>
-							</div>
+							{% if is_granted('ROLE_ADMIN')%}
+								<div class="row text-right">
+									<button type="button" data-toggle="modal" data-target="#modal-crear" id="Crear-Nuevo-Horario"  class="btn btn-danger" style="margin-right: 18px;" onclick="disciplina({{complejosDisciplina['idDisciplina']}});">Crear nuevo horario</button>
+								</div>
+							{% endif %}
 						</div>
 					</div>
 				</div>       
@@ -147,12 +155,14 @@
 			{% endfor %}
 			
 			<hr>
+			{% if is_granted('ROLE_ADMIN') %}
 			<div class="container-card col-xs-12 col-sm-10 col-md-10 col-lg-10">				
 				<div class="card-header text-center">
 					<p style="font-size:16px; color:grey">¿Quieres aperturar una nueva disciplina en tu complejo deportivo?</p>
 					<button type="button" data-toggle="modal" data-target="#modal-disciplina" class="btn btn-danger" id="CrearDisc" style="margin-right: 18px;">Crear nueva disciplina</button>		
 				</div>
 			</div>
+			{% endif %}
 
 		</div>
 
