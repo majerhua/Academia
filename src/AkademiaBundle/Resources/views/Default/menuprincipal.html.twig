@@ -29,11 +29,15 @@
 		<p class="text-right" style="color:grey" >Sesión iniciada: {{ app.user.username}} </p>
 	</div>
 	<div class="container text-center" style="margin-top: 10px; margin-bottom: 30px;">
-		{% if is_granted('ROLE_ANALISTA') %}	
+		
+		{% if  is_granted('ROLE_ANALISTA') %}	
 			<h1>LA ACADEMIA IPD </h1>
-	
 		{% else %}
-			<h1>CP {{nombre[0]['nombreComplejo']}}</h1>
+			{% if valor == '1'%}
+				<h1> CP {{nombreComplejo[0]['nombreComplejo'] }} </h1>
+			{% elseif valor == '2' %}
+				<h1> Complejo Deportivo - IPD </h1>
+			{% endif %}
 		{% endif %}
 
 		<h4 style="color:grey">PANEL DE ADMINISTRACIÓN</h4>
@@ -45,7 +49,7 @@
 
 		<div class="row text-center">	
 			
-			{% if is_granted('ROLE_ADMIN') %}	
+			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_DOCENTE') %}	
 			<div id="option-beneficiarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
 				<a href="{{url('akademia_homepage')}}">
 					<div class="card">
@@ -111,46 +115,6 @@
 						</div>
 					</a>
 				</div>
-
-			{% elseif is_granted('ROLE_DOCENTE')%}
-
-				<div id="option-beneficiarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
-					<a href="{{url('akademia_homepage')}}">
-						<div class="card">
-							
-							<img src="{{ asset('assets/images/preinscripcion-directa.png') }}" width="120" height="120">
-							<p class="title-card">Pre-Inscripción directa</p>
-						</div>
-					</a>
-				</div>
-
-				<div id="option-validacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
-					<a href="{{url('akademia_inscritos')}}">
-						<div class="card">
-
-							<img src="{{ asset('assets/images/icon_confirmar.png') }}" width="120" height="120">
-							<p class="title-card">Validar Inscripción</p>
-						</div>
-					</a>
-				</div>
-
-				<div id="option-horarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
-					<a href="{{url('akademia_horarios')}}">
-						<div class="card">
-							<img src="{{ asset('assets/images/icon_horarios.png') }}" width="120" height="120">
-							<p class="title-card">Horarios y beneficiarios</p>
-						</div>
-					</a>
-				</div>
-
-				<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
-					<a href="{{url('akademia_exportData')}}">
-						<div class="card">
-							<img src="{{ asset('assets/images/icon_data.png') }}" width="120" height="120">
-							<p class="title-card">Exportación de datos </p>
-						</div>
-					</a>
-				</div>	
 
 			{% endif %}
 		</div>

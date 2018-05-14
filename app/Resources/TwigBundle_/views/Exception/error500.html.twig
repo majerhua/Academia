@@ -1,33 +1,27 @@
-<div class="block-exception" style="background-color:#999; ">
-    <div class="block-exception-detected clear-fix" >
-        <div class="illustration-exception" >
-            <img alt="Exception detected!" src="{{ global.pathRecursos }}/frmwork/img/logo_2.png" />
+{% extends '::base.html.twig' %}
+{% block title %}La Academia{% endblock %}
+{% block body  %}
+
+<body class="colorBg">
+
+    <section  id="inscribete"  class="proceso-inscripcion ">
+
+        <div class="container" style="margin-bottom: 150px;">
+            <div class="row">
+                <div class="proceso" style="margin-top: 120px;">
+                <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+                    <div class="card text-center" style="background-color: #FFFFFF; padding: 20px;">
+                        <h3 style="color: #181617; font-weight: bold;">Ups! Algo pasó internamente! </h3>
+                        <div class="text-center" style="background-color: #CB3F1D; height: 1px; margin-top: 30px;"></div>
+                        <img src="{{ asset('assets/images/logo_academia.png')}}" style="margin-top: 20px; margin-bottom: 20px" width="130" height="130">
+                        <p style="color: #8A0808; font-size: 18px;">Ocurrió un error interno, le daremos solución inmediata, disculpe las molestias.</p>
+                    </div>
+                </div>
+                </div>
+            </div>  
         </div>
-        <div class="text-exception" >
-            <div class="open-quote" >
-                <img alt="" src="data:image/gif;base64,R0lGODlhHAAWAMQQANra2+bl5s3Mzevr6/Pz8+jo6O3t7fHx8c/Oz+Pj49PS093d3djX2NXV1eDf4MrJyvb29gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAABAALAAAAAAcABYAQAWWICSOEDE4AamqRuAsT5yu6hA/wNrcfNysjl5PBOAJAAUDDRLoNRKDndAHnN6k058qaH2QuNelqCAYIm45MfGmIJCkAvUIPNB1td/uAyvEz/UqB0VUagQOZTEjgzx+Kk1CEAU8DAdqB4gPCHVjNwhucphKbzefamAFdlaNEGBZd1V3r1t6fE6wqrJ5XS4Ovb69MyQnv8QhADs=" />
-            </div>
+    </section>
 
-            
-            
+</body>
 
-            <div>
-       
-{% block content %}    
-     <h1>Error Interno del Servidor</h1>           
-     <h1>Lo sentimos, error inesperado</h1>
-     
-     <a style="color:blue;" href="/sisweb/siaguweb/web/">Regresar a la página principal</a>
 {% endblock %}
-     
-
-            </div>
-
-
-
-            <div class="close-quote">
-                <img alt="" src="data:image/gif;base64,R0lGODlhHAAWAMQQANra2+bl5s3Mzevr6/Pz8+jo6O3t7fHx8c/Oz+Pj49PS093d3djX2NXV1eDf4MrJyvb29gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAABAALAAAAAAcABYAQAWZoCOO5ACdaECuweO+sIOiDWw36IC8wjH/kAMDVoDYbLJf7ejC/QqvJHBGeC0fAgdhOrsCfDNmFHg9lo9SmvhxRpLXTpSBx6XuXNBjoN4GoNYPaSdtVoCCEIRNhm9iiS6Hjo6BjExxOWN1KAJNQAAvJpkQLS4LVAovfqGeLggQAwlne1MGBQCbqCc2AkV8bigOAQahKQ4DW0AhADs=" />
-            </div>
-        </div>
-    </div>
-</div>

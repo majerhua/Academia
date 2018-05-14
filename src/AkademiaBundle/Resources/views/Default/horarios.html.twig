@@ -35,7 +35,16 @@
 		</div>
 		<div id="proceso1" class="proceso" style="margin-bottom: 60px;">	
 		    
-		    <h2>CP {{nombre[0]['nombreComplejo']}}</h2>
+			{% if  is_granted('ROLE_ANALISTA') %}	
+				<h1>LA ACADEMIA IPD </h1>
+			{% else %}
+				{% if valor == '1'%}
+					<h1> CP {{nombreComplejo[0]['nombreComplejo'] }} </h1>
+				{% elseif valor == '2' %}
+					<h1> Complejo Deportivo - IPD </h1>
+				{% endif %}
+			{% endif %}
+
 			<h4 style="color:grey">ADMINISTRACION DE HORARIOS</h4>
 
 			<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px; margin-bottom: 20px;">
@@ -705,6 +714,7 @@
 
 		/* CARGAR ALERTAS */
 		$(document).ready(function(){
+			
 
 			$('#btn-close-alert-info').click(function(){
 				hideAlertMessage('#alert-info');
