@@ -98,7 +98,7 @@ class ExportacionDataController extends Controller
                       AS Mes,                      
                   cat.descripcion Categoria, asis.descripcion
                   Asistencia,CONVERT(varchar(100),hor.turno)+' '+CONVERT( varchar(100),CONVERT(VARCHAR(5), hor.horaInicio , 108))+' - '+CONVERT(varchar(100),CONVERT(VARCHAR(5), hor.horaFin , 108) )+' ,'+ CONVERT(varchar(40),hor.edadMinima)+' a '+ CONVERT(varchar(40),edadMaxima)+' anos' AS Horario,
-                      CASE par.discapacitado
+                      CASE hor.discapacitados
                       WHEN 0 THEN 'No'
                       WHEN 1 THEN 'Si'
                       ELSE 'No se sabe' END
