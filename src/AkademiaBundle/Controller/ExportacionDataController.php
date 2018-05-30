@@ -69,7 +69,7 @@ class ExportacionDataController extends Controller
     	}
 
     	$handle = fopen('php://output','w+');
-    					fputcsv($handle, ['Departamento', 'Complejo', 'Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Asistencia','Horario','Discapacidad'],';');
+    					fputcsv($handle, ['Departamento', 'Complejo', 'Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Asistencia','Horario','Discapacidad','Telefono','Correo'],';');
 
     	$query1 = "SELECT ubiDpto.ubinombre Departamento, ede.ede_nombre as Complejo,dis.dis_descripcion as Disciplina,
                   grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, grPar.perapematerno ApellidoMaterno ,
@@ -102,7 +102,10 @@ class ExportacionDataController extends Controller
                       WHEN 0 THEN 'No'
                       WHEN 1 THEN 'Si'
                       ELSE 'No se sabe' END
-                      AS Discapacidad
+                      AS Discapacidad,
+                      grApod.pertelefono Telefono,
+                      grApod.percorreo Correo
+                      
                       FROM ACADEMIA.inscribete AS ins 
                       inner join ACADEMIA.participante par on par.id = ins.participante_id
                       inner join grpersona grPar on grPar.percodigo = par.percodigo
@@ -133,7 +136,7 @@ class ExportacionDataController extends Controller
 
     	$results = $conn->query($query1);
     	while($row = $results->fetch()) {
-      	fputcsv($handle, array( $row['Departamento'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Discapacidad'] ), ';');
+      	fputcsv($handle, array( $row['Departamento'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Discapacidad'],$row['Telefono'],$row['Correo']  ), ';');
     	}
     	fclose($handle);
   	});
