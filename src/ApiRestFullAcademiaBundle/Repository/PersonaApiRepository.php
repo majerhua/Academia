@@ -114,9 +114,36 @@ class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
         return $disciplinas;
     }
 
-    public function departamentosSinFiltro(){
+    public function departamentosSinFiltro($disciplinaId){
         
-        $query = " SELECT ubidpto as departamentoId, ubinombre as departamentoNombre FROM grubigeo WHERE  ubidistrito = '00' AND ubidpto != '00' AND ubiprovincia = '00' ";
+        $query = "WITH DepartamentosTalentos AS  
+                    (  
+                    SELECT
+                    COUNT(ubi.ubidpto) departamentoTalentos,
+                    ubi.ubidpto departamentoId
+                    FROM  ACADEMIA.movimientos AS mov
+                    INNER JOIN (SELECT m.inscribete_id as mov_ins_id, MAX(m.id) mov_id FROM ACADEMIA.movimientos m
+                    GROUP BY m.inscribete_id) ids ON mov.id = ids.mov_id
+                    
+                    INNER JOIN ACADEMIA.inscribete ins ON ins.id = ids.mov_ins_id
+                    INNER JOIN academia.horario hor on ins.horario_id = hor.id
+                    INNER JOIN catastro.edificacionDisciplina edi on edi.edi_codigo = hor.edi_codigo
+                    INNER JOIN catastro.disciplina dis on dis.dis_codigo = edi.dis_codigo
+                    INNER JOIN catastro.edificacionesdeportivas ede on ede.ede_codigo = edi.ede_codigo 
+                    INNER JOIN academia.participante par on ins.participante_id = par.id
+                    INNER JOIN grpersona per on per.percodigo = par.percodigo 
+                    INNER JOIN  grubigeo as ubi ON ubi.ubicodigo = ede.ubicodigo
+                    WHERE mov.asistencia_id=2 AND mov.categoria_id = 4 
+                    AND dis.dis_codigo = '$disciplinaId' 
+                    GROUP BY ubi.ubidpto
+                    )  
+                                  
+                    SELECT grubi.ubidpto departamentoId,grubi.ubinombre departamentoNombre ,
+                    ISNULL(departamentoTalentos,0) cantidadTalentos FROM  
+                    DepartamentosTalentos po  
+                    FULL OUTER JOIN grubigeo grubi ON grubi.ubidpto = po.departamentoId
+                    WHERE 
+                    ubidistrito = '00' AND ubidpto != '00' AND ubiprovincia = '00'";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
