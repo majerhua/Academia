@@ -98,7 +98,7 @@ class ExportacionDataController extends Controller
                       AS Mes,                      
                   cat.descripcion Categoria, asis.descripcion
                   Asistencia,CONVERT(varchar(100),hor.turno)+' '+CONVERT( varchar(100),CONVERT(VARCHAR(5), hor.horaInicio , 108))+' - '+CONVERT(varchar(100),CONVERT(VARCHAR(5), hor.horaFin , 108) )+' ,'+ CONVERT(varchar(40),hor.edadMinima)+' a '+ CONVERT(varchar(40),edadMaxima)+' anos' AS Horario,
-                      CASE hor.discapacitados
+                      CASE par.discapacitado
                       WHEN 0 THEN 'No'
                       WHEN 1 THEN 'Si'
                       ELSE 'No se sabe' END
@@ -128,6 +128,10 @@ class ExportacionDataController extends Controller
                       ubi.ubiprovincia <> '00' AND 
                       ubiDpto.ubidistrito = '00' AND 
                       ubiDpto.ubiprovincia = '00' AND 
+                      mov.id in (
+                SELECT MAX(m.id) as id
+                FROM ACADEMIA.movimientos m 
+                GROUP BY MONTH(m.fecha_modificacion), m.inscribete_id) AND
                       ubiDpto.ubidpto <> '00' AND ".$query2;
 			
   						  $query = $query1+' '+$query2;
