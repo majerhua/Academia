@@ -222,13 +222,34 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
 
         public function getDiferenciarHorarios($turno,$edadMinima,$edadMaxima,$horaInicio,$horaFin,$discapacitados,$codigoEdi){
                
-                $query="SELECT turno from academia.horario where turno ='$turno' and edadMinima=$edadMinima and edadMaxima=$edadMaxima and horaInicio='$horaInicio' and horaFin='$horaFin' and discapacitados=$discapacitados and edi_codigo=$codigoEdi";
+                $query="SELECT turno from academia.horario where turno ='$turno' and edadMinima=$edadMinima and edadMaxima=$edadMaxima and horaInicio='$horaInicio' and horaFin='$horaFin' and discapacitados=$discapacitados and edi_codigo=$codigoEdi and estado <> 0";
                 $stmt = $this->getEntityManager()->getConnection()->prepare($query);
                 $stmt->execute();
                 $horarios = $stmt->fetchAll();
 
                 return $horarios;
 
+        }
+
+        public function cantidadInscritos($idHorario){
+          
+            $query = "SELECT count(*) cantInscritos from academia.inscribete where horario_id = $idHorario and estado = 2";
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+            $cantidad = $stmt->fetchAll();
+
+            return $cantidad;
+
+        }
+
+        public function horarioActivos($idHorario){
+
+            $query = "SELECT estado from academia.horario where id = $idHorario AND estado = 1";
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+            $data = $stmt->fetchAll();
+
+            return $data;
         }
 
 
