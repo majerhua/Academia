@@ -1,0 +1,161 @@
+{% extends '::base.html.twig' %}
+{% block title %}La Academia{% endblock %}
+{% block body %}
+
+<header>
+ 	<nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>                       
+                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="" />                                      
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <br>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{url('akademia_homepage')}}">Inicio</a></li>
+	            	<li><a href="{{url('akademia_consulta')}}">Consultas</a></li>
+	               
+	                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER')   %}	
+		            	<li><a href="{{url('akademia_inscritos')}}">Promotores</a></li>
+		            {% else %}
+						<li><a href="{{url('akademia_login')}}">Promotores</a></li>	            
+		            {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+					
+<section>
+	<div id="" class="proceso">
+		<div class="container-card col-xs-10 col-sm-8 col-md-5 col-ld-4" style="background-color: transparent;">
+			<div class="card" style="background-color: white; margin-top:60px; margin-bottom: 100px; padding: 20px;">	
+				<p class="title-card text-center">Iniciar sesión</p>
+				<hr>
+				<div id="alert-info" class="alert alert-warning alert-dismissible" role="alert">
+					<button id="btn-close-alert-info" class="close"><span aria-hidden="true">&times;</span></button>
+					<strong>Acceso sólo para promotores</strong>
+					<p>Ingrese con el usuario y contraseña asignado a su complejo deportivo</p>
+				</div>
+				<form action="{{path('akademia_login')}}" method="POST">
+
+					{% if error %}
+						<div class="alert alert-danger alert-dismissible">
+							<p style="text-center">
+								<strong>
+									Credenciales Inválidas
+								</strong>
+							</p>
+						</div>
+					{% endif %}
+
+					<div class="row">
+						<div class="form-group col-xs-12 col-sm-12 col-md-12 col-ld-12">
+							<label>Usuario</label>
+							<input  type="text" id="username" class="form-control" name="_username"  value="{{last_username}}" autofocus required>
+						</div>
+						<div class="form-group col-xs-12 col-sm-12 col-md-12 col-ld-12">
+							<label>Contraseña</label>
+							<input id="password" type="password" class="form-control" name="_password" required>
+						</div>
+					</div>
+					<hr>
+					<div id="alerta" class="alert alert-danger collapse"></div>
+					<div class="container-boton-1 text-center">
+						<button  type="submit" class="btn btn-danger" id="btn-login">Ingresar</button>
+					</div>
+				</form>
+				
+			</div>
+		</div>
+	</div>
+</section>
+
+<footer class="footer">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center">
+				<br>
+				<br>
+				<br>
+				<img class="align-self-center foot" src="{{ asset('assets/images/ipdfooter.jpg')}}">
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+				<br><br>
+				<h4>La Academia</h4>
+				<p class="footerTex">
+					Dirección:Calle Madre de Dios N° 463
+				</p>
+				<p class="footerTex">
+					Teléfono: 204-8420 /anexo 1302
+				</p>
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+				<br><br>
+				<h4>Enlaces de Interés</h4>
+				<p><a class="footerTex" href="http://www.ipd.gob.pe/">Instituto Peruano del Deporte</a></p>
+				<p><a class="footerTex" href="https://www.facebook.com/recreacion.ipd/">Facebook Recreación</a></p>
+				<p><a class="footerTex" href="http://www.ipd.gob.pe/formacion-deportiva">Formación Deportiva</a></p>
+			</div>
+		</div>
+		<br>
+    	<p class="col-xs-12 col-sm-12 col-md-12 col-lg-12 copyright">&copy; 2018 Todos los derechos reservados</p>
+	</div>
+</footer>
+
+{% endblock %}
+{% block javascripts %}
+	<!-- scripts -->
+	<script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
+	<script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
+
+	<script type="text/javascript">
+
+		$(document).ready(function(){
+
+			$("#input-usuario").val('');
+
+			$('#btn-login').click(function(){
+
+				if ($("#input-usuario").val() == '' && $("#input-contraseña").val() == '') {
+					showAlertMessage('#alerta', "Usuario y/o contraseña incorrectos")
+				}
+			});
+
+			$('#btn-close-alert-info').click(function(){
+				hideAlertMessage("#alert-info");
+			});
+
+		});
+
+		/*Muestra mensaje de alerta*/
+		function showAlertMessage(alert, mensaje){
+			$(alert).text(mensaje).show('fade');
+			setTimeout(function(){
+				hideAlertMessage(alert);	
+			}, 3000);
+		}
+
+		/*Oculta mensaje de alerta*/
+		function hideAlertMessage(alert){
+			$(alert).hide('fade');		
+		}
+		
+		$("#btn-login").on('click',function(){
+
+			var usuario = $("#username").val();
+			console.log("user: "+ usuario);
+
+
+		});
+
+	</script>
+
+
+
+{% endblock %}

@@ -1,0 +1,1199 @@
+{% extends '::base.html.twig' %}
+{% block title %}La Academia{% endblock %}
+{% block body  %}
+
+<header>
+     <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>                       
+                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="" />                              
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <br>
+                <ul class="nav navbar-nav navbar-right">
+                    <li title="Horarios"><a href="{{url('akademia_mostrarTalentos')}}"><i class="icon-arrow-left" style="font-size:1.5em; color:white"></i></a></li>
+                    <li title="Inicio"><a href="{{url('akademia_panel')}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
+                    <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<section >
+    <br>
+    <div style="width:93%">
+        <p class="text-right" style="color:grey"> Usuario: {{ app.user.username}} </p>
+    </div>
+
+    <div class="proceso">
+        <div class="proceso container-card col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="card row">
+                <h3 class="text-center" style="color:black">{{talento[0]['nombre']}} </h3>
+
+                <p  class="text-center" style="color:grey; font-size:12px">CODIGO DEL ALUMNO: {{talento[0]['idParticipante']}}</p>
+                <p  class="text-center" style="color:grey; font-size:12px">CODIGO DE MATRICULA: {{talento[0]['idInscribete']}}</p>
+
+                <input type="hidden" id="idPartTalento" value="{{talento[0]['idParticipante']}}">
+                <input type="hidden" id="idInscribete" value="{{talento[0]['idInscribete']}}">
+                <hr>
+                
+                {% if talento[0]['foto'] != NULL %}
+                    <div class="text-center col-xs-12 col-sm-3 col-md-3 col-lg-3"> 
+                        <img src="{{asset(talento[0]['foto'])}}" width="140" height="170" style="margin-top: 30px; margin-bottom: 10px;">              
+                    </div>
+                {% else %}
+                    <div class="text-center col-xs-12 col-sm-3 col-md-3 col-lg-3">              
+                        <img src="{{ asset('assets/images/perfil-img.jpg')}}" width="150" height="160" style="margin-top: 30px; margin-bottom: 10px;">
+                    </div>
+                {% endif %}
+                
+                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">   
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-11 col-md-11 col-lg-11 text-right">                
+                            <button title="Editar" id="boton" class="btn btn-danger" style="margin: 10px;" data-toggle="modal" data-target="#modal-editar_participante"><i class="icon-pencil-square-o"></i></button>
+                        </div>
+                    </div>           
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">              
+                            <div class="row">
+                                <div class="form-group col-xs-5 col-sm-5 col-md-3 col-lg-4">                
+                                    <strong><p>DNI: </p></strong>
+                                </div>                      
+
+                                <div class="form-group col-xs-7 col-sm-7 col-md-9 col-lg-8">                
+                                    <p id="deportista_dni">{{talento[0]['dni']}}</p>
+                                </div>                      
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">              
+                            <div class="row">
+                                <div class="form-group col-xs-5 col-sm-5 col-md-3 col-lg-4">                
+                                    <strong><p>Edad: </p></strong>
+                                </div>                      
+
+                                <div class="form-group col-xs-7 col-sm-7 col-md-9 col-lg-8">                
+                                    <p id="deportista_edad"> {{talento[0]['edad']}} años</p>
+                                </div>                      
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">              
+                            <div class="row">
+                                <div class="form-group col-xs-5 col-sm-5 col-md-3 col-lg-4">                
+                                    <strong><p>Disciplina: </p></strong>
+                                </div>                      
+                                <div class="form-group col-xs-7 col-sm-7 col-md-9 col-lg-8">                
+                                    <p id="deportista_disciplina">{{talento[0]['nombreDisciplina']}}</p>
+                                </div>                      
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">              
+
+                            <div class="row">
+
+                                <div class="form-group col-xs-5 col-sm-5 col-md-3 col-lg-4">                
+                                    <strong><p>Complejo: </p></strong>
+                                </div>                      
+
+                                <div class="form-group col-xs-7 col-sm-7 col-md-9 col-lg-8">                
+                                    <p id="deportista_complejo_deportivo"> {{talento[0]['nombreComplejo']}}</p>
+                                </div>                      
+                            </div>
+                        </div>
+                    </div>
+
+                   <div class="row">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">              
+                            <div class="row">
+                                <div class=" col-xs-5 col-sm-5 col-md-3 col-lg-4">              
+                                    <strong><p>Ficha técnica: </p></strong>
+                                </div>  
+                                {% if talento[0]['ficha'] != NULL %}                    
+                                    <div class="form-group col-xs-7 col-sm-7 col-md-9 col-lg-8">
+                                        <a href="{{asset(talento[0]['ficha'])}}" target="_blank"> Link Ficha </a>
+                                        <!--<a href="{{ asset('assets/images/imagesFicha')}}/{{talento[0]['ficha']}}" target="_blank"> Link Ficha</a>-->            
+                                    </div>
+                        
+                                {% endif %} 
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">              
+                            <div class="row">
+
+                                <div class="form-group col-xs-5 col-sm-5 col-md-3 col-lg-4">                
+                                    <strong><p>Video Youtube:</p></strong>
+                                </div>  
+                                {% if talento[0]['link'] != NULL %}                     
+                                <div class="form-group col-xs-7 col-sm-7 col-md-9 col-lg-8">
+                                    <a href="{{talento[0]['link']}}" target="_blank"> Link Video </a>
+                                </div>                          
+                                {% endif %}
+                            </div>
+                        </div>  
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <div class="row">
+                                <div class="col-xs-5 col-sm-5 col-md-3 col-lg-4">
+                                    <strong><p>Comentario: </p></strong>
+                                </div>
+                                <div class="form-group col-xs-7 col-sm-7 col-md-9 col-lg-8">
+                                    <p id="comentarios_talentos">{{talento[0]['comentarios']}}</p>
+                                </div>
+                            </div> 
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">              
+                            <div class="row">
+
+                                <div class="form-group col-xs-5 col-sm-5 col-md-3 col-lg-4">                
+                                    <strong><p>Discapacidad: </p></strong>
+                                </div>  
+                                            
+                                <div class="form-group col-xs-7 col-sm-7 col-md-9 col-lg-8">
+                                    {% if talento[0]['discapacidad'] == 0 %}        
+                                        <p id="discapacidad"> No </p>
+                                    {% else %}
+                                        <p id="discapacidad"> Sí </p>
+                                    {% endif %}
+                                </div>                          
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="form-group col-xs-11 col-sm-11 col-md-11 col-ld-11 ">
+                            <div class="row">
+                                <div class="form-group col-xs-8 col-sm-8 col-md-8 col-ld-8">
+                                    <p style="color:grey">¿Deseas que este participante sea visto desde el App Mobile ? </p>
+                                </div>
+                                <div class="form-group col-xs-2 col-sm-2 col-md-2 col-ld-2">  
+                                    <div class="input-group">
+
+                                          {% if talento[0]['visible'] == 0 %} 
+                                            <span class="input-group-addon">
+                                                <input type="checkbox" name="cbx-visualizacion" id="cbx-visualizacion">
+                                            </span>
+                                            <p type="text" id="valorVisual" class="form-control">Si</p> 
+                                          {% else %}
+                                            <span class="input-group-addon">
+                                                <input type="checkbox" name="cbx-visualizacion" id="cbx-visualizacion" checked>
+                                            </span>
+                                            <p type="text" id="valorVisual" class="form-control">Si</p>
+                                          {% endif %}
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div id="advertencia" class="alert collapse text-center">
+                                <div class="row">
+                                    <div class="form-group col-xs-10 col-sm-10 col-md-10 col-ld-10">
+                                        <p style="font-size:14px" id="alertaSi"> Este nuevo talento será visto a nivel nacional desde la aplicación AcademiaApp. <br>¿ Deseas continuar ?</p>
+                                         <p style="font-size:14px" id="alertaNo"> No se mostrará información de este talento en la aplicación AcademiaApp <br>¿ Deseas continuar ?</p>
+                                    </div>
+                                    <div class="form-group col-xs-2 col-sm-2 col-md-2 col-ld-2">
+                                         <button title="Guardar" id="btnCatTalento" class="btn btn-danger" data-toggle="modal"><i class="icon-save"></i> Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <div class="proceso container-card col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            
+            <h4 style="color:grey">HISTORIAL DE MEDICIONES FISICAS DEL DEPORTISTA</h4>
+
+            <div class="card">      
+                <div class="row">
+                    <div class="form-group col-xs-12 col-sm-12 col-md-12 col-ld-12">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:50vh;">
+                                    <table class="table"> 
+
+                                        <thead> 
+                                            <tr style="background:#cb2f1d; color:#F2F2F2" class="text-center"> 
+                                                <th>Fecha</th> 
+                                                <th>Peso</th> 
+                                                <th>Talla</th>
+                                                <th>30m</th> 
+                                                <th>Salto largo <br>sin impulso</th> 
+                                                <th>Lanzamiento <br>de pelota</th> 
+                                                <th>Salto Vert.</th> 
+                                                <th>Abdominales</th> 
+                                                <th>Agilidad <br>cubito dorsal</th> 
+                                                <th></th>
+                                            </tr>
+                                            <tr style="background:#C44A32; color:#F2F2F2;">
+                                                <td></td>
+                                                <td>kg</td>
+                                                <td>m</td>
+                                                <td>seg/100</td>
+                                                <td>m</td>
+                                                <td>m</td>
+                                                <td>m</td>
+                                                <td>Rpt/30 seg</td>
+                                                <td>Rpt/20 seg</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr style="background:#D87A52; color:#F2F2F2;">
+                                                <td></td>
+                                                <td>Med. Básicas</td>
+                                                <td>Med. Básicas</td>
+                                                <td>Velocidad</td>
+                                                <td>Fuerza explosiva</td>
+                                                <td>Fuerza</td>
+                                                <td>Potencia</td>
+                                                <td>Fuerza de core</td>
+                                                <td>Agilidad</td>
+                                                <td></td>
+                                            </tr>
+
+                                        </thead> 
+
+                                        <tbody class="text-center"> 
+
+                                            {% for numero in numeros %}
+                                                <tr>
+                                                    <td>{{numero['fecha']|date('d/m/Y')}}</td>
+                                                    {% for control in controles %}
+                                                        {% if control['control_id'] == numero['id'] %}
+                                                            {% if control['valor'] == 0.00 %}
+                                                                <td> -- </td> 
+                                                            {% else %}
+                                                                <td>{{control['valor']}}</td> 
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-editar-medida" onclick="listarControlInd({{numero['id']}})"><i class="icon-checklist" style="font-size: 1.3em;"></i></button></td>
+                                                </tr>
+                                            {% endfor %}                                            
+                                        </tbody> 
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-nueva-medida">Registrar nueva medida</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center">
+                <br>
+                <br>
+                <br>
+                <img class="align-self-center foot" src="{{ asset('assets/images/ipdfooter.jpg')}}">
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <br><br>
+                <h4>La Academia</h4>
+                <p class="footerTex">
+                    Dirección:Calle Madre de Dios N° 463
+                </p>
+                <p class="footerTex">
+                    Teléfono: 204-8420 /anexo 1302
+                </p>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <br><br>
+                <h4>Enlaces de Interés</h4>
+                <p><a class="footerTex" href="http://www.ipd.gob.pe/">Instituto Peruano del Deporte</a></p>
+                <p><a class="footerTex" href="https://www.facebook.com/recreacion.ipd/">Facebook Recreación</a></p>
+                <p><a class="footerTex" href="http://www.ipd.gob.pe/formacion-deportiva">Formación Deportiva</a></p>
+            </div>
+        </div>
+        <br>
+        <p class="col-xs-12 col-sm-12 col-md-12 col-lg-12 copyright">&copy; 2018 Todos los derechos reservados</p>
+    </div>
+</footer>
+
+<!--MODAL EDITAR PARTICIPANTE-->
+
+
+<div id="modal-editar_participante" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        
+        <form id="uploadimage" action="#" enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+                    <h4 id="deportista_editar_nombre" class="title-card" style="color:#0B3861">{{talento[0]['nombre']}}</h4>
+                </div>
+                <input type="hidden" id="cod-participante" name="cod-participante" value="{{talento[0]['idParticipante']}}">
+               <div class="modal-body">
+                    <div class="row">
+                                                    
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div id="alerta-error" class="alert alert-danger collapse text-center"></div>
+
+                            <ul class="list-group">
+                                
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                                            <p><span style="color:#B31A12">*</span><strong> Foto de perfil</strong></p>
+                                        </div>
+
+                                        <div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
+                                            <span class="imagen-foto">
+                                                <input type="file" name="imagen-foto" multiple id="imagen-foto">
+                                            </span>
+                                            <label for="imagen-foto">
+                                                <span><i class="icon-search" style="font-size: 1em;"></i> Buscar imagen</span>
+                                            </label>
+                                        </div>
+                                        
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        
+                                        <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                                            <p><span style="color:#B31A12">*</span><strong> Ficha técnica</strong></p>
+                                        </div>
+
+                                        <div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
+                                            <span class="imagen-ficha">
+                                                <input type="file" name="imagen-ficha" multiple id="imagen-ficha">
+                                            </span>
+                                            <label for="imagen-ficha">
+                                                <span><i class="icon-search" style="font-size: 1em;"></i> Buscar imagen</span>
+                                            </label>
+                                        </div>
+                                        
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                                            <p><span style="color:#B31A12">*</span><strong> Link video Youtube</strong></p>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
+                                            <input id="link" class="form-control" name="link" type="text" placeholder=" www.youtube.com/jir931qXG">
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                                
+                            
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                                            <p><span style="color:#B31A12">*</span><strong> Comentarios:</strong></p>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-8 col-md-8 col-lg-8">
+                                            <textarea id="comentarios" name="comentarios" maxlength="300" class="form-control" rows="5" id="comment"></textarea>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <span style="color:#B31A12; font-size:12px;">(*) Campos obligatorios.</span><br>
+                            <span style="color:grey; font-size:12px;"> Los formatos válidos en las imágenes son: 'png','jpg' o 'jpeg'. Peso máximo de 5M. </span>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button id="btn_guardar_editar_deportista" type="button" class="btn btn-danger" >Guardar</button>
+
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!-- MODAL NUEVA MEDIDA -->
+<div id="modal-nueva-medida" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+                <h4 class="title-card" style="color:#2D2D52">REGISTRAR MEDIDAS</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div id="alerta-errorControl" class="alert alert-danger collapse text-center"></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="row text-center">
+                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                <p><span style="color:#B31A12">*</span><strong> Fecha de evaluación</strong></p>
+                            </div>
+                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                <input class="form-control"  id="fechaRegistro" type="date"  name="fechaRegistro">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><span style="color:#B31A12">*</span><strong> Peso</strong><span class="undmedida"> (kg)</span></p>
+                                                <span class="dimension">Medidas Básicas</span>
+                                            </div>
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                
+                                                <input id="crear_peso" class="form-control" type="number" min="0" class="validate">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><span style="color:#B31A12">*</span><strong> Talla</strong><span class="undmedida"> (mt)</span></p>
+                                                <span class="dimension">Medidas Básicas</span>
+                                            </div>
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <input id="crear_talla" class="form-control" type="number" min="0" class="validate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><strong> 30 mt </strong><span class="undmedida">(seg/100)</span></p>
+                                                <span class="dimension">Velocidad</span>
+                                            </div>
+
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <input id="crear_30m" class="form-control" type="number" min="0" class="validate" >
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><strong> Salto largo sin impulso</strong><br><span class="undmedida"> (m)</span></p>
+                                                <span class="dimension">Fuerza Explosiva</span>
+                                            </div>
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                                                <input id="crear_saltoLargo" class="form-control" type="number" min="0" class="validate">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="row">
+                                    
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><strong> Lanzamiento de Pelota</strong><br><span class="undmedida">(m)</span></p>
+                                                <span class="dimension">Fuerza</span>
+                                            </div>
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <input id="crear_lanzPelota" class="form-control" type="number" min="0" class="validate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><strong>Salto vertical</strong><br><span class="undmedida">(m)</span></p>
+                                                <span class="dimension">Potencia</span>
+                                            </div>
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <input id="crear_saltoV" class="form-control" type="number" min="0" class="validate">
+                                            </div>
+                                        </div>
+                                    </div>                                  
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="row">
+                                    
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><strong> Abdominales</strong><br><span class="undmedida"> (Rpt./30 seg)</span></p>
+                                                <span class="dimension">Fuerza core</span>
+                                            </div>
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                                                <input id="crear_abdominales" class="form-control" type="number" min="0" class="validate" >
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><strong> Agilidad cubito dorsal</strong><br><span class="undmedida">(Rpt. /20 seg)</span></p>
+                                                <span class="dimension">Agilidad</span>
+                                            </div>
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <input id="crear_agCubitoDorsal" class="form-control" type="number" min="0" class="validate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <span style="color:#B31A12; font-size:12px;"> (*) Campos obligatorios.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" id="crearIndicador" class="btn btn-danger" data-dismiss="modal">Guardar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL EDITAR MEDIDA -->
+<div id="modal-editar-medida" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+                <h4 class="title-card" style="color:#2D2D52">ACTUALIZAR MEDIDAS</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div id="alerta-errorActualizar" class="alert alert-danger collapse text-center"></div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="row text-center">
+                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                <p><span style="color:#B31A12">*</span><strong> Fecha de evaluación</strong></p>
+                            </div>
+                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                <input class="form-control"  id="fechaEdit" name="fechaEdit" type="date" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><span style="color:#B31A12">*</span><strong> Peso</strong><span class="undmedida"> (kg)</span></p>
+                                                <span class="dimension">Medidas Básicas</span>
+                                            </div>
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                
+                                                <input id="1d" class="form-control" type="number" min="0" class="validate">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><span style="color:#B31A12">*</span><strong> Talla</strong><span class="undmedida"> (mt)</span></p>
+                                                <span class="dimension">Medidas Básicas</span>
+                                            </div>
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <input id="2d" class="form-control" type="number" min="0" class="validate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><span style="color:#B31A12">*</span><strong> 30 mt </strong><span class="undmedida">(seg/100)</span></p>
+                                                <span class="dimension">Velocidad</span>
+                                            </div>
+
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <input id="3d" class="form-control" type="number" min="0" class="validate">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><span style="color:#B31A12">*</span><strong> Salto largo sin impulso</strong><br><span class="undmedida"> (m)</span></p>
+                                                <span class="dimension">Fuerza Explosiva</span>
+                                            </div>
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                                                <input id="4d" class="form-control" type="number" min="0" class="validate" >
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="row">
+                                    
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><span style="color:#B31A12">*</span><strong> Lanzamiento de Pelota</strong><br><span class="undmedida">(mt)</span></p>
+                                                <span class="dimension">Fuerza</span>
+                                            </div>
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <input id="5d" class="form-control" type="number" min="0" class="validate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><span style="color:#B31A12">*</span><strong>Salto vertical</strong><br><span class="undmedida">(cm)</span></p>
+                                                <span class="dimension">Potencia</span>
+                                            </div>
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <input id="6d" class="form-control" type="number" min="0" class="validate">
+                                            </div>
+                                        </div>
+                                    </div>                                  
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="row">
+                                    
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><span style="color:#B31A12">*</span><strong> Abdominales</strong><br><span class="undmedida"> (Rpt./30 seg)</span></p>
+                                                <span class="dimension">Fuerza core</span>
+                                            </div>
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                                                <input id="7d" class="form-control" type="number" min="0" class="validate" >
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <div class="row">
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <p><span style="color:#B31A12">*</span><strong> Agilidad cubito dorsal</strong><br><span class="undmedida">(Rpt. /20 seg)</span></p>
+                                                <span class="dimension">Agilidad</span>
+                                            </div>
+                                            <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <input id="8d" class="form-control" type="number" min="0" class="validate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <span style="color:#B31A12; font-size:12px;"> (*) Campos obligatorios.</span>
+
+                        <p style="color:white" id="idControlInd"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" id="editarIndicador" class="btn btn-danger" data-dismiss="modal">Actualizar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+
+<script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
+<script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
+
+
+<script type="text/javascript">
+    
+    /*MOSTRAR NAME A LAS IMAGENES*/
+    jQuery('input[type=file]').change(function(){
+        
+        var filename = jQuery(this).val().split('\\').pop();
+        var idname = jQuery(this).attr('id');
+        
+        console.log(jQuery(this));
+        console.log(filename);
+        console.log(idname);
+        
+        jQuery('span.'+idname).next().find('span').html(filename);  
+     
+        
+    });
+
+
+    $(document).ready(function(){
+
+        $("#advertencia").hide();
+    
+           
+    });
+
+
+   /*IMAGENES*/
+
+    $('#btn_guardar_editar_deportista').on( 'click', function() {
+
+        if($("#imagen-foto").val() != "" && $("#link").val() != "" && $("#imagen-ficha").val() != "" && $("#comentarios").val() != "" ) {
+
+        //  $("#btn_guardar_editar_deportista").attr("data-dismiss", "modal");
+            var formulario = new FormData($("#uploadimage")[0]);
+            console.log(formulario);
+
+            $.ajax({
+
+                type:'POST',
+                url: "{{url('akademia_guardarTalento')}}",
+                data: formulario,
+                cache: false,
+                contentType: false,
+                processData: false,
+
+                beforeSend: function(){             
+                    
+                },
+
+                success: function (data){
+
+                    if( data == 1){
+
+                        $("#btn_guardar_editar_deportista").attr("data-dismiss", "modal");
+                        alertify.success('<p style="color:white">Los cambios se efectuaron correctamente.</p>');    
+                        location.reload(true);
+
+                    }else if ( data == 3){
+                        
+                        $("#btn_guardar_editar_deportista").attr("data-dismiss", "");
+                        showAlertMessage('#alerta-error', "El formato de la imagen no corresponde a lo requerido . (jpg, jpeg , png)");
+                        formulario = 0;
+                        //alertify.error('<p style="color:white">Se ha producido un error.</p>');
+                    
+                    }else if( data == 2){
+
+                        $("#btn_guardar_editar_deportista").attr("data-dismiss", "modal");
+                        alertify.error('<p style="color:white">Se ha producido un error.</p>');
+                        location.reload(true);
+                    }
+                    
+                },
+                error: function(data){
+                    console.log(data);
+                }
+            });
+
+        }else{
+
+            $("#btn_guardar_editar_deportista").attr("data-dismiss", "");
+            showAlertMessage('#alerta-error', "Verifique que ningún campo se encuentre vacío.");
+        }       
+
+    });
+
+    /*MOSTRAR TALENTO EN LA APLICACION MOVIL*/
+    
+    sessionStorage.removeItem('flagCatTalento');
+  
+    $('#cbx-visualizacion').on( 'click', function() {
+        
+        if($(this).is(':checked'))
+        {
+            $("#advertencia").show();
+            $("#advertencia").addClass("alert-success").removeClass( "alert-danger" );
+            $("#alertaSi").show();
+            $("#alertaNo").hide();
+            $("#valorVisual").text('Si');
+            sessionStorage.setItem('flagCatTalento',1);
+        
+        }else{
+
+            $("#advertencia").show();
+            $("#advertencia").addClass("alert-danger").removeClass("alert-success");
+            $("#alertaSi").hide();
+            $("#alertaNo").show();
+            $("#valorVisual").text('No');
+            sessionStorage.setItem('flagCatTalento',0);
+        }
+    });   
+
+  
+    $('#btnCatTalento').on('click', function(){
+
+        let visibilidad = sessionStorage.getItem('flagCatTalento');
+        let idParticipante = $('#idPartTalento').val();
+        console.log(visibilidad, idParticipante);
+
+
+        var dataEnvio = {
+            "idParticipante" : idParticipante,
+            "visibilidad" : visibilidad
+        };
+
+        $.ajax({
+
+            type:'POST',
+            url: "{{url('akademia_visibilidadApp')}}",
+            data: dataEnvio,
+            
+            beforeSend:function(){
+
+              $("#btnCatTalento").attr("disabled", true);    
+            
+            },
+            
+            success: function(data){
+                if(data == 1){
+                    alertify.success('<p style="color:white">El cambio se actualizó correctamente. </p>');
+                    location.reload(true);
+                
+                }else{
+
+                    alertify.error('<p>Se produjo un error al actualizar. </p>')
+                }
+                
+            },
+            error: function(error){
+
+                console.log(error);
+            }
+                    
+        });
+
+    });
+
+    /*CREAR UNA NUEVA MEDIDA*/
+
+    $('#crearIndicador').on('click',function(){
+
+        if($('#crear_peso').val() != "" && $('#crear_talla').val() != "" && $('#idPartTalento').val() != "" && $('#idInscribete').val() != "" && $('#fechaRegistro').val()){
+
+                $("#crearIndicador").attr("data-dismiss", "modal");
+                
+                var ind30mt  = $('#crear_30m').val();
+                var saltoLargo =  $('#crear_saltoLargo').val();
+                var lanzPelota = $('#crear_lanzPelota').val();
+                var saltoV = $('#crear_saltoV').val();
+                var abdominales = $('#crear_abdominales').val();
+                var agCubitoDorsal = $('#crear_agCubitoDorsal').val();
+
+                if( ind30mt == ""){
+                     ind30mt = 0;
+                }
+
+                if( saltoLargo == ""){
+                    saltoLargo = 0;
+                }
+
+                if(lanzPelota  == ""){
+                    lanzPelota = 0;
+                }
+
+                if( saltoV == ""){
+                    saltoV = 0;
+                }
+
+                if( abdominales == ""){
+                    abdominales = 0;
+                }
+
+                if( agCubitoDorsal == ""){
+                    agCubitoDorsal = 0;
+                }
+
+                let peso = $('#crear_peso').val();
+                let talla = $('#crear_talla').val();
+                let idParticipante = $('#idPartTalento').val();
+                let idInscribete = $('#idInscribete').val();
+                let fechaDato = $('#fechaRegistro').val();
+
+                console.log(peso,talla,ind30mt);
+                console.log(fechaDato);
+
+
+                var valorIndicadores = {
+                    "peso" : peso,
+                    "talla" : talla,
+                    "ind30mt" : ind30mt,
+                    "saltoLargo" : saltoLargo,
+                    "lanzPelota" :lanzPelota,
+                    "saltoV" : saltoV,
+                    "abdominales" : abdominales,
+                    "agCubitoDorsal" : agCubitoDorsal,
+                    "idParticipante" : idParticipante,
+                    "idInscribete" : idInscribete,
+                    "fechaDato" : fechaDato,
+                };
+            
+                console.log(valorIndicadores);
+            
+                $.ajax({
+
+                    type:'POST',
+                    dataType: "json",
+                    url: "{{url('akademia_nuevoControl')}}",
+                    data: valorIndicadores,
+
+                    beforeSend: function(){                 
+                    },
+
+                    success: function(data){
+                        
+                        if(data == 1){
+
+                            alertify.success('<p style="color:white">El nuevo control se creó exitosamente</p>');   
+                            location.reload(true);
+                                                
+                        }else if(data == 2){
+
+                            alertify.success('<p style="color:white">Se produjo un error al crear el nuevo control</p>');   
+                            console.log(data);
+
+                        }else{
+
+                            alertify.error('<p style="color:white">no existen valor de indicadores </p>');  
+                            console.log(data);
+                        }
+                    },
+
+                    error: function(error){
+                        console.log(error);
+                    },
+
+                });
+
+        }else{
+
+            $("#crearIndicador").attr("data-dismiss", "");
+            showAlertMessage('#alerta-errorControl', "Verifique que el peso y la talla no se encuentren vacíos.");
+        }
+        
+    
+    });
+
+    function clearEdit(){
+
+        $("#fechaEdit").val("");
+        
+        for(let i=0; i < 11; i++){
+            
+            $("#"+(i+1)+"d").val("");
+        }
+
+
+    }
+
+    function listarControlInd(idcontrol){
+
+        let idParticipante = $('#idPartTalento').val();
+        let idControl = idcontrol;
+        
+        var data = {
+            "idParticipante" : idParticipante,
+            "idControl" : idcontrol,
+        }
+
+        $.ajax({
+
+            type:'POST',
+            dataType: 'json',
+            url: "{{url('akademia_mostrarControlesInd')}}",
+            data: data,
+
+            beforeSend: function(){             
+                
+            },
+            success: function(data){
+
+                if(data != 1){
+                    
+
+                    var datos =JSON.parse(data);                        
+                    $("#fechaEdit").val(datos[0].fecha);
+                    $("#idControlInd").text(idControl);
+                    
+                    for(let i=0; i < datos.length; i++){
+                        
+                        $("#"+(i+1)+"d").val(datos[i].valor);
+                    }
+
+                }else{
+
+                    alertify.error('<p style="color:white">Se produjo un error al cargar los datos </p>'); 
+                }
+            },
+            error: function(data){
+
+            },
+        });
+
+    }
+
+
+    /*EDITAR INDICADOR*/
+    
+    $("#editarIndicador").on('click', function(){
+
+          if($('#1d').val() != "" && $('#2d').val() != "" && $('#3d').val() != "" && $('#4d').val() != "" && $('#5d').val() != "" && $('#6d').val() != "" && $('#7d').val() != "" && $('#8d').val() != "" && $('#fechaEdit').val() !="" ){
+
+            $("#editarIndicador").attr("data-dismiss", "modal");
+
+            let peso = parseFloat($('#1d').val());
+            let talla = parseFloat($('#2d').val());
+            let ind30mt = parseFloat($('#3d').val());
+            let saltoLargo = parseFloat($('#4d').val());
+            let lanzPelota = parseFloat($('#5d').val());
+            let saltoV = parseFloat($('#6d').val());
+            let abdominales = parseFloat($('#7d').val());
+            let agCubitoDorsal = parseFloat($('#8d').val());
+         
+            let idControl = parseInt($('#idControlInd').text());
+            let fechaDato = $('#fechaEdit').val();
+
+            var valorIndicadores = {
+                "peso" : peso,
+                "talla" : talla,
+                "ind30mt" : ind30mt,
+                "saltoLargo" : saltoLargo,
+                "lanzPelota" :lanzPelota,
+                "saltoV" : saltoV,
+                "abdominales" : abdominales,
+                "agCubitoDorsal" : agCubitoDorsal,
+                "idControl" : idControl,
+                "fechaDato" : fechaDato,
+            };
+
+            console.log(valorIndicadores);
+            
+            $.ajax({
+
+                type:'POST',
+                dataType: 'json',
+                url: "{{url('akademia_actualizarIndicador')}}",
+                data: valorIndicadores,
+
+                beforeSend: function(){                 
+                },
+
+                success: function(data){
+
+                    if(data == 1){
+
+                        alertify.success('<p style="color:white"> Se actualizó correctamente el control</p>');
+                        location.reload(true);
+                        clearEdit();
+
+                    }else if(data == 2){
+
+                        alertify.error('<p style="color:white">Se produjo un error al actualizar los datos </p>'); 
+                    }else{
+
+                        alertify.error('<p>Se produjo un error</p>')
+                    }
+                },
+                error: function(data){
+                    console.log(data);
+                },
+            });
+
+        }else{
+
+            $("#editarIndicador").attr("data-dismiss", "");
+            showAlertMessage('#alerta-errorActualizar', "Verifique que ningún campo se encuentre vacío.");
+        }
+
+
+    });
+
+
+    /* MOSTRAR MENSAJE DE ALERTA */
+    function showAlertMessage(alert, mensaje){
+        $(alert).text(mensaje).show('fade');
+        setTimeout(function(){
+            hideAlertMessage(alert);    
+        }, 2000);
+    }
+
+    /* COULTAR ALERTA*/
+    function hideAlertMessage(alert){
+        $(alert).hide('fade');
+    }
+
+
+</script>
+
+{% endblock %}
