@@ -1025,8 +1025,9 @@ $("#boton3").on('click',function(){
 
 		if( sessionStorage.getItem("edad") != null || sessionStorage.getItem("edad")!=undefined ){
 			if(sessionStorage.getItem('flagDiscapacitado') == '1' ){
-				if(sessionStorage.getItem("edad") <= 59 && sessionStorage.getItem("edad")> 5){
-					
+
+				if(sessionStorage.getItem("edad") <= 59 && sessionStorage.getItem("edad") >= 6){
+
 					$("#proceso3").hide();
 					console.log("Val flagDiscapacitado ==>",sessionStorage.getItem('flagDiscapacitado'));
 					pageHorario(1);
@@ -1038,7 +1039,7 @@ $("#boton3").on('click',function(){
 			    }
 
 			}else if(sessionStorage.getItem('flagDiscapacitado') == null ){
-				if(sessionStorage.getItem("edad") < 18 && sessionStorage.getItem("edad")> 5){
+				if(sessionStorage.getItem("edad") < 18 && sessionStorage.getItem("edad") >= 6){
 					
 					$("#proceso3").hide();
 					console.log("Val flagDiscapacitado ==>",sessionStorage.getItem('flagDiscapacitado'));
