@@ -12,8 +12,11 @@ use AkademiaBundle\Entity\Usuarios;
 use AkademiaBundle\Component\Security\Authentication\authenticationUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
 class ExportacionDataController extends Controller
 {
+
 
   public function exportAction(Request $request)
   {
@@ -145,8 +148,8 @@ class ExportacionDataController extends Controller
     	fclose($handle);
   	});
     $response->setStatusCode(200);
-    $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
-    $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
+    $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8');
+    $response->headers->set('Content-Disposition', 'attachment; filename="export.xlsx"');
     return $response;
 	}
 
