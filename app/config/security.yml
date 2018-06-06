@@ -1,11 +1,32 @@
 # To get started with security, check out the documentation:
 # https://symfony.com/doc/current/security.html
+#
 security:
+
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
+        in_memory: 
+            memory:
+                users:
+                    ryan:
+                        password: 1234
+
+        user_db_provider:
+            entity:
+                class: AkademiaBundle:Usuarios
+                property: username
+
+    encoders:
+        #AkademiaBundle\Entity\Usuarios:
+            #algorithm: bcrypt
+        Symfony\component\Security\Core\User\User: plaintext
+        AkademiaBundle\Entity\Usuarios: plaintext
+        
+        #user_db_provider:
+         #   entity:
+         #       class: AkademiaBundle\Usuarios
+         #       property: username
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -13,8 +34,22 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        akademia:
+            anonymous: ~
+            pattern: ^/
+            provider: user_db_provider
+            form_login:
+                login_path: /login
+                check_path: /login
+                default_target_path: akademia_panel
+            http_basic: ~
+            logout:
+                path: /logout
+                target: /
+
         main:
             anonymous: ~
+
             # activate different ways to authenticate
 
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
@@ -22,3 +57,16 @@ security:
 
             # https://symfony.com/doc/current/security/form_login_setup.html
             #form_login: ~
+            
+    access_control:
+        - {path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/activacion, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/registrofinal, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/control, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/servicios, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/ajax, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/consulta$, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^(/inscritos|/consulta|/beneficiarios|/contador|/login|/panel|/registrofinal|/ajax|/), roles: [ROLE_ADMIN,ROLE_ANALISTA,ROLE_DOCENTE]}
+
+    

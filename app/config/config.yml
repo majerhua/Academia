@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@AkademiaBundle/Resources/config/services.yml" }
+    - { resource: "@ApiRestFullAcademiaBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -34,6 +35,30 @@ framework:
     php_errors:
         log: true
 
+# Nelmio CORS Configuration
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        allow_origin: ['*']
+        allow_headers: ['*']
+        allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+        max_age: 3600
+        hosts: []
+        origin_regex: false
+ 
+# FOSRest Configuration
+fos_rest:
+    body_listener: true
+    format_listener:
+        rules:
+            - { path: '^/servicios', priorities: ['json'], fallback_format: json, prefer_extension: false }
+            - { path: ^/, priorities: ['html', '*/*'], fallback_format: html, prefer_extension: true }
+    param_fetcher_listener: true
+    view:
+        view_response_listener: 'force'
+        formats:
+            json: true
+            
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
@@ -69,6 +94,19 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+
+#knp_paginator:
+#    page_range: 5                      # rango por defecto de paginas en los controles del paginador
+#    default_options:
+#        page_name: page                # nombre del parámetro de la URL para la página
+#        sort_field_name: sort          # nombre del parámetro de la URL para la ordenación
+#        sort_direction_name: direction # nombre del parámetro de la URL para la dirección(ASC o DESC)
+#        distinct: true                 # Garantizar resultados distintos
+#   template:
+#       pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig  # plantilla controles
+#        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # plantilla links ordenación
+
 
 #knp_snappy:
 #    pdf:

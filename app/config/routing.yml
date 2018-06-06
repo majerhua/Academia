@@ -1,7 +1,17 @@
+api_rest_full_academia:
+    resource: "@ApiRestFullAcademiaBundle/Controller/"
+    type:     annotation
+    prefix:   /servicios
+
 akademia:
     resource: "@AkademiaBundle/Resources/config/routing.yml"
     prefix:   /
 
+akademia_activarCuenta:
+    path:     /activacion/cuenta/{token}
+    defaults: { _controller: AkademiaBundle:Talentos:activarCuentaUsuario}  
+    methods:  [GET,POST]
+
 #app:
 #    resource: '@AppBundle/Controller/'
- #   type: annotation
+#   type: annotation

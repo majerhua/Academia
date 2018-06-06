@@ -18,12 +18,6 @@ class Distrito
      */
     private $complejosDeportivo;
 
-
-    /**
-     * @ORM\OneToMany(targetEntity="Apoderado", mappedBy="distrito")
-     */
-    private $apoderados;
-
     /**
      * @var int
      *

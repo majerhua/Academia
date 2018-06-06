@@ -1,36 +1,68 @@
+entradas_list:
+    path: /pruebas/entradas
+    defaults: { _controller: AppBundle:Pruebas:entradas}
+
 akademia_homepage:
     path:     /
     defaults: { _controller: AkademiaBundle:Default:index }
     methods:  [GET,POST]
 
+akademia_contador:
+    path:     /contador
+    defaults: { _controller: AkademiaBundle:Default:contador }
+    
+akademia_registroFinal:
+    path:     /registrofinal/{estado}
+    defaults: { _controller: AkademiaBundle:Default:registroFinal }
+    methods:  [GET,POST]
+
+akademia_panel:
+    path:     /panel
+    defaults: { _controller: AkademiaBundle:Default:panel}
+    methods:  [GET,POST]
+
 akademia_registrar:
-    path:     /registrar
+    path:     /ajax/registrar
     defaults: { _controller: AkademiaBundle:Default:registrar }
     methods:  [GET,POST]
 
+akademia_mostrarficha:
+    path:     /ajax/mostrarficha
+    defaults: { _controller: AkademiaBundle:Default:mostrarficha }
+    methods:  [GET,POST]
 
 akademia_getPost:
-    path:     /post/get
+    path:     /ajax/post/get
     defaults: { _controller: AkademiaBundle:Default:post}
     methods:  [GET,POST]
 
+akademia_sendemailapoderado:
+    path:     /ajax/sendemailapoderado
+    defaults: { _controller: AkademiaBundle:Default:sendemailapoderado}
+    methods:  [GET,POST]
+
 akademia_generarPdfInscripcion:
-    path:     /pdf/inscripcion/{id}
+    path:     /ajax/pdf/inscripcion/{id}
     defaults: { _controller: AkademiaBundle:Default:generarPdfInscripcion}
     methods:  [GET,POST]
 
 akademia_generarPdfDeclaracionJurada:
-    path:     /pdf/declaracion-jurada/{id}
+    path:     /ajax/pdf/declaracion-jurada/{id}
     defaults: { _controller: AkademiaBundle:Default:generarPdfDeclaracionJurada}
     methods:  [GET,POST]
 
 akademia_sendemail:
-    path:     /sendemail
+    path:     /ajax/sendemail
     defaults: { _controller: AkademiaBundle:Default:sendemail}
     methods:  [GET,POST]
 
+akademia_prueba:
+    path:     /prueba
+    defaults: { _controller: AkademiaBundle:Default:prueba}
+    methods:  [GET,POST]
+
 akademia_sendemailusuario:
-    path:     /sendemailusuario
+    path:     /ajax/sendemailusuario
     defaults: { _controller: AkademiaBundle:Default:sendemailusuario}
     methods:  [GET,POST]
 
@@ -39,7 +71,144 @@ akademia_consulta:
     defaults: { _controller: AkademiaBundle:Default:consulta}
     methods:  [GET,POST]
 
+akademia_estadoBeneficiario:
+    path:     /estadoBeneficiario
+    defaults: { _controller: AkademiaBundle:Default:estadoBeneficiario}
+    methods:  [GET,POST]
+
 akademia_mostrarcomplejos:
-    path:    /mostrarcomplejos
+    path:    /ajax/mostrarcomplejos
     defaults: {_controller: AkademiaBundle:Default:mostrarcomplejos}
     methods: [GET,POST]
+
+akademia_inscritos:
+    path:    /inscritos
+    defaults: {_controller: AkademiaBundle:Default:inscritos}
+    methods: [GET,POST]
+
+akademia_horarios:
+    path:    /horarios
+    defaults: {_controller: AkademiaBundle:Default:horarios}
+    methods: [GET,POST]
+
+akademia_beneficiarios:
+    path:    /beneficiarios/{idHorario}
+    defaults: {_controller: AkademiaBundle:Default:beneficiarios}
+    methods: [GET,POST]
+    
+akademia_actualizarHorario:
+   path:    /ajax/actualizarHorario
+   defaults: {_controller: AkademiaBundle:Default:actualizarHorario}
+   methods: [GET,POST]
+
+akademia_ocultarHorario:
+   path:    /ajax/ocultarHorario
+   defaults: {_controller: AkademiaBundle:Default:ocultarHorario}
+   methods: [GET,POST]
+
+akademia_cantInscritos:
+    path:    /ajax/cantInscritos
+    defaults: {_controller: AkademiaBundle:Default:cantInscritos}
+    methods: [GET,POST]
+
+akademia_mostrarHorarioIndividual:
+   path:    /ajax/mostrarHorarioIndividual
+   defaults: {_controller: AkademiaBundle:Default:mostrarHorarioIndividual}
+   methods: [GET,POST]
+
+akademia_crearHorario:
+   path:    /ajax/crearHorario
+   defaults: {_controller: AkademiaBundle:Default:crearHorario}
+   methods: [GET,POST]
+
+akademia_crearDisciplina:
+   path:    /ajax/crearDisciplina
+   defaults: {_controller: AkademiaBundle:Default:crearDisciplina}
+   methods: [GET,POST]
+
+akademia_cambiarestado:
+    path:   /ajax/cambiarestado
+    defaults: {_controller: AkademiaBundle:Default:cambiarestado}
+    methods: [GET, POST]
+
+akademia_login:
+    path:    /login
+    defaults: {_controller: AkademiaBundle:Default:login}
+
+akademia_login_check:
+    path:    /login_check
+
+akademia_logout:
+    path:    /logout
+
+akademia_evaluados:
+    path:     /ajax/evaluados
+    defaults: { _controller: AkademiaBundle:Talentos:evaluados}
+    methods:  [GET,POST]
+
+akademia_talentos:
+    path:     /ajax/talentos/{idParticipante}
+    defaults: { _controller: AkademiaBundle:Talentos:talentos}
+    methods:  [GET,POST]
+
+akademia_guardarTalento:
+    path:     /ajax/guardarTalento
+    defaults: { _controller: AkademiaBundle:Talentos:guardarTalento}
+    methods:  [GET,POST]
+
+akademia_mostrarControlesInd:
+    path:     /ajax/mostrarControlesInd
+    defaults: { _controller: AkademiaBundle:Talentos:mostrarControlesInd}
+    methods:  [GET,POST]
+
+akademia_mostrarControlesInd:
+    path:     /ajax/mostrarControlesInd
+    defaults: { _controller: AkademiaBundle:Talentos:mostrarControlesInd}
+    methods:  [GET,POST]
+
+akademia_nuevoControl:
+    path:     /ajax/control
+    defaults: { _controller: AkademiaBundle:Talentos:nuevoControl}  
+    methods:  [GET,POST]
+
+akademia_actualizarIndicador:
+    path:     /ajax/actualizarControl
+    defaults: { _controller: AkademiaBundle:Talentos:actualizarControl}
+    methods:  [GET,POST]
+
+akademia_mostrarTalentos:
+    path:     /ajax/mostrarTalentos
+    defaults: { _controller: AkademiaBundle:Talentos:mostrarTalentos}
+    methods:  [GET,POST]
+
+akademia_mostrarDetalleTalento:
+    path:     /ajax/detalle/{idParticipante}
+    defaults: { _controller: AkademiaBundle:Talentos:mostrarDetalleTalento}
+    methods:  [GET,POST]
+
+akademia_nuevoTalento:
+    path:     /ajax/nuevoTalento
+    defaults: { _controller: AkademiaBundle:Talentos:nuevoTalento}  
+    methods:  [GET,POST]
+
+akademia_visibilidadApp:
+    path:     /ajax/visibilidadApp
+    defaults: { _controller: AkademiaBundle:Talentos:visibilidadApp}  
+    methods:  [GET,POST]
+
+
+##INCIO EXPORTAR DATA ##
+akademia_export:
+   path:    /export
+   defaults: {_controller: AkademiaBundle:ExportacionData:export}
+   methods: [GET,POST]
+
+akademia_exportData:
+   path:    /exportData
+   defaults: {_controller: AkademiaBundle:ExportacionData:exportData}
+   methods: [GET,POST]
+#FIN 
+
+#### INICIO API REST 
+
+

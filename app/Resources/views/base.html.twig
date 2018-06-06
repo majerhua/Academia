@@ -6,18 +6,22 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/logofavicon.png') }}" />
+        <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
         <link rel="stylesheet"  href="{{asset('assets/vendor/bootstrap/dist/css/bootstrap.css')}}">
         <link rel="stylesheet"  href="{{asset('assets/vendor/css/estilos.css')}}">
+        <link rel="stylesheet"  href="{{asset('assets/vendor/css/textoParpadea.css')}}">
+        <link rel="stylesheet"  href="{{asset('assets/vendor/css/estilosInputs.css')}}">
         <link href="https://file.myfontastic.com/YmJUfPpwy2GMnYpbPNqWHN/icons.css" rel="stylesheet">
         <link rel="stylesheet"  href="{{asset('assets/vendor/css/estilosPdfInscripcion.css')}}">
         <link href="https://fonts.googleapis.com/css?family=Cinzel|Josefin+Slab|Marcellus+SC|Open+Sans" rel="stylesheet">
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/alertify.rtl.min.css"/>
     </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}
-                
+    
+        {% block body %}            
+        {% endblock %}
+
+        {% block javascripts %}    
         {% endblock %}
         
-    </body>
+   
 </html>
