@@ -427,207 +427,219 @@ class DefaultController extends Controller
             $idHorario = $data[0]['idHorario'];
             
             $em = $this->getDoctrine()->getManager();
-            $data = $em->getRepository('AkademiaBundle:Inscribete')->getDobleInscripcion($idHorario,$idParticipante);
-           
-            if(!empty($data)){
-                
-                $mensaje = 3;
+
+            $horarios = $em->getRepository('AkademiaBundle:Horario')->horarioActivos($idHorario);
+
+            if(empty($horarios)){
+
+                $mensaje = 5;
                 return new JsonResponse($mensaje);
-            
-            }else {
-               
-                $em = $this->getDoctrine()->getManager();
-                $data = $em->getRepository('AkademiaBundle:Inscribete')->getCantInscripciones($idParticipante);
-
-                $cantRegistros = $data[0]['cantidadRegistros'];
                 
+            }else{
 
-                if(intval($cantRegistros) >= 1){
-                
-                    $mensaje = 4;
-                    return new JsonResponse($mensaje);
-
-                }else{
-              
-                    if( $estadoFicha == 0){
-              
+                $data = $em->getRepository('AkademiaBundle:Inscribete')->getDobleInscripcion($idHorario,$idParticipante);
+                   
+                    if(!empty($data)){
+                        
+                        $mensaje = 3;
+                        return new JsonResponse($mensaje);
+                    
+                    }else {
+                       
                         $em = $this->getDoctrine()->getManager();
-                        $vacantesHorario = $em->getRepository('AkademiaBundle:Horario')->getHorariosVacantes($idHorario);
-                        $cantVacantes = $vacantesHorario[0]['vacantes'];
-              
-                        if($cantVacantes > 0 ){
+                        $data = $em->getRepository('AkademiaBundle:Inscribete')->getCantInscripciones($idParticipante);
 
-                            $em = $this->getDoctrine()->getManager();
-                            $IDParticipante = $em->getRepository('AkademiaBundle:Participante')->getbuscarParticipante($dniParticipante);
-              
-                            if(!empty($IDParticipante)){   
-              
-                                $idParticipante = $IDParticipante[0]['id'];
-                                $em = $this->getDoctrine()->getRepository(Participante::class);
-                                $participante = $em->find($idParticipante);
-                                $participante->setUsuarioValida($usuario);
+                        $cantRegistros = $data[0]['cantidadRegistros'];
+                        
+
+                        if(intval($cantRegistros) >= 1){
+                        
+                            $mensaje = 4;
+                            return new JsonResponse($mensaje);
+
+                        }else{
+                      
+                            if( $estadoFicha == 0){
+                      
                                 $em = $this->getDoctrine()->getManager();
-                                $em->flush();
-                               
-                                $em = $this->getDoctrine()->getManager();
-                                $idApoderadoB = $em->getRepository('AkademiaBundle:Apoderado')->getbuscarApoderado($dniApoderado);          
-              
-                                if(!empty($idApoderadoB)){
-                                    $idApoderado = $idApoderadoB[0]['id'];
+                                $vacantesHorario = $em->getRepository('AkademiaBundle:Horario')->getHorariosVacantes($idHorario);
+                                $cantVacantes = $vacantesHorario[0]['vacantes'];
+                      
+                                if($cantVacantes > 0 ){
+
                                     $em = $this->getDoctrine()->getManager();
-                                    $em->getRepository('AkademiaBundle:Participante')->getActualizarApoderado($idApoderado,$idParticipante);
+                                    $IDParticipante = $em->getRepository('AkademiaBundle:Participante')->getbuscarParticipante($dniParticipante);
+                      
+                                    if(!empty($IDParticipante)){   
+                      
+                                        $idParticipante = $IDParticipante[0]['id'];
+                                        $em = $this->getDoctrine()->getRepository(Participante::class);
+                                        $participante = $em->find($idParticipante);
+                                        $participante->setUsuarioValida($usuario);
+                                        $em = $this->getDoctrine()->getManager();
+                                        $em->flush();
+                                       
+                                        $em = $this->getDoctrine()->getManager();
+                                        $idApoderadoB = $em->getRepository('AkademiaBundle:Apoderado')->getbuscarApoderado($dniApoderado);          
+                      
+                                        if(!empty($idApoderadoB)){
+                                            $idApoderado = $idApoderadoB[0]['id'];
+                                            $em = $this->getDoctrine()->getManager();
+                                            $em->getRepository('AkademiaBundle:Participante')->getActualizarApoderado($idApoderado,$idParticipante);
+                                            $em->flush();
+                                           
+                                            $em = $this->getDoctrine()->getRepository(Apoderado::class);
+                                            $apoderado = $em->find($idApoderado);
+                                            $apoderado->setUsuarioValida($usuario);
+                                            $em = $this->getDoctrine()->getManager();
+                                            $em->flush();
+                                           
+                                            $em = $this->getDoctrine()->getManager();
+                                            $em->getRepository('AkademiaBundle:Participante')->getActualizarParticipanteFicha($idParticipante,$idFicha);
+                                            $em->flush(); 
+                                        
+                                        }else{
+                                            
+                                            $em = $this->getDoctrine()->getManager();
+                                            $IDApoderado = $em->getRepository('AkademiaBundle:Apoderado')->getApoderadoBusqueda($dniApoderado);
+                                            $idApoderado = $IDApoderado[0]['id'];
+                                            $em = $this->getDoctrine()->getRepository(Apoderado::class);
+                                            $apoderado = $em->find($idApoderado);
+                                            $apoderado->setEstado(1);
+                                            $apoderado->setUsuarioValida($usuario);
+                                            $em = $this->getDoctrine()->getManager();
+                                            $em->flush();
+                                            $em = $this->getDoctrine()->getManager();
+                                            $em->getRepository('AkademiaBundle:Participante')->getActualizarApoderado($idApoderado,$idParticipante);
+                                            $em->flush(); 
+                                            $em = $this->getDoctrine()->getManager();
+                                            $em->getRepository('AkademiaBundle:Participante')->getActualizarParticipanteFicha($idParticipante,$idFicha);
+                                            $em->flush(); 
+                                        }
+                                    }else{
+                      
+                                        $em = $this->getDoctrine()->getManager();
+                                        $IDParticipanteExistente = $em->getRepository('AkademiaBundle:Participante')->getbuscarParticipanteApoderado($dniParticipante);
+                                        
+                                        $idParticipante = $IDParticipanteExistente[0]['id'];
+                                        $em = $this->getDoctrine()->getRepository(Participante::class);
+                                        $participante = $em->find($idParticipante);
+                                        $participante->setEstado(1);
+                                        $participante->setUsuarioValida($usuario);
+                                        $em = $this->getDoctrine()->getManager();
+                                        $em->flush();
+                                        $em = $this->getDoctrine()->getManager();
+                                        $em->getRepository('AkademiaBundle:Participante')->getActualizarParticipanteFicha($idParticipante,$idFicha);
+                                        $em->flush(); 
+                                        $em = $this->getDoctrine()->getManager();
+                                        $idApoderadoB = $em->getRepository('AkademiaBundle:Apoderado')->getbuscarApoderado($dniApoderado);
+                                        
+                                        if(!empty($idApoderadoB)){
+
+                                            $idApoderado = $idApoderadoB[0]['id'];
+                                            $em = $this->getDoctrine()->getManager();
+                                            $em->getRepository('AkademiaBundle:Participante')->getActualizarApoderado($idApoderado,$idParticipante);
+                                            $em->flush(); 
+                                            $em = $this->getDoctrine()->getRepository(Apoderado::class);
+                                            $apoderado = $em->find($idApoderado);
+                                            $apoderado->setUsuarioValida($usuario);
+                                            $em = $this->getDoctrine()->getManager();
+                                            $em->flush();
+                                           
+                                        }else{
+                      
+                                            $em = $this->getDoctrine()->getManager();
+                                            $IDApoderado = $em->getRepository('AkademiaBundle:Apoderado')->getApoderadoBusqueda($dniApoderado);
+                                            $idApoderado = $IDApoderado[0]['id'];
+                                            $em = $this->getDoctrine()->getRepository(Apoderado::class);
+                                            $apoderado = $em->find($idApoderado);
+                                            $apoderado->setEstado(1);
+                                            $apoderado->setUsuarioValida($usuario);
+                                            $em = $this->getDoctrine()->getManager();
+                                            $em->flush();
+                                            $em = $this->getDoctrine()->getManager();
+                                            $em->getRepository('AkademiaBundle:Participante')->getActualizarApoderado($idApoderado,$idParticipante);
+                                            $em->flush(); 
+                                            $em = $this->getDoctrine()->getManager();
+                                            $em->getRepository('AkademiaBundle:Participante')->getActualizarParticipanteFicha($idParticipante,$idFicha);
+                                            $em->flush(); 
+                                        }                  
+                                    }
+
+                                    $em2 = $this->getDoctrine()->getManager();
+                                    $ficha = $em2->getRepository('AkademiaBundle:Inscribete');
+                                    $estadoFicha = $ficha->find($idFicha);
+                                    $estadoFicha->setEstado(2);
+                                    $estadoFicha->setUsuarioValida($usuario);
+                                    $em2->persist($estadoFicha);
+                                    $em2->flush();
+                                    $em= $this->getDoctrine()->getManager();
+                                    $em->getRepository('AkademiaBundle:Horario')->getActualizarVacantesHorarios($idHorario);
                                     $em->flush();
-                                   
-                                    $em = $this->getDoctrine()->getRepository(Apoderado::class);
-                                    $apoderado = $em->find($idApoderado);
-                                    $apoderado->setUsuarioValida($usuario);
-                                    $em = $this->getDoctrine()->getManager();
-                                    $em->flush();
-                                   
-                                    $em = $this->getDoctrine()->getManager();
-                                    $em->getRepository('AkademiaBundle:Participante')->getActualizarParticipanteFicha($idParticipante,$idFicha);
-                                    $em->flush(); 
-                                
+                                    $em2 = $this->getDoctrine()->getManager();
+                                    $em2->getRepository('AkademiaBundle:Horario')->getAcumularInscritos($idHorario);
+                                    $em2->flush();
+                                    $em3 = $this->getDoctrine()->getManager();
+                                    $em3->getRepository('AkademiaBundle:Movimientos')->RegistrarMovInicial($idFicha, $usuario);
+                                    $em3->flush();
+                                    $mensaje = 1;
+                                    return new JsonResponse($mensaje);
+                                    
                                 }else{
                                     
-                                    $em = $this->getDoctrine()->getManager();
-                                    $IDApoderado = $em->getRepository('AkademiaBundle:Apoderado')->getApoderadoBusqueda($dniApoderado);
-                                    $idApoderado = $IDApoderado[0]['id'];
-                                    $em = $this->getDoctrine()->getRepository(Apoderado::class);
-                                    $apoderado = $em->find($idApoderado);
-                                    $apoderado->setEstado(1);
-                                    $apoderado->setUsuarioValida($usuario);
-                                    $em = $this->getDoctrine()->getManager();
-                                    $em->flush();
-                                    $em = $this->getDoctrine()->getManager();
-                                    $em->getRepository('AkademiaBundle:Participante')->getActualizarApoderado($idApoderado,$idParticipante);
-                                    $em->flush(); 
-                                    $em = $this->getDoctrine()->getManager();
-                                    $em->getRepository('AkademiaBundle:Participante')->getActualizarParticipanteFicha($idParticipante,$idFicha);
-                                    $em->flush(); 
+                                    $mensaje = 2;
+                                    return new JsonResponse($mensaje);
+                                    
                                 }
-                            }else{
-              
-                                $em = $this->getDoctrine()->getManager();
-                                $IDParticipanteExistente = $em->getRepository('AkademiaBundle:Participante')->getbuscarParticipanteApoderado($dniParticipante);
-                                
-                                $idParticipante = $IDParticipanteExistente[0]['id'];
-                                $em = $this->getDoctrine()->getRepository(Participante::class);
-                                $participante = $em->find($idParticipante);
-                                $participante->setEstado(1);
-                                $participante->setUsuarioValida($usuario);
-                                $em = $this->getDoctrine()->getManager();
-                                $em->flush();
-                                $em = $this->getDoctrine()->getManager();
-                                $em->getRepository('AkademiaBundle:Participante')->getActualizarParticipanteFicha($idParticipante,$idFicha);
-                                $em->flush(); 
-                                $em = $this->getDoctrine()->getManager();
-                                $idApoderadoB = $em->getRepository('AkademiaBundle:Apoderado')->getbuscarApoderado($dniApoderado);
-                                
-                                if(!empty($idApoderadoB)){
 
-                                    $idApoderado = $idApoderadoB[0]['id'];
-                                    $em = $this->getDoctrine()->getManager();
-                                    $em->getRepository('AkademiaBundle:Participante')->getActualizarApoderado($idApoderado,$idParticipante);
-                                    $em->flush(); 
-                                    $em = $this->getDoctrine()->getRepository(Apoderado::class);
-                                    $apoderado = $em->find($idApoderado);
-                                    $apoderado->setUsuarioValida($usuario);
-                                    $em = $this->getDoctrine()->getManager();
-                                    $em->flush();
-                                   
+                            }else if( $estadoFicha == 1){
+                                
+                                $em = $this->getDoctrine()->getManager();
+                                $vacantesHorario = $em->getRepository('AkademiaBundle:Horario')->getHorariosVacantes($idHorario);
+                                $cantVacantes = $vacantesHorario[0]['vacantes'];
+                                if($cantVacantes > 0 ){
+                               
+                               //     if ( $estadoParticipante == 1 && $estadoApoderado == 1){
+                                        $em = $this->getDoctrine()->getRepository(Participante::class);
+                                        $participante = $em->find($idParticipante);
+                                       // $participante->setUsuarioValida($usuario);
+                                        $em = $this->getDoctrine()->getManager();
+                                        $em->flush();
+                                        $em = $this->getDoctrine()->getRepository(Apoderado::class);
+                                        $apoderado = $em->find($idApoderado);
+                                        //$apoderado->setUsuarioValida($usuario);
+                                        $em = $this->getDoctrine()->getManager();
+                                        $em->flush();
+                                        $em2 = $this->getDoctrine()->getManager();
+                                        $ficha = $em2->getRepository('AkademiaBundle:Inscribete');
+                                        $estadoFicha = $ficha->find($idFicha);
+                                        $estadoFicha->setEstado(2);
+                                        $estadoFicha->setUsuarioValida($usuario);
+                                        $em2->persist($estadoFicha);
+                                        $em2->flush();
+                                        $em= $this->getDoctrine()->getManager();
+                                        $em->getRepository('AkademiaBundle:Horario')->getActualizarVacantesHorarios($idHorario);
+                                        $em->flush();
+                                        $em= $this->getDoctrine()->getManager();
+                                        $em->getRepository('AkademiaBundle:Horario')->getAcumularInscritos($idHorario);
+                                        $em->flush();
+                                        $em3= $this->getDoctrine()->getManager();
+                                        $em3->getRepository('AkademiaBundle:Movimientos')->RegistrarMovInicial($idFicha, $usuario);
+                                        $em3->flush();
+                                        $mensaje = 1;
+                                        return new JsonResponse($mensaje);
+                                 //   }
                                 }else{
-              
-                                    $em = $this->getDoctrine()->getManager();
-                                    $IDApoderado = $em->getRepository('AkademiaBundle:Apoderado')->getApoderadoBusqueda($dniApoderado);
-                                    $idApoderado = $IDApoderado[0]['id'];
-                                    $em = $this->getDoctrine()->getRepository(Apoderado::class);
-                                    $apoderado = $em->find($idApoderado);
-                                    $apoderado->setEstado(1);
-                                    $apoderado->setUsuarioValida($usuario);
-                                    $em = $this->getDoctrine()->getManager();
-                                    $em->flush();
-                                    $em = $this->getDoctrine()->getManager();
-                                    $em->getRepository('AkademiaBundle:Participante')->getActualizarApoderado($idApoderado,$idParticipante);
-                                    $em->flush(); 
-                                    $em = $this->getDoctrine()->getManager();
-                                    $em->getRepository('AkademiaBundle:Participante')->getActualizarParticipanteFicha($idParticipante,$idFicha);
-                                    $em->flush(); 
-                                }                  
-                            }
-
-                            $em2 = $this->getDoctrine()->getManager();
-                            $ficha = $em2->getRepository('AkademiaBundle:Inscribete');
-                            $estadoFicha = $ficha->find($idFicha);
-                            $estadoFicha->setEstado(2);
-                            $estadoFicha->setUsuarioValida($usuario);
-                            $em2->persist($estadoFicha);
-                            $em2->flush();
-                            $em= $this->getDoctrine()->getManager();
-                            $em->getRepository('AkademiaBundle:Horario')->getActualizarVacantesHorarios($idHorario);
-                            $em->flush();
-                            $em2 = $this->getDoctrine()->getManager();
-                            $em2->getRepository('AkademiaBundle:Horario')->getAcumularInscritos($idHorario);
-                            $em2->flush();
-                            $em3 = $this->getDoctrine()->getManager();
-                            $em3->getRepository('AkademiaBundle:Movimientos')->RegistrarMovInicial($idFicha, $usuario);
-                            $em3->flush();
-                            $mensaje = 1;
-                            return new JsonResponse($mensaje);
+                                    $mensaje = 2;
+                                    return new JsonResponse($mensaje);
+                                    
+                                }
                             
-                        }else{
-                            
-                            $mensaje = 2;
-                            return new JsonResponse($mensaje);
-                            
+                            }  
                         }
-
-                    }else if( $estadoFicha == 1){
-                        
-                        $em = $this->getDoctrine()->getManager();
-                        $vacantesHorario = $em->getRepository('AkademiaBundle:Horario')->getHorariosVacantes($idHorario);
-                        $cantVacantes = $vacantesHorario[0]['vacantes'];
-                        if($cantVacantes > 0 ){
-                       
-                       //     if ( $estadoParticipante == 1 && $estadoApoderado == 1){
-                                $em = $this->getDoctrine()->getRepository(Participante::class);
-                                $participante = $em->find($idParticipante);
-                               // $participante->setUsuarioValida($usuario);
-                                $em = $this->getDoctrine()->getManager();
-                                $em->flush();
-                                $em = $this->getDoctrine()->getRepository(Apoderado::class);
-                                $apoderado = $em->find($idApoderado);
-                                //$apoderado->setUsuarioValida($usuario);
-                                $em = $this->getDoctrine()->getManager();
-                                $em->flush();
-                                $em2 = $this->getDoctrine()->getManager();
-                                $ficha = $em2->getRepository('AkademiaBundle:Inscribete');
-                                $estadoFicha = $ficha->find($idFicha);
-                                $estadoFicha->setEstado(2);
-                                $estadoFicha->setUsuarioValida($usuario);
-                                $em2->persist($estadoFicha);
-                                $em2->flush();
-                                $em= $this->getDoctrine()->getManager();
-                                $em->getRepository('AkademiaBundle:Horario')->getActualizarVacantesHorarios($idHorario);
-                                $em->flush();
-                                $em= $this->getDoctrine()->getManager();
-                                $em->getRepository('AkademiaBundle:Horario')->getAcumularInscritos($idHorario);
-                                $em->flush();
-                                $em3= $this->getDoctrine()->getManager();
-                                $em3->getRepository('AkademiaBundle:Movimientos')->RegistrarMovInicial($idFicha, $usuario);
-                                $em3->flush();
-                                $mensaje = 1;
-                                return new JsonResponse($mensaje);
-                         //   }
-                        }else{
-                            $mensaje = 2;
-                            return new JsonResponse($mensaje);
-                            
-                        }
-                    
                     }  
-                }
-            }       
+            }
+                 
         }
     }
     public function generarPdfInscripcionAction(Request $request , $id)
@@ -816,18 +828,44 @@ class DefaultController extends Controller
             }
         }
     }
+    
+    //ELIMINAR NORARIOS 
     public function ocultarHorarioAction(Request $request){
-        
         if($request->isXmlHttpRequest()){
+
             $idHorario = $request->request->get('idHorario');
             $usuario = $this->getUser()->getId();
-            $em = $this->getDoctrine()->getManager();
-            $em ->getRepository('AkademiaBundle:Horario')->getOcultarHorario($idHorario, $usuario);
-            $em->flush();
-            $mensaje = 1;
-            return new JsonResponse($mensaje);
+            
+            if(!empty($idHorario) && !empty($usuario) ){
+
+                $em = $this->getDoctrine()->getManager();
+                $em ->getRepository('AkademiaBundle:Horario')->getOcultarHorario($idHorario, $usuario);
+                $em->flush();
+                $mensaje = 1;
+                return new JsonResponse($mensaje);
+            }
         }
     }
+
+    public function cantInscritosAction(Request $request){
+        if($request->isXmlHttpRequest()){
+
+            $idHorario = $request->request->get('idHorario');
+            $em = $this->getDoctrine()->getManager();
+            $cant = $em->getRepository('AkademiaBundle:Horario')->cantidadInscritos($idHorario);
+            $cantInscritos = $cant[0]['cantInscritos'];
+            
+
+            if(intval($cantInscritos == 0)){
+                $msn = 1;
+            }else{
+                $msn = 2;
+            }
+            return new JsonResponse($msn);
+        }
+        
+    }
+
     public function mostrarHorarioIndividualAction(Request $request){
       
         if($request->isXmlHttpRequest()){
@@ -853,6 +891,7 @@ class DefaultController extends Controller
         }
     }
     public function crearHorarioAction(Request $request){
+       
         if($request->isXmlHttpRequest()){
             $horaInicio =$request->request->get('horarioInicio');
             $horaFin = $request->request->get('horarioFin');

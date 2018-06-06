@@ -18,23 +18,23 @@ class ExportacionDataController extends Controller
   public function exportAction(Request $request)
   {
 
-  	$ano = $request->query->get('ano');
-  	$numMes = $request->query->get('mes');
-  	$departamento = $request->query->get('departamento');
-  	$complejo = $request->query->get('complejo');
-  	$disciplina = $request->query->get('disciplina');
+    $ano = $request->query->get('ano');
+    $numMes = $request->query->get('mes');
+    $departamento = $request->query->get('departamento');
+    $complejo = $request->query->get('complejo');
+    $disciplina = $request->query->get('disciplina');
 
-  	$conn = $this->get('database_connection');
+    $conn = $this->get('database_connection');
     $response = new StreamedResponse(function() use($conn,$ano,$numMes,$departamento,$complejo,$disciplina) {
-    	
-    	$query2='';
-    	//MONTH(mov.fecha_modificacion)='$numMes'
       
-    	if( empty($numMes) && empty($departamento) )
-    		$query2 = " YEAR(mov.fecha_modificacion)='$ano' ";	
-    	
+      $query2='';
+      //MONTH(mov.fecha_modificacion)='$numMes'
+      
+      if( empty($numMes) && empty($departamento) )
+        $query2 = " YEAR(mov.fecha_modificacion)='$ano' ";  
+      
 
-    	else if(!empty($numMes) && !empty($departamento) ){
+      else if(!empty($numMes) && !empty($departamento) ){
 
         if(!empty($complejo)){
 
@@ -44,15 +44,15 @@ class ExportacionDataController extends Controller
                 $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' AND MONTH(mov.fecha_modificacion)='$numMes' AND ede.ede_codigo='$complejo' ";              
         }
 
-    		else
-               $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' AND MONTH(mov.fecha_modificacion)='$numMes' ";   	
-    	}
+        else
+               $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' AND MONTH(mov.fecha_modificacion)='$numMes' ";    
+      }
 
       else if(!empty($numMes) && empty($departamento) )
             $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND MONTH(mov.fecha_modificacion)='$numMes' "; 
         
 
-    	else if(empty($numMes) && !empty($departamento)  ){
+      else if(empty($numMes) && !empty($departamento)  ){
 
             if(!empty($complejo)){
                 
@@ -66,12 +66,12 @@ class ExportacionDataController extends Controller
             else
                 $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' ";     
             
-    	}
+      }
 
-    	$handle = fopen('php://output','w+');
-    					fputcsv($handle, ['Departamento', 'Complejo', 'Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Asistencia','Horario','Discapacidad','Telefono','Correo'],';');
+      $handle = fopen('php://output','w+');
+              fputcsv($handle, ['Departamento', 'Complejo', 'Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Asistencia','Horario','Discapacidad','Telefono','Correo'],';');
 
-    	$query1 = "SELECT ubiDpto.ubinombre Departamento, ede.ede_nombre as Complejo,dis.dis_descripcion as Disciplina,
+      $query1 = "SELECT ubiDpto.ubinombre Departamento, ede.ede_nombre as Complejo,dis.dis_descripcion as Disciplina,
                   grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, grPar.perapematerno ApellidoMaterno ,
                   grPar.pernombres,CONVERT(varchar, grPar.perfecnacimiento, 103) FechaNacimiento,
                   (cast(datediff(dd,grPar.perfecnacimiento,GETDATE()) / 365.25 as int)) as edad,
@@ -103,10 +103,9 @@ class ExportacionDataController extends Controller
                       WHEN 1 THEN 'Si'
                       ELSE 'No se sabe' END
                       AS Discapacidad,
-
                       grApod.pertelefono Telefono,
                       grApod.percorreo Correo
-
+                      
                       FROM ACADEMIA.inscribete AS ins 
                       inner join ACADEMIA.participante par on par.id = ins.participante_id
                       inner join grpersona grPar on grPar.percodigo = par.percodigo
@@ -129,48 +128,52 @@ class ExportacionDataController extends Controller
                       ubi.ubiprovincia <> '00' AND 
                       ubiDpto.ubidistrito = '00' AND 
                       ubiDpto.ubiprovincia = '00' AND 
+                      mov.id in (
+                SELECT MAX(m.id) as id
+                FROM ACADEMIA.movimientos m 
+                GROUP BY MONTH(m.fecha_modificacion), m.inscribete_id) AND
                       ubiDpto.ubidpto <> '00' AND ".$query2;
-			
-  						  $query = $query1+' '+$query2;
+      
+                $query = $query1+' '+$query2;
 
-  				
+          
 
-    	$results = $conn->query($query1);
-    	while($row = $results->fetch()) {
-      	fputcsv($handle, array( $row['Departamento'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Discapacidad'],$row['Telefono'],$row['Correo']   ), ';');
-    	}
-    	fclose($handle);
-  	});
+      $results = $conn->query($query1);
+      while($row = $results->fetch()) {
+        fputcsv($handle, array( $row['Departamento'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Discapacidad'],$row['Telefono'],$row['Correo']  ), ';');
+      }
+      fclose($handle);
+    });
     $response->setStatusCode(200);
     $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
     $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
     return $response;
-	}
+  }
 
     public function exportDataAction(Request $request){
 
       
-    	$perfil = $this->getUser()->getIdPerfil();
-    	$idComplejo = $this->getUser()->getIdComplejo();
-    	
+      $perfil = $this->getUser()->getIdPerfil();
+      $idComplejo = $this->getUser()->getIdComplejo();
+      
       $em = $this->getDoctrine()->getManager();
 
-    	if($perfil == 2){
-    		
-        $mdlDepartamentosExport = $em->getRepository('AkademiaBundle:Departamento')->departamentosExport();		
-    		$mdlComplejoDeportivoExport = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejoDeportivoExport();
+      if($perfil == 2){
+        
+        $mdlDepartamentosExport = $em->getRepository('AkademiaBundle:Departamento')->departamentosExport();   
+        $mdlComplejoDeportivoExport = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejoDeportivoExport();
     
-    	}else if($perfil == 1 or $perfil == 3) {
+      }else if($perfil == 1 or $perfil == 3) {
 
 
       $mdlDepartamentosExport = $em->getRepository('AkademiaBundle:Departamento')->departamentosExportFind2($idComplejo);        
-    	$mdlComplejoDeportivoExport = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejoDeportivoExportFind2($idComplejo);
-    	}
+      $mdlComplejoDeportivoExport = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejoDeportivoExportFind2($idComplejo);
+      }
       
-    	$mdlDepartamentos = $em->getRepository('AkademiaBundle:Departamento')->departamentosAll();
+      $mdlDepartamentos = $em->getRepository('AkademiaBundle:Departamento')->departamentosAll();
 
-    	$mdlDisciplinasDeportivasExport = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->disciplinaDeportivaExport();
-    	
+      $mdlDisciplinasDeportivasExport = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->disciplinaDeportivaExport();
+      
       return $this->render('AkademiaBundle:Export:export.html.twig',array('departamentosExport' => $mdlDepartamentosExport,'departamentosAll' => $mdlDepartamentos,'ComplejoDeportivoExport' => $mdlComplejoDeportivoExport,'DisciplinaDeportivaExport' => $mdlDisciplinasDeportivasExport)); 
     
     }

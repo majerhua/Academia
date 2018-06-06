@@ -17,8 +17,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <br>
                 <ul class="nav navbar-nav navbar-right">
-                
-
+               
                     <li title="Inicio"><a href="{{url('akademia_panel')}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
                     <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
                     
@@ -651,7 +650,7 @@
     <div class="modal-content">
       <div class="modal-header" style="background:#EBE6E5; color:white">
       		<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
-			<h5 class="title-card">Mensaje de confirmación. </h5>
+			<p class="title-card">Mensaje de confirmación. </p>
       </div>
       <div class="modal-body">
       		<p class="text-center" style="color:grey">¿ Estás seguro de crear esta nueva disciplina ?</p>
@@ -659,6 +658,23 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" id="modal-btn-si">Si</button>
         <button type="button" class="btn btn-default" id="modal-btn-no">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="errorEliminacionHorario">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+      		<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+			<p class="title-card">Advertencia</p>
+      </div>
+      <div class="modal-body">
+      		<p class="text-center" style="color:grey"> Para eliminar este horario, deberá retirar a todos sus beneficiarios y volverlos a inscribir en un horario disponible.</p>
+      </div>
+      <div class="modal-footer"
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
@@ -919,7 +935,7 @@
 			})
 		}
 
-		/*ACTUALIZAR HORARIO*/
+		/*ACTUALIZAR Y/O ELIMINAR  HORARIO*/
 
 		$('#cbx-horario').on( 'click', function() {
 			
@@ -941,54 +957,81 @@
 
 			if(sessionStorage.getItem('flagOcularHorario') == '1' ){
 
+				var codHorario = $("#editar_codigo_horario").text();	
 				console.log(sessionStorage.getItem('flagOcularHorario'));
-				var confirmarHorario = function(callback){
-				 	
-					$("#confirmarEliminarHorario").modal('show');					
 
-					$("#modal-btn-si-horario").on("click", function(){
-				    	callback(true);
-				    	$("#confirmarEliminarHorario").modal('hide');
-				  	});
-				  
-					$("#modal-btn-no-horario").on("click", function(){
-					    callback(false);
-					    $("#confirmarEliminarHorario").modal('hide');
-					});
-				}
+				var data={
+					"idHorario" : codHorario
+				};
 
-				confirmarHorario(function(confirm){
-				  
-				  if(confirm){
-
-				  	var idHorario = $("#editar_codigo_horario").text();	
-					
-					var dataOcultarHorario={
-						"idHorario" : idHorario
-					};
-
-					$.ajax({
+				$.ajax({
 						type:'POST',
 						dataType: "json",
-						url: "{{url('akademia_ocultarHorario')}}",
-						data: dataOcultarHorario,
-						beforeSend: function(){				
-
-						},
+						url: "{{url('akademia_cantInscritos')}}",
+						data: data,
 						success: function(data){
-							if(data == 1){
+							if(data == 2){
+								
+								$("#errorEliminacionHorario").modal('show');
 								console.log(data);
-								window.location.href = "{{url('akademia_horarios')}}";
+							
+							}else{
+
+
+								var confirmarHorario = function(callback){
+								 	
+									$("#confirmarEliminarHorario").modal('show');					
+
+									$("#modal-btn-si-horario").on("click", function(){
+								    	callback(true);
+								    	$("#confirmarEliminarHorario").modal('hide');
+								  	});
+								  
+									$("#modal-btn-no-horario").on("click", function(){
+									    callback(false);
+									    $("#confirmarEliminarHorario").modal('hide');
+									});
+								}
+
+								confirmarHorario(function(confirm){
+								  
+								  if(confirm){
+
+								  	var idHorario = $("#editar_codigo_horario").text();	
+									
+									var dataOcultarHorario={
+										"idHorario" : idHorario
+									};
+
+									$.ajax({
+										type:'POST',
+										dataType: "json",
+										url: "{{url('akademia_ocultarHorario')}}",
+										data: dataOcultarHorario,
+										beforeSend: function(){				
+
+										},
+										success: function(data){
+											if(data == 1){
+												console.log(data);
+												window.location.href = "{{url('akademia_horarios')}}";
+											}
+										},
+										error: function(error){
+											console.log(error);
+										}
+									});
+
+								  }
+								});
+
 							}
 						},
 						error: function(error){
 							console.log(error);
 						}
-					});
-
-				  }
-				});
-
+				})
+				
 			}else{
 				console.log(sessionStorage.getItem('flagOcularHorario'));
 				if($("#editar_vacantes_horario").val()==""){
@@ -999,7 +1042,7 @@
 	            	alertify.error('<p style="color:white">Seleccione la convocatoria. </p>');
 
 	            }else if(parseInt($("#editar_vacantes_horario").val())<0){
-					alertify.error('<p style="color:white">Verifique el numero de vacantes. </p>');
+					alertify.error('<p style="color:white">Verifique el número de vacantes. </p>');
 
 	            }else if($("#editar_convocatoria_horario").val()!= "" && $("#editar_vacantes_horario").val()!=""){
 	            		
@@ -1353,7 +1396,7 @@
 		$(alert).text(mensaje).show('fade');
 		setTimeout(function(){
 			hideAlertMessage(alert);	
-		}, 2000);
+		}, 6000);
 	}
 
 	/* COULTAR ALERTA*/

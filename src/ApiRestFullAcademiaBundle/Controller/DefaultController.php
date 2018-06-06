@@ -167,7 +167,9 @@ class DefaultController extends FOSRestController
    */
   public function departamentoSinFiltroAction(Request $request)
   {
+
     $disciplinaId = $request->get('disciplinaId');
+    
     $em = $this->getDoctrine()->getManager(); 
     $restresult = $em->getRepository('ApiRestFullAcademiaBundle:PersonaApi')->departamentosSinFiltro($disciplinaId);
 
@@ -419,4 +421,3 @@ class DefaultController extends FOSRestController
   }
 
 }
-

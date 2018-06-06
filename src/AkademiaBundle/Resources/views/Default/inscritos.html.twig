@@ -347,6 +347,12 @@
 						$("#btn-confirmar-inscripcion").attr("disabled", true);
 						$('#input-codigo-inscripcion').focus();
 						showAlertMessage('#alerta-error', "El alumno excedió la cantidad de Inscripciones posibles.");
+				
+					}else if( data == 5){
+
+						$("#btn-confirmar-inscripcion").attr("disabled", true);
+						$('#input-codigo-inscripcion').focus();
+						showAlertMessage('#alerta-error', "El horario en el que se desea inscribir al participante se encuentra eliminado, se deberá realizar una nueva preinscripción en un horario disponible.");
 					}
 
 				},

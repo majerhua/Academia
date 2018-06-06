@@ -116,7 +116,7 @@ class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
 
     public function departamentosSinFiltro($disciplinaId){
         
-        $query = "WITH DepartamentosTalentos AS  
+         $query = " WITH DepartamentosTalentos AS  
                     (  
                     SELECT
                     COUNT(ubi.ubidpto) departamentoTalentos,
@@ -133,17 +133,15 @@ class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
                     INNER JOIN academia.participante par on ins.participante_id = par.id
                     INNER JOIN grpersona per on per.percodigo = par.percodigo 
                     INNER JOIN  grubigeo as ubi ON ubi.ubicodigo = ede.ubicodigo
-                    WHERE mov.asistencia_id=2 AND mov.categoria_id = 4 
-                    AND dis.dis_codigo = '$disciplinaId' 
-                    GROUP BY ubi.ubidpto
+                    WHERE mov.asistencia_id=2 AND mov.categoria_id = 4 AND dis.dis_codigo = $disciplinaId GROUP BY ubi.ubidpto
                     )  
-                                  
                     SELECT grubi.ubidpto departamentoId,grubi.ubinombre departamentoNombre ,
-                    ISNULL(departamentoTalentos,0) cantidadTalentos FROM  
+                    ISNULL(departamentoTalentos,0) cantidadTalentos FROM
                     DepartamentosTalentos po  
                     FULL OUTER JOIN grubigeo grubi ON grubi.ubidpto = po.departamentoId
                     WHERE 
                     ubidistrito = '00' AND ubidpto != '00' AND ubiprovincia = '00'";
+      
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
@@ -363,12 +361,11 @@ class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
 
     public function departamentoTalento($disciplinaId)
     {
-        $query = " WITH departamentosTalentos AS  
+        $query = " WITH DepartamentosTalentos AS  
                     (  
                     SELECT
-                    ROW_NUMBER() OVER(ORDER BY par.id ASC) AS num_id,
+                    COUNT(ubi.ubidpto) departamentoTalentos,
                     ubi.ubidpto departamentoId
-
                     FROM  ACADEMIA.movimientos AS mov
                     INNER JOIN (SELECT m.inscribete_id as mov_ins_id, MAX(m.id) mov_id FROM ACADEMIA.movimientos m
                     GROUP BY m.inscribete_id) ids ON mov.id = ids.mov_id
@@ -380,14 +377,15 @@ class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
                     INNER JOIN catastro.edificacionesdeportivas ede on ede.ede_codigo = edi.ede_codigo 
                     INNER JOIN academia.participante par on ins.participante_id = par.id
                     INNER JOIN grpersona per on per.percodigo = par.percodigo 
-                    INNER JOIN grubigeo as ubi ON ubi.ubicodigo = ede.ubicodigo
-                    WHERE mov.asistencia_id=2 AND mov.categoria_id = 4 AND dis.dis_codigo = $disciplinaId
+                    INNER JOIN  grubigeo as ubi ON ubi.ubicodigo = ede.ubicodigo
+                    WHERE mov.asistencia_id=2 AND mov.categoria_id = 4 AND dis.dis_codigo = $disciplinaId GROUP BY ubi.ubidpto
                     )  
-                    SELECT distinct departamentoId, grubi.ubinombre departamentoNombre
-                    FROM departamentosTalentos po
-                    INNER JOIN grubigeo grubi ON grubi.ubidpto = po.departamentoId     
+                    SELECT grubi.ubidpto departamentoId,grubi.ubinombre departamentoNombre ,
+                    ISNULL(departamentoTalentos,0) cantidadTalentos FROM
+                    DepartamentosTalentos po  
+                    FULL OUTER JOIN grubigeo grubi ON grubi.ubidpto = po.departamentoId
                     WHERE 
-                    ubidistrito = '00' AND ubidpto != '00' AND ubiprovincia = '00' ";
+                    ubidistrito = '00' AND ubidpto != '00' AND ubiprovincia = '00'";
 
         $stmt =  $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
