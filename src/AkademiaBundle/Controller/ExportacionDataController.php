@@ -15,6 +15,78 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 class ExportacionDataController extends Controller
 {
 
+
+  public function exportCantidadPreInscritosAction(Request $request){
+
+    $idComplejo = $request->query->get('idComplejo');
+
+    $conn = $this->get('database_connection');
+
+    $response = new StreamedResponse(function() use($conn,$idComplejo) {
+
+      $handle = fopen('php://output','w+');
+              fputcsv($handle, ['Departamento', 'Provincia', 'Complejo','Disciplina','CodigoHorario','Horario','NroPre-Inscritos'],",");
+
+      $results = $conn->query("exec ACADEMIA.cantidadPreInscritos '$idComplejo' ");
+
+      while($row = $results->fetch()) {
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['CodigoHorario'],$row['Horario'],$row['NroPre-Inscritos']), ",");
+      }
+      fclose($handle);
+    });
+    $response->setStatusCode(200);
+    $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+    $response->headers->set('Content-Disposition', 'attachment; filename="cantidadPreInscritos.csv"');
+    return $response;
+  }
+
+  public function exportCantidadInscritosAction(Request $request){
+        $idComplejo = $request->query->get('idComplejo');
+    $conn = $this->get('database_connection');
+
+    $response = new StreamedResponse(function() use($conn,$idComplejo) {
+
+      $handle = fopen('php://output','w+');
+              fputcsv($handle, ['Departamento', 'Provincia', 'Complejo','Disciplina','CodigoHorario','Horario','NroInscritos'],",");
+
+      $results = $conn->query("exec ACADEMIA.cantidadInscritos '$idComplejo'");
+
+      while($row = $results->fetch()) {
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['CodigoHorario'],$row['Horario'],$row['NroInscritos']), ",");
+      }
+      fclose($handle);
+    });
+    $response->setStatusCode(200);
+    $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+    $response->headers->set('Content-Disposition', 'attachment; filename="cantidadInscritos.csv"');
+    return $response;
+  }
+
+
+
+  public function exportCantidadHorariosCreadosRegionAction(Request $request){
+
+    $idComplejo = $request->query->get('idComplejo');
+    $conn = $this->get('database_connection');
+
+    $response = new StreamedResponse(function() use($conn,$idComplejo) {
+
+      $handle = fopen('php://output','w+');
+              fputcsv($handle,['Departamento','Provincia','Complejo','Disciplina','CodigoHorario','Horario','Convocatoria','Estado'],",");
+
+      $results = $conn->query("exec ACADEMIA.cantidadHorariosCreadosRegion '$idComplejo' ");
+
+      while($row = $results->fetch()){
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['CodigoHorario'],$row['Horario'],$row['Convocatoria'],$row['Estado']), ",");
+      }
+      fclose($handle);
+    });
+    $response->setStatusCode(200);
+    $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+    $response->headers->set('Content-Disposition', 'attachment; filename="cantidadHorariosCreadosRegion.csv"');
+    return $response;
+  }
+
   public function exportAction(Request $request)
   {
 
@@ -69,9 +141,9 @@ class ExportacionDataController extends Controller
     	}
 
     	$handle = fopen('php://output','w+');
-    					fputcsv($handle, ['Departamento', 'Complejo', 'Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Asistencia','Horario','Discapacidad','Telefono','Correo'],chr(9));
+    					fputcsv($handle, ['Departamento','Provincia' ,'Complejo', 'Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Asistencia','Horario','Discapacidad','Telefono','Correo'],",");
 
-    	$query1 = "SELECT ubiDpto.ubinombre Departamento, ede.ede_nombre as Complejo,dis.dis_descripcion as Disciplina,
+    	$query1 = "SELECT ubiDpto.ubinombre Departamento ,ubiProv.ubinombre Provincia  , ede.ede_nombre as Complejo,dis.dis_descripcion as Disciplina,
                   grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, grPar.perapematerno ApellidoMaterno ,
                   grPar.pernombres,CONVERT(varchar, grPar.perfecnacimiento, 103) FechaNacimiento,
                   (cast(datediff(dd,grPar.perfecnacimiento,GETDATE()) / 365.25 as int)) as edad,
@@ -119,13 +191,17 @@ class ExportacionDataController extends Controller
                       inner join ACADEMIA.apoderado apod on apod.id = par.apoderado_id
                       inner join grpersona grApod on grApod.percodigo = apod.percodigo
                       inner join grubigeo ubi on ubi.ubicodigo = ede.ubicodigo
+                      inner join grubigeo ubiProv on ubiProv.ubiprovincia = ubi.ubiprovincia 
                       inner join grubigeo ubiDpto on ubiDpto.ubidpto = ubi.ubidpto
 
                       WHERE
-
+                      ubiProv.ubidpto = ubi.ubidpto AND
                       ubi.ubidistrito <> '00' AND 
                       ubi.ubiprovincia <> '00' AND 
                       ubi.ubiprovincia <> '00' AND 
+                      ubiProv.ubidistrito = '00' AND 
+                      ubiProv.ubiprovincia <> '00' AND 
+                      ubiProv.ubidpto <> '00' AND
                       ubiDpto.ubidistrito = '00' AND 
                       ubiDpto.ubiprovincia = '00' AND 
                       mov.id in (
@@ -140,13 +216,13 @@ class ExportacionDataController extends Controller
 
     	$results = $conn->query($query1);
     	while($row = $results->fetch()) {
-      	fputcsv($handle, array( $row['Departamento'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Discapacidad'],$row['Telefono'],$row['Correo']  ), chr(9));
+      	fputcsv($handle, array( $row['Departamento'],$row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Discapacidad'],$row['Telefono'],$row['Correo']  ), ",");
     	}
     	fclose($handle);
   	});
     $response->setStatusCode(200);
     $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
-    $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
+    $response->headers->set('Content-Disposition', 'attachment; filename="beneficiarios.csv"');
     return $response;
 	}
 

@@ -12,6 +12,25 @@ body{
 
 }
 
+/*ESTILOS EXPORT*/
+
+.container-button-exportPREINS{
+
+	display: flex;
+	padding: 12px 4px;
+	justify-content: center;
+
+}
+
+.container-button-exportPREINS> button{
+	margin-left: 10px;
+}
+
+/*FIN*/
+
+
+
+
 /*PAGINA DE ACTIVACION*/
 
 .section{

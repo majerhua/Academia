@@ -48,6 +48,8 @@
 
 	<hr>
 
+	<br>
+
 	<div class="proceso">
 			<div class="container-card col-xs-12 col-sm-8 col-md-5 col-lg-5">
 				<div class="card">	
@@ -105,20 +107,6 @@
 					    	</select>
 						</div>
 
-						<!--<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-							<label>Departamentos</label>
-							<select class="form-control"  id="select-departamento" onchange="cambiarDepartamentoExport(this)" >
-								<option value="">--Seleccionar--</option>
-								{% for  dep in  departamentosAll  %}
-									{% for depFlag in departamentosExport %}
-										{%  if dep['id'] == depFlag['idDepartamento'] %}
-										<option value="{{dep['id']}}">{{dep['nombre']}}</option>
-										{% endif %}
-									{% endfor %}
-								{% endfor %}	
-							</select>
-						</div>-->
-
 						<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
 							<label>Complejo</label>
 							<select class="form-control" id="select-complejo" onchange="cambiarComplejoDeportivoExport(this)" > 
@@ -142,8 +130,31 @@
 					<hr>
 
 					<div class="container-boton-1 text-center">
-						<button class="btn btn-danger" id="export-data"> Exportar Data Beneficiarios</button>
+						<button class="btn btn-danger" id="export-data"><i class="icon-export"></i>Exportar Data Beneficiarios</button>
 					</div>
+
+					<hr>
+
+					<p class="title-card">Reportes</p>
+
+					<div class="alert alert-success">
+						<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+						<p>Exporta tus reportes en cualquiera de las siguientes opciones según su descripción</p>
+					</div>
+
+					<hr>
+
+					<div class="text-center">
+
+						<div class="container-button-exportPREINS">
+							<button class="btn btn-danger" id="export-pre-inscritos">N° de Pre- inscrito</button>
+							<button class="btn btn-danger" id="export-inscritos">N° de Inscritos</button>
+						</div>
+						
+						<button class="btn btn-danger" id="export-horario-creados"> N° de Horarios creados</button>
+					<hr>
+					</div>
+
 				</div>		   
 			</div>
 		</div>
@@ -204,6 +215,9 @@
 
 		
 	const $exportData = $("#export-data");
+	const $exportPreInscritos = $("#export-pre-inscritos");
+	const $exportInscritos = $("#export-inscritos");
+	const $exportHorarioCreados = $("#export-horario-creados");
 	const $selectAno = $("#select-ano");
 	const $selectMes = $("#select-mes");
 	const $selectDepartamento = $("#select-departamento");
@@ -213,10 +227,21 @@
 	const $containerComplejo = $("#container-complejo");
 	const $containerAnalista = $("#container-analista");
 
+
+	$exportPreInscritos.on('click',function(){
+		location.href='exportCantidadPreInscritos?idComplejo='+{{app.user.idComplejo}};
+	});
+
+	$exportInscritos.on('click',function(){
+		location.href='exportCantidadInscritos?idComplejo='+{{app.user.idComplejo}};
+	});
+
+	$exportHorarioCreados.on('click',function(){
+		location.href='exportCantidadHorariosCreadosRegion?idComplejo='+{{app.user.idComplejo}};
+	});
+
 	$exportData.on('click',function(){
 		location.href='export?ano='+$selectAno.val()+'&mes='+$selectMes.val()+'&departamento='+$selectDepartamento.val()+'&complejo='+$selectComplejo.val()+'&disciplina='+$selectDisciplina.val();
-		
-		console.log('export?ano='+$selectAno.val()+'&mes='+$selectMes.val()+'&departamento='+$selectDepartamento.val()+'&complejo='+$selectComplejo.val()+'&disciplina='+$selectDisciplina.val());
 	});
 
 	const cambiarDepartamentoExport =  (depExp)=>{
@@ -265,8 +290,6 @@
 	{% if app.user.idPerfil == 1 or app.user.idPerfil == 3 %}
 
 		$containerAnalista.hide();
-		//$containerDepartamento.css('visibility','hidden');
-		//$containerComplejo.css('visibility','hidden');
 	{% endif %}
 
 </script>
