@@ -329,7 +329,9 @@ class DefaultController extends FOSRestController
      $passwordEncrypt = base64_encode( $password );
       $token = md5( uniqid() );
 
-      $restresult = $em->getRepository('ApiRestFullAcademiaBundle:PersonaApi')->registrarUsuario($nombre ,$paterno,$materno,$numeroDoc,$telefono,$correo,$organizacion,$estado,$passwordEncrypt,$token,$fechaNacimiento,$sexo,$tipoDoc);
+      $result = $em->getRepository('ApiRestFullAcademiaBundle:PersonaApi')->registrarUsuario($nombre ,$paterno,$materno,$numeroDoc,$telefono,$correo,$organizacion,$estado,$passwordEncrypt,$token,$fechaNacimiento,$sexo,$tipoDoc);
+
+      $restresult = intval($result[0]['id']);
 
       //if($restresult == 1){
        /* $subject =  'La Academia App Ipd';
