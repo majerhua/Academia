@@ -615,12 +615,11 @@ class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
 
         $message = 0;
        
-            $query = " INSERT INTO ACADEMIA.usuario_app(nombre,paterno,materno,numeroDoc,telefono,correo,organizacion,estado,password,token,fechaNacimiento,sexo,tipoDoc) VALUES('$nombre','$paterno','$materno','$numeroDoc','$telefono','$correo','$organizacion','$estado','$password','$token', '$fechaNacimiento','$sexo','$tipoDoc'); ";
+        $query = " INSERT INTO ACADEMIA.usuario_app(nombre,paterno,materno,numeroDoc,telefono,correo,organizacion,estado,password,token,fechaNacimiento,sexo,tipoDoc) VALUES('$nombre','$paterno','$materno','$numeroDoc','$telefono','$correo','$organizacion','$estado','$password','$token', '$fechaNacimiento','$sexo','$tipoDoc'); ";
 
-            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
-            $stmt->execute();
-            $message = 1;
-      
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $message = 1;
 
         return $message;
     }
@@ -633,9 +632,9 @@ class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
 
     }
 
-    public function loginUsuarioApp($correo,$password){
+    public function loginUsuarioApp($correo/*,$password*/){
 
-        $query = "SELECT * from ACADEMIA.usuario_app  WHERE correo='$correo' AND password='$password' AND estado = 1 ;";
+        $query = "SELECT * from ACADEMIA.usuario_app  WHERE correo='$correo' /*AND password='$password'*/ AND estado = 1 ;";
         
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
