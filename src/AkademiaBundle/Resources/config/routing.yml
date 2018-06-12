@@ -1,3 +1,8 @@
+
+#akademia_exportExcelPrueba:
+ #   path: /exporExcelPrueba
+  #  defaults: { _controller: AkademiaBundle:ExportacionData:exportPrueba }
+
 entradas_list:
     path: /pruebas/entradas
     defaults: { _controller: AppBundle:Pruebas:entradas}
@@ -201,6 +206,21 @@ akademia_visibilidadApp:
 akademia_export:
    path:    /export
    defaults: {_controller: AkademiaBundle:ExportacionData:export}
+   methods: [GET,POST]
+
+akademia_exportCantidadPreInscritos:
+   path:    /exportCantidadPreInscritos
+   defaults: {_controller: AkademiaBundle:ExportacionData:exportCantidadPreInscritos}
+   methods: [GET,POST]
+
+akademia_exportCantidadInscritos:
+   path:    /exportCantidadInscritos
+   defaults: {_controller: AkademiaBundle:ExportacionData:exportCantidadInscritos}
+   methods: [GET,POST]
+
+akademia_exportCantidadHorariosCreadosRegion:
+   path:    /exportCantidadHorariosCreadosRegion
+   defaults: {_controller: AkademiaBundle:ExportacionData:exportCantidadHorariosCreadosRegion}
    methods: [GET,POST]
 
 akademia_exportData:

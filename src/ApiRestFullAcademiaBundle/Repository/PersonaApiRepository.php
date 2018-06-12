@@ -612,17 +612,19 @@ class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
 
 
     public function registrarUsuario($nombre,$paterno,$materno,$numeroDoc,$telefono,$correo,$organizacion,$estado,$password,$token,$fechaNacimiento,$sexo,$tipoDoc){
-
-        $message = 0;
        
-            $query = " INSERT INTO ACADEMIA.usuario_app(nombre,paterno,materno,numeroDoc,telefono,correo,organizacion,estado,password,token,fechaNacimiento,sexo,tipoDoc) VALUES('$nombre','$paterno','$materno','$numeroDoc','$telefono','$correo','$organizacion','$estado','$password','$token', '$fechaNacimiento','$sexo','$tipoDoc'); ";
+        $query = " INSERT INTO ACADEMIA.usuario_app(nombre,paterno,materno,numeroDoc,telefono,correo,organizacion,estado,password,token,fechaNacimiento,sexo,tipoDoc) VALUES('$nombre','$paterno','$materno','$numeroDoc','$telefono','$correo','$organizacion','$estado','$password','$token', '$fechaNacimiento','$sexo','$tipoDoc'); ";
 
-            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
-            $stmt->execute();
-            $message = 1;
-      
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
 
-        return $message;
+        $query2 ="SELECT id FROM ACADEMIA.usuario_app WHERE correo = '$correo'";
+        $stmt2 = $this->getEntityManager()->getConnection()->prepare($query2);
+        $stmt2->execute();
+        $idUsuario = $stmt2->fetchAll();
+
+        return $idUsuario; 
+
     }
 
     public function activarCuentaUsuario($token){
@@ -633,9 +635,9 @@ class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
 
     }
 
-    public function loginUsuarioApp($correo,$password){
+    public function loginUsuarioApp($correo/*,$password*/){
 
-        $query = "SELECT * from ACADEMIA.usuario_app  WHERE correo='$correo' AND password='$password' AND estado = 1 ;";
+        $query = "SELECT * from ACADEMIA.usuario_app  WHERE correo='$correo' /*AND password='$password'*/ AND estado = 1 ;";
         
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();

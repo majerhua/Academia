@@ -316,23 +316,25 @@ class DefaultController extends FOSRestController
     $telefono = $request->get('telefono');
     $correo = $request->get('correo');
     $organizacion = $request->get('organizacion');
-    $password = $request->get('password');
+    $password =  "a"; //$request->get('password');
     $fechaNacimiento = $request->get('fechaNacimiento');
     $sexo = $request->get('sexo');
     $tipoDoc = $request->get('tipoDoc');
-    $estado = 0;
+    $estado = 1;
 
     $em = $this->getDoctrine()->getManager(); 
     
-    if( !empty($nombre) &&  !empty($paterno) && !empty($materno)  &&  !empty($numeroDoc)  &&  !empty($telefono) && !empty($correo)   && !empty($password)){
+    if( !empty($nombre) &&  !empty($paterno) && !empty($materno)  &&  !empty($numeroDoc)  &&  !empty($telefono) && !empty($correo)   && !empty($password) ){
 
-      $passwordEncrypt = base64_encode( $password );
+     $passwordEncrypt = base64_encode( $password );
       $token = md5( uniqid() );
 
-      $restresult = $em->getRepository('ApiRestFullAcademiaBundle:PersonaApi')->registrarUsuario($nombre ,$paterno,$materno,$numeroDoc,$telefono,$correo,$organizacion,$estado,$passwordEncrypt,$token,$fechaNacimiento,$sexo,$tipoDoc);
+      $result = $em->getRepository('ApiRestFullAcademiaBundle:PersonaApi')->registrarUsuario($nombre ,$paterno,$materno,$numeroDoc,$telefono,$correo,$organizacion,$estado,$passwordEncrypt,$token,$fechaNacimiento,$sexo,$tipoDoc);
+
+      $restresult = intval($result[0]['id']);
 
       //if($restresult == 1){
-        $subject =  'La Academia App Ipd';
+       /* $subject =  'La Academia App Ipd';
         $message =  '<html>'.
                     '<head><title>La Academia App</title></head>'.
                     '<body><h3>Bienvenido a la Academia App estimado(a)! '.$nombre.' </h3>'.
@@ -341,7 +343,7 @@ class DefaultController extends FOSRestController
                     '</html>';
                 
         $headers = 'From: soporte@ipd.gob.pe' . "\r\n" .'MIME-Version: 1.0'. "\r\n" .'Content-Type: text/html; charset=UTF-8'. "\r\n";
-        mail($correo,$subject,$message,$headers);
+        mail($correo,$subject,$message,$headers);*/
       //}
     }else{
       
@@ -358,14 +360,14 @@ class DefaultController extends FOSRestController
   {
     
     $correo = $request->get('correo');
-    $password = $request->get('password');
-    $passwordEncrypt = base64_encode( $password );
+    //$password = $request->get('password');
+    //$passwordEncrypt = base64_encode( $password );
 
     $em = $this->getDoctrine()->getManager(); 
     
-    if( !empty($correo)   && !empty($password) ){
+    if( !empty($correo)   /*&& !empty($password)*/ ){
       
-      $restresult = $em->getRepository('ApiRestFullAcademiaBundle:PersonaApi')->loginUsuarioApp($correo,$passwordEncrypt);
+      $restresult = $em->getRepository('ApiRestFullAcademiaBundle:PersonaApi')->loginUsuarioApp($correo/*,$passwordEncrypt*/);
       
     }else{
       
@@ -421,4 +423,3 @@ class DefaultController extends FOSRestController
   }
 
 }
-

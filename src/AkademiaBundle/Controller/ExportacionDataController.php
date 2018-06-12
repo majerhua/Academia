@@ -15,26 +15,98 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 class ExportacionDataController extends Controller
 {
 
+
+  public function exportCantidadPreInscritosAction(Request $request){
+
+    $idComplejo = $request->query->get('idComplejo');
+
+    $conn = $this->get('database_connection');
+
+    $response = new StreamedResponse(function() use($conn,$idComplejo) {
+
+      $handle = fopen('php://output','w+');
+              fputcsv($handle, ['Departamento', 'Provincia', 'Complejo','Disciplina','CodigoHorario','Horario','NroPre-Inscritos'],",");
+
+      $results = $conn->query("exec ACADEMIA.cantidadPreInscritos '$idComplejo' ");
+
+      while($row = $results->fetch()) {
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['CodigoHorario'],$row['Horario'],$row['NroPre-Inscritos']), ",");
+      }
+      fclose($handle);
+    });
+    $response->setStatusCode(200);
+    $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+    $response->headers->set('Content-Disposition', 'attachment; filename="cantidadPreInscritos.csv"');
+    return $response;
+  }
+
+  public function exportCantidadInscritosAction(Request $request){
+        $idComplejo = $request->query->get('idComplejo');
+    $conn = $this->get('database_connection');
+
+    $response = new StreamedResponse(function() use($conn,$idComplejo) {
+
+      $handle = fopen('php://output','w+');
+              fputcsv($handle, ['Departamento', 'Provincia', 'Complejo','Disciplina','CodigoHorario','Horario','NroInscritos'],",");
+
+      $results = $conn->query("exec ACADEMIA.cantidadInscritos '$idComplejo'");
+
+      while($row = $results->fetch()) {
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['CodigoHorario'],$row['Horario'],$row['NroInscritos']), ",");
+      }
+      fclose($handle);
+    });
+    $response->setStatusCode(200);
+    $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+    $response->headers->set('Content-Disposition', 'attachment; filename="cantidadInscritos.csv"');
+    return $response;
+  }
+
+
+
+  public function exportCantidadHorariosCreadosRegionAction(Request $request){
+
+    $idComplejo = $request->query->get('idComplejo');
+    $conn = $this->get('database_connection');
+
+    $response = new StreamedResponse(function() use($conn,$idComplejo) {
+
+      $handle = fopen('php://output','w+');
+              fputcsv($handle,['Departamento','Provincia','Complejo','Disciplina','CodigoHorario','Horario','Convocatoria','Estado'],",");
+
+      $results = $conn->query("exec ACADEMIA.cantidadHorariosCreadosRegion '$idComplejo' ");
+
+      while($row = $results->fetch()){
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['CodigoHorario'],$row['Horario'],$row['Convocatoria'],$row['Estado']), ",");
+      }
+      fclose($handle);
+    });
+    $response->setStatusCode(200);
+    $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+    $response->headers->set('Content-Disposition', 'attachment; filename="cantidadHorariosCreadosRegion.csv"');
+    return $response;
+  }
+
   public function exportAction(Request $request)
   {
 
-  	$ano = $request->query->get('ano');
-  	$numMes = $request->query->get('mes');
-  	$departamento = $request->query->get('departamento');
-  	$complejo = $request->query->get('complejo');
-  	$disciplina = $request->query->get('disciplina');
+    $ano = $request->query->get('ano');
+    $numMes = $request->query->get('mes');
+    $departamento = $request->query->get('departamento');
+    $complejo = $request->query->get('complejo');
+    $disciplina = $request->query->get('disciplina');
 
-  	$conn = $this->get('database_connection');
+    $conn = $this->get('database_connection');
     $response = new StreamedResponse(function() use($conn,$ano,$numMes,$departamento,$complejo,$disciplina) {
-    	
-    	$query2='';
-    	//MONTH(mov.fecha_modificacion)='$numMes'
       
-    	if( empty($numMes) && empty($departamento) )
-    		$query2 = " YEAR(mov.fecha_modificacion)='$ano' ";	
-    	
+      $query2='';
+      //MONTH(mov.fecha_modificacion)='$numMes'
+      
+      if( empty($numMes) && empty($departamento) )
+        $query2 = " YEAR(mov.fecha_modificacion)='$ano' ";  
+      
 
-    	else if(!empty($numMes) && !empty($departamento) ){
+      else if(!empty($numMes) && !empty($departamento) ){
 
         if(!empty($complejo)){
 
@@ -44,15 +116,15 @@ class ExportacionDataController extends Controller
                 $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' AND MONTH(mov.fecha_modificacion)='$numMes' AND ede.ede_codigo='$complejo' ";              
         }
 
-    		else
-               $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' AND MONTH(mov.fecha_modificacion)='$numMes' ";   	
-    	}
+        else
+               $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' AND MONTH(mov.fecha_modificacion)='$numMes' ";    
+      }
 
       else if(!empty($numMes) && empty($departamento) )
             $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND MONTH(mov.fecha_modificacion)='$numMes' "; 
         
 
-    	else if(empty($numMes) && !empty($departamento)  ){
+      else if(empty($numMes) && !empty($departamento)  ){
 
             if(!empty($complejo)){
                 
@@ -66,12 +138,13 @@ class ExportacionDataController extends Controller
             else
                 $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' ";     
             
-    	}
+      }
 
     	$handle = fopen('php://output','w+');
-    					fputcsv($handle, ['Departamento', 'Complejo', 'Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Asistencia','Horario','Discapacidad','Telefono','Correo'],';');
+    					fputcsv($handle, ['Departamento','Provincia' ,'Complejo', 'Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Asistencia','Horario','Discapacidad','Telefono','Correo'],",");
+              
+    	$query1 = "SELECT ubiDpto.ubinombre Departamento ,ubiProv.ubinombre Provincia  , ede.ede_nombre as Complejo,dis.dis_descripcion as Disciplina,
 
-    	$query1 = "SELECT ubiDpto.ubinombre Departamento, ede.ede_nombre as Complejo,dis.dis_descripcion as Disciplina,
                   grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, grPar.perapematerno ApellidoMaterno ,
                   grPar.pernombres,CONVERT(varchar, grPar.perfecnacimiento, 103) FechaNacimiento,
                   (cast(datediff(dd,grPar.perfecnacimiento,GETDATE()) / 365.25 as int)) as edad,
@@ -119,13 +192,17 @@ class ExportacionDataController extends Controller
                       inner join ACADEMIA.apoderado apod on apod.id = par.apoderado_id
                       inner join grpersona grApod on grApod.percodigo = apod.percodigo
                       inner join grubigeo ubi on ubi.ubicodigo = ede.ubicodigo
+                      inner join grubigeo ubiProv on ubiProv.ubiprovincia = ubi.ubiprovincia 
                       inner join grubigeo ubiDpto on ubiDpto.ubidpto = ubi.ubidpto
 
                       WHERE
-
+                      ubiProv.ubidpto = ubi.ubidpto AND
                       ubi.ubidistrito <> '00' AND 
                       ubi.ubiprovincia <> '00' AND 
                       ubi.ubiprovincia <> '00' AND 
+                      ubiProv.ubidistrito = '00' AND 
+                      ubiProv.ubiprovincia <> '00' AND 
+                      ubiProv.ubidpto <> '00' AND
                       ubiDpto.ubidistrito = '00' AND 
                       ubiDpto.ubiprovincia = '00' AND 
                       mov.id in (
@@ -133,47 +210,46 @@ class ExportacionDataController extends Controller
                 FROM ACADEMIA.movimientos m 
                 GROUP BY MONTH(m.fecha_modificacion), m.inscribete_id) AND
                       ubiDpto.ubidpto <> '00' AND ".$query2;
-			
-  						  $query = $query1+' '+$query2;
+      
+                $query = $query1+' '+$query2;
 
-  				
 
     	$results = $conn->query($query1);
     	while($row = $results->fetch()) {
-      	fputcsv($handle, array( $row['Departamento'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Discapacidad'],$row['Telefono'],$row['Correo']  ), ';');
+      	fputcsv($handle, array( $row['Departamento'],$row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Discapacidad'],$row['Telefono'],$row['Correo']  ), ",");
     	}
     	fclose($handle);
   	});
     $response->setStatusCode(200);
     $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
-    $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
+    $response->headers->set('Content-Disposition', 'attachment; filename="beneficiarios.csv"');
     return $response;
-	}
+  }
 
     public function exportDataAction(Request $request){
 
       
-    	$perfil = $this->getUser()->getIdPerfil();
-    	$idComplejo = $this->getUser()->getIdComplejo();
-    	
+      $perfil = $this->getUser()->getIdPerfil();
+      $idComplejo = $this->getUser()->getIdComplejo();
+      
       $em = $this->getDoctrine()->getManager();
 
-    	if($perfil == 2){
-    		
-        $mdlDepartamentosExport = $em->getRepository('AkademiaBundle:Departamento')->departamentosExport();		
-    		$mdlComplejoDeportivoExport = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejoDeportivoExport();
+      if($perfil == 2){
+        
+        $mdlDepartamentosExport = $em->getRepository('AkademiaBundle:Departamento')->departamentosExport();   
+        $mdlComplejoDeportivoExport = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejoDeportivoExport();
     
-    	}else if($perfil == 1 or $perfil == 3) {
+      }else if($perfil == 1 or $perfil == 3) {
 
 
       $mdlDepartamentosExport = $em->getRepository('AkademiaBundle:Departamento')->departamentosExportFind2($idComplejo);        
-    	$mdlComplejoDeportivoExport = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejoDeportivoExportFind2($idComplejo);
-    	}
+      $mdlComplejoDeportivoExport = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejoDeportivoExportFind2($idComplejo);
+      }
       
-    	$mdlDepartamentos = $em->getRepository('AkademiaBundle:Departamento')->departamentosAll();
+      $mdlDepartamentos = $em->getRepository('AkademiaBundle:Departamento')->departamentosAll();
 
-    	$mdlDisciplinasDeportivasExport = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->disciplinaDeportivaExport();
-    	
+      $mdlDisciplinasDeportivasExport = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->disciplinaDeportivaExport();
+      
       return $this->render('AkademiaBundle:Export:export.html.twig',array('departamentosExport' => $mdlDepartamentosExport,'departamentosAll' => $mdlDepartamentos,'ComplejoDeportivoExport' => $mdlComplejoDeportivoExport,'DisciplinaDeportivaExport' => $mdlDisciplinasDeportivasExport)); 
     
     }
