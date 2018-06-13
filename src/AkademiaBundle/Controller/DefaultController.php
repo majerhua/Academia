@@ -25,6 +25,13 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class DefaultController extends Controller
 {
+
+    public function paginaPrincipalAction(Request $request){
+      
+        return $this->render('AkademiaBundle:Default:paginaprincipal.html.twig' );
+    }
+
+
     public function contadorAction(Request $request){
       
         return $this->render('AkademiaBundle:Default:contador.html.twig' );
