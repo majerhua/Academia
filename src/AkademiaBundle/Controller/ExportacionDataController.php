@@ -141,11 +141,10 @@ class ExportacionDataController extends Controller
       }
 
     	$handle = fopen('php://output','w+');
+
     					fputcsv($handle, ['Departamento','Provincia' ,'Complejo', 'Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Asistencia','Horario','Discapacidad','Telefono','Correo'],",");
               
-    	$query1 = "SELECT ubiDpto.ubinombre Departamento ,ubiProv.ubinombre Provincia  , ede.ede_nombre as Complejo,dis.dis_descripcion as Disciplina,
-
-                  grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, grPar.perapematerno ApellidoMaterno ,
+    	$query1 = "SELECT ubiDpto.ubinombre Departamento ,ubiProv.ubinombre Provincia  , ede.ede_nombre as Complejo,dis.dis_descripcion as Disciplina, grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, grPar.perapematerno ApellidoMaterno ,
                   grPar.pernombres,CONVERT(varchar, grPar.perfecnacimiento, 103) FechaNacimiento,
                   (cast(datediff(dd,grPar.perfecnacimiento,GETDATE()) / 365.25 as int)) as edad,
                   CASE grPar.persexo
@@ -216,7 +215,11 @@ class ExportacionDataController extends Controller
 
     	$results = $conn->query($query1);
     	while($row = $results->fetch()) {
+
       	fputcsv($handle, array( $row['Departamento'],$row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Discapacidad'],$row['Telefono'],$row['Correo']  ), ",");
+
+      /*	fputcsv($handle, array( $row['Departamento'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Discapacidad'],$row['Telefono'],$row['Correo']  ), ',');*/
+
     	}
     	fclose($handle);
   	});
