@@ -7,7 +7,7 @@
 ##PAGINA principal
 
 akademia_paginaPrincipal:
-    path: /pagina-principal
+    path: /pagina-principal/{estado}
     defaults: { _controller: AkademiaBundle:Default:paginaPrincipal}
 
 ##END

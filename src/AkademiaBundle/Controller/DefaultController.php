@@ -26,9 +26,21 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class DefaultController extends Controller
 {
 
-    public function paginaPrincipalAction(Request $request){
-      
-        return $this->render('AkademiaBundle:Default:paginaprincipal.html.twig' );
+    public function paginaPrincipalAction(Request $request,$estado){
+
+        $em = $this->getDoctrine()->getManager();
+
+        $mdlDepartamentosFlag = $em->getRepository('AkademiaBundle:Departamento')->departamentosFlagAll($estado);
+        $mdlProvinciasFlag = $em->getRepository('AkademiaBundle:Provincia')->provinciasFlagAll($estado);
+        $mdlDistritosFlag = $em->getRepository('AkademiaBundle:Distrito')->distritosFlagAll($estado);
+        $mdlDepartamentos = $em->getRepository('AkademiaBundle:Departamento')->departamentosAll();
+        $mdlProvincias = $em->getRepository('AkademiaBundle:Provincia')->provinciasAll();
+        $mdlDistritos = $em->getRepository('AkademiaBundle:Distrito')->distritosAll();
+        $mdlComplejosDeportivosFlag = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejosDeportivosFlagAllLanding($estado);
+        $mdlDisciplinasDeportivasFlag = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->disciplinasDeportivasFlagAllLanding($estado);
+        $mdlhorariosFlag = $em->getRepository('AkademiaBundle:Horario')->horariosFlagAllLanding($estado);
+
+        return $this->render('AkademiaBundle:Default:horariosLanding.html.twig', array('departamentosFlag' => $mdlDepartamentosFlag , "provinciasFlag" => $mdlProvinciasFlag ,'distritosFlag' => $mdlDistritosFlag,'departamentos'=>$mdlDepartamentos,'provincias'=>$mdlProvincias,'distritos'=>$mdlDistritos, 'complejosDeportivos' => $mdlComplejosDeportivosFlag, 'disciplinasDeportivas' => $mdlDisciplinasDeportivasFlag ,'horarios' => $mdlhorariosFlag) );
     }
 
 
