@@ -997,12 +997,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
+<<<<<<< HEAD
+                "reference": "6d02c6c7e2c3b7bab7af1a6ec79b1d8fec9b536e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/6d02c6c7e2c3b7bab7af1a6ec79b1d8fec9b536e",
+                "reference": "6d02c6c7e2c3b7bab7af1a6ec79b1d8fec9b536e",
+=======
                 "reference": "83a98a2d4689417353b18ea61dc817655b40a5f5"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/83a98a2d4689417353b18ea61dc817655b40a5f5",
                 "reference": "83a98a2d4689417353b18ea61dc817655b40a5f5",
+>>>>>>> javier
                 "shasum": ""
             },
             "require": {
@@ -1065,7 +1074,11 @@
             "keywords": [
                 "User management"
             ],
+<<<<<<< HEAD
+            "time": "2018-05-22 07:56:25"
+=======
             "time": "2018-06-06 07:48:02"
+>>>>>>> javier
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -1340,6 +1353,18 @@
         },
         {
             "name": "jms/serializer-bundle",
+<<<<<<< HEAD
+            "version": "2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/JMSSerializerBundle.git",
+                "reference": "507d2359857226b3188f6de96dae7e33584c1445"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/507d2359857226b3188f6de96dae7e33584c1445",
+                "reference": "507d2359857226b3188f6de96dae7e33584c1445",
+=======
             "version": "2.4.1",
             "source": {
                 "type": "git",
@@ -1350,6 +1375,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/73bad761515fabae3cb52bde7c73484081a91118",
                 "reference": "73bad761515fabae3cb52bde7c73484081a91118",
+>>>>>>> javier
                 "shasum": ""
             },
             "require": {
@@ -1410,7 +1436,11 @@
                 "serialization",
                 "xml"
             ],
+<<<<<<< HEAD
+            "time": "2018-05-20T07:28:26+00:00"
+=======
             "time": "2018-05-25T10:56:25+00:00"
+>>>>>>> javier
         },
         {
             "name": "knplabs/knp-components",
@@ -1751,6 +1781,18 @@
         },
         {
             "name": "paragonie/random_compat",
+<<<<<<< HEAD
+            "version": "v2.0.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/random_compat.git",
+                "reference": "258c89a6b97de7dfaf5b8c7607d0478e236b04fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/258c89a6b97de7dfaf5b8c7607d0478e236b04fb",
+                "reference": "258c89a6b97de7dfaf5b8c7607d0478e236b04fb",
+=======
             "version": "v2.0.13",
             "source": {
                 "type": "git",
@@ -1761,6 +1803,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/paragonie/random_compat/zipball/cbe0b11b78140bc62a921fec33a730fdaa6540d6",
                 "reference": "cbe0b11b78140bc62a921fec33a730fdaa6540d6",
+>>>>>>> javier
                 "shasum": ""
             },
             "require": {
@@ -1796,7 +1839,11 @@
                 "pseudorandom",
                 "random"
             ],
+<<<<<<< HEAD
+            "time": "2018-04-04T21:24:14+00:00"
+=======
             "time": "2018-06-06T05:04:48+00:00"
+>>>>>>> javier
         },
         {
             "name": "phpcollection/phpcollection",
@@ -3350,7 +3397,11 @@
         },
         {
             "name": "symfony/phpunit-bridge",
+<<<<<<< HEAD
+            "version": "v3.4.10",
+=======
             "version": "v3.4.11",
+>>>>>>> javier
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
