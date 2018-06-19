@@ -13,7 +13,7 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
 
     public function horariosFlagAll($flagDis,$edadBeneficiario)
     {
-        $query = "SELECT * from ACADEMIA.horario where convocatoria= 1  and vacantes <> 0 and estado = 1 and discapacitados='$flagDis' and '$edadBeneficiario'<=edadMaxima and '$edadBeneficiario'>=edadMinima;";
+        $query = "SELECT * from ACADEMIA.horario where convocatoria= 1  and vacantes <> 0 and preinscripciones <> 0 and estado = 1 and discapacitados='$flagDis' and '$edadBeneficiario'<=edadMaxima and '$edadBeneficiario'>=edadMinima;";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $horarios = $stmt->fetchAll();
@@ -22,7 +22,7 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
 
     public function getHorariosPromotores($flagDis){
             
-        $query = "SELECT * from ACADEMIA.horario where vacantes <> 0 and estado = 1 and discapacitados='$flagDis';";
+        $query = "SELECT * from ACADEMIA.horario where vacantes <> 0 and preinscripciones <> 0 and estado = 1 and discapacitados='$flagDis';";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $horarios = $stmt->fetchAll();
@@ -32,6 +32,15 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
 
     public function getHorariosVacantes($idHorario){
         $query = "SELECT vacantes from ACADEMIA.horario where id = '$idHorario' ";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $horarios = $stmt->fetchAll();
+
+        return $horarios;
+    }
+
+     public function getHorariosPreinscripciones($idHorario){
+        $query = "SELECT preinscripciones from ACADEMIA.horario where id = '$idHorario' ";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $horarios = $stmt->fetchAll();
@@ -64,6 +73,7 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
                     hor.horaInicio as horaInicio, 
                     hor.horaFin as horaFin, 
                     hor.vacantes as vacantes,
+                    hor.preinscripciones as preinscripciones,
                     hor.convocatoria as convocatoria,
                     edi.edi_codigo as edi_codigo
                     from 
@@ -91,6 +101,7 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
                 hor.horaInicio as horaInicio, 
                 hor.horaFin as horaFin, 
                 hor.vacantes as vacantes,
+                hor.preinscripciones as preinscripciones,
                 hor.convocatoria as convocatoria,
                 edi.edi_codigo as edi_codigo
                 from 
@@ -116,9 +127,9 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
         return $horarios;
     }
 
-        public function getActualizarHorarios($idHorario, $vacantes, $convocatoria, $usuario){
+        public function getActualizarHorarios($idHorario, $vacantes, $convocatoria, $usuario, $preinscripciones){
 
-                $query = "UPDATE academia.horario set convocatoria = $convocatoria, vacantes = $vacantes, usuario_modif = $usuario,fecha_modif = getDate() from academia.horario where id = $idHorario";
+                $query = "UPDATE academia.horario set convocatoria = $convocatoria, vacantes = $vacantes, preinscripciones = $preinscripciones, usuario_modif = $usuario,fecha_modif = getDate() from academia.horario where id = $idHorario";
                 $stmt = $this->getEntityManager()->getConnection()->prepare($query);
                 $stmt->execute();
 
@@ -143,6 +154,21 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
         public function getActualizarVacantesHorarios($idHorario){
 
                 $query = "UPDATE academia.horario set vacantes = (vacantes - 1) where id = $idHorario and vacantes > 0";
+                $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+                $stmt->execute();
+
+        }
+
+        public function getActualizarPreinscripcionesHorarios($idHorario){
+                $query = "UPDATE academia.horario set preinscripciones = (preinscripciones - 1) where id = $idHorario and preinscripciones > 0";
+                $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+                $stmt->execute();
+
+        }
+
+        public function getActualizaConv($idHorario){
+               
+                $query = "UPDATE academia.horario set convocatoria = 0 where id = $idHorario";
                 $stmt = $this->getEntityManager()->getConnection()->prepare($query);
                 $stmt->execute();
 
@@ -212,7 +238,6 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
                         inner join grpersona per on per.percodigo = par.percodigo
                         WHERE hor.id = $idHorario and ins.estado = 2";
                 
-
                 $stmt = $this->getEntityManager()->getConnection()->prepare($query);
                 $stmt->execute();
                 $beneficiarios = $stmt->fetchAll();

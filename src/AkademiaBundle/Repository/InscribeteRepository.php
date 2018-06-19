@@ -13,8 +13,6 @@ class InscribeteRepository extends \Doctrine\ORM\EntityRepository
 
 
 	public function getFicha($idInscripcion){
-
-
       $query = "SELECT 
                 inscribete.id as id, 
                 inscribete.estado as estado, 
@@ -67,8 +65,7 @@ class InscribeteRepository extends \Doctrine\ORM\EntityRepository
     	$stmt = $this->getEntityManager()->getConnection()->prepare($query);
     	$stmt->execute();
     	$ficha = $stmt->fetchAll();
-
-      return $ficha;
+        return $ficha;
 	
 	}
 

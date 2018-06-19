@@ -43,6 +43,14 @@ class Horario
     /**
      * @var int
      *
+     * @ORM\Column(name="preinscripciones", type="integer")
+     */
+    private $preinscripciones;
+
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="inscritos", type="integer")
      */
     private $inscritos;
@@ -398,6 +406,31 @@ class Horario
     {
         return $this->vacantes;
     }
+
+    /**
+     * Set preinscripciones
+     *
+     * @param integer $preinscripciones
+     *
+     * @return Horario
+     */
+    public function setPreinscripciones($preinscripciones)
+    {
+        $this->preinscripciones = $preinscripciones;
+
+        return $this;
+    }
+
+    /**
+     * Get preinscripciones
+     *
+     * @return integer
+     */
+    public function getPreinscripciones()
+    {
+        return $this->preinscripciones;
+    }
+
 
     /**
      * Set inscritos

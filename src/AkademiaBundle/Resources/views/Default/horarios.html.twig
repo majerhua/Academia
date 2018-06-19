@@ -73,19 +73,35 @@
 									</div>
 									<br>
 
-									<div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:40vh; ">			
+									<div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:50vh; ">			
 
-										<table class="table display table-dataTable dataTable"  style="width: 100%;"> 
-											<thead style="background:#F2F2F2; color:#585858"> 
+										<table class="table"  style="width: 100%;"> 
+											<thead style="background:#cb2f1d; color:#F2F2F2;" class="text-center"> 
 												<tr> 
-													<th class="text-center" style="font-size:14px">Código</th>
+													<th class="text-center" style="font-size:14px" >Código</th>
 													<th class="text-center" style="font-size:14px">Turno</th> 
 													<th class="text-center" style="font-size:14px">Hora</th>
 													<th class="text-center" style="font-size:14px">Edades</th> 
-													<th class="text-center" style="font-size:14px">Vacantes</th> 
+													<!--<th class="text-center" style="font-size:14px">Vacantes</th>-->
 													<th class="text-center" style="font-size:14px">Discapacitad</th>
 													<th class="text-center" style="font-size:14px">Convocatoria</th>
+													<th class="text-center" style="font-size:14px" colspan="2"> Vacantes</th> 
 													<th class="text-center" style="font-size:14px">Inscritos</th>
+													<!--<th class="text-center" style="font-size:14px">Preinscritos</th>-->
+													<th></th>
+													<th></th>
+												</tr>
+												<tr style="background:#C9C5C5; color:#504B4B;"> 
+													<th class="text-center" style="font-size:14px"></th>
+													<th class="text-center" style="font-size:14px"></th> 
+													<th class="text-center" style="font-size:14px"></th>
+													<th class="text-center" style="font-size:14px"></th> 
+													<th class="text-center" style="font-size:14px"></th>
+													<th class="text-center" style="font-size:14px"></th>
+													<th class="text-center" style="font-size:14px"> Preinscripciones</th> 
+													<th class="text-center" style="font-size:14px">Inscripciones</th>
+													<th class="text-center" style="font-size:14px"></th>
+													<!--<th class="text-center" style="font-size:14px">Preinscritos</th>-->
 													<th></th>
 													<th></th>
 												</tr>
@@ -111,23 +127,27 @@
 													{% else %}
 														<td id="4h{{horario['idHorario']}}"class="text-center">{{horario['edadMinima']}} años</td>
 													{% endif %}
- 
-													<td id="5h{{horario['idHorario']}}" class="text-center">{{horario['vacantes']}}</td> 
-
-													{% if  horario['discapacidad'] == 0 %}
+ 													
+ 													{% if  horario['discapacidad'] == 0 %}
 														<td id="6h{{horario['idHorario']}}" class="text-center"> No </td> 
 													{% else %}
 														<td id="6h{{horario['idHorario']}}" class="text-center"> Si </td> 
 													{% endif %}
 
 													{% if  horario['convocatoria'] == 1 %}
-														<td id="7h{{horario['idHorario']}}" class="text-center">Abierta</td>
+														<td id="7h{{horario['idHorario']}}" class="text-center" style="color:green">Abierta</td>
 													{% else %}
-														<td id="7h{{horario['idHorario']}}" class="text-center"> Cerrado </td> 
+														<td id="7h{{horario['idHorario']}}" class="text-center" style="color:red; font-weight:bold;"> Cerrado </td> 
+													{% endif %}
+													{% if horario['preinscripciones'] == 0 %}
+														<td id="9h{{horario['idHorario']}}" class="text-center" style="color:red; font-weight:bold;">{{horario['preinscripciones']}}</td> 
+													{% else %}
+														<td id="9h{{horario['idHorario']}}" class="text-center">{{horario['preinscripciones']}}</td> 
 													{% endif %}
 
+													<td id="5h{{horario['idHorario']}}" class="text-center">{{horario['vacantes']}}</td> 
 													<td id="8h{{horario['idHorario']}}" class="text-center">{{horario['inscritos']}}</td>
-
+												
 													{% if is_granted('ROLE_DOCENTE')%}
 													
 													<td colspan="2" ><a href="{{url('akademia_beneficiarios',{idHorario:horario['idHorario']})}}"  title="Mostrar Inscritos" type="button" class="btn btn-primary"><i class="icon-checklist"></i></a></td>
@@ -302,7 +322,7 @@
 								<li class="list-group-item">
 									<div class="row">
 										<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-											<p><strong>Vacantes</strong></p>
+											<p><strong>Vacantes disponibles</strong></p>
 										</div>
 										<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
 											<input class="form-control" id="editar_vacantes_horario" name="editar_vacantes_horario"
@@ -314,6 +334,23 @@
 										</div>
 									</div>
 								</li>					
+
+								<li class="list-group-item">
+									<div class="row">
+										<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+											<p><strong>Límite de Preinscripciones</strong></p>
+										</div>
+										<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+											<input class="form-control" id="editar_preinscripciones_horario" name="editar_preinscripciones_horario"
+										    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+										    type = "number"
+										    maxlength = "4"
+										    min="0"
+											/>	
+										</div>
+									</div>
+								</li>					
+
 
 								<li class="list-group-item">
 									<div class="row">
@@ -564,7 +601,7 @@
 
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Vacantes</strong></p>
+										<p><strong>Vacantes de Inscritos</strong></p>
 									</div>
 									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
 
@@ -576,7 +613,26 @@
 										 />		
 									</div>
 								</div>
-							</li>				
+							</li>
+
+							<li class="list-group-item">
+
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Vacantes de Preinscritos</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+
+										<input class="form-control" id="preinscripciones-horario" name="preinscripciones-horario"
+										    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+										    type = "number"
+										    maxlength = "4"
+										    min="0"
+										 />		
+									</div>
+								</div>
+							</li>		
+
 						</ul>
 					</div>
 				</div>
@@ -714,7 +770,7 @@
 		
 		/*VALIDAR NEGATIVOS*/
 		
-		jQuery('#hora-inicio, #hora-fin, #min-inicio, #min-fin, #edad-minima, #edad-maxima, #vacantes-horario, #editar_vacantes_horario').on('keypress', function (e) {
+		jQuery('#hora-inicio, #hora-fin, #min-inicio, #min-fin, #edad-minima, #edad-maxima, #vacantes-horario, #editar_vacantes_horario, #preinscripciones-horario, #editar_preinscripciones_horario').on('keypress', function (e) {
 
 		    if (e.keyCode == 101 || e.keyCode == 45 || e.keyCode == 46 || e.keyCode == 43 || e.keyCode == 44 || e.keyCode == 47 || e.keyCode == 69 ) {
 		        return false;
@@ -840,6 +896,7 @@
 			$("#editar_edades_horario").empty();
 			$("#editar_discapacidad_horario").empty();
 			$("#editar_vacantes_horario").val("");
+			$("#editar_preinscripciones_horario").val("");
 			$("#editar_convocatoria_horario").val("");
 			$("#turno").empty();
 			$("#textEdad").empty();
@@ -856,6 +913,7 @@
 			$("#edad-minima").val("");
 			$("#edad-maxima").val("");
 			$("#vacantes-horario").val("");
+			$("#preinscripciones-horario").val("");
 			$("#crear_discapacidad").val("");
 			$("#Lun").prop('checked', false);
 			$("#Mar").prop('checked', false); 
@@ -921,6 +979,7 @@
 							$("#editar_convocatoria_horario").val(1);
 						}
 						$("#editar_vacantes_horario").val(dataHorario.vacantes);
+						$("#editar_preinscripciones_horario").val(dataHorario.preinscripciones);
 						
 					}else{
 
@@ -1037,22 +1096,32 @@
 				if($("#editar_vacantes_horario").val()==""){
 	               	alertify.error('<p style="color:white">Se requiere que ingrese la cantidad de vacantes. </p>'); 
 	               	$("#editar_vacantes_horario").focus();
-	      
+
+	            }else if($("#editar_preinscritos_horario").val()==""){
+	            	alertify.error('<p style="color:white">Se requiere que ingrese el límite de preinscripciones. </p>'); 
+	               	$("#editar_preinscripciones_horario").focus();
+
 	            }else if($("#editar_convocatoria_horario").val()==""){
 	            	alertify.error('<p style="color:white">Seleccione la convocatoria. </p>');
 
 	            }else if(parseInt($("#editar_vacantes_horario").val())<0){
 					alertify.error('<p style="color:white">Verifique el número de vacantes. </p>');
 
-	            }else if($("#editar_convocatoria_horario").val()!= "" && $("#editar_vacantes_horario").val()!=""){
+	            }else if(parseInt($("#editar_preinscripciones_horario").val())<0){
+	            	alertify.error('<p style="color:white">Verifique el número de pre inscripciones. </p>');
+
+	            }else if($("#editar_convocatoria_horario").val()!= "" && $("#editar_vacantes_horario").val()!="" && $("#editar_preinscripciones_horario").val() != ""){
 	            		
 			           	var idHorario = $("#editar_codigo_horario").text();
 						var vacantes = $("#editar_vacantes_horario").val();
+						var preinscripciones = $("#editar_preinscripciones_horario").val()
 						var convocatoria = $("#editar_convocatoria_horario").val();
+
 
 						var dataActualizarHorario={
 							"idHorario" : idHorario,
 							"vacantes" :vacantes,
+							"preinscripciones" : preinscripciones,
 							"convocatoria" : convocatoria
 						};
 
@@ -1080,6 +1149,7 @@
 
 									$("#1h"+dataHorario.id).text(dataHorario.id);
 									$("#5h"+dataHorario.id).text(dataHorario.vacantes);
+									$("#9h"+dataHorario.id).text(dataHorario.preinscripciones);
 
 									if(dataHorario.convocatoria == 1){
 										$("#7h"+dataHorario.id).text("Abierto");
@@ -1099,7 +1169,7 @@
 						});
 	            }
 
-				console.log(idHorario, idDisciplina, vacantes , convocatoria);
+				console.log(idHorario, idDisciplina, vacantes , convocatoria, preinscripciones);
 
 				
 			}
@@ -1132,6 +1202,7 @@
 				&& $("#edad-minima").val() != "" 
 				&& $("#edad-maxima").val() != "" 
 				&& $("#vacantes-horario").val() != "" 
+				&& $("#preinscripciones-horario") != ""
 				&& $("#crear_discapacidad").val() != "" 
 			) {
 
@@ -1147,6 +1218,7 @@
 				var edadMinima = parseInt($("#edad-minima").val());
 				var edadMaxima = parseInt($("#edad-maxima").val());
 				var vacantes = parseInt($("#vacantes-horario").val());
+				var preinscripciones = parseInt($("#preinscripciones-horario").val());
 				var discapacidad = parseInt($("#crear_discapacidad").val());
 				var idDisciplina = parseInt($("#idDisciplina").val());
 
@@ -1181,7 +1253,7 @@
 						&& minFin <= 60
 					){
 
-						if (vacantes >= 0) {
+						if (vacantes >= 0 && preinscripciones >= 0) {
 
 							var dataCrearHorario={
 								"turno" : turno,
@@ -1190,6 +1262,7 @@
 								"edadMinima" :edadMinima,
 								"edadMaxima" : edadMaxima,
 								"vacantes" : vacantes,
+								"preinscripciones" : preinscripciones,
 								"discapacidad" : discapacidad,
 								"idDisciplina" : idDisciplina
 							}
@@ -1258,6 +1331,7 @@
 										}
 
 										tdhorario+='<td id="8h'+dataHorario.id+'" class="text-center">'+ dataHorario.inscritos +'</td>';
+										tdhorario+='<td id="9h'+dataHorario.id+'" class="text-center">'+ dataHorario.preinscripciones +'</td>';
 										tdhorario+='<td><button title="Editar horario" type="button" id="'+dataHorario.id+'" onclick="editarHorario('+dataHorario.id+','+idDisciplina+')" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1.1em; margin-top:5px" ></i></button></td>';
 										tdhorario+='<td><a href="/academia/web/beneficiarios/'+dataHorario.id+'"  title="Mostrar Inscritos" type="button" class="btn btn-default"><i class="icon-checklist" style="font-size: 1.3em;"></i></a></td>';
 										tdhorario+='</tr>';

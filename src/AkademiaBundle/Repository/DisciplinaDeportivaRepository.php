@@ -20,7 +20,8 @@ class DisciplinaDeportivaRepository extends \Doctrine\ORM\EntityRepository
                         inner join catastro.edificacionesdeportivas ede on edi.ede_codigo = ede.ede_codigo
                         where ede.ede_codigo = $idComplejo and edi.edi_estado=1) t2
                         on dis.dis_codigo = t2.dis_codigo 
-                        where t2.dis_codigo IS NULL;";
+                        where t2.dis_codigo IS NULL
+                        ORDER BY dis.dis_descripcion ASC;";
 
                 $stmt = $this->getEntityManager()->getConnection()->prepare($query);
                 $stmt->execute();
@@ -72,8 +73,9 @@ class DisciplinaDeportivaRepository extends \Doctrine\ORM\EntityRepository
             inner join grubigeo ubiDpto on ubiDpto.ubidpto = ubi.ubidpto
 
             inner join CATASTRO.disciplina dis on dis.dis_codigo = edi.dis_codigo
-            WHERE ubiDpto.ubidistrito=0 AND ubiDpto.ubiprovincia=0 AND ubiDpto.ubidpto!=0";
-        
+            WHERE ubiDpto.ubidistrito=0 AND ubiDpto.ubiprovincia=0 AND ubiDpto.ubidpto!=0
+            ORDER BY nombreDisciplina  ASC, idComplejoDeportivo, idDisciplina ;";
+            
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $disciplinasDeporivas = $stmt->fetchAll();
@@ -83,7 +85,8 @@ class DisciplinaDeportivaRepository extends \Doctrine\ORM\EntityRepository
     public function disciplinasDeportivasPromotor($flagDis)
     {
         $query = "SELECT distinct eddis.edi_codigo as id, eddis.ede_codigo as idComplejoDeportivo, rtrim(dis.dis_descripcion) as nombreDisciplina, dis.dis_codigo as idDisciplina ,edde.ede_discapacitado as discapacidad
-            from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis, CATASTRO.edificacionesdeportivas AS edde, CATASTRO.disciplina as dis where hor.discapacitados='$flagDis'  and dis_estado =1 and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and dis.dis_codigo=eddis.dis_codigo and hor.estado=1 and hor.vacantes<> 0";
+            from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis, CATASTRO.edificacionesdeportivas AS edde, CATASTRO.disciplina as dis where hor.discapacitados='$flagDis'  and dis_estado =1 and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and dis.dis_codigo=eddis.dis_codigo and hor.estado=1 and hor.vacantes<> 0
+             ORDER BY nombreDisciplina  ASC, id, idComplejoDeportivo, idDisciplina, discapacidad ;";
         
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
