@@ -722,20 +722,6 @@
 
 	var cont = 0;
 	$('#cbx-discapacidad').on( 'click', function() {
-	   /* if($(this).is(':checked'))
-	    {	
-	    	//$("#textoCbx").text('Si');
-	    	$("#advertencia").show();
-	    	sessionStorage.removeItem('flagDiscapacitado');
-      		sessionStorage.setItem('flagDiscapacitado',$(this).val());        
-	    }else{
-	    	//$("#textoCbx").text('No');
-	    	
-	    	$("#advertencia").hide();
-	    	sessionStorage.removeItem('flagDiscapacitado');
-	    	$("#cbx-discapacidad").prop('checked', false);
-	    }*/
-
 	    sessionStorage.removeItem('flagDiscapacitado');
 	    if(cont==0){
 	    	$("#advertencia").show();
@@ -746,8 +732,6 @@
 	    	$("#cbx-discapacidad").prop('checked', false);
 	    	cont=0;
 	    }
-
-
 	});
 
 	
@@ -1026,7 +1010,7 @@ $("#boton3").on('click',function(){
 		if( sessionStorage.getItem("edad") != null || sessionStorage.getItem("edad")!=undefined ){
 			if(sessionStorage.getItem('flagDiscapacitado') == '1' ){
 
-				if(sessionStorage.getItem("edad") <= 59 && sessionStorage.getItem("edad") >= 6){
+				if(sessionStorage.getItem("edad") <= 59 && sessionStorage.getItem("edad") >= 4){
 
 					$("#proceso3").hide();
 					console.log("Val flagDiscapacitado ==>",sessionStorage.getItem('flagDiscapacitado'));
@@ -1034,20 +1018,24 @@ $("#boton3").on('click',function(){
 
 					$(".bar-inscripcion__3").removeClass('active');
 					$(".bar-inscripcion__4").addClass('active');	
+			    
 			    }else{
 			    	alertify.error('<p style="color:white">Sólo de 6 a 59 años. </p>'); 
 			    }
 
 			}else if(sessionStorage.getItem('flagDiscapacitado') == null ){
-				if(sessionStorage.getItem("edad") < 18 && sessionStorage.getItem("edad") >= 6){
+				if(sessionStorage.getItem("edad") < 18 && sessionStorage.getItem("edad") >= 4){
 					
 					$("#proceso3").hide();
+					
 					console.log("Val flagDiscapacitado ==>",sessionStorage.getItem('flagDiscapacitado'));
 					pageHorario(0);	
 			
 					$(".bar-inscripcion__3").removeClass('active');
-					$(".bar-inscripcion__4").addClass('active');		
+					$(".bar-inscripcion__4").addClass('active');
+
 				}else{
+
 					alertify.error('<p style="color:white">Sólo de 6 a 17 años. </p>'); 
 			    }
 			}
