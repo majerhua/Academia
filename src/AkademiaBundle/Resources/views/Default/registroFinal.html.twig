@@ -500,20 +500,20 @@
 		}
 	
 
-$("#boton-next-final").on('click',function(){
+	$("#boton-next-final").on('click',function(){
 
-	var disciplinaDeportiva = document.getElementById('disciplinaDeportiva').value;
-	var horario =document.getElementById('horario').value;
-	
-	if( disciplinaDeportiva=="" || horario==""){
-			alertify.error('<p style="color:white">Debe seleccionar Disciplina y/o Horario </p>'); 
-	}else{
+		var disciplinaDeportiva = document.getElementById('disciplinaDeportiva').value;
+		var horario =document.getElementById('horario').value;
 		
-		$("#process4").hide();
-		$("#process5").show('slow');	
-		registrar();
-	}
-});
+		if( disciplinaDeportiva=="" || horario==""){
+				alertify.error('<p style="color:white">Debe seleccionar Disciplina y/o Horario </p>'); 
+		}else{
+			
+			$("#process4").hide();
+			$("#process5").show('slow');	
+			registrar();
+		}
+	});
 
 function registrar(){
 	var dataRegisterApoderado={

@@ -673,7 +673,7 @@
 	            $("#dniApoderado").focus();
 	        break;
 	        case "carnet":
-	        	document.getElementById("dniApoderado").setAttribute("maxlength", "30");
+	        	document.getElementById("dniApoderado").setAttribute("maxlength", "15");
 	            $("#dniApoderado").attr("placeholder", "carnet extranjería");
 	            $("#dniApoderado" ).show();
 	            $("#dniApoderado").focus();
@@ -701,7 +701,7 @@
 
 	        break;
 	        case "carnet":
-	            document.getElementById("dni-hijo").setAttribute("maxlength", "12");
+	            document.getElementById("dni-hijo").setAttribute("maxlength", "15");
 	            $("#dni-hijo").show();
 	            $("#dni-hijo").focus();
 	        break;
@@ -787,7 +787,7 @@
  					break;
  			case "carnet":
  					console.log("Ingreso a carnet");
-					var expreg = new RegExp("^[0-9]{8,28}$");
+					var expreg = new RegExp("^[0-9]{1,15}$");
 					break;
      	}
 
@@ -834,51 +834,61 @@
 
 	$("#boton2").on('click',function(){
 		
-				//var $direccionApoderado = $("#direccion");	
+		//var $direccionApoderado = $("#direccion");	
+		var expregTelefono = new RegExp("^([0-9]{9}|[0-9]{7})$");
+		var expregEmail = new RegExp("^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$");
+		//var expregDireccion = new RegExp("^([a-zA-Z]|[0-9])+$");
+        var telefonoApoderadoPaso2 = $("#telefono").val();
+        var correoApoderadoPaso2 = $("#correo").val();
 
-				var expregTelefono = new RegExp("^([0-9]{9}|[0-9]{7})$");
-				var expregEmail = new RegExp("^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$");
-				//var expregDireccion = new RegExp("^([a-zA-Z]|[0-9])+$");
-                var telefonoApoderadoPaso2 = $("#telefono").val();
-                var correoApoderadoPaso2 = $("#correo").val();
 
+        if($("#distrito").val()==0){
+           alertify.error('<p style="color:white">Debe seleccionar el campo distrito</p>'); 
+        }else if($("#direccion").val()==0 /*|| !expregDireccion.test($direccionApoderado.val())*/ ){
+           alertify.error('<p style="color:white">Campo Direccion Incorrecto</p>'); 
+        }else if( telefonoApoderadoPaso2 =="" || !expregTelefono.test(telefonoApoderadoPaso2)){
+           alertify.error('<p style="color:white">Campo Telefono incorrecto</p>'); 
+        }else if(correoApoderadoPaso2 =="" || !expregEmail.test(correoApoderadoPaso2) ){
+          alertify.error('<p style="color:white">Campo Correo incorrecto</p>'); 
+        }else{
+            
+            sessionStorage.removeItem("distrito-apoderado");
+            sessionStorage.removeItem("telefono-apoderado");
+            sessionStorage.removeItem("correo-apoderado");
+            sessionStorage.removeItem("direccion-apoderado");
 
-                if($("#distrito").val()==0){
-                   alertify.error('<p style="color:white">Debe seleccionar el campo distrito</p>'); 
-                }else if($("#direccion").val()==0 /*|| !expregDireccion.test($direccionApoderado.val())*/ ){
-                   alertify.error('<p style="color:white">Campo Direccion Incorrecto</p>'); 
-                }else if( telefonoApoderadoPaso2 =="" || !expregTelefono.test(telefonoApoderadoPaso2)){
-                   alertify.error('<p style="color:white">Campo Telefono incorrecto</p>'); 
-                }else if(correoApoderadoPaso2 =="" || !expregEmail.test(correoApoderadoPaso2) ){
-                  alertify.error('<p style="color:white">Campo Correo incorrecto</p>'); 
-                }else{
-                    
-                    sessionStorage.removeItem("distrito-apoderado");
-                    sessionStorage.removeItem("telefono-apoderado");
-                    sessionStorage.removeItem("correo-apoderado");
-                    sessionStorage.removeItem("direccion-apoderado");
+            sessionStorage.setItem("distrito-apoderado", $("#distrito").val());
+            sessionStorage.setItem("direccion-apoderado", $("#direccion").val());
+            sessionStorage.setItem("telefono-apoderado", $("#telefono").val());
+            sessionStorage.setItem("correo-apoderado", $("#correo").val());
+        
 
-                    sessionStorage.setItem("distrito-apoderado", $("#distrito").val());
-                    sessionStorage.setItem("direccion-apoderado", $("#direccion").val());
-                    sessionStorage.setItem("telefono-apoderado", $("#telefono").val());
-                    sessionStorage.setItem("correo-apoderado", $("#correo").val());
-                
-
-                    $("#departamentoHorario").val($("#departamento").val());
-                    $("#provinciaHorario").val($("#provincia").val());
-                   
-                    
-                    $("#proceso2").hide();
-                    $("#proceso3").show();
-                    $(".bar-inscripcion__2").removeClass('active');
-                    $(".bar-inscripcion__3").addClass('active');
-                }
-                
+            $("#departamentoHorario").val($("#departamento").val());
+            $("#provinciaHorario").val($("#provincia").val());
+           
+            
+            $("#proceso2").hide();
+            $("#proceso3").show();
+            $(".bar-inscripcion__2").removeClass('active');
+            $(".bar-inscripcion__3").addClass('active');
+        }      
 	});
 
 $("#boton3").on('click',function(){
 	
-	var expregDni = new RegExp("^[0-9]{8}$");
+		var $tipoDocumentoHijo = $("#tipo_documentoHijo");
+
+     	switch($tipoDocumentoHijo.val()){
+     		case "dni":
+					var expregDni = new RegExp("^[0-9]{8}$");
+					console.log("Ingreso a dni");
+ 					break;
+ 			case "carnet":
+ 					console.log("Ingreso a carnet");
+					var expregDni = new RegExp("^[0-9]{1,15}$");
+					break;
+     	}
+
 	var dniHijoPaso3 = $("#dni-hijo").val();
     
     if(dniHijoPaso3 =="" || !expregDni.test(dniHijoPaso3)){
