@@ -589,6 +589,7 @@
 									</div>
 								</div>
 							</li>
+							<div id="alerta-errorCrearVacante" class="alert alert-danger collapse text-center"></div>
 							<li class="list-group-item">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
@@ -1374,7 +1375,7 @@
 									});
 
 								}else{
-									showAlertMessage('#alerta-errorCrear', "Verifique que el Nº vacantes de Preinscritos sea mayor al Nº de vacantes de Inscritos.");
+									showAlertMessage('#alerta-errorCrearVacante', "Verifique que el Nº vacantes de Preinscritos sea mayor al Nº de vacantes de Inscritos.");
 								}
 
 							}else{
@@ -1518,7 +1519,7 @@
 									});
 
 								}else{
-									showAlertMessage('#alerta-errorCrear', "Verifique que la cantidad de Pre-inscripciones se mayor al número de Vacantes disponibles.");
+									showAlertMessage('#alerta-errorCrearVacante', "Verifique que la cantidad de Pre-inscripciones se mayor al número de Vacantes disponibles.");
 								}
 
 							}else{
