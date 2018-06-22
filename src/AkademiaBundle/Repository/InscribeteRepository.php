@@ -115,4 +115,22 @@ class InscribeteRepository extends \Doctrine\ORM\EntityRepository
     
   }
 
+  public function getHorarioFicha($idFicha){
+    
+    $query = "SELECT horario_id as idHorario from academia.inscribete where id = $idFicha;";
+    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+    $stmt->execute();
+    $datos = $stmt->fetchAll();
+
+    return $datos;
+  } 
+
+  public function getActInscritosVigentes($idHorario){
+
+    $query = "UPDATE academia.horario set inscritos =  (inscritos - 1) where id = $idHorario  and inscritos > 0;";
+    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+    $stmt->execute();
+
+  }
+
 }
