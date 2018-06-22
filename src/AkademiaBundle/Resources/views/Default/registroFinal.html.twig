@@ -3,7 +3,6 @@
 {% block body  %}
 
 <div class="proceso">
-
 	<div class="proceso-inscripcion__horarios" id="process4">
 		<div class="container-card col-xs-12 col-sm-12 col-md-8 col-lg-7">
 			<div class="card">
@@ -552,8 +551,12 @@ function registrar(){
 			$("#boton-next-final").attr("disabled", true);		
 		},
 		success: function(data){
+			
+			console.log(data);
 			$("#boton-next-final").attr("disabled", false);
-			if(data != 1){
+			
+			if(data != 1 ){
+
 				$(".bar-inscripcion__4").removeClass('active');
 				$(".bar-inscripcion__5").addClass('active');
 				$("#process4").hide();
@@ -580,12 +583,22 @@ function registrar(){
 				$("#nombrePadre-declaracion-jurada").append(valor.nombrePadre);
 				$("#codigo-inscripcion").val(valor.id);
 			    enviarEmailApoderado(valor.percorreo,valor.nombrePadre,valor.id);
+
 			}else{
-				showAlertMessage('#alerta-error', "Lo sentimos, se agotaron las vacantes para este horario. ");
-				$("#boton-next-final").attr("disabled", true);
-				$("#process5").hide();
-			}			
+
+				//if( data == 1){
+					showAlertMessage('#alerta-error', "Lo sentimos, se agotaron las vacantes para este horario. ");
+					$("#boton-next-final").attr("disabled", true);
+					//$("#process5").hide();
+				//}else{
+
+				/*	showAlertMessage('#alerta-error', "Lo sentimos, Se excedió el límite de preinscripciones posibles para este horario.");
+					$("#boton-next-final").attr("disabled", true);
+					$("#process5").hide();
+				}*/
+			}		
 		},
+
 		error: function(error){
 			console.log("Error - oh no!");
 		}

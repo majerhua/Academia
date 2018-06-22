@@ -73,19 +73,34 @@
 									</div>
 									<br>
 
-									<div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:40vh; ">			
+									<div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:50vh; ">			
 
-										<table class="table display table-dataTable dataTable"  style="width: 100%;"> 
-											<thead style="background:#F2F2F2; color:#585858"> 
+										<table class="table"  style="width: 100%;"> 
+											<thead style="background:#cb2f1d; color:#F2F2F2;" class="text-center"> 
 												<tr> 
-													<th class="text-center" style="font-size:14px">Código</th>
+													<th class="text-center" style="font-size:14px" >Código</th>
 													<th class="text-center" style="font-size:14px">Turno</th> 
 													<th class="text-center" style="font-size:14px">Hora</th>
 													<th class="text-center" style="font-size:14px">Edades</th> 
-													<th class="text-center" style="font-size:14px">Vacantes</th> 
+													<!--<th class="text-center" style="font-size:14px">Vacantes</th>-->
 													<th class="text-center" style="font-size:14px">Discapacitad</th>
 													<th class="text-center" style="font-size:14px">Convocatoria</th>
+													<th class="text-center" style="font-size:14px" colspan="2"> Vacantes</th> 
 													<th class="text-center" style="font-size:14px">Inscritos</th>
+													<!--<th class="text-center" style="font-size:14px">Preinscritos</th>-->
+													<th></th>
+													<th></th>
+												</tr>
+												<tr style="background:#C9C5C5; color:#504B4B;"> 
+													<th class="text-center" style="font-size:14px"></th>
+													<th class="text-center" style="font-size:14px"></th> 
+													<th class="text-center" style="font-size:14px"></th>
+													<th class="text-center" style="font-size:14px"></th> 
+													<th class="text-center" style="font-size:14px"></th>
+													<th class="text-center" style="font-size:14px"></th>
+													<th class="text-center" style="font-size:14px">Pre-Inscritos</th> 
+													<th class="text-center" style="font-size:14px">Inscritos</th>
+													<th class="text-center" style="font-size:14px"></th>
 													<th></th>
 													<th></th>
 												</tr>
@@ -111,23 +126,27 @@
 													{% else %}
 														<td id="4h{{horario['idHorario']}}"class="text-center">{{horario['edadMinima']}} años</td>
 													{% endif %}
- 
-													<td id="5h{{horario['idHorario']}}" class="text-center">{{horario['vacantes']}}</td> 
-
-													{% if  horario['discapacidad'] == 0 %}
+ 													
+ 													{% if  horario['discapacidad'] == 0 %}
 														<td id="6h{{horario['idHorario']}}" class="text-center"> No </td> 
 													{% else %}
 														<td id="6h{{horario['idHorario']}}" class="text-center"> Si </td> 
 													{% endif %}
 
 													{% if  horario['convocatoria'] == 1 %}
-														<td id="7h{{horario['idHorario']}}" class="text-center">Abierta</td>
+														<td id="7h{{horario['idHorario']}}" class="text-center" style="color:green">Abierta</td>
 													{% else %}
-														<td id="7h{{horario['idHorario']}}" class="text-center"> Cerrado </td> 
+														<td id="7h{{horario['idHorario']}}" class="text-center" style="color:red; font-weight:bold;"> Cerrado </td> 
+													{% endif %}
+													{% if horario['preinscripciones'] == 0 %}
+														<td id="9h{{horario['idHorario']}}" class="text-center" style="color:red; font-weight:bold;">{{horario['preinscripciones']}}</td> 
+													{% else %}
+														<td id="9h{{horario['idHorario']}}" class="text-center">{{horario['preinscripciones']}}</td> 
 													{% endif %}
 
+													<td id="5h{{horario['idHorario']}}" class="text-center">{{horario['vacantes']}}</td> 
 													<td id="8h{{horario['idHorario']}}" class="text-center">{{horario['inscritos']}}</td>
-
+												
 													{% if is_granted('ROLE_DOCENTE')%}
 													
 													<td colspan="2" ><a href="{{url('akademia_beneficiarios',{idHorario:horario['idHorario']})}}"  title="Mostrar Inscritos" type="button" class="btn btn-primary"><i class="icon-checklist"></i></a></td>
@@ -237,8 +256,7 @@
 										</div>
 										<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
 											<p id="editar_codigo_horario"></p>
-											<input type="hidden" id="idDisciplina" >
-
+											<input type="hidden" id="idDisciplina">
 										</div>
 									</div>
 								</li>
@@ -302,7 +320,7 @@
 								<li class="list-group-item">
 									<div class="row">
 										<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-											<p><strong>Vacantes</strong></p>
+											<p><strong>Vacantes Inscritos</strong></p>
 										</div>
 										<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
 											<input class="form-control" id="editar_vacantes_horario" name="editar_vacantes_horario"
@@ -314,6 +332,23 @@
 										</div>
 									</div>
 								</li>					
+
+								<li class="list-group-item">
+									<div class="row">
+										<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+											<p><strong>Vacantes Pre-inscritos</strong></p>
+										</div>
+										<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+											<input class="form-control" id="editar_preinscripciones_horario" name="editar_preinscripciones_horario"
+										    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+										    type = "number"
+										    maxlength = "4"
+										    min="0"
+											/>	
+										</div>
+									</div>
+								</li>					
+
 
 								<li class="list-group-item">
 									<div class="row">
@@ -501,7 +536,7 @@
 										<p><strong>Discapacidad</strong></p>
 									</div>
 									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-										<select class="form-control" id="crear_discapacidad" onchange="validar(this.value)">
+										<select class="form-control" id="crear_discapacidad">
 											<option value="">--Seleccionar--</option>
 											<option value="0">No</option>
 											<option value="1">Si</option>
@@ -555,19 +590,13 @@
 										</div>
 									</div>
 								</div>
-								
 							</li>
-
-							
-
 							<li class="list-group-item">
-
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Vacantes</strong></p>
+										<p><strong>Vacantes Inscritos</strong></p>
 									</div>
 									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-
 										<input class="form-control" id="vacantes-horario" name="vacantes-horario"
 										    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
 										    type = "number"
@@ -576,7 +605,24 @@
 										 />		
 									</div>
 								</div>
-							</li>				
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Vacantes Preinscritos</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<input class="form-control" id="preinscripciones-horario" name="preinscripciones-horario"
+										    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+										    type = "number"
+										    maxlength = "4"
+										    min="0"
+										 />		
+									</div>
+								</div>
+							</li>		
+
 						</ul>
 					</div>
 				</div>
@@ -714,7 +760,7 @@
 		
 		/*VALIDAR NEGATIVOS*/
 		
-		jQuery('#hora-inicio, #hora-fin, #min-inicio, #min-fin, #edad-minima, #edad-maxima, #vacantes-horario, #editar_vacantes_horario').on('keypress', function (e) {
+		jQuery('#hora-inicio, #hora-fin, #min-inicio, #min-fin, #edad-minima, #edad-maxima, #vacantes-horario, #editar_vacantes_horario, #preinscripciones-horario, #editar_preinscripciones_horario').on('keypress', function (e) {
 
 		    if (e.keyCode == 101 || e.keyCode == 45 || e.keyCode == 46 || e.keyCode == 43 || e.keyCode == 44 || e.keyCode == 47 || e.keyCode == 69 ) {
 		        return false;
@@ -737,10 +783,23 @@
 		   break;
 		   case "1":
 		   edad.innerHTML = 'De 6 a 59 años.';
-		   
 		   break;
 		   default : edad.innerHTML = '';
 		  }
+		}
+
+		var edadGimnasia = document.getElementById('textEdad');
+		
+		function validarGimnasia(val) {
+		  switch (val){
+		   case "0":
+		   	edadGimnasia.innerHTML = 'De 4 a 17 años.' ;
+		   break;
+		   case "1":
+		   edadGimnasia.innerHTML = 'De 4 a 59 años.';
+		   break;
+		   default : edadGimnasia.innerHTML = '';
+		  }	
 		}
 
 		/* CARGAR ALERTAS */
@@ -840,6 +899,7 @@
 			$("#editar_edades_horario").empty();
 			$("#editar_discapacidad_horario").empty();
 			$("#editar_vacantes_horario").val("");
+			$("#editar_preinscripciones_horario").val("");
 			$("#editar_convocatoria_horario").val("");
 			$("#turno").empty();
 			$("#textEdad").empty();
@@ -856,6 +916,7 @@
 			$("#edad-minima").val("");
 			$("#edad-maxima").val("");
 			$("#vacantes-horario").val("");
+			$("#preinscripciones-horario").val("");
 			$("#crear_discapacidad").val("");
 			$("#Lun").prop('checked', false);
 			$("#Mar").prop('checked', false); 
@@ -921,6 +982,7 @@
 							$("#editar_convocatoria_horario").val(1);
 						}
 						$("#editar_vacantes_horario").val(dataHorario.vacantes);
+						$("#editar_preinscripciones_horario").val(dataHorario.preinscripciones);
 						
 					}else{
 
@@ -1037,22 +1099,32 @@
 				if($("#editar_vacantes_horario").val()==""){
 	               	alertify.error('<p style="color:white">Se requiere que ingrese la cantidad de vacantes. </p>'); 
 	               	$("#editar_vacantes_horario").focus();
-	      
+
+	            }else if($("#editar_preinscritos_horario").val()==""){
+	            	alertify.error('<p style="color:white">Se requiere que ingrese el límite de preinscripciones. </p>'); 
+	               	$("#editar_preinscripciones_horario").focus();
+
 	            }else if($("#editar_convocatoria_horario").val()==""){
 	            	alertify.error('<p style="color:white">Seleccione la convocatoria. </p>');
 
 	            }else if(parseInt($("#editar_vacantes_horario").val())<0){
 					alertify.error('<p style="color:white">Verifique el número de vacantes. </p>');
 
-	            }else if($("#editar_convocatoria_horario").val()!= "" && $("#editar_vacantes_horario").val()!=""){
+	            }else if(parseInt($("#editar_preinscripciones_horario").val())<0){
+	            	alertify.error('<p style="color:white">Verifique el número de pre inscripciones. </p>');
+
+	            }else if($("#editar_convocatoria_horario").val()!= "" && $("#editar_vacantes_horario").val()!="" && $("#editar_preinscripciones_horario").val() != ""){
 	            		
 			           	var idHorario = $("#editar_codigo_horario").text();
 						var vacantes = $("#editar_vacantes_horario").val();
+						var preinscripciones = $("#editar_preinscripciones_horario").val()
 						var convocatoria = $("#editar_convocatoria_horario").val();
+
 
 						var dataActualizarHorario={
 							"idHorario" : idHorario,
 							"vacantes" :vacantes,
+							"preinscripciones" : preinscripciones,
 							"convocatoria" : convocatoria
 						};
 
@@ -1080,11 +1152,24 @@
 
 									$("#1h"+dataHorario.id).text(dataHorario.id);
 									$("#5h"+dataHorario.id).text(dataHorario.vacantes);
+									
+									if(dataHorario.preinscripciones == 0){
+										$("#9h"+dataHorario.id).text(dataHorario.preinscripciones);
+										$("#9h"+dataHorario.id).css("color","red");
+										$("#9h"+dataHorario.id).css("font-weight","bold");
 
+									}else{
+										$("#9h"+dataHorario.id).text(dataHorario.preinscripciones);	
+									}
+									
 									if(dataHorario.convocatoria == 1){
 										$("#7h"+dataHorario.id).text("Abierto");
+										$("#7h"+dataHorario.id).css("color","green");
 									}else{
 										$("#7h"+dataHorario.id).text("Cerrado");
+										$("#7h"+dataHorario.id).css("color","red");
+										$("#7h"+dataHorario.id).css("font-weight","bold");
+
 									}
 
 									alertify.success('<p style="color:black">Horario Actualizado .</p>');
@@ -1099,7 +1184,7 @@
 						});
 	            }
 
-				console.log(idHorario, idDisciplina, vacantes , convocatoria);
+				console.log(idHorario, idDisciplina, vacantes , convocatoria, preinscripciones);
 
 				
 			}
@@ -1118,6 +1203,17 @@
 			$("#diasTurno :checkbox").attr('checked', false);
 			$("#idDisciplina").val(idDisciplina2);
 			var idDisciplina = $("#idDisciplina").val();
+			
+			if( idDisciplina == 21){
+				$("#crear_discapacidad").on("change", function(event) { 
+				     validarGimnasia(this.value);
+				});
+				
+			}else{	
+				$("#crear_discapacidad").on("change", function(event) { 
+				     validar(this.value);
+				});
+			}
 		}
 		
 		/*CREAR NUEVO HORARIO*/
@@ -1132,6 +1228,7 @@
 				&& $("#edad-minima").val() != "" 
 				&& $("#edad-maxima").val() != "" 
 				&& $("#vacantes-horario").val() != "" 
+				&& $("#preinscripciones-horario") != ""
 				&& $("#crear_discapacidad").val() != "" 
 			) {
 
@@ -1147,149 +1244,287 @@
 				var edadMinima = parseInt($("#edad-minima").val());
 				var edadMaxima = parseInt($("#edad-maxima").val());
 				var vacantes = parseInt($("#vacantes-horario").val());
+				var preinscripciones = parseInt($("#preinscripciones-horario").val());
 				var discapacidad = parseInt($("#crear_discapacidad").val());
 				var idDisciplina = parseInt($("#idDisciplina").val());
 
-				if(
-					(
-						(discapacidad == 0 && edadMinima <= 17 && edadMaxima <= 17 ) 
-						|| 
-						(discapacidad == 1 && edadMinima <= 59 && edadMaxima <= 59 )
-					) 
-					&& (edadMinima >= 6) 
-					&& (edadMaxima >= 6) 
-					&& (edadMaxima >= edadMinima)
-				){
+				console.log("IdDisciplina Gimnasia =>",idDisciplina);
+				
+				if( idDisciplina  == 21 ){
 
-					if(
-						(
-							horFin > horIni 
-							|| 
-							(
-								horFin == horIni 
-								&& 
-								minFin >= minIni
-							)
-						)
-						&& horIni >= 0
-						&& horFin >= 0
-						&& horIni <= 24
-						&& horFin <= 24
-						&& minIni >= 0
-						&& minFin >= 0
-						&& minIni <= 60
-						&& minFin <= 60
-					){
+					if(((discapacidad == 0 && edadMinima <= 17 && edadMaxima <= 17 ) || (discapacidad == 1 && edadMinima <= 59 && edadMaxima <= 59 )) 
+						&& (edadMinima >= 4) 
+						&& (edadMaxima >= 4) 
+						&& (edadMaxima >= edadMinima))
+					{
 
-						if (vacantes >= 0) {
+						if(
+							( horFin > horIni || (horFin == horIni && minFin >= minIni))
 
-							var dataCrearHorario={
-								"turno" : turno,
-								"horarioInicio" : horarioInicio,
-								"horarioFin" : horarioFin,
-								"edadMinima" :edadMinima,
-								"edadMaxima" : edadMaxima,
-								"vacantes" : vacantes,
-								"discapacidad" : discapacidad,
-								"idDisciplina" : idDisciplina
-							}
+							&& horIni >= 0
+							&& horFin >= 0
+							&& horIni <= 24
+							&& horFin <= 24
+							&& minIni >= 0
+							&& minFin >= 0
+							&& minIni <= 60
+							&& minFin <= 60
+						){
+							if (vacantes >= 0 && preinscripciones >= 0) {
+								
+								if( preinscripciones > vacantes){
 
-
-							$.ajax({
-								type:'POST',
-								dataType: 'json',
-								url: "{{url('akademia_crearHorario')}}",
-								data: dataCrearHorario,
-								beforeSend: function()
-								{
-
-								},
-								success: function(data)
-								{
-									diasElegidos = [];
-					
-									if (data == 1){
-										clearDataCrear();
-										alertify.error('<p style="color:white">Ya existe un horario con estas mismas características. </p>');
+									var dataCrearHorario={
+										"turno" : turno,
+										"horarioInicio" : horarioInicio,
+										"horarioFin" : horarioFin,
+										"edadMinima" :edadMinima,
+										"edadMaxima" : edadMaxima,
+										"vacantes" : vacantes,
+										"preinscripciones" : preinscripciones,
+										"discapacidad" : discapacidad,
+										"idDisciplina" : idDisciplina
 									}
-									else if (data == 2){
-										clearDataCrear();
-										alertify.error('<p style="color:white">Se produjo un error al crear el horario.</p>');
-									
-									}else {
-										var tdhorario = '';
-										var idDisciplina = $("#idDisciplina").val();
-										var dataHorario =JSON.parse(data)[0];
-										let horaInicio = String(dataHorario.horaInicio).split(":");
-										let horaFin = String(dataHorario.horaFin).split(":");
-										
-										tdhorario+='<tr>';
 
-										tdhorario+='<td id="1h'+dataHorario.id+'" class="text-center">'+ dataHorario.id +'</td>';
-										tdhorario+='<td id="2h'+dataHorario.id+'" class="text-center">'+ dataHorario.turno +'</td>';
-										tdhorario+='<td id="3h'+dataHorario.id+'" class="text-center">'+horaInicio[0]+':'+horaInicio[1]+' - '+horaFin[0]+':'+horaFin[1]+'</td>';
+									$.ajax({
+										type:'POST',
+										dataType: 'json',
+										url: "{{url('akademia_crearHorario')}}",
+										data: dataCrearHorario,
+										beforeSend: function()
+										{
 
-										if(dataHorario.edadMinima!=dataHorario.edadMaxima){
-
-											tdhorario+='<td id="4h'+dataHorario.id+'" class="text-center">'+ dataHorario.edadMinima+' - '+dataHorario.edadMaxima+ ' años </td>';
-
-										}else{
-
-											tdhorario+='<td id="4h'+dataHorario.id+'" class="text-center">'+ dataHorario.edadMinima+ ' años </td>';
-										}
-
-
-
-										tdhorario+='<td id="5h'+dataHorario.id+'" class="text-center">'+ dataHorario.vacantes +'</td>';
-
-										if (dataHorario.discapacitados == 0){
+										},
+										success: function(data)
+										{
+											diasElegidos = [];
+							
+											if (data == 1){
+												clearDataCrear();
+												alertify.error('<p style="color:white">Ya existe un horario con estas mismas características. </p>');
+											}
+											else if (data == 2){
+												clearDataCrear();
+												alertify.error('<p style="color:white">Se produjo un error al crear el horario.</p>');
 											
-											tdhorario+='<td id="6h'+dataHorario.id+'" class="text-center">No</td>';
-										}else{
-											
-											tdhorario+='<td id="6h'+dataHorario.id+'" class="text-center">Si</td>';
-										}
-										if (dataHorario.convocatoria == 0 ){
-											
-											tdhorario+='<td id="7h'+dataHorario.id+'" class="text-center"> Cerrado </td>';
-										}else{
+											}else {
+												var tdhorario = '';
+												var idDisciplina = $("#idDisciplina").val();
+												var dataHorario =JSON.parse(data)[0];
+												let horaInicio = String(dataHorario.horaInicio).split(":");
+												let horaFin = String(dataHorario.horaFin).split(":");
+												
+												tdhorario+='<tr>';
 
-											tdhorario+='<td id="7h'+dataHorario.id+'" class="text-center"> Abierto </td>';
-										}
+												tdhorario+='<td id="1h'+dataHorario.id+'" class="text-center">'+ dataHorario.id +'</td>';
+												tdhorario+='<td id="2h'+dataHorario.id+'" class="text-center">'+ dataHorario.turno +'</td>';
+												tdhorario+='<td id="3h'+dataHorario.id+'" class="text-center">'+horaInicio[0]+':'+horaInicio[1]+' - '+horaFin[0]+':'+horaFin[1]+'</td>';
 
-										tdhorario+='<td id="8h'+dataHorario.id+'" class="text-center">'+ dataHorario.inscritos +'</td>';
-										tdhorario+='<td><button title="Editar horario" type="button" id="'+dataHorario.id+'" onclick="editarHorario('+dataHorario.id+','+idDisciplina+')" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1.1em; margin-top:5px" ></i></button></td>';
-										tdhorario+='<td><a href="/academia/web/beneficiarios/'+dataHorario.id+'"  title="Mostrar Inscritos" type="button" class="btn btn-default"><i class="icon-checklist" style="font-size: 1.3em;"></i></a></td>';
-										tdhorario+='</tr>';
-										
-										$('#1'+idDisciplina).append(tdhorario);
-										$("#modal-crear").modal('hide');
-										clearDataCrear();
-										alertify.success('<p style="color:white"> El horario fue creado exitosamente. </p>');
-									}
-								},
-								error: function(error)
-								{
-									alertify.error('<p style="color:black">Se produjo un error en el registro. </p>');
-									console.log("Error En la captura de data!! . ");
-									console.log(error);
+												if(dataHorario.edadMinima!=dataHorario.edadMaxima){
+
+													tdhorario+='<td id="4h'+dataHorario.id+'" class="text-center">'+ dataHorario.edadMinima+' - '+dataHorario.edadMaxima+ ' años </td>';
+
+												}else{
+
+													tdhorario+='<td id="4h'+dataHorario.id+'" class="text-center">'+ dataHorario.edadMinima+ ' años </td>';
+												}
+
+
+
+												tdhorario+='<td id="5h'+dataHorario.id+'" class="text-center">'+ dataHorario.vacantes +'</td>';
+
+												if (dataHorario.discapacitados == 0){
+													
+													tdhorario+='<td id="6h'+dataHorario.id+'" class="text-center">No</td>';
+												}else{
+													
+													tdhorario+='<td id="6h'+dataHorario.id+'" class="text-center">Si</td>';
+												}
+												if (dataHorario.convocatoria == 0 ){
+													
+													tdhorario+='<td id="7h'+dataHorario.id+'" class="text-center"> Cerrado </td>';
+												}else{
+
+													tdhorario+='<td id="7h'+dataHorario.id+'" class="text-center"> Abierto </td>';
+												}
+
+												tdhorario+='<td id="8h'+dataHorario.id+'" class="text-center">'+ dataHorario.inscritos +'</td>';
+												tdhorario+='<td id="9h'+dataHorario.id+'" class="text-center">'+ dataHorario.preinscripciones +'</td>';
+												tdhorario+='<td><button title="Editar horario" type="button" id="'+dataHorario.id+'" onclick="editarHorario('+dataHorario.id+','+idDisciplina+')" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1.1em; margin-top:5px" ></i></button></td>';
+												tdhorario+='<td><a href="/academia/web/beneficiarios/'+dataHorario.id+'"  title="Mostrar Inscritos" type="button" class="btn btn-default"><i class="icon-checklist" style="font-size: 1.3em;"></i></a></td>';
+												tdhorario+='</tr>';
+												
+												$('#1'+idDisciplina).append(tdhorario);
+												$("#modal-crear").modal('hide');
+												clearDataCrear();
+												alertify.success('<p style="color:white"> El horario fue creado exitosamente. </p>');
+											}
+										},
+										error: function(error)
+										{
+											alertify.error('<p style="color:black">Se produjo un error en el registro. </p>');
+											console.log("Error En la captura de data!! . ");
+											console.log(error);
+										}
+									});
+
+								}else{
+									showAlertMessage('#alerta-errorCrear', "Verifique que la cantidad de Pre-inscripciones se mayor al número de Vacantes disponibles.");
 								}
-							});
 
+							}else{
 
+								showAlertMessage('#alerta-errorCrear', "Verifique que el numero de vacantes sean correctas");
+							}
+							
 						}else{
 
-							showAlertMessage('#alerta-errorCrear', "Verifique que el numero de vacantes sean correctas");
+							showAlertMessage('#alerta-errorCrear', "Verifique que los horarios ingresados sean correctos");
 						}
-						
-					}else{
 
-						showAlertMessage('#alerta-errorCrear', "Verifique que los horarios ingresados sean correctos");
+					}else{
+						
+						showAlertMessage('#alerta-errorCrear', "Verifique que las edades ingresadas estén correctas");
 					}
+
+
 
 				}else{
 
-					showAlertMessage('#alerta-errorCrear', "Verifique que las edades ingresadas estén correctas");
+					if(((discapacidad == 0 && edadMinima <= 17 && edadMaxima <= 17 ) || (discapacidad == 1 && edadMinima <= 59 && edadMaxima <= 59 )) 
+						&& (edadMinima >= 6) 
+						&& (edadMaxima >= 6) 
+						&& (edadMaxima >= edadMinima))
+					{
+
+						if(
+							( horFin > horIni || (horFin == horIni && minFin >= minIni))
+
+							&& horIni >= 0
+							&& horFin >= 0
+							&& horIni <= 24
+							&& horFin <= 24
+							&& minIni >= 0
+							&& minFin >= 0
+							&& minIni <= 60
+							&& minFin <= 60
+						){
+							if (vacantes >= 0 && preinscripciones >= 0) {
+								
+								if( preinscripciones > vacantes){
+
+									var dataCrearHorario={
+										"turno" : turno,
+										"horarioInicio" : horarioInicio,
+										"horarioFin" : horarioFin,
+										"edadMinima" :edadMinima,
+										"edadMaxima" : edadMaxima,
+										"vacantes" : vacantes,
+										"preinscripciones" : preinscripciones,
+										"discapacidad" : discapacidad,
+										"idDisciplina" : idDisciplina
+									}
+
+									$.ajax({
+										type:'POST',
+										dataType: 'json',
+										url: "{{url('akademia_crearHorario')}}",
+										data: dataCrearHorario,
+										beforeSend: function()
+										{
+
+										},
+										success: function(data)
+										{
+											diasElegidos = [];
+							
+											if (data == 1){
+												clearDataCrear();
+												alertify.error('<p style="color:white">Ya existe un horario con estas mismas características. </p>');
+											}
+											else if (data == 2){
+												clearDataCrear();
+												alertify.error('<p style="color:white">Se produjo un error al crear el horario.</p>');
+											
+											}else {
+												var tdhorario = '';
+												var idDisciplina = $("#idDisciplina").val();
+												var dataHorario =JSON.parse(data)[0];
+												let horaInicio = String(dataHorario.horaInicio).split(":");
+												let horaFin = String(dataHorario.horaFin).split(":");
+												
+												tdhorario+='<tr>';
+
+												tdhorario+='<td id="1h'+dataHorario.id+'" class="text-center">'+ dataHorario.id +'</td>';
+												tdhorario+='<td id="2h'+dataHorario.id+'" class="text-center">'+ dataHorario.turno +'</td>';
+												tdhorario+='<td id="3h'+dataHorario.id+'" class="text-center">'+horaInicio[0]+':'+horaInicio[1]+' - '+horaFin[0]+':'+horaFin[1]+'</td>';
+
+												if(dataHorario.edadMinima!=dataHorario.edadMaxima){
+
+													tdhorario+='<td id="4h'+dataHorario.id+'" class="text-center">'+ dataHorario.edadMinima+' - '+dataHorario.edadMaxima+ ' años </td>';
+
+												}else{
+
+													tdhorario+='<td id="4h'+dataHorario.id+'" class="text-center">'+ dataHorario.edadMinima+ ' años </td>';
+												}
+
+
+
+												tdhorario+='<td id="5h'+dataHorario.id+'" class="text-center">'+ dataHorario.vacantes +'</td>';
+
+												if (dataHorario.discapacitados == 0){
+													
+													tdhorario+='<td id="6h'+dataHorario.id+'" class="text-center">No</td>';
+												}else{
+													
+													tdhorario+='<td id="6h'+dataHorario.id+'" class="text-center">Si</td>';
+												}
+												if (dataHorario.convocatoria == 0 ){
+													
+													tdhorario+='<td id="7h'+dataHorario.id+'" class="text-center"> Cerrado </td>';
+												}else{
+
+													tdhorario+='<td id="7h'+dataHorario.id+'" class="text-center"> Abierto </td>';
+												}
+
+												tdhorario+='<td id="8h'+dataHorario.id+'" class="text-center">'+ dataHorario.inscritos +'</td>';
+												tdhorario+='<td id="9h'+dataHorario.id+'" class="text-center">'+ dataHorario.preinscripciones +'</td>';
+												tdhorario+='<td><button title="Editar horario" type="button" id="'+dataHorario.id+'" onclick="editarHorario('+dataHorario.id+','+idDisciplina+')" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1.1em; margin-top:5px" ></i></button></td>';
+												tdhorario+='<td><a href="/academia/web/beneficiarios/'+dataHorario.id+'"  title="Mostrar Inscritos" type="button" class="btn btn-default"><i class="icon-checklist" style="font-size: 1.3em;"></i></a></td>';
+												tdhorario+='</tr>';
+												
+												$('#1'+idDisciplina).append(tdhorario);
+												$("#modal-crear").modal('hide');
+												clearDataCrear();
+												alertify.success('<p style="color:white"> El horario fue creado exitosamente. </p>');
+											}
+										},
+										error: function(error)
+										{
+											alertify.error('<p style="color:black">Se produjo un error en el registro. </p>');
+											console.log("Error En la captura de data!! . ");
+											console.log(error);
+										}
+									});
+
+								}else{
+									showAlertMessage('#alerta-errorCrear', "Verifique que la cantidad de Pre-inscripciones se mayor al número de Vacantes disponibles.");
+								}
+
+							}else{
+
+								showAlertMessage('#alerta-errorCrear', "Verifique que el numero de vacantes sean correctas");
+							}
+							
+						}else{
+
+							showAlertMessage('#alerta-errorCrear', "Verifique que los horarios ingresados sean correctos");
+						}
+
+					}else{
+						
+						showAlertMessage('#alerta-errorCrear', "Verifique que las edades ingresadas estén correctas");
+					}
 
 				}
 
@@ -1347,6 +1582,8 @@
 	
 	function crearDisciplina(){
 		var disciplina = $("#Disciplina").val();
+		console.log(disciplina);
+
 		if(disciplina != ""){
 			var Datadisciplina = {
 				"idDisciplina" : disciplina
