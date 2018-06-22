@@ -82,12 +82,10 @@
 													<th class="text-center" style="font-size:14px">Turno</th> 
 													<th class="text-center" style="font-size:14px">Hora</th>
 													<th class="text-center" style="font-size:14px">Edades</th> 
-													<!--<th class="text-center" style="font-size:14px">Vacantes</th>-->
 													<th class="text-center" style="font-size:14px">Discapacitad</th>
 													<th class="text-center" style="font-size:14px">Convocatoria</th>
 													<th class="text-center" style="font-size:14px" colspan="2"> Vacantes</th> 
 													<th class="text-center" style="font-size:14px">Inscritos</th>
-													<!--<th class="text-center" style="font-size:14px">Preinscritos</th>-->
 													<th></th>
 													<th></th>
 												</tr>
@@ -1329,10 +1327,6 @@
 													tdhorario+='<td id="4h'+dataHorario.id+'" class="text-center">'+ dataHorario.edadMinima+ ' años </td>';
 												}
 
-
-
-												tdhorario+='<td id="5h'+dataHorario.id+'" class="text-center">'+ dataHorario.vacantes +'</td>';
-
 												if (dataHorario.discapacitados == 0){
 													
 													tdhorario+='<td id="6h'+dataHorario.id+'" class="text-center">No</td>';
@@ -1340,16 +1334,25 @@
 													
 													tdhorario+='<td id="6h'+dataHorario.id+'" class="text-center">Si</td>';
 												}
+
 												if (dataHorario.convocatoria == 0 ){
 													
-													tdhorario+='<td id="7h'+dataHorario.id+'" class="text-center"> Cerrado </td>';
+													tdhorario+='<td id="7h'+dataHorario.id+'" class="text-center" style="color:red; font-weight:bold;"> Cerrado </td>';
 												}else{
 
-													tdhorario+='<td id="7h'+dataHorario.id+'" class="text-center"> Abierto </td>';
+													tdhorario+='<td id="7h'+dataHorario.id+'" class="text-center" style="color:green"> Abierto </td>';
 												}
 
+												if(dataHorario.preinscripciones == 0){
+													tdhorario+='<td id="9h'+dataHorario.id+'" class="text-center" style="color:red;">'+ dataHorario.preinscripciones +'</td>';
+												}else{
+
+													tdhorario+='<td id="9h'+dataHorario.id+'" class="text-center">'+ dataHorario.preinscripciones +'</td>';
+												}
+											
+												tdhorario+='<td id="5h'+dataHorario.id+'" class="text-center">'+ dataHorario.vacantes +'</td>';
+												
 												tdhorario+='<td id="8h'+dataHorario.id+'" class="text-center">'+ dataHorario.inscritos +'</td>';
-												tdhorario+='<td id="9h'+dataHorario.id+'" class="text-center">'+ dataHorario.preinscripciones +'</td>';
 												tdhorario+='<td><button title="Editar horario" type="button" id="'+dataHorario.id+'" onclick="editarHorario('+dataHorario.id+','+idDisciplina+')" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1.1em; margin-top:5px" ></i></button></td>';
 												tdhorario+='<td><a href="/academia/web/beneficiarios/'+dataHorario.id+'"  title="Mostrar Inscritos" type="button" class="btn btn-default"><i class="icon-checklist" style="font-size: 1.3em;"></i></a></td>';
 												tdhorario+='</tr>';
@@ -1369,7 +1372,7 @@
 									});
 
 								}else{
-									showAlertMessage('#alerta-errorCrear', "Verifique que la cantidad de Pre-inscripciones se mayor al número de Vacantes disponibles.");
+									showAlertMessage('#alerta-errorCrear', "Verifique que el Nº vacantes de Preinscritos sea mayor al Nº de vacantes de Inscritos.");
 								}
 
 							}else{
@@ -1468,10 +1471,6 @@
 													tdhorario+='<td id="4h'+dataHorario.id+'" class="text-center">'+ dataHorario.edadMinima+ ' años </td>';
 												}
 
-
-
-												tdhorario+='<td id="5h'+dataHorario.id+'" class="text-center">'+ dataHorario.vacantes +'</td>';
-
 												if (dataHorario.discapacitados == 0){
 													
 													tdhorario+='<td id="6h'+dataHorario.id+'" class="text-center">No</td>';
@@ -1479,16 +1478,25 @@
 													
 													tdhorario+='<td id="6h'+dataHorario.id+'" class="text-center">Si</td>';
 												}
+
 												if (dataHorario.convocatoria == 0 ){
 													
-													tdhorario+='<td id="7h'+dataHorario.id+'" class="text-center"> Cerrado </td>';
+													tdhorario+='<td id="7h'+dataHorario.id+'" class="text-center" style="color:red; font-weight:bold;"> Cerrado </td>';
 												}else{
 
-													tdhorario+='<td id="7h'+dataHorario.id+'" class="text-center"> Abierto </td>';
+													tdhorario+='<td id="7h'+dataHorario.id+'" class="text-center" style="color:green"> Abierto </td>';
 												}
 
+												if(dataHorario.preinscripciones == 0){
+													tdhorario+='<td id="9h'+dataHorario.id+'" class="text-center" style="color:red;">'+ dataHorario.preinscripciones +'</td>';
+												}else{
+
+													tdhorario+='<td id="9h'+dataHorario.id+'" class="text-center">'+ dataHorario.preinscripciones +'</td>';
+												}
+											
+												tdhorario+='<td id="5h'+dataHorario.id+'" class="text-center">'+ dataHorario.vacantes +'</td>';
+												
 												tdhorario+='<td id="8h'+dataHorario.id+'" class="text-center">'+ dataHorario.inscritos +'</td>';
-												tdhorario+='<td id="9h'+dataHorario.id+'" class="text-center">'+ dataHorario.preinscripciones +'</td>';
 												tdhorario+='<td><button title="Editar horario" type="button" id="'+dataHorario.id+'" onclick="editarHorario('+dataHorario.id+','+idDisciplina+')" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1.1em; margin-top:5px" ></i></button></td>';
 												tdhorario+='<td><a href="/academia/web/beneficiarios/'+dataHorario.id+'"  title="Mostrar Inscritos" type="button" class="btn btn-default"><i class="icon-checklist" style="font-size: 1.3em;"></i></a></td>';
 												tdhorario+='</tr>';

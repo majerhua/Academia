@@ -1020,6 +1020,13 @@ class DefaultController extends Controller
 
                 $em = $this->getDoctrine()->getManager();
                 $nuevoMovimiento = $em->getRepository('AkademiaBundle:Inscribete')->getBeneficiarioRetirado($idFicha);
+
+                $horario = $em->getRepository('AkademiaBundle:Inscribete')->getHorarioFicha($idFicha);
+                $idHorario = $horario[0]['idHorario'];
+               
+                if(!empty($idHorario)){
+                    $em->getRepository('AkademiaBundle:Inscribete')->getActInscritosVigentes($idHorario);
+                }
             }
             if(empty($nuevoMovimiento)){
                 $mensaje = 1;
