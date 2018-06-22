@@ -261,10 +261,10 @@ label[for="imagen-ficha"] {
 
 	width: 100%;
 	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
 	align-items: center;
-	align-items: center;
-	height:100vh; 
-	justify-content: center;
+
 }
 
 .container-card{
@@ -412,7 +412,7 @@ label[for="imagen-ficha"] {
 
 .complejo{
 
-	padding:2px; 
+	padding:7px; 
 	width:100%;			
 
 }
@@ -884,13 +884,4 @@ a:hover{
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-}
-
-
-
-@media (max-width: 1350px) {
-  .complejo-titulo {
-    font-size: 0.8em;
-  }
-
 }
