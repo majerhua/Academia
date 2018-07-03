@@ -280,7 +280,8 @@ class DefaultController extends FOSRestController
       $organizacionUsuario = $datosUsuario[0]['organizacion'];
       $telefonoUsuario = $datosUsuario[0]['telefono'];
 
-      $correo = 'consultasacademiaipd@gmail.com';
+      $correo = 'appacademia@ipd.gob.pe';
+      
     
       $subject = 'Reclutamiento de talento por '. $nombreUsuario.'';
 

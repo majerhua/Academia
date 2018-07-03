@@ -44,7 +44,7 @@
 				{% endif %}
 			{% endif %}
 
-			<h4 style="color:grey">ADMINISTRACION DE HORARIOS</h4>
+			<h4 style="color:grey">ADMINISTRACIÓN DE HORARIOS</h4>
 
 			<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px; margin-bottom: 20px;">
 				<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
@@ -75,7 +75,7 @@
 
 									<div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:50vh; ">			
 
-										<table class="table"  style="width: 100%;"> 
+										<table class="table"  style="width: 100%; "> 
 											<thead style="background:#cb2f1d; color:#F2F2F2;" class="text-center"> 
 												<tr> 
 													<th class="text-center" style="font-size:14px" >Código</th>
@@ -85,7 +85,7 @@
 													<th class="text-center" style="font-size:14px">Discapacitad</th>
 													<th class="text-center" style="font-size:14px">Convocatoria</th>
 													<th class="text-center" style="font-size:14px" colspan="2"> Vacantes</th> 
-													<th class="text-center" style="font-size:14px">Inscritos</th>
+													<th class="text-center" style="font-size:14px">Matriculados</th>
 													<th></th>
 													<th></th>
 												</tr>
@@ -102,18 +102,12 @@
 													<th></th>
 													<th></th>
 												</tr>
-
 											</thead> 
 											
-											
-
 											<tbody id="1{{complejosDisciplina['idDisciplina']}}" class="buscar" > 
 											
-
 											{% for horario in horarios %}
-
 											{% if horario['idDisciplina'] == complejosDisciplina['idDisciplina'] %}
-											
 												<tr> 
 													<td id="1h{{horario['idHorario']}}" class="text-center">{{horario['idHorario']}}</td> 
 													<td id="2h{{horario['idHorario']}}" class="text-center">{{horario['turno']}}</td> 
@@ -345,6 +339,8 @@
 											/>	
 										</div>
 									</div>
+									<br>
+									<p style="font-size:12px; color:grey"> * El Nº de vacantes de preinscritos debe ser mayor al Nº de vacantes de inscritos.</p>
 								</li>					
 
 
@@ -363,7 +359,9 @@
 										</div>
 									</div>
 								</li>	
+
 							</ul>
+							<div id="alerta-errorEditarVacante" class="alert alert-danger collapse text-center"></div>
 						</div>
 						<hr>
 						<div class="form-group col-xs-12 col-sm-12 col-md-12 col-ld-12 ">
@@ -390,7 +388,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 				<input id="btn-actualizar" type="button" class="btn btn-danger" data-dismiss="modal" onclick="actualizarHorario()" value="Actualizar">
-				<!--<button id="btn-actualizar" type="button" class="btn btn-danger" data-dismiss="modal" onclick="" value="Actualizar"></button>-->
+			
 			</div>
 		</div>
 	</div>
@@ -589,7 +587,6 @@
 									</div>
 								</div>
 							</li>
-							<div id="alerta-errorCrearVacante" class="alert alert-danger collapse text-center"></div>
 							<li class="list-group-item">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
@@ -623,7 +620,7 @@
 								<br>
 								<p style="font-size:14px; color:grey"> * El Nº de vacantes de preinscritos debe ser mayor al Nº de vacantes de inscritos.</p>
 							</li>		
-
+							<div id="alerta-errorCrearVacante" class="alert alert-danger collapse text-center"></div>
 						</ul>
 					</div>
 				</div>
@@ -1040,11 +1037,9 @@
 							
 							}else{
 
-
 								var confirmarHorario = function(callback){
-								 	
+			
 									$("#confirmarEliminarHorario").modal('show');					
-
 									$("#modal-btn-si-horario").on("click", function(){
 								    	callback(true);
 								    	$("#confirmarEliminarHorario").modal('hide');
@@ -1111,11 +1106,15 @@
 	            }else if(parseInt($("#editar_vacantes_horario").val())<0){
 					alertify.error('<p style="color:white">Verifique el número de vacantes. </p>');
 
-	            }else if(parseInt($("#editar_preinscripciones_horario").val())<0){
-	            	alertify.error('<p style="color:white">Verifique el número de pre inscripciones. </p>');
+	            }else if(parseInt($("#editar_preinscripciones_horario").val()) < parseInt($("#editar_vacantes_horario").val())){
+	            	//alertify.error('<p style="color:white">Verifique que la cantidad de Pre-inscripciones se mayor al número de Vacantes disponibles</p>');
+	            	$("#btn-actualizar").attr("data-dismiss", "");
+	            	showAlertMessage('#alerta-errorEditarVacante', "Verifique que el Nº vacantes de Preinscritos sea mayor al Nº de vacantes de Inscritos.");
 
 	            }else if($("#editar_convocatoria_horario").val()!= "" && $("#editar_vacantes_horario").val()!="" && $("#editar_preinscripciones_horario").val() != ""){
 	            		
+	            		$("#btn-actualizar").attr("data-dismiss", "modal");
+
 			           	var idHorario = $("#editar_codigo_horario").text();
 						var vacantes = $("#editar_vacantes_horario").val();
 						var preinscripciones = $("#editar_preinscripciones_horario").val()
@@ -1161,6 +1160,7 @@
 
 									}else{
 										$("#9h"+dataHorario.id).text(dataHorario.preinscripciones);	
+										$("#9h"+dataHorario.id).css("color","black");
 									}
 									
 									if(dataHorario.convocatoria == 1){
@@ -1273,7 +1273,7 @@
 						){
 							if (vacantes >= 0 && preinscripciones >= 0) {
 								
-								if( preinscripciones > vacantes){
+								if( preinscripciones >= vacantes){
 
 									var dataCrearHorario={
 										"turno" : turno,
@@ -1376,6 +1376,7 @@
 
 								}else{
 									showAlertMessage('#alerta-errorCrearVacante', "Verifique que el Nº vacantes de Preinscritos sea mayor al Nº de vacantes de Inscritos.");
+
 								}
 
 							}else{
@@ -1417,7 +1418,7 @@
 						){
 							if (vacantes >= 0 && preinscripciones >= 0) {
 								
-								if( preinscripciones > vacantes){
+								if( preinscripciones >= vacantes){
 
 									var dataCrearHorario={
 										"turno" : turno,
@@ -1519,7 +1520,7 @@
 									});
 
 								}else{
-									showAlertMessage('#alerta-errorCrearVacante', "Verifique que la cantidad de Pre-inscripciones se mayor al número de Vacantes disponibles.");
+									showAlertMessage('#alerta-errorCrearVacante', "Verifique que la cantidad de Pre-inscripciones se mayor al número de vacantes disponibles.");
 								}
 
 							}else{

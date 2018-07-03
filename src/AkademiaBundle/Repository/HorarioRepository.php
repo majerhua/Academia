@@ -80,7 +80,8 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
                     ACADEMIA.horario as hor inner join CATASTRO.edificacionDisciplina as edi on hor.edi_codigo = edi.edi_codigo
                     inner join CATASTRO.disciplina as dis on edi.dis_codigo = dis.dis_codigo
                     inner join CATASTRO.edificacionesdeportivas as ede on edi.ede_codigo = ede.ede_codigo
-                    where ede.ede_codigo =$idcomplejo and dis.dis_estado = 1 and hor.estado = 1";
+                    where ede.ede_codigo =$idcomplejo and dis.dis_estado = 1 and hor.estado = 1
+                    ORDER BY  hor.id DESC; ";
 
             $stmt = $this->getEntityManager()->getConnection()->prepare($query);
             $stmt->execute();

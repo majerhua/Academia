@@ -678,7 +678,7 @@
 	            $("#dniApoderado").focus();
 	        break;
 	        case "carnet":
-	            document.getElementById("dniApoderado").setAttribute("maxlength", "12");
+	            document.getElementById("dniApoderado").setAttribute("maxlength", "15");
 	            $("#dniApoderado" ).show();
 	            $("#dniApoderado").focus();
 	        break;
@@ -689,6 +689,8 @@
     
 	    }
 	}	
+
+
 
 
 	$("#dni-hijo").hide();
@@ -705,7 +707,7 @@
 
 	        break;
 	        case "carnet":
-	            document.getElementById("dni-hijo").setAttribute("maxlength", "12");
+	            document.getElementById("dni-hijo").setAttribute("maxlength", "15");
 	            $("#dni-hijo").show();
 	            $("#dni-hijo").focus();
 	        break;
@@ -860,8 +862,22 @@
 		}	
 
 		$("#boton1").on('click',function(){
-             	
-             	var expreg = new RegExp("^[0-9]{8}$");
+
+
+				var $tipoDocumento = $("#tipo_documento");
+				console.log($tipoDocumento.val());
+
+		     	switch($tipoDocumento.val()){
+		     		case "dni":
+							var expreg = new RegExp("^[0-9]{8}$");
+							console.log("Ingreso a dni");
+		 					break;
+		 			case "carnet":
+		 					console.log("Ingreso a carnet");
+						    var expreg = new RegExp("^[0-9]{1,15}$");
+							break;
+		     	}
+ 
                	var dniApoderadoPaso1 = $("#dniApoderado").val();	 
                	var fechaApoderadoPaso1 = $("#fechaNacimiento").val();	
            		var edadApoderado = calcularEdad(fechaApoderadoPaso1);
