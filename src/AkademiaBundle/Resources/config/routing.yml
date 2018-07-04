@@ -3,6 +3,15 @@
  #   path: /exporExcelPrueba
   #  defaults: { _controller: AkademiaBundle:ExportacionData:exportPrueba }
 
+
+##PAGINA principal
+
+akademia_paginaPrincipal:
+    path: /pagina-principal/{estado}
+    defaults: { _controller: AkademiaBundle:Default:paginaPrincipal}
+
+##END
+
 entradas_list:
     path: /pruebas/entradas
     defaults: { _controller: AppBundle:Pruebas:entradas}

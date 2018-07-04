@@ -2,15 +2,31 @@
 {% block title %}La Academia{% endblock %}
 {% block body  %}
 
-<div class="proceso">
+<div class="proceso" style="display:flex !important;align-items: center !important;height:100vh; justify-content: center !important; ">
+
 	<div class="proceso-inscripcion__horarios" id="process4">
+
 		<div class="container-card col-xs-12 col-sm-12 col-md-8 col-lg-7">
 			<div class="card">
 				<p class="title-card text-center">ELIGE UN COMPLEJO DEPORTIVO</p>
+
 				<hr>
-				<div class="complejo row">
+				<div class="complejo row" >
+
 					<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-3">
-						<label class="text-left">Departamento</label>
+		        		<label class="complejo-titulo" >Tipo Horario</label>
+		        		<div>
+			            	<select id="tipo-horario" name="tipo-horario" class="effect-3 " onchange="cambiarTipoHorario(this)" >
+			                	<option value=""> -- Seleccionar --</option>
+			                	<option value="0">No discapacitado</option>
+			                	<option value="1">Discapacitado</option>
+			            	</select>
+			            	<span class="focus-border"></span> 
+		            	</div>
+		        	</div>
+
+					<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-3">
+						<label class="text-left complejo-titulo">Departamento</label>
 						<div>
 			            	<select id="departamentoHorario" class="effect-3"  name="departamentoHorario" onchange="cambiarDepartamentoHorario(this)">
 			                	<option value="">--Seleccionar--</option>
@@ -29,7 +45,7 @@
 		        	</div>
 
 		            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-3">
-		            	<label class="text-left">Provincia</label>
+		            	<label class="text-left complejo-titulo">Provincia</label>
 		            	<div>
 		                	<select  id="provinciaHorario" class="effect-3"  name="provinciaHorario" onchange="cambiarProvinciaHorario(this)">
 		                    	<option value=""> -- Seleccionar --</option>
@@ -39,7 +55,7 @@
 		            </div>
 
 		            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-3">
-		            	<label class="text-left">Distrito</label>
+		            	<label class="text-left complejo-titulo">Distrito</label>
 		            	<div>
 		                	<select id="distritoHorario" name="distritoHorario" onchange="cambiarDistritoHorario(this)"  class="effect-3">
 		                    	<option value=""> -- Seleccionar --</option>
@@ -48,8 +64,8 @@
 		            	</div>
 		            </div>
 
-		            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-3">
-		        		<label class="text-left">Complejo Deportivo</label>
+		            <div class="form-group col-xs-12 col-sm-5 col-md-5 col-lg-3">
+		        		<label class="text-left complejo-titulo">Complejo Deportivo</label>
 		        		<div>
 		            		<select id="complejosDeportivo" name="complejosDeportivo" class="effect-3" onchange="cambiarComplejoDeportivo(this)">
 		                		<option value=""> -- Seleccionar --</option>
@@ -72,7 +88,7 @@
 				<hr>
 		        <div class="form-group container-select-deporte">
 		        	<div>
-		        		<label>Deporte </label>
+		        		<label class="complejo-titulo">Deporte </label>
 		            	<select id="disciplinaDeportiva" name="disciplinaDeportiva" class="effect-3 text" onchange="cambiarDisciplinaDeportiva(this)" >
 		                	<option value=""> -- Seleccionar --</option>
 		            	</select>
@@ -82,7 +98,7 @@
 		        <br>
 		        <div class="form-group container-select-deporte">
 		        	<div>
-		        		<label>Horario </label>
+		        		<label class="complejo-titulo" >Horario </label>
 		            	<select id="horario" name="horario" class="effect-3 " onchange="cambiarHorario(this)" >
 		                	<option value=""> -- Seleccionar --</option>
 		            	</select>
@@ -105,188 +121,63 @@
 		        </div>
 		        <br>
 		        <hr>
-		        <div class="form-group row" >
-		        	<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
-		        		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Otras Edades</button>
-		        	</div>
-					<div class="form-group container-boton-final col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
-						<button class="btn btn-danger" id="boton-next-final">Finalizar Pre-inscripción</button>
-					</div>	
-				</div>	
+			</div>
+		</div>
+
+	</div>
+
+	<div id="loader" class="loader"></div>
+
+
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">OTRAS EDADES</h4>
+			</div>
+			<div class="modal-body">
+				<div class="horario-otrasEdades" >
+				</div>
+			</div>
+			<div class="modal-footer">
+				<br>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 			</div>
 		</div>
 	</div>
-
-	<div class="proceso" id="process5">
-
-		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_DOCENTE') %}
-
-		<div class="row proceso">
-		
-			<div class="container-card col-xs-12 col-sm12 col-md-5 col-ld-5">
-				<div class="card">
-						<p class="title-card text-center">FICHA DE INSCRIPCIÓN</p>
-						<p class="title-card text-center">ACADEMIA IPD INVIERNO 2018</p>
-						<hr>
-						
-						<div id="alerta-confirmacionFicha" class="alert alert-success collapse"></div>
-						<div id="alerta-errorFicha" class="alert alert-danger collapse"></div>
-
-						<div class="row">
-
-							<a class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right" id="inscribirPreinscrito"><button id="btn-inscripcion" class="btn btn-danger"><i class="icon-pencil-square-o" style="font-size:1.3em;"></i> Confirmar Inscripción</button></a>
-
-						</div>
-						
-						<hr>
-						<div class="pdf_inscripcion__ficha row">
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-								<div class="campos col-xs-4 col-sm-4 col-md-4 col-lg-4"> 	
-									<p>Código de ficha</p>
-									<p>Nombre</p>
-									<p>Ape. Paterno</p>
-									<p>Ape. Materno</p>
-									<p>Distrito</p>
-									<p>Domicilio</p>
-									<p>Fecha Nacimiento</p>
-									<p>Teléfono</p>
-									<p>DNI</p>
-									<p>Edad</p>
-									<p>Email</p>
-									<p>Deporte</p>
-									<p>Complejo</p>
-									<p>Horario</p>
-								</div>
-
-								<div class="valores col-xs-8 col-sm-8 col-md-8 col-lg-8"> 
-									<p id="codigo-inscripcionRef"></p>
-									<p id="nombre-ficha"></p>
-									<p id="apellidoPaterni-ficha"></p>
-									<p id="apellidoMaterno-ficha"></p>
-									<p id="distrito-ficha"></p>
-									<p id="domicilio-ficha"></p>
-									<p id="fechaNacimiento-ficha"></p>
-									<p id="telefono-ficha"></p>
-									<p id="dni-ficha"></p>
-									<p id="edad-ficha"></p>
-									<p id="email-ficha"></p>
-									<p id="deporte-ficha"></p>
-									<p id="complejo-ficha"></p>
-									<p id="horario-ficha"></p>
-									<input type="hidden" name="codigo-inscripcion" id="codigo-inscripcion">
-								</div>
-							</div>
-							
-						</div>
-						<hr>
-						<div class="row">
-							
-							<a class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center" href="" id="ancla-imprimir-fichaInscripcion"  target="_blank" ><button id="btn-imprimir-fichaInscripcion"  class="btn btn-default" style="margin: 5px;"><i class="icon-print" style="font-size:1.3em;" ></i> Imprimir Ficha</button></a>
-
-							<a class="col-xs-12 col-sm-5 col-md-5 col-lg-5 text-center" href=""  id="ancla-imprimir-declaracion-jurada" target="_blank"><button id="btn-imprimir-declaracion-jurada" class="btn btn-default" style="margin: 5px;"><i class="icon-print" style="font-size:1.3em;"></i> Imprimir Declaración Jurada</button></a>
-					
-						</div>
-
-					</div>
-			</div>
-
-		</div>
-
-		{% else %}
-
-		<div class="row">
-
-			<div class="container-card col-xs-12 col-sm-12 col-md-8 col-lg-7">
-				<div class="card">
-					<p class="title-card text-center">PRE-INSCRIPCIÓN CONFIRMADA <i class="icon-checklist" style="font-size:1.4em;"></i></p>
-					<hr>
-					<p class="text-center">
-						Valida tu inscripción en el complejo deportivo <br> que seleccionaste de 3 p.m. a 6 p.m.
-	
-					</p><br>
-					<p class="text-center" style="color: #BB2626">
-						<strong>NO SE RESERVAN VACANTES.</strong>
-					</p>
-					<div class="lista-requisitos"> 
-						<p><strong>OBLIGATORIO</strong></p>
-						<ol>
-							<li>Presentar ficha de inscripción y declaración jurada firmada y con la huella dactilar del apoderado.</li>
-							<li>DNI del menor de edad y del apoderado (original y copia).</li>
-							<li>Presentar ficha de seguro activo (SIS, EsSalud, o privado).</li>
-							<li>Foto tamaño carnet del menor de edad (actual). </li>
-						</ol>
-					</div>
-					<hr>
-					<div class="row">
-						<a class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center" href="" id="ancla-imprimir-fichaInscripcion"  target="_blank" ><button id="btn-imprimir-fichaInscripcion"  class="btn btn-danger" style="margin: 5px;"><i class="icon-print" style="font-size:1.3em;" ></i> Imprimir Ficha</button></a>
-
-						<a class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center" href=""  id="ancla-imprimir-declaracion-jurada" target="_blank"><button id="btn-imprimir-declaracion-jurada" class="btn btn-danger" style="margin: 5px;"><i class="icon-print" style="font-size:1.3em;"></i> Imprimir Declaración Jurada</button></a>
-					</div>
-				</div>
-			</div>
-
-			<div class="container-card col-xs-12 col-sm-12 col-md-4 col-lg-5">
-				<div class="card">
-					<p class="title-card text-center">FICHA DE INSCRIPCIÓN</p>
-					<p class="title-card text-center">ACADEMIA IPD INVIERNO 2018</p>
-					<hr>
-					
-					<div id="alerta-confirmacion" class="alert alert-success collapse"></div>
-					<div id="alerta-error" class="alert alert-danger collapse"></div>
-					
-					<div class="pdf_inscripcion__ficha row">
-						<div class="campos col-xs-4 col-sm-4 col-md-4 col-lg-4"> 	
-
-							<p>Nombre</p>
-							<p>Ape. Paterno</p>
-							<p>Ape. Materno</p>
-							<p>Distrito</p>
-							<p>Domicilio</p>
-							<p>F.Nacimiento</p>
-							<p>Teléfono</p>
-							<p>DNI</p>
-							<p>Edad</p>
-							<p>Email</p>
-							<p>Deporte</p>
-							<p>Complejo</p>
-							<p>Horario</p>
-						</div>
-
-						<div class="valores col-xs-8 col-sm-8 col-md-8 col-lg-8"> 
-							<p id="nombre-ficha"></p>
-							<p id="apellidoPaterni-ficha"></p>
-							<p id="apellidoMaterno-ficha"></p>
-							<p id="distrito-ficha"></p>
-							<p id="domicilio-ficha"></p>
-							<p id="fechaNacimiento-ficha"></p>
-							<p id="telefono-ficha"></p>
-							<p id="dni-ficha"></p>
-							<p id="edad-ficha"></p>
-							<p id="email-ficha"></p>
-							<p id="deporte-ficha"></p>
-							<p id="complejo-ficha"></p>
-							<p id="horario-ficha"></p>
-							<input type="hidden" name="codigo-inscripcion" id="codigo-inscripcion">
-						</div>
-					</div>
-					<hr>
-				</div>
-			</div>
-
-		</div>
-
-		{% endif %}		
-	</div>
-
 </div>
 
 {% endblock %}
 
 {% block javascripts %}
-
+<script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
+<script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
 	<script>
 
 		$("#process5").hide();
+		$("#loader").hide();
+
+		var cambiarTipoHorario = (tipoHor)=>{
+
+			var valtipoHor = tipoHor.value;
+
+			$("#process4").hide();
+			$("#loader").show();
+
+			if(valtipoHor == 0){
+				window.location.href ="{{url('akademia_paginaPrincipal',{estado:'0'})}}";
+
+			}else{
+				window.location.href ="{{url('akademia_paginaPrincipal',{estado:'1'})}}";
+			}	 
+				
+			
+
+		}
 
 		var departamentoHorario = document.querySelector("#departamentoHorario");
 		var cambiarDepartamentoHorario = (depHor)=>{
@@ -430,19 +321,8 @@
 
 					if("{{horario['edi_codigo']}}" == idComplejoDisciplina){
 							
-    					if(parseInt(sessionStorage.getItem("edad")) >= parseInt("{{horario['edadMinima']}}") && parseInt(sessionStorage.getItem("edad")) <= parseInt("{{horario['edadMaxima']}}")){
-
-								localStorage.removeItem('idHorario');
-								sessionStorage.setItem("idHorario", "{{horario['id']}}");
-								
-								$("#horario").append("<option value={{horario['id']}} > {{horario['turno']}} " + " de "+horaInicio+" a "+horaFin+"</option>");
-								cantHorarios = cantHorarios + $('#horario').length;
-
-
-						}else{
-
-							$(".horario-otrasEdades").append("{{horario['edadMinima']}} a {{horario['edadMaxima']}} años  "+horaInicio+"  a  "+horaFin+" am. {{horario['turno']}}<br>");
-						}
+						$("#horario").append("<option value={{horario['id']}} > {{horario['turno']}} " + " de "+horaInicio+" a "+horaFin+" en edades de {{horario['edadMinima']}} a {{horario['edadMaxima']}} años</option>");
+						cantHorarios = cantHorarios + $('#horario').length;
 					}
 				{% endfor %}
 
@@ -472,7 +352,6 @@
 
 				var horaInicio ="{{horario['horaInicio']}}".substr(0,5);
 				var horaFin = "{{horario['horaFin']}}".substr(0,5);
-				var mensaje = "{{mensaje}}"
 
 				if("{{horario['id']}}" == idHorario){
 
@@ -500,20 +379,20 @@
 		}
 	
 
-	$("#boton-next-final").on('click',function(){
+$("#boton-next-final").on('click',function(){
 
-		var disciplinaDeportiva = document.getElementById('disciplinaDeportiva').value;
-		var horario =document.getElementById('horario').value;
+	var disciplinaDeportiva = document.getElementById('disciplinaDeportiva').value;
+	var horario =document.getElementById('horario').value;
+	
+	if( disciplinaDeportiva=="" || horario==""){
+			alertify.error('<p style="color:white">Debe seleccionar Disciplina y/o Horario </p>'); 
+	}else{
 		
-		if( disciplinaDeportiva=="" || horario==""){
-				alertify.error('<p style="color:white">Debe seleccionar Disciplina y/o Horario </p>'); 
-		}else{
-			
-			$("#process4").hide();
-			$("#process5").show('slow');	
-			registrar();
-		}
-	});
+		$("#process4").hide();
+		$("#process5").show('slow');	
+		registrar();
+	}
+});
 
 function registrar(){
 	var dataRegisterApoderado={
@@ -551,12 +430,8 @@ function registrar(){
 			$("#boton-next-final").attr("disabled", true);		
 		},
 		success: function(data){
-			
-			console.log(data);
 			$("#boton-next-final").attr("disabled", false);
-			
-			if(data != 1 ){
-
+			if(data != 1){
 				$(".bar-inscripcion__4").removeClass('active');
 				$(".bar-inscripcion__5").addClass('active');
 				$("#process4").hide();
@@ -583,22 +458,12 @@ function registrar(){
 				$("#nombrePadre-declaracion-jurada").append(valor.nombrePadre);
 				$("#codigo-inscripcion").val(valor.id);
 			    enviarEmailApoderado(valor.percorreo,valor.nombrePadre,valor.id);
-
 			}else{
-
-				//if( data == 1){
-					showAlertMessage('#alerta-error', "Lo sentimos, se agotaron las vacantes para este horario. ");
-					$("#boton-next-final").attr("disabled", true);
-					//$("#process5").hide();
-				//}else{
-
-				/*	showAlertMessage('#alerta-error', "Lo sentimos, Se excedió el límite de preinscripciones posibles para este horario.");
-					$("#boton-next-final").attr("disabled", true);
-					$("#process5").hide();
-				}*/
-			}		
+				showAlertMessage('#alerta-error', "Lo sentimos, se agotaron las vacantes para este horario. ");
+				$("#boton-next-final").attr("disabled", true);
+				$("#process5").hide();
+			}			
 		},
-
 		error: function(error){
 			console.log("Error - oh no!");
 		}
