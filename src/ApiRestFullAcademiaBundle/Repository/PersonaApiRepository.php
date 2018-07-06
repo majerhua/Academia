@@ -421,7 +421,7 @@ class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
                    par.visible_app as visibilidad,
                    par.comentarios as comentarios ,
                    par.id as idParticipante ,
-                   hor.discapacitados as discapacidad,    
+                   rtrim(hor.discapacitados) as discapacidad,    
                    YEAR(mov.fecha_modificacion) as anio  
                    FROM  ACADEMIA.movimientos AS mov
                    INNER JOIN (SELECT m.inscribete_id as mov_ins_id, MAX(m.id) mov_id FROM ACADEMIA.movimientos m

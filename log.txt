@@ -1,0 +1,1879 @@
+commit 5188c898bf1253b96705289d8cb0fa4a54171b93
+Merge: 993d9cb ce7fdfc
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jul 4 09:29:23 2018 -0500
+
+    merge con isabel - validaciones trello
+
+commit 993d9cb4f7720be5e6da262e975f10dd3c24a04c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Jul 3 18:21:59 2018 -0500
+
+    observaciones trello - actualizacion en cant de inscritos horario - mod Javier carnet -estilo tabla
+
+commit ce7fdfcce65666f9177e83722346c5d12a5e730a
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 22 11:57:37 2018 -0500
+
+    modificando bd dni en apoderado y beneficiario
+
+commit 8cb6728ef0a932b65bd411bc3fd14467bf743e54
+Merge: fafba9a 74732b2
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 22 11:04:31 2018 -0500
+
+    Merge branch 'isabel' into desarrollo
+
+commit 74732b272c70b21c7556907c3073ffc255e22c52
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jun 22 11:03:04 2018 -0500
+
+    mensjae modal inferior
+
+commit fafba9a7e6b1594c2a575ab50c3b821fe618d26e
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 22 11:02:28 2018 -0500
+
+    cambiando nombre estilos css
+
+commit f01af5bdc8d0150f5534f6e862f2c35398098f36
+Merge: ffe2d04 6dcf448
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 22 10:57:10 2018 -0500
+
+    Merge branch 'javier' into desarrollo
+
+commit 6dcf44829e90675771f93508d94475b15e5ae8d0
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 22 10:56:54 2018 -0500
+
+    agregando archivos css de isabel
+
+commit 3686bd893c9f1888d1318b81ee4b015fc38d440e
+Merge: e14f17b 04437b5
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 22 10:46:41 2018 -0500
+
+    Merge branch 'isabel' into javier
+
+commit ffe2d04053232babcc818dc0ec35b7e065318fc8
+Merge: e14f17b 04437b5
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 22 10:38:12 2018 -0500
+
+    Merge branch 'isabel' into desarrollo
+
+commit 04437b5d322fce422057788e6a29eb510c73665a
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jun 22 10:37:38 2018 -0500
+
+    mensaje de vacantes de inscritos y presinscritos horarios
+
+commit e14f17bcd927ee31ab311526e033034a6ab2c774
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 22 10:28:30 2018 -0500
+
+    modificando input dno y carnet extranjeria, cambiando correo envio talento app
+
+commit 1e13f07a12a4bccf7fdc7683f0ac84db4a7e370a
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jun 22 10:26:40 2018 -0500
+
+    cant de inscripciones vigentes , horarios
+
+commit fbfb15e533a434ab85f31cdf05e3ddcda217b786
+Merge: 5e6f798 d6e80e5
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 22 09:31:48 2018 -0500
+
+    Merge branch 'isabel' into javier
+
+commit d6e80e5c372622ae3d913aeeca5487159cc8fa1a
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Jun 21 13:22:50 2018 -0500
+
+    cambios trello - validaciones gimnasia, cambios de cant preinscritos
+
+commit 01b8c041d6401196c2a88d5103a4c4a5b6354241
+Merge: 05a1589 2feeb59
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Jun 19 17:59:09 2018 -0500
+
+    cambios javier
+
+commit 05a15891b967ba4d6f572fe6f9d93782ecb7097c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Jun 19 17:49:32 2018 -0500
+
+    implementacion de preinscripcion en horarios, index principal - cambios de actualizacion y creacion de horarios - ordenar diisciplinas export
+
+commit 5e6f798e3e504a1803cb0575707bffe4b040c009
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Tue Jun 19 13:03:31 2018 -0500
+
+    agregar modulo visualizar horarios
+
+commit 13abe6df966809c1f51fd9970707763935ae7eae
+Merge: 4dba092 a0fdb12
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Tue Jun 19 09:42:55 2018 -0500
+
+    CAMBIOS MASTER AGREGADO
+
+commit 4dba09268dfe6236d234e7cfb5ed35c5b8fa0075
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Tue Jun 19 09:41:37 2018 -0500
+
+    trayendo cambios master
+
+commit a0fdb12addc40ba91292457eb817cb2a2026bbcd
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Wed Jun 13 11:38:01 2018 -0500
+
+    cambiando config config
+
+commit 0bffc21d3512bf8c102e10fde23dafc9077088ca
+Merge: 1d9bce5 761f08b
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Wed Jun 13 11:36:20 2018 -0500
+
+    cambios desarrollo
+
+commit 1d9bce5f89fb4c0c74cf6da0f4e5e62d663a0a72
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Wed Jun 13 11:35:53 2018 -0500
+
+    trayendo cambios desarrollo
+
+commit 761f08ba86354f024980d1c48679ff0c37242252
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Wed Jun 13 11:32:58 2018 -0500
+
+    agregando nueva pagina principal
+
+commit 543553cfbeb40f84a7a980853e2ecb452062e785
+Merge: 3677c7e 0af8771
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Tue Jun 12 09:34:21 2018 -0500
+
+    trayendo cambios desarrollo
+
+commit 3677c7e4751445a029e0c23193e839d2e8cf88db
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Tue Jun 12 09:32:59 2018 -0500
+
+    agregando cambios modulo exportacion
+
+commit 0af8771fc1aa27e85d1f91de3c02ac1499c9fbf4
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 8 17:02:00 2018 -0500
+
+    agregando devolucion id Usuario App
+
+commit 53bcef673d6554ba1b79487158ba08a0c27e31c8
+Merge: 34a417b e5f7da4
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 8 15:28:38 2018 -0500
+
+    trayendo cambios rama javier
+
+commit 34a417bf4f397a2d6643312e818448fde935b0d1
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 8 15:26:13 2018 -0500
+
+    agregando cambios rama javier, exportacion de cantidad preinscritos, inscritos, horarios creados por region
+
+commit e5f7da4d21b4395b3206d787d12feddf200c5354
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 8 15:23:25 2018 -0500
+
+    agregando modulo de exportacion de presinscritos , inscritos y cantidad horarios por region
+
+commit 3c4eacd41a9aba37adad76326260d9018eb8a256
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 8 10:20:57 2018 -0500
+
+    agregando prueba export data csv
+
+commit 2feeb59ab9e88ae362572187d3dbe3caaca359b2
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Jun 7 13:58:56 2018 -0500
+
+    conf exportacion csv
+
+commit 8b735c46ca4ece3ae3c2738cb96d5ec8a801660d
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jun 6 12:19:51 2018 -0500
+
+    correcion de button cerrar - mod horarios
+
+commit 270104cdc1f75b114750762aa89ece7ee9839e46
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Wed Jun 6 12:08:45 2018 -0500
+
+    agregando cambios expor csv
+
+commit 2fe04a6fb315e7b9a79f70bc3c27fb95a96643da
+Merge: 3618817 82e47cb
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Wed Jun 6 11:06:38 2018 -0500
+
+    trayendo cambios rama master
+
+commit 82e47cb7b662b6fafea8f95288ba086664b2311d
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Wed Jun 6 09:52:50 2018 -0500
+
+    cambiando config.yml
+
+commit 72f871fde406ecc59182d5981b60f228b96c685a
+Merge: 0708a47 7715b24
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Wed Jun 6 09:50:51 2018 -0500
+
+    integrando cambios rama isabel
+
+commit 0708a4716e33a7a21f3f5ff49bd00fa005d7a1b3
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Wed Jun 6 09:46:55 2018 -0500
+
+    agregando cambios master
+
+commit 7715b2416f8768517ba32068cba3c65ced982d2b
+Merge: 7450600 af931e9
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jun 6 09:43:57 2018 -0500
+
+    agregando cambios javier
+
+commit 7450600104775714b621a8e5659ae44a78d15935
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Jun 5 18:27:37 2018 -0500
+
+    cambios terminados - trello - mod de horarios y validacion de ficha de inscripcion
+
+commit af931e9494522a5aed05ea177418b42c953ee567
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Tue Jun 5 16:48:55 2018 -0500
+
+    cambiando el rango de edad de inscripcion en los participante discapacitados
+
+commit ce05d1529080a6997996a8be629dfa787c3d5e13
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 1 15:33:02 2018 -0500
+
+    cambiando config.yml
+
+commit 2a98531d619a529130328d5a1122dcde40568425
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 1 14:49:07 2018 -0500
+
+    cambiando de cm a metro salto vertical modal en talento.html.twig
+
+commit a3badbf0bb3a52d7ca06391654403697712c476b
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 1 14:33:48 2018 -0500
+
+    cambiando driver mssql config.yml
+
+commit fd5c1c80bdf676e138197a21f4d2765a267352fe
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Fri Jun 1 14:27:55 2018 -0500
+
+    agregando cambios cm a m en indicador salto vertical
+
+commit 822382da70d1b0d672629143745e28410dfbb6c8
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Thu May 31 12:47:11 2018 -0500
+
+    agregando agrupacion por mes y idInscripcion al mudodulo de exportacion para obtener el ultimo movimiento de cada mes
+
+commit 1d3c10d3cd305b3c54ea0a674698ad4a07ede177
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Wed May 30 12:23:26 2018 -0500
+
+    agregando columna corre y telefono modulo exportacion beneficiarios
+
+commit 36188179106d328730f2e8cd04626b7239a365c2
+Author: cmajerhua <majerhua123@gmail.com>
+Date:   Wed May 30 12:17:34 2018 -0500
+
+    agregando columnas telefono y correo en la expotacion excel
+
+commit 9555c0d70a5bb21dec6fed4b2e552791af5151ac
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed May 23 10:27:28 2018 -0500
+
+    cambios servios departamentos
+
+commit 22616d1b74ab34497db47b52c56992032eeb03ec
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed May 23 10:12:52 2018 -0500
+
+    servicio contador de talentos
+
+commit 0822deee319bbeaaeca75cfa71c20f7c3bc58ee5
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri May 18 16:55:59 2018 -0500
+
+    servicio contador departamentoTalento + discapacidad horario mod export
+
+commit 1312762fbc1c4e8f6581e132591a3e427fb27865
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu May 17 12:37:37 2018 -0500
+
+    acceso docente
+
+commit d711d8b00b0884369be07dcbf121abc3418f1534
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue May 15 14:09:44 2018 -0500
+
+    Mod panel y horarios - Complejos
+
+commit e5261f95ead61c3a9a303ff5b0f1a9b08ded1b85
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue May 15 13:58:37 2018 -0500
+
+    mod horarios - nombrecomplejo
+
+commit 701120097da0990fd561ea58482f4d47f040130f
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon May 14 17:53:20 2018 -0500
+
+    validacion nombre complejo
+
+commit b4f91b816b80bb440d382cc97927eadf4a78059c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon May 7 11:33:14 2018 -0500
+
+    integrando validaciones para el perfil del docente
+
+commit 75cf70da11e75379d07eb97d471f373791b8f023
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed May 2 16:38:24 2018 -0500
+
+    cambio de rutas en los servicios de activacion
+
+commit 945507414bc24b2daeacdf8bc84ed6fbd53eb147
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Apr 30 14:54:13 2018 -0500
+
+    agregando rreenvio password y confirmacion usuario app y encriptacion password
+
+commit c160b19f422fdfab0af65ea09ef68b4e7f6c2d2c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Apr 27 16:15:39 2018 -0500
+
+    agregando $ al departamentoId
+
+commit 10d9a5187f95421d0f40255015c0ac5d6c9f58a7
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Apr 27 16:08:37 2018 -0500
+
+    servicio -query departamentodisciplina
+
+commit bd54d0b0f5b10724043ac033484e002c950517dd
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Apr 27 11:05:27 2018 -0500
+
+    validacion beneficiario retirado
+
+commit 7c97fed1882ee6e67312f793eb785b5ffc73afce
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Apr 26 16:38:03 2018 -0500
+
+    PRODUCCION -V2
+
+commit 369148a5fd7925f63434193aa7362dde40fcd33c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Apr 26 12:43:16 2018 -0500
+
+    cambio a metros en indicador- salto largo sin impulso
+
+commit 511913f22b5bef7f1b2cbac3834b98ac3a2a7044
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Apr 26 11:30:32 2018 -0500
+
+    imagenes, servicio de registro de usuario
+
+commit d6670fc2ac6abae3f9dd364726d07fefb95271c7
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Apr 26 10:28:59 2018 -0500
+
+    cambios servicios - visibilidad query
+
+commit 0cc64b939aaf2173bb87999288c93f24525a356a
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Apr 25 13:27:50 2018 -0500
+
+    validacion en el mod beneficiario - alumno retirado
+
+commit 9098b610b6bb7d74ed68c1572d133a7f7df3b102
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Apr 24 17:14:33 2018 -0500
+
+    nuevo servicio de departamento
+
+commit 87c3f9010eba66e0b58e5e6afee3238d1c900b16
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Apr 24 14:08:15 2018 -0500
+
+    view activacion - codigo de inscripcion en od de talentos
+
+commit 78ad3bc1dc40e89afefeeef9b6d3e766883c475c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Apr 24 10:21:30 2018 -0500
+
+    servicio de departamentos, levantamiento de observaciones trello
+
+commit 2a62cdeb980c822668756c399963463f2ca754ca
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Apr 20 17:50:56 2018 -0500
+
+    cambios en la funcion visible y regitro usuario app
+
+commit 67783e6594bf1b994c8379480305788e494a1fa8
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Apr 20 17:39:38 2018 -0500
+
+    vista activacion
+
+commit 6a2956b337b50ca9c1f9fa67385ac86fd8bf7c91
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Apr 20 17:25:39 2018 -0500
+
+    datetime en app-user , cambio en security
+
+commit f181557c1456ec6e054b82621be9dfa6b8a24653
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Apr 20 16:33:13 2018 -0500
+
+    probando servicios en desarrollo
+
+commit 923559b09a4b64e6baeb5fc3cc82eb283d0a0262
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Apr 20 16:11:26 2018 -0500
+
+    version casi ultima - servicios  recuperar contarsena, email, rutas
+
+commit 8ed7cf37022ed4226b276c4abcab84f83dde1176
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Apr 20 15:06:50 2018 -0500
+
+    cambios emial- utf 8
+
+commit 94c6415fc7135b7a1b4db86bff2e0cc5a301ce75
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Apr 20 11:06:37 2018 -0500
+
+    servicios - login , registro y modificacion de contrasena
+
+commit c8e2f72fc406312e87c1adf374131203a69b5429
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Apr 19 15:48:09 2018 -0500
+
+    formato de fotos jpg png jpeg
+
+commit 921d711413f327a5262b9ee771a937f8b8ac95e7
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Apr 19 12:58:59 2018 -0500
+
+    servicio envio email
+
+commit aedab79b5bbea101a79c1b55ec869342e7f97e96
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Apr 18 13:40:26 2018 -0500
+
+    servicios - filtros generales - corregido , filtro de fotos - corregido
+
+commit da9b2ef81e3d600f91b3fe94661b25d2b9df7a50
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Apr 16 17:57:08 2018 -0500
+
+    observaciones trello - validaciones con ceros y guiones
+
+commit a42bfb0ed3fc48944cf6d0aaba49bc12e3b064bd
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Apr 11 09:32:32 2018 -0500
+
+    indicadores - modificacion
+
+commit 2b2d52406bf1a3e14e104098a175afc6afeab6a4
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Apr 10 13:59:13 2018 -0500
+
+    cambios de indicadores - terminado
+
+commit 837717639858fac68bfe9a77c5c7be2fad36ab52
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Apr 5 17:13:54 2018 -0500
+
+    querys departamento - mod talentos y evaluados
+
+commit 9fed176839e3d54bf8b21e3a30cf492de078a65d
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Apr 5 16:25:37 2018 -0500
+
+    check de visibilidad
+
+commit 358c1b76731cdba8a1cd0bbaecf4d79553d1bb65
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Apr 4 12:47:13 2018 -0500
+
+    imagenes, rutas, api
+
+commit 12082f1bd25ad1c50535f91f44e01770e243b8da
+Merge: 277d02c 9074501
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Apr 3 15:30:23 2018 -0500
+
+    Merge branch 'isabel' of https://github.com/majerhua/InscripcionIpd into isabel
+
+commit 277d02c3f9e83302f60296c9233172c0b6cff4ea
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Apr 3 15:30:12 2018 -0500
+
+    cambios bryam
+
+commit 907450113fe15aa9f878e1976eeb1ba5944c8522
+Author: usuarioAcademia <alejandrocainamarks@gmail.com>
+Date:   Tue Apr 3 15:26:05 2018 -0500
+
+    Alerta de asistencia
+
+commit cb981a5fa6b0172c972e1161dd1077c829cb2835
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Apr 3 15:03:48 2018 -0500
+
+    validaciones finales
+
+commit fc4df4db390683157c8633e37a1c9ea27e8501bb
+Merge: 80eecc4 6874cc8
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Apr 3 14:44:59 2018 -0500
+
+    merge con la rama javier - api
+
+commit 80eecc4c417ccd882caaddf9ea4e2d539589708e
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Apr 3 14:27:48 2018 -0500
+
+    cambioss carpeta resources
+
+commit 0155ed8fb56c7f45af51fb4b942b322c27fdc36a
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Apr 3 14:24:25 2018 -0500
+
+    validaciones trello
+
+commit 6874cc8168516778ea2a9f6675c52f4d62cf148b
+Author: majerhua <majerhua123@gmail.com>
+Date:   Tue Apr 3 12:40:58 2018 -0500
+
+    terminando de modificar modulo exportacion
+
+commit 1eb231ba8a4166a9e78c431cbeede0071222faf5
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Apr 3 12:17:03 2018 -0500
+
+    cambiando rutas y query export
+
+commit 86664e3fed0c58e448625e093a5beb13b06472f7
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Apr 3 11:38:34 2018 -0500
+
+    query export data - modificacdo
+
+commit cba0e468e8a2c3c6c6f10302476b9e866eb0451f
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Apr 2 11:27:22 2018 -0500
+
+    importando data de produccion - pruebas
+
+commit 55c53a1df122066c1310fc6f83d3d02e759d7d1e
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Mar 28 15:16:48 2018 -0500
+
+    validaciones y observaciones
+
+commit 14274ed234b09bb2f759829c3f0db06ae0337a84
+Merge: d451aa2 61a98f3
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Mar 28 09:49:04 2018 -0500
+
+    trayendo cambios de isabel2 a isabel
+
+commit d451aa2f3fa0663b7ad291e558106e55544d4e10
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Mar 28 09:47:13 2018 -0500
+
+    trayendo cambios isabel2 a isabel
+
+commit 61a98f3ddc780e5e28f8d62c24a41c9eb5081a58
+Merge: e878680 7f271d4
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Mar 28 09:45:55 2018 -0500
+
+    merge de javier a isabel2
+
+commit e87868054018bdeb84613dd98ce33ba92a19abb8
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Mar 28 09:08:03 2018 -0500
+
+    termiando fotos- falta validar
+
+commit 0c088d3800810d3ece34643a7e3cd2be20f0638f
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Mar 27 10:38:12 2018 -0500
+
+    correcciones en el success - mod seleccionados
+
+commit 9e9203352ae4122faed0f5c329105af29d0b9777
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 26 19:18:18 2018 -0500
+
+    cambios asistencia - validaciones
+
+commit 91428595e8358029de9d856ed26cbd8cc498a7d8
+Merge: 7f271d4 0642497
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Mar 26 15:48:50 2018 -0500
+
+    modificando participanteReposotory
+
+commit 7f271d4ec7c79437b3927e11c3370296c86b6586
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Mar 26 15:40:15 2018 -0500
+
+    agregando cambios exportacion
+
+commit 0642497cc9376a42e7c85288566823cb9deb2365
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Mar 26 15:38:29 2018 -0500
+
+    agregando cambios exportacion
+
+commit 808f957fcb42650b44965512d24da691d4b6274c
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Mar 26 14:07:37 2018 -0500
+
+     export.html.twig
+
+commit 0456b4274a8a83b3599bb1d47f465a55967220de
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 26 13:03:47 2018 -0500
+
+    mod edxportacion - error 2 campos vacios
+
+commit aa8245e31c81ff026125622d44d095b81f52ad6c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 26 12:26:09 2018 -0500
+
+    mod exportacion - error
+
+commit d53ae270ef6c1aa318d035e3bf35eea8307551d0
+Merge: 9b598e0 c1f0100
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 26 11:29:41 2018 -0500
+
+    Merge remote-tracking branch 'origin/javier' into isabel
+
+commit 9b598e002d7bf8bdc37067c39f8d5c0ba4a07cdc
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 26 11:13:40 2018 -0500
+
+    exportacion csv - front
+
+commit e904a5aa97ccd28ee763e4466d7ffdc303bd677d
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 26 09:14:04 2018 -0500
+
+    cambiando estados evaluados e insercion de controles
+
+commit c1f01002ac79ac518e88d2cf74c9044bb176b22f
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Mar 26 00:27:46 2018 -0500
+
+    implementado api rest
+
+commit 4db901a000e2bfc7fd9552c4915678f06e39b5d1
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 22 16:13:01 2018 -0500
+
+    Modulo talentos y mod evaluados
+
+commit 77e83cd6b21c5718c7dc9d04419942d5ffe0b06e
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 19 14:12:26 2018 -0500
+
+    insercion de talentos
+
+commit 07d134fbfcdd23694241189426aec39949a6815d
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Mar 16 15:47:05 2018 -0500
+
+    listar numero de controles en talentos
+
+commit 996966c4a7fe4a037a251490b82bbf9eb28e4e29
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 15 17:06:58 2018 -0500
+
+    creando funcion para registrar nuevo contrl
+
+commit 28fad5a4bab51c153a3bdabd75dc7434d34bb2b7
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 15 15:50:56 2018 -0500
+
+    implementacion perfil analista
+
+commit a0cbdc2d2261331eba2508bc68af3cd7cc727b0e
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 15 15:06:01 2018 -0500
+
+    integrando mod expotracion
+
+commit 996e4f706c5cb3291c9d75a6279f7bf756fa867c
+Merge: 6441c81 c1133ed
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 15 14:56:43 2018 -0500
+
+    integrando cambios rama javier
+
+commit 6441c81cd1b9cec6e9e032a3c3c1bf72042e35dd
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 15 14:51:21 2018 -0500
+
+    cambios en imagenes mod talentos
+
+commit 203c4a0f8a5d9c37a9e761b7f352e568b1491d7c
+Merge: a3b0cad cf7fd76
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 15 11:32:52 2018 -0500
+
+    Merge branch 'isabel' into isabel2
+
+commit a3b0cada0aa59c944e127c20059bd1a4eef24b1e
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 15 11:32:38 2018 -0500
+
+    cambios mod talentos
+
+commit cf7fd766c60e06d845486a3254d43f5ba1f2e14b
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 15 11:27:40 2018 -0500
+
+    desarrollo de modulo de talento
+
+commit c1133ed529bede8823114cb35e52a147bd0992c3
+Author: majerhua <majerhua123@gmail.com>
+Date:   Thu Mar 15 11:20:11 2018 -0500
+
+    agregando exportacion de datos participante formato CSV
+
+commit a7ac5fe02447b184fdad56ad5acb039924703e23
+Author: pepitofriki <bsoto.dev@gmail.com>
+Date:   Wed Mar 14 10:35:22 2018 -0500
+
+    fecha de creacion ficha
+
+commit 33a69136298ba284c7651fcc9e736e9dc4635c00
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Mar 12 15:52:17 2018 -0500
+
+    agregando modificaciones index
+
+commit 28e4ace0f0c240d30f8d31deb122598bd536268f
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Mar 12 15:38:15 2018 -0500
+
+    modificando cambios index inputs
+
+commit 98c570127e62ddf242f88b3a3aa13b0747a584fe
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 12 14:53:50 2018 -0500
+
+    cambiando font size de letra
+
+commit 664c6cc2a9014c0b9c142606356b2fdb46bed416
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Mar 12 14:17:19 2018 -0500
+
+    agregando modif estilos
+
+commit 7c8beaacedca1249bc699e7619cb1d93e1b46763
+Merge: 96bf1d6 aa0530f
+Author: majerhua <majerhua123@gmail.com>
+Date:   Fri Mar 9 16:43:22 2018 -0500
+
+    agregando cambios isabel
+
+commit 96bf1d6adf34f4a6769636b9ec27eb69edf6f898
+Merge: 7caac48 1ff25d9
+Author: majerhua <majerhua123@gmail.com>
+Date:   Fri Mar 9 16:31:56 2018 -0500
+
+    trayendo cambios de javier a desarrollo
+
+commit 1ff25d97d3e904a4dc378955ee8ed02210bf1b54
+Author: majerhua <majerhua123@gmail.com>
+Date:   Fri Mar 9 16:29:07 2018 -0500
+
+    cambiando estilos input, select y agregando filtro horarios por la edad del participante
+
+commit aa0530ff3fcda488a62efa21233b86ceff94eec0
+Author: pepitofriki <bsoto.dev@gmail.com>
+Date:   Fri Mar 9 16:22:57 2018 -0500
+
+    disable paste phone, dni's
+
+commit 79cf285497a6692039b4b8797ebc29f7f501bd70
+Author: pepitofriki <bsoto.dev@gmail.com>
+Date:   Fri Mar 9 15:59:38 2018 -0500
+
+    disable paste on mobile
+
+commit c9f1193fc630342dc349bc543e0a809d580f8a5b
+Author: pepitofriki <bsoto.dev@gmail.com>
+Date:   Fri Mar 9 15:23:42 2018 -0500
+
+    Codigo Inscrito - beneficiarios
+
+commit 3040f8647b01fafea9198d9dcd6cb012a6152419
+Author: pepitofriki <bsoto.dev@gmail.com>
+Date:   Fri Mar 9 15:04:45 2018 -0500
+
+    Bloquear copy
+
+commit e8f4e78967d3203e3cc1f61ef2bebc7175fee1c3
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Mar 9 13:44:30 2018 -0500
+
+    botones de inscripcion directa - filtros para movil
+
+commit 9466fb841f99c04b7983437ccba4d68e914f4fae
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Mar 9 10:21:46 2018 -0500
+
+    checked de discapacidad
+
+commit 5aa0dcf065f3ce79e2f535098e25079e4d484249
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Mar 9 09:25:55 2018 -0500
+
+    corrigiendo apostrofe en movil
+
+commit b8c1312ed4fcb04c5ecdbb6045ec742e84bbb997
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 8 19:01:33 2018 -0500
+
+    cantidad de validaciones 1
+
+commit 5819a03d712bfa197296029b880197a644e3c1a4
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 8 18:47:50 2018 -0500
+
+    textos de gmail
+
+commit 0ea0dabe9a063fd0659c3f2f1fab8cff13404c49
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 8 18:10:03 2018 -0500
+
+    validacion de ubigeo - solucionado wey
+
+commit 22ac76d25145780ccb041d2bbb2f8b356e6358db
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 8 14:38:11 2018 -0500
+
+    mensaje
+
+commit 6cf745e8f69ac1c7a4448b0d9bcd939296d0bb8a
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 8 14:23:22 2018 -0500
+
+    edicion de datos en apoderado y participante, validaciones, pagina de error
+
+commit ccb52603b6e13acbe70f5456d3225258484e1362
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Mar 8 11:05:57 2018 -0500
+
+    filtrado de apostrofes y provincia, departamento seleccionado
+
+commit 04d8c44c9cf919b3cdfd3a9f230a72ae31041ce7
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Mar 7 15:45:25 2018 -0500
+
+    cambiose en inscripcion directa - valicadiones
+
+commit c3c210c4e81350c805bcc23e620abd2e0ec78543
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Mar 7 10:01:20 2018 -0500
+
+    inscripcion directa - pruebas
+
+commit 6b7dc65f2b05b76df6369512d6d6ac40cbd6b33b
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Mar 7 09:49:55 2018 -0500
+
+    validaciones campos vacios en grpersona - mensajes
+
+commit dd1f199729a695305384777490257aa18925525d
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Mar 6 18:51:32 2018 -0500
+
+    fechas y datos incompletos de grpersona - actualizacion
+
+commit b2ddf91ef0109083aa4c681da55cb4ef52b3872a
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Mar 6 16:23:43 2018 -0500
+
+    filtro de caracteres especiales, errores del log
+
+commit 65b53df76068eee0b75be0cb41483a089eaff41a
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Mar 6 12:57:25 2018 -0500
+
+    textos informativos en el paso 5
+
+commit e159291afba0e18c20ba5635b130b3f38bc45fa8
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Mar 6 10:37:56 2018 -0500
+
+    Cambio textos, validaciones de check, mensajes
+
+commit 80c716b9a9504fc37f14cdf9ed817fcc6fa61e3d
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 5 18:52:50 2018 -0500
+
+    cambios apoderado
+
+commit 3448fef5137ecd3ddf8cb9f6dd28e5fd40e12955
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 5 17:57:33 2018 -0500
+
+    Discapacidad en ficha, validancion de cantidad de intentos
+
+commit b31a3844bd5fec5f4f51f7ad3fda5513e17eab05
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 5 16:29:12 2018 -0500
+
+    contador de retirados, inscritos y seleccionados
+
+commit b72cdea178bd34d22f634237ed6dfd4087be6480
+Merge: 469d7fd c469968
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 5 15:45:32 2018 -0500
+
+    Merge branch 'isabel' of https://github.com/majerhua/InscripcionIpd into isabel
+
+commit 469d7fde1b5ae9433c4f362faadfc095a83eb241
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 5 15:44:11 2018 -0500
+
+    cambios beneficiario
+
+commit 7caac485d58b24d26dbcaf9a2483d739a44b6d3d
+Merge: b00ec29 c469968
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Mar 5 15:41:31 2018 -0500
+
+    Merge branch 'isabel' of https://github.com/majerhua/InscripcionIpd into desarrollo
+
+commit b00ec29254477ad6b064bec1513c63bdb5694d16
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Mar 5 15:41:09 2018 -0500
+
+    resolviendo conflicto isabel megin
+
+commit c469968531927dc2f6988d52a341ccb4e7a1b6b0
+Merge: 5a64960 608cc24
+Author: pepitofriki <bsoto.dev@gmail.com>
+Date:   Mon Mar 5 15:19:38 2018 -0500
+
+    Merge branch 'desarrollo' of https://github.com/majerhua/InscripcionIpd into isabel
+
+commit 608cc2417abb1cddedbc34549521669e2d68c90f
+Merge: 6f68de1 8d30f0b
+Author: pepitofriki <bsoto.dev@gmail.com>
+Date:   Mon Mar 5 15:11:41 2018 -0500
+
+    loader
+
+commit 5a649602bd030b58a42a67c7d2555ab9c73df619
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 5 15:11:38 2018 -0500
+
+    cambios - Preinscripcion directa, beneficiarios, filtro en preinscribte
+
+commit fae0bae5fc9bcfe052fef167e43b99454c87af0b
+Merge: 8748b7b 8d30f0b
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 5 11:02:19 2018 -0500
+
+    solucionando conflictos Javier merge
+
+commit 8748b7bcaaff85307f991f45a85d7a5d44f7845a
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 5 11:00:26 2018 -0500
+
+    cambios 0503 merger Javier
+
+commit 8d30f0b9855da451420156f949be21584e4f6d83
+Merge: 013cf60 631e4c9
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Mar 5 10:58:01 2018 -0500
+
+    modificando mergin origin isabel
+
+commit 013cf60586e518a71809d974b8733014028a6e39
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Mar 5 10:54:11 2018 -0500
+
+    cambios finales ficha inscripción
+
+commit 631e4c9c75ff9750be31d22484006832076ac176
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 5 10:39:58 2018 -0500
+
+    validacion en edad - y actualizacion
+
+commit 183ac55904599265e6ac958627e1586d0b171e4a
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Mar 5 09:42:36 2018 -0500
+
+    nombrecomplejo
+
+commit 2614877a0faa799bed2095c398f931039254169a
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Sun Mar 4 22:19:28 2018 -0500
+
+    cambios complejo nombre
+
+commit 7afc3bb148895bcca022ee2f41036f05d8b1acc0
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Sun Mar 4 21:49:20 2018 -0500
+
+    modificando disciplinas diferentes y nombre de complejo
+
+commit 4b9c0e8f61400d9c6e9353a90e170d6de73a4c15
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Sun Mar 4 00:04:19 2018 -0500
+
+    validacion horarios diferentes
+
+commit 50393b53d37b8185be4fc705b26cd4859a0c3c0c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Mar 2 22:27:50 2018 -0500
+
+    cambios v2
+
+commit 74a4c69a88162060df3b199687f2efdeed741cdb
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Mar 2 22:05:43 2018 -0500
+
+    cambios tabla horarios actualiza
+
+commit 4eecc218104b79223631b60c2e3f36cab893e196
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Mar 2 19:49:26 2018 -0500
+
+    cambio de fecha
+
+commit 35f382b1304849d6b9c930beec332d8846b43505
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Mar 2 19:45:27 2018 -0500
+
+    produccion nuevo model
+
+commit 44a1c25b2268bde09bd94a213640b43d4bd2b45a
+Author: majerhua <majerhua123@gmail.com>
+Date:   Fri Mar 2 19:31:04 2018 -0500
+
+    insertando cambios isabel desarrollo
+
+commit 6df99dfc9e2bd5c1af1328313cd55cdd4f586788
+Merge: 467d3e5 0e5cf9f
+Author: majerhua <majerhua123@gmail.com>
+Date:   Fri Mar 2 19:14:06 2018 -0500
+
+    agregando cambios isabel
+
+commit 467d3e59f08e8a8517cdc284997ea64e5369b058
+Author: majerhua <majerhua123@gmail.com>
+Date:   Fri Mar 2 18:14:17 2018 -0500
+
+    modificando filtro horario
+
+commit 0e5cf9f03eec431d4dc4f22bde63e0eaee875cb2
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Mar 2 17:28:42 2018 -0500
+
+    cambios pre - inscripcion, entidades , grpersona
+
+commit 73b2dc8b1d7a77cefb21bae2a9113bd5dc41a195
+Author: majerhua <majerhua123@gmail.com>
+Date:   Fri Mar 2 12:15:28 2018 -0500
+
+    agregando empty a select horario
+
+commit f444a4028f3cc348fdad45b77ab6bc8bd7f9f993
+Author: majerhua <majerhua123@gmail.com>
+Date:   Thu Mar 1 11:58:28 2018 -0500
+
+    agregando modulo de filtros
+
+commit 8587f2f8364374d00b559b5679c274d1b7520c33
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Feb 28 18:46:37 2018 -0500
+
+    beneficiarios contadores - terminado
+
+commit bcf7372766d611d13a562582e817195c12c7d959
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Feb 27 20:01:03 2018 -0500
+
+    Cambios en disciplina
+
+commit 1a4b02349cec0432d0ee3a7efffea3a059cd468c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Feb 27 18:07:36 2018 -0500
+
+    cambios movimiento
+
+commit 3120fa988ae55764a712b5c67ce82cca46b8c456
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Feb 27 17:20:06 2018 -0500
+
+    formato de hora - mensajes en modales
+
+commit 43cbd312d3490c217d42407ad34e3116ae93c386
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Feb 27 15:46:21 2018 -0500
+
+    desactivando atributo modal horarios
+
+commit b0cc1434386fadfdf6493fc2a31ae9a611f16b8a
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Feb 27 14:15:36 2018 -0500
+
+    validaciones horarios
+
+commit 39ad7362b43773f9265e65e945221c01069df044
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Feb 26 19:46:03 2018 -0500
+
+    corriegiendo creacion horario, dias semana
+
+commit 58b3df507efd5081fd6fae7b260168e8acf46ced
+Merge: f3e30f3 7f71a15
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Feb 26 19:22:13 2018 -0500
+
+    Merge branch 'isabel' of https://github.com/majerhua/InscripcionIpd into desarrollo
+
+commit 7f71a158358309090f49cb6159d1c890fee29f84
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Feb 26 19:20:22 2018 -0500
+
+    Horarios - Beneficiarios Prueba casi final
+
+commit 6f68de14028550e7c1f36fc9f6440915e3a7ded1
+Author: pepitofriki <bsoto.dev@gmail.com>
+Date:   Mon Feb 26 12:48:51 2018 -0500
+
+    Mostrar una sola edad cuando edadmin = edadmax
+
+commit f3e30f3ac86dd0db60ae8bfdcfcf34baa81884ac
+Merge: 6fff010 548f114
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Feb 26 12:35:57 2018 -0500
+
+    trayendo cambio javier horario
+
+commit 548f1146e3da3804db3df6ab4097b25da77ee649
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Feb 26 12:31:37 2018 -0500
+
+    agregando letra responsive y overflow-y:scroll a Table Horario
+
+commit 6fff0106f4e9d207e504e5729c7bf75d054bc9a2
+Author: pepitofriki <bsoto.dev@gmail.com>
+Date:   Mon Feb 26 12:27:11 2018 -0500
+
+    margenes del contador, responsive
+
+commit 57349358b6e46e753dc17e5f985759c7dfbbe913
+Author: pepitofriki <bsoto.dev@gmail.com>
+Date:   Mon Feb 26 12:03:58 2018 -0500
+
+    Validaciones para la creacion y actualizacion de horarios
+
+commit 7cec55eba24669b09f1f0bec31906a5e21577b8f
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Feb 23 20:28:04 2018 -0500
+
+    Cambios Horarios
+
+commit beb38b94f91864601a69d76c3a71b11a901bbd4f
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Feb 23 08:56:30 2018 -0500
+
+    Inscripciones dobles - validado
+
+commit 37bfad0e57ee4a10cc62feb3f766a94f4173ea63
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 22 12:58:03 2018 -0500
+
+    Validación Inscripcion directa
+
+commit 1732795f1e007e3ed9538fc8dc90b5eac502dd13
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Feb 21 14:48:32 2018 -0500
+
+    Acceso a promotores de provincia - horarios -beneficiarios Prueba v1
+
+commit 996ad63819df1bce14872637f828a3974fb01625
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 15 18:33:57 2018 -0500
+
+    Validando Horarios e Beneficiarios
+
+commit 9bb14b4e9511e407be2718bb0b4016add71b01ed
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Feb 14 18:35:21 2018 -0500
+
+    Horarios - Inscritos version beta 2
+
+commit 1e26d224c55063e2899b6f2e5c9f1fc894cf00f2
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Feb 13 15:36:45 2018 -0500
+
+    Horarios Version beta
+
+commit e939689701bc6428d777391407352eddff17283b
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Feb 9 16:09:04 2018 -0500
+
+    Inscritos Final
+
+commit ffdb39ef9680eb8236092b42c62c579d5a5592b4
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Feb 9 10:57:18 2018 -0500
+
+    vacantes e inscritos Campos agregados
+
+commit db6b6c38a1b412e0108f41cba191dec609a51e57
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Feb 9 10:30:29 2018 -0500
+
+    Vacantes restricciones
+
+commit 15f09dadb08ad93c1a0deb49cb3ebb165ed20211
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Feb 9 08:37:33 2018 -0500
+
+    vacantes inscritos
+
+commit 6f655b1c61b96575e471d7625c56042947f8adbb
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Feb 9 08:16:29 2018 -0500
+
+    prubea registro inscripcion
+
+commit 62f4b2779ddc26f1925bef7d3ad1298be08e12d5
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Feb 7 16:14:54 2018 -0500
+
+    Validacion Usuarios - p2
+
+commit cf22c67b257490bdb88aa9639d77c6bd05853a49
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Feb 7 15:53:24 2018 -0500
+
+    validacion usuarios
+
+commit 703600c49cb2b69bb2e2d37cc07d858e35050822
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Feb 7 14:23:55 2018 -0500
+
+    control de usuario-validacion y cambios en inscripciones
+
+commit 336414667e1c4251f7e08273df9bac5916ae3505
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Feb 6 21:17:47 2018 -0500
+
+    modificando ruta pdf
+
+commit 4dde9ed743f0d7021561907723b0239965238709
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Feb 6 20:36:20 2018 -0500
+
+    order by a participante y apoderado
+
+commit 0d456a838887f1d1099de2e951d8e1bff63a0653
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Feb 6 19:17:02 2018 -0500
+
+    Cambiando rutas del pdf
+
+commit ceec2148335e8436caca70b74a915c3b65cd4680
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Feb 6 17:59:59 2018 -0500
+
+    Validacion de Inscritos y avance en horarios
+
+commit 8372ee43b6a68d0dfe51cf037f56f1bc7313ce78
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Feb 2 19:25:27 2018 -0500
+
+    validando inscripciones y ficha
+
+commit 3f5684fd287650ec47d9b26eff83734088dc5445
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Feb 2 17:14:15 2018 -0500
+
+    validacion para inscritoss
+
+commit 470509253e1b05afd61ba0a88f2e3bbede8560fa
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 22:24:25 2018 -0500
+
+    configurando ruta ajax
+
+commit d527f8e1f2dad3fd8ec112af2c1f74115673966d
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 22:22:56 2018 -0500
+
+    configurando ruta ajax
+
+commit a11cf066d30c48a5c7f3a18a18a623b6e8129f04
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 22:07:41 2018 -0500
+
+    cambiando ahora si driver robin
+
+commit 72384cac8d33b871247407e85c190f5058d245e1
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 21:50:33 2018 -0500
+
+    escondiendo <li>Promotor</li>
+
+commit 4c9d4c0f1f883ac6413d09fd615a4d0da59fb437
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 21:46:18 2018 -0500
+
+    cambiando rutas
+
+commit 30615727dc041c360e65f553a52e207b31afcfb5
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 21:31:36 2018 -0500
+
+    modificando acces control y agregando filtro de participante y apoderado con estado =1
+
+commit 9ebc626efc759a9c625b8c4a79cf7e9492a0c6ed
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 21:21:32 2018 -0500
+
+    modificando estado apoedrado participante
+
+commit 145a726d6e2d4c8071580b1c86cc5570e218170a
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 20:13:58 2018 -0500
+
+    configurando de access control
+
+commit a45dab98d2194842f78cade43d23dd047d201bec
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 19:48:50 2018 -0500
+
+    boton desabilitado
+
+commit 8a1bf2fbbdd5b23e53c7f1cf3a3423a4d0285c53
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 19:18:07 2018 -0500
+
+    version casi terminada 5
+
+commit 2b319b3f5fe9e92b445d3d55cd8a2f92074aed72
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 19:16:16 2018 -0500
+
+    agregando excepcion por sexo paso 3 participante
+
+commit a5a6d9b8d7577cc1005db0d95fa2eef2103874d5
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 18:05:41 2018 -0500
+
+    Version casi final - cocrrecciones
+
+commit 2c06ee4a424bdc1e66fff7d1b5129ef2fa489d9c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 17:20:45 2018 -0500
+
+    Version casi final - envio de correo al usuario, validadicion de discapacitados
+
+commit d6b0f717f1031c07e4b90a397199d70faa8489ae
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 14:32:35 2018 -0500
+
+    Enviar correo a los apoderados
+
+commit 663453d33a4c2e8ff95fbc438c7b0dfe70f8fa4d
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 11:27:36 2018 -0500
+
+    validacion terminada
+
+commit cc33d3e4262b8c9324dc46234d061acbaa53de6c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Feb 1 09:38:45 2018 -0500
+
+    Ficha de inscripcion prueba 4
+
+commit bb8565de06f77088b5d474d46f8573a33af0573c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jan 31 14:13:25 2018 -0500
+
+    Ficha prueba 3
+
+commit 9bd4c0f9ca7bd05b6e6229834516b9d8e25239fa
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jan 31 11:51:47 2018 -0500
+
+    Ficha prueba 2
+
+commit eee999b07c2c050040be1ef9fb9be6508f3f60cf
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jan 31 11:11:12 2018 -0500
+
+    Ficha Carga de datos - prueba
+
+commit 28a1e76ff41fd826da99e49b8e69c67d714d535a
+Merge: d3c136b d6a3f26
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Jan 30 19:47:45 2018 -0500
+
+    Merge branch 'isabel' of https://github.com/majerhua/InscripcionIpd into isabel
+
+commit d3c136b3c335d0f0bfd084b30bf93e45b27c4e4e
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Jan 30 19:46:16 2018 -0500
+
+    modificando ficha inscripcion, agregando validacion de discapacidad
+
+commit d6a3f265138b6d1307b76e494b83fe5b2641f23c
+Author: User Server Web 192.168.26.26 <portalweb@ipd.gob.pe>
+Date:   Tue Jan 30 19:40:42 2018 -0500
+
+    web app.php
+
+commit 1dba4bdc0890f57cbfc814a270c9880ec1901b0d
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Jan 30 18:29:44 2018 -0500
+
+    prueba v2
+
+commit a741e1a067dae7e565d843a662422c53faced47c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Jan 30 17:18:50 2018 -0500
+
+    Carga de datos en ficha - login e inscripcion - prueba v1
+
+commit db67e170edb9973d1808167acd2f7e8d4357dc23
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Jan 29 10:49:43 2018 -0500
+
+    validacion Ficha de inscripcion
+
+commit 8072c53fed9a75a3479b0c7446812478cb93977a
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Jan 29 10:06:45 2018 -0500
+
+    correccion de busqueda y data en ficha
+
+commit 883908a186354848bacf37fd2645023979edd4b2
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jan 26 18:38:58 2018 -0500
+
+    busqueda hijo en grpersona
+
+commit 47239cb31609e28a93714d2960cae4cdd4bb32b2
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jan 26 18:02:54 2018 -0500
+
+    configurando login
+
+commit f362346cf537a03a974b1e795054ed09f4b2cb55
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jan 26 14:16:59 2018 -0500
+
+    boton de discapacidad y dni
+
+commit 154e5d265841b8d82c87bc9af36bbffd1c55f6d7
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Jan 25 16:38:22 2018 -0500
+
+    pruebas discapacitado
+
+commit 13c48dc9dcc140816b66216b8b5c471822331238
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jan 24 12:00:06 2018 -0500
+
+    Filtrado de bùsqueda por DNI y actualizacion de apoderado en una nueva inscripcion de participante
+
+commit 0aeff88d93d27e05934d857ead459ef2b33da1a9
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Jan 23 12:34:18 2018 -0500
+
+    filtro de horarios duplicados y correccion de las entidades Participante
+
+commit fec7d44089e672d001a3f4bf0b54b84ba373fea4
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Jan 23 11:11:26 2018 -0500
+
+    Horarios y vacantes limitadas
+
+commit b79384768a601571ffa870447755f2ec04c3c0fb
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Jan 22 17:41:38 2018 -0500
+
+    Pendientes trello - Busqueda de participantes y apoderados en sus tablas correpondientes y grpersona
+
+commit 269b07f24ab1f803676f1de08671a6d22edacf7f
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jan 19 18:52:34 2018 -0500
+
+    UX con los combos
+
+commit 7e2b114d0c58dad8e3846ee93260f5be24b258a7
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jan 19 17:47:04 2018 -0500
+
+    Verificacion de Email - todo OK
+
+commit 7c04030caf7f8988d4a2cf5517bfd5f06232185c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jan 19 16:09:32 2018 -0500
+
+    cambiando estado a un valor entero en Inscribete
+
+commit 677ac249bc9b36bdafb2e74093738369f2f30fe0
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jan 19 15:45:37 2018 -0500
+
+    pruebas locales EMAIL
+
+commit 1afd242aecccc64174ddc180f26152daad5ab32e
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jan 19 15:32:10 2018 -0500
+
+    correoPrueba
+
+commit 2e4f57bb0565b5225d98a377e4d523b459b24dce
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jan 19 12:44:41 2018 -0500
+
+    Envio de email - codigo de registro en la ficha PDF
+
+commit c80518fa8522803e3d5367f26a26614b7415cb8f
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jan 19 11:37:49 2018 -0500
+
+    filtro de edades entre 6 y 17 años - alerta
+
+commit 073620f079935fcfc9eb64ad44492f5cab08d050
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jan 19 11:27:43 2018 -0500
+
+    Mostrando horarios con estado 1 - campo convocatoria
+
+commit 3f787f6a22269218699a350603d51416d028a8b6
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jan 19 11:15:02 2018 -0500
+
+    restriccion de a partir de 17 años - PARTICIPANTE
+
+commit 92b463cd0e4884f1922b84669adb9389ec062b6c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Fri Jan 19 11:11:52 2018 -0500
+
+    cambiando el footer y estilos - correccion del envio de email
+
+commit 24b84f5bb9a3eac89f8b2aeb9fb42ba7cee16c89
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Jan 18 17:44:23 2018 -0500
+
+    driver activo produccion
+
+commit 19ceb4f90d584fa4e90b33ecef5e6548d868de00
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Jan 18 17:42:26 2018 -0500
+
+    responsivo y diseño
+
+commit 2d9a35715848fed92719a9242e9d5f74c2984057
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Jan 18 14:13:00 2018 -0500
+
+    mostrando turno y direccion
+
+commit 50e3f409e2295c7382fb344d3fe696df07b0137d
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Jan 18 11:35:06 2018 -0500
+
+    mostrando turnos y modificando el formato de la DJ y Ficha
+
+commit 17c3449e64bb197117f33da262151cd4d8778f6c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Thu Jan 18 06:45:42 2018 -0500
+
+    modificando declaracion jurada
+
+commit 736c5c54ee62674a3f1b34bf7b230f2d84e104c2
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jan 17 17:53:37 2018 -0500
+
+    modificando sendemail
+
+commit 5374e02783ae4a48413e2c717868231441349b8d
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jan 17 17:35:25 2018 -0500
+
+    modificando K de akademia
+
+commit 9915495ad74d32633aee5931beb4f4c7ded3bb86
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jan 17 17:32:14 2018 -0500
+
+    modificando config.yml
+
+commit 58b8bf0ad278d6827745032505276fe92b7443e1
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jan 17 17:30:57 2018 -0500
+
+    modificando funcion mail y tilde
+
+commit ee21ae3692accb085de7b892c9dcb70a1c569c8c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jan 17 16:45:14 2018 -0500
+
+    correcciones de final
+
+commit abb9fdd720424c6f343cbc3d3ed97f742099ea63
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jan 17 16:29:11 2018 -0500
+
+    envioEmail
+
+commit 644554320537ebcbfc1a8e0f3b88ed75f821d502
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jan 17 12:15:06 2018 -0500
+
+    validacion combos
+
+commit c34682908daf889c4748c76d6169ce58fba99234
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Wed Jan 17 11:56:41 2018 -0500
+
+    footer termiando
+
+commit c3c6a9f38429fd43657a935ffdd55d07e37c3391
+Author: majerhua <majerhua123@gmail.com>
+Date:   Wed Jan 17 01:59:39 2018 -0500
+
+    terminando validaciones para campos dni, corre, telefono
+
+commit 255d1f761f4888b3106176eeade65b137e67af63
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Jan 16 18:10:50 2018 -0500
+
+    PresentacionCasiFinal 1601
+
+commit ca070adf7ad2f57153ac318869d2e48132b34114
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Jan 16 13:12:02 2018 -0500
+
+    Email Isabel
+
+commit 7d6dab0034e2b307dd51f753fd7a85743cccbd76
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Jan 16 09:23:06 2018 -0500
+
+    review index Isabel
+
+commit 91383642585ca0ea55e2c94765e7156e45c96ce1
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Tue Jan 16 03:20:46 2018 -0500
+
+    merge del index Isabel-Jesus
+
+commit 55862e57ecb5aab3d0efe23b2a026310133c655c
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Jan 15 21:41:03 2018 -0500
+
+    merge isabel y jesus
+
+commit a700b7f6932cf60b89dbdc82c8f3102b03ccf84d
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Jan 15 21:03:05 2018 -0500
+
+    front isabel
+
+commit b79384f7efbec660fe6b0a2b9b6d57c3fe1dafd3
+Merge: a572f31 5c3808b
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Jan 15 20:34:36 2018 -0500
+
+    Merge branch 'master' of https://github.com/majerhua/InscripcionIpd
+
+commit a572f317d72226953b2facd58ad730d02d67e9a5
+Author: Isabel Luna <isabel1625.luna@gmail.com>
+Date:   Mon Jan 15 20:33:45 2018 -0500
+
+    cambios jesus
+
+commit 5c3808be390e465ef436c61970241a34bb38c643
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Jan 15 15:31:32 2018 -0500
+
+    sccion
+
+commit beaacf95b2c509a7719f35a6fc791e61629806c8
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Jan 15 15:15:33 2018 -0500
+
+    modificando dato hardcodeados
+
+commit 605f531f331caf799c82dac404786fbf935e9b37
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Jan 15 13:35:57 2018 -0500
+
+    terminando ediicion provincia y departamento
+
+commit d6230a813b30dca1cbef6369da6f5418ae1930ed
+Author: majerhua <majerhua123@gmail.com>
+Date:   Sun Jan 14 23:13:21 2018 -0500
+
+    agregando preguntas frecuentes
+
+commit 2f0d819588b7d4e6b3d2edafda19a4a5894a5191
+Author: majerhua <majerhua123@gmail.com>
+Date:   Sun Jan 14 23:06:13 2018 -0500
+
+    modificando proceso 5
+
+commit 33f8ae80f86c0ba70f84e67975b16683ab615aee
+Author: majerhua <majerhua123@gmail.com>
+Date:   Sun Jan 14 22:00:45 2018 -0500
+
+    modificando acceso edad
+
+commit 053712f0f48d0e3126b23a54938dd924d3e27958
+Author: majerhua <majerhua123@gmail.com>
+Date:   Sun Jan 14 20:25:23 2018 -0500
+
+    quitando hide processo
+
+commit e6f1960536db8c21b20deb6fa44d77078d9513b9
+Author: majerhua <majerhua123@gmail.com>
+Date:   Sun Jan 14 20:10:06 2018 -0500
+
+    modificando estilos en el index.twig
+
+commit 3dd0f803e52e8586b768a9f4f5a31f3d2410173c
+Author: majerhua <majerhua123@gmail.com>
+Date:   Sun Jan 14 18:02:01 2018 -0500
+
+    termiando procesos y validacion edad participante
+
+commit 3f3fe0b8b0bdfca2396a6b8febe7eac017af9ed4
+Merge: 2eab2ad 7a7a0d5
+Author: majerhua <majerhua123@gmail.com>
+Date:   Sun Jan 14 15:39:52 2018 -0500
+
+    as
+
+commit 2eab2ad4b8b493c943936b3b996cdf0d72b3be60
+Author: majerhua <majerhua123@gmail.com>
+Date:   Sun Jan 14 15:34:36 2018 -0500
+
+    subiendo cambios ultimos de verdad pdf
+
+commit 7a7a0d5b40b6673a0bcf1e595fa2f4aba14be3c5
+Author: unknown <rortiz@ipd.gob.pe>
+Date:   Sun Jan 14 15:00:26 2018 -0500
+
+    AppKernel
+
+commit 75ec993c723a9435d8e3e183cb308feb666b2879
+Merge: 8702045 75d4d4c
+Author: majerhua <majerhua123@gmail.com>
+Date:   Sun Jan 14 13:09:40 2018 -0500
+
+    ultima modificaion pdf
+
+commit 8702045971c326e778316bb0ca9f9052ec20c117
+Author: majerhua <majerhua123@gmail.com>
+Date:   Sun Jan 14 13:06:48 2018 -0500
+
+    terminando modificacion
+
+commit 75d4d4cb92ccba26e4aa377a6664609ef0ded467
+Merge: cef1919 9c8a6e0
+Author: User Server Web 192.168.26.26 <portalweb@ipd.gob.pe>
+Date:   Sun Jan 14 11:07:11 2018 -0500
+
+    Merge branch 'master' of https://github.com/majerhua/InscripcionIpd
+
+commit cef1919f6e0dd6b2a0ead3b529de35ec1fcaa989
+Author: User Server Web 192.168.26.26 <portalweb@ipd.gob.pe>
+Date:   Sun Jan 14 11:07:05 2018 -0500
+
+    conexion sqlserver y pdf
+
+commit 9c8a6e0ff53926fd44d88050a9d9b0a998e09b0d
+Author: majerhua <majerhua123@gmail.com>
+Date:   Sun Jan 14 10:30:18 2018 -0500
+
+    terminando reportes declaracion jurada e inscripcion
+
+commit 975c9408bc26e6a485a59322efc0a43464285adc
+Author: majerhua <majerhua123@gmail.com>
+Date:   Sun Jan 14 07:53:03 2018 -0500
+
+    terminando el inscripcion
+
+commit c3f1a24e4c7cb000f31bddd57bb4d7085c974ac8
+Author: majerhua <majerhua123@gmail.com>
+Date:   Sat Jan 13 05:17:47 2018 -0500
+
+    update
+
+commit 8e68aa49a8627a715aa25cce328aa429c6878def
+Author: majerhua <majerhua123@gmail.com>
+Date:   Thu Jan 11 10:39:46 2018 -0500
+
+    terminando repote declaracion jurada y ficha inscripcion
+
+commit e3e0aedcd33e51856207cb7e51d2cd1a00fd1247
+Author: majerhua <majerhua123@gmail.com>
+Date:   Wed Jan 10 14:17:02 2018 -0500
+
+    terminando el el tercer proceso
+
+commit fd74854b2ddad107314ea38d1e501c572c9011c2
+Author: majerhua <majerhua123@gmail.com>
+Date:   Wed Jan 10 09:41:14 2018 -0500
+
+    terminando proceso 2 de inscripcion --falta maqueteo xd
+
+commit a6aa18096468109c797483051f1d3376308e4952
+Author: majerhua <majerhua123@gmail.com>
+Date:   Tue Jan 9 09:14:43 2018 -0500
+
+    Agregando filtro 2 Elige un complejo Deportivo
+
+commit 1ed1463c80771182a71aa0662b4c44496c60ffdb
+Author: majerhua <majerhua123@gmail.com>
+Date:   Mon Jan 8 14:47:21 2018 -0500
+
+    Inscripcion de apoderado terminado
