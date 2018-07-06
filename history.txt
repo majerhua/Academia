@@ -1,0 +1,500 @@
+   31  git push origin isabel
+   32  git status
+   33  exit
+   34  git branch
+   35  git status
+   36  git status
+   37  git checkout desarrollo
+   38  git fetch origin
+   39  git reset --hard origin/desarrollo
+   40  git reset --hard origin/isabel
+   41  gir checkout isabel
+   42  git checkout isabel
+   43  git status
+   44  exit
+   45  git branch -v
+   46  git checkout desarrollo
+   47  git status
+   48  git push origin desarrollo
+   49  git remote -v
+   50  git push origin desarrollo
+   51  git push origin desarrollo
+   52  git checkout isabel
+   53  git status
+   54  exit
+   55  git status
+   56  git add .
+   57  git commit -m "servicio contador departamentoTalento + discapacidad horario mod export"
+   58  git push origin isabel
+   59  exit
+   60  git status
+   61  git status
+   62  git add .
+   63  git commit -m " mantenimientos - tipo de medicamento y emision de receta"
+   64  git push origin isabel
+   65  exit
+   66  git status
+   67  git add .
+   68  git commit -m "mod de usuario terinado - adm recepcion de incidencias - login terminado"
+   69  git status
+   70  git push origin isabel
+   71  git remote -v
+   72  git status
+   73  git push origin master
+   74  git status
+   75  exit
+   76  git status
+   77  exit
+   78  git status
+   79  php bin/console server:run
+   80  git status
+   81  git add .
+   82  git commit -m "mod de reportes - vistas de requerimientos y modales terminados"
+   83  git push origin master
+   84  git status
+   85  git log
+   86  php bin/console server:run
+   87  exit
+   88  php bin/console server:run
+   89  php bin/console server:run
+   90  php bin/console server:run
+   91  exit
+   92  git status
+   93  git add .
+   94  git commit -m "login acceso - mod tecnico - vistas concluidas - creciacion de entidades"
+   95  git push origin master
+   96  exit
+   97  php bin/console server:run
+   98  exit
+   99  git status
+  100  git status
+  101  git add .
+  102  git commit -m "mod doctor - validacion de estados - atenciones"
+  103  git push origin isabel
+  104  exit
+  105  git status
+  106  git status
+  107  php bin/console server:run
+  108  exit
+  109  git status
+  110  php bin/console server:run
+  111  php bin/console server:run
+  112  git status
+  113  git add .
+  114  git commit -m "servicio contador de talentos"
+  115  git push origin isabel
+  116  git status
+  117  git status
+  118  git add .
+  119  git commit -m "cambios servios departamentos"
+  120  git push origin isabel
+  121  php bin/console server:run
+  122  exit
+  123  git status
+  124  git status
+  125  php bin/console server:run
+  126  php bin/console server:run
+  127  exit
+  128  php bin/console server:run
+  129  git status
+  130  git add .
+  131  git commit -m "validacion atencion doctor - recepcion"
+  132  git push origin isabel
+  133  doctrine:generate:entities
+  134  php doctrine:generate:entities
+  135  git status
+  136  git add .
+  137  git commit -m "conf security - acceso login - bcrypt"
+  138  git push origin isabel
+  139  EXIT
+  140  EXIT
+  141  exit
+  142  git status
+  143  php bin/console server:run
+  144  git status
+  145  git add .
+  146  git commit -m "security - panel - sessiones"
+  147  git push origin isabel
+  148  git status
+  149  git status
+  150  git add .
+  151  git commit -m "Antecedentes - doctor : validaciones termiandas."
+  152  git push origin isabel
+  153  git status
+  154  git add .
+  155  git commit -m "doctor - datos personales y examen clinico validado"
+  156  git push origin isabel
+  157  git status
+  158  git status
+  159  git add .
+  160  git commit -m "entidades anamnesis - repository view en historial"
+  161  git push origin isabel
+  162  exit
+  163  git status
+  164  git status
+  165  git add .
+  166  git commit -m "historial de paciente = integrando anamnesis por fecha de atencion - terminado"
+  167  git push origin isabel
+  168  git status
+  169  git status
+  170  git add .
+  171  git commit -m "Diagnostico - registro de anamnesis - terminado."
+  172  git push origin isabel
+  173  git status
+  174  git add .
+  175  git commit -m "diagnostico = listado de anamnesis registrados - terminado"
+  176  git push origin isabel
+  177  git status
+  178  EXIT
+  179  exit
+  180  git status
+  181  git add .
+  182  git commit -m "cong security - access control ; mod mantenimiento = terminado validacioness y correccion de errores"
+  183  git push origin isabel
+  184  git status
+  185  git add .
+  186  git commit -m "registros clinicos : diagnostico terminado - validacion y tipos"
+  187  git push origin isabel
+  188  git status
+  189  git status
+  190  git status
+  191  git add .
+  192  git commit -m "registros clinicos : procedimiento termiando - validacion y tipos"
+  193  git push origin isabel
+  194  git push origin isabel
+  195  git status
+  196  git add .
+  197  git commit -m "registros clinicos : receta termiando - validacion y tippos - agregando entidad anamnesipaciente"
+  198  git push origin isabel
+  199  exit
+  200  dir
+  201  exit
+  202  git status
+  203  git add .
+  204  git commit -m "corrigiendo error - atencionanamnesis - repository"
+  205  git push origin isabel
+  206  git status
+  207  git add .
+  208  git commit -m "registros clinicos - anamnesis retgistro y especificaciones termiando  "
+  209  git push origin isabel
+  210  git status
+  211  git add .
+  212  git commit -m "registros clinicos - registros de anamnesis y especificaciones elimina - terminado"
+  213  git push origin isabel
+  214  git status
+  215  git add .
+  216  git commit -m "instalanado bower push js paara notificacionees"
+  217  git push origin isabel
+  218  git exit
+  219  exit
+  220  bower install push.js --save
+  221  php bin/console server:run
+  222  git status
+  223  exit
+  224  git init
+  225  git add .
+  226  git commit -m "conf servidor websocket"
+  227  git remote add origin https://github.com/ISABELUNA16/WebSocket-Ratchet-PHP.git
+  228  git push -u origin master
+  229  git satus
+  230  git status
+  231  git commit -m "chat-server conf"
+  232  git push origin master
+  233  git push origin master
+  234  exit
+  235  git status
+  236  git remote --v
+  237  git remote set-url origin https://github.com/ISABELUNA16/LaAcademiaWeb-demo.git
+  238  git remote --v
+  239  git push origin isabel
+  240  git remote set-url origin http://192.168.26.37:3000/DNRPD/AcademiaWeb.git 
+  241  git remote --v
+  242  git status
+  243  git log
+  244  git branch -a
+  245  git checkout desarrollo
+  246  git checkout isabel
+  247  git log
+  248  git checkout desarrollo
+  249  git log
+  250  git checkout javier
+  251  git log
+  252  git checkout master
+  253  git log
+  254  it checkout isabel
+  255  git checkout isabel
+  256  git log
+  257  gt git checkout desarrollo
+  258  git checkout javier
+  259  git log
+  260  git checkout isabel
+  261  exit
+  262  git status
+  263  git fecth origin
+  264  git fetch origin
+  265  git reset --hard origin/isabel
+  266  git status
+  267  git status
+  268  git remote --v
+  269  git add .
+  270  git commit -m "cambios terminados - trello - mod de horarios y validacion de ficha de inscripcion"
+  271  git push origin isabel
+  272  git push origin isabel
+  273  git log
+  274  git log
+  275  git status
+  276  exit
+  277  git log
+  278  git pull origin isabel
+  279  git add .
+  280  git commit -m "agregando cambios javier"
+  281  git push origin isabel
+  282  git status
+  283  git status
+  284  git checkout desarrollo
+  285  git checkout master
+  286  git checkout desarrollo
+  287  git pull origin desarrollo
+  288  git status
+  289  git status
+  290  git add .
+  291  git commit -m "correcion de button cerrar - mod horarios"
+  292  git push origin desarrollo
+  293  git checkout isabel
+  294  git pull origin isabel
+  295  git checkout master
+  296  git pull origin master
+  297  git checkout isabel
+  298  git log
+  299  git status
+  300  git status
+  301  git checkout master
+  302  php bin/console server:run
+  303  git status
+  304  php bin/console server:run
+  305  git pull origin master
+  306  php bin/console server:run
+  307  git status
+  308  git status
+  309  git pull origin master
+  310  git status
+  311  php bin/console server:run
+  312  git status
+  313  git add .
+  314  git commit -m "cambios conf Robin"
+  315  git push origin isabel
+  316  git status
+  317  git push origin isabel
+  318  git remote ---v
+  319  git remote -v
+  320  git status
+  321  git pull origin isabel
+  322  git push origin isabel
+  323  git status
+  324  git add .
+  325  git commit -m "cambiando path de estilos - recepcion "
+  326  git push origin isabel
+  327  git status
+  328  exit
+  329  git init
+  330  git status
+  331  git add .
+  332  git commit -m "integrando API Pusher con Push Js"
+  333  git remote add origin https://github.com/ISABELUNA16/RealtimeNotification-PHP.git
+  334  git push -u origin master
+  335  git status
+  336  git status
+  337  git add .
+  338  git commit -m "index conf msg"
+  339  git push  origin master
+  340  git pull origin master
+  341  git push origin master
+  342  git status
+  343  exit
+  344  git status
+  345  git status
+  346  git add .
+  347  git add .
+  348  git commit -m "instalando api pusher - modif en mod de recepcion  registro de examen clinico"
+  349  git push origin isabel
+  350  git status
+  351  exit
+  352  git status
+  353  git add .
+  354  git commit -m "opcion de eliminacion al registrar atencion , cambios de accesos"
+  355  git push origin isabel
+  356  exit
+  357  git statud
+  358  git status
+  359  git add .
+  360  git commit -m "notification real time - mod doctor"
+  361  git push origin isabel
+  362  exit
+  363  git log
+  364  git status
+  365  git add .
+  366  git commit -m "referencia medico en diagnostico cambios en historial paciente"
+  367  git push origin isabel
+  368  git status
+  369  exit
+  370  git status
+  371  git add .
+  372  git commit -m "conf reporte A5 - emision receta"
+  373  git push origin isabel
+  374  git status
+  375  git status
+  376  git add .
+  377  git commit -m "permisos security cambio de  paths"
+  378  git push origin isabel
+  379  git status
+  380  exit
+  381  git status
+  382  git add .
+  383  git commit -m "validaciones, repositorios fetch, mostrando paciente en receta"
+  384  git push origin isabel
+  385  git status
+  386  git add .
+  387  git commit -m "validacion de atenciones diarias"
+  388  git puhs origin isabel
+  389  git push origin isabel
+  390   exit
+  391  git status
+  392  git add .
+  393  git commit -m "implementacion de preinscripcion en horarios, index principal - cambios de actualizacion y creacion de horarios - ordenar diisciplinas export "
+  394  git push origin isabel
+  395  git push origin isabel
+  396  git push origin isabel
+  397  git pull origin isabel
+  398  git status
+  399  git add  .
+  400  git commit -m "cambios javier"
+  401  git pull origin isabel
+  402  git push origin isabel
+  403  git log
+  404  exit
+  405  git status
+  406  git add .
+  407  git commit -m "isabelx"
+  408  git brach desarrollo
+  409  git branch desarrollo
+  410  git checkout desarrollo
+  411  git fecth origin
+  412  git fetch origin
+  413  git checkout isabel
+  414  git fecth origin
+  415  git fetch origin
+  416  git reset --hard origin/desarrollo
+  417  exit
+  418  git status
+  419  git log
+  420  git status
+  421  git add .
+  422  git commit -m "cambios trello - validaciones gimnasia, cambios de cant preinscritos"
+  423  git push origin isabel
+  424  git status
+  425  git status
+  426  git status
+  427  git status
+  428  git add .
+  429  git commit -m "cant de inscripciones vigentes , horarios "
+  430  git push origin isabel
+  431  git status
+  432  git add .
+  433  git commit -m "mensaje de vacantes de inscritos y presinscritos horarios"
+  434  git push origin isabel
+  435  git status
+  436  git status
+  437  git add .
+  438  git commit -m "mensjae modal inferior"
+  439  git push origin isabel
+  440  git status
+  441  exit
+  442  git status
+  443  git add .
+  444  git commit -m "modal datos cambios, registro de examen clinico recep y med , actualizacion de alertas"
+  445  git push origin isabel
+  446  git status
+  447  exit
+  448  vagrant up
+  449  vagrant ssh
+  450  exit
+  451  vagrant sssh
+  452  vagrant ssh
+  453  vagrant up
+  454  vagrant ssh
+  455  cd topicosIPD/
+  456  git status
+  457  vagrant ssh
+  458  vagrant up
+  459  git remote -v
+  460  vagrant halt
+  461  exit
+  462  git status
+  463  vagrant up
+  464  vagrant up
+  465  vagrant halt
+  466  vagrant up
+  467  vagrant up
+  468  vagrant up
+  469  git status
+  470  git remote -v
+  471  git add .
+  472  git add .
+  473  git commit -m "cambios trello - edicion en matenimiento diagnostico - validacion de control vital- cambios de servidor VARGRANT"
+  474  git push origin isabel
+  475  git status
+  476  vagrant halt
+  477  vagrant halt
+  478  exit
+  479  git status
+  480  vagrant up
+  481  git status
+  482  git add .
+  483  git commit -m "mod mant diagnostico terminado - val trello "
+  484  git push origin isabel
+  485  git status
+  486  git status
+  487  git add .
+  488  git commit -m "mod procedimiento - actualizacion y evitar duplicidad."
+  489  git push origin isabel
+  490  git status
+  491  exit
+  492  git status
+  493  git status
+  494  git status
+  495  git add .
+  496  git commit -m "observaciones trello - actualizacion en cant de inscritos horario - mod Javier carnet -estilo tabla"
+  497  git push origin isabel
+  498  git checkout desarrollo
+  499  git merge isabel
+  500  git status
+  501  git status
+  502  git commit -m "cambios merge isabel - validaciones trello"
+  503  git push origin desarrollo
+  504  git pull origin desarrollo
+  505  git status
+  506  git add .
+  507  git commit -m "merge con isabel - validaciones trello"
+  508  git push origin desarrollo
+  509  git status
+  510  git status
+  511  git status
+  512  git checkout isabel
+  513  git checkout master
+  514  git status
+  515  git pull origin master
+  516  git checkout isabel
+  517  git status
+  518  git add .
+  519  git commit -m "arhivoo validaciones js javier"
+  520  git push origin isabel
+  521  git chechout master
+  522  git checkout master
+  523  git merge desarrollo
+  524  git pull origin master
+  525  git push origin master
+  526  git status
+  527  git status
+  528  git log
+  529  git log | clip
+  530  history > history.txt
