@@ -25,12 +25,12 @@ class ExportacionDataController extends Controller
     $response = new StreamedResponse(function() use($conn,$idComplejo) {
 
       $handle = fopen('php://output','w+');
-              fputcsv($handle, ['Departamento', 'Provincia', 'Complejo','Disciplina','CodigoHorario','Horario','NroPre-Inscritos'],",");
+              fputcsv($handle, ['Departamento', 'Provincia', 'Complejo','Disciplina','Discapacidad','CodigoHorario','Horario','NroPre-Inscritos'],",");
 
       $results = $conn->query("exec ACADEMIA.cantidadPreInscritos '$idComplejo' ");
 
       while($row = $results->fetch()) {
-        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['CodigoHorario'],$row['Horario'],$row['NroPre-Inscritos']), ",");
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['Discapacidad'],$row['CodigoHorario'],$row['Horario'],$row['NroPre-Inscritos']), ",");
       }
       fclose($handle);
     });
@@ -47,12 +47,12 @@ class ExportacionDataController extends Controller
     $response = new StreamedResponse(function() use($conn,$idComplejo) {
 
       $handle = fopen('php://output','w+');
-              fputcsv($handle, ['Departamento', 'Provincia', 'Complejo','Disciplina','CodigoHorario','Horario','NroInscritos'],",");
+              fputcsv($handle, ['Departamento', 'Provincia', 'Complejo','Disciplina','Discapacidad','CodigoHorario','Horario','NroInscritos'],",");
 
       $results = $conn->query("exec ACADEMIA.cantidadInscritos '$idComplejo'");
 
       while($row = $results->fetch()) {
-        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['CodigoHorario'],$row['Horario'],$row['NroInscritos']), ",");
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['Discapacidad'],$row['CodigoHorario'],$row['Horario'],$row['NroInscritos']), ",");
       }
       fclose($handle);
     });
@@ -72,12 +72,12 @@ class ExportacionDataController extends Controller
     $response = new StreamedResponse(function() use($conn,$idComplejo) {
 
       $handle = fopen('php://output','w+');
-              fputcsv($handle,['Departamento','Provincia','Complejo','Disciplina','CodigoHorario','Horario','Convocatoria','Estado'],",");
+              fputcsv($handle,['Departamento','Provincia','Complejo','Disciplina','Discapacidad','CodigoHorario','Horario','Convocatoria','Estado'],",");
 
       $results = $conn->query("exec ACADEMIA.cantidadHorariosCreadosRegion '$idComplejo' ");
 
       while($row = $results->fetch()){
-        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['CodigoHorario'],$row['Horario'],$row['Convocatoria'],$row['Estado']), ",");
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['Discapacidad'],$row['CodigoHorario'],$row['Horario'],$row['Convocatoria'],$row['Estado']), ",");
       }
       fclose($handle);
     });
@@ -142,7 +142,7 @@ class ExportacionDataController extends Controller
 
     	$handle = fopen('php://output','w+');
 
-    					fputcsv($handle, ['Departamento','Provincia' ,'Complejo', 'Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Asistencia','Horario','Discapacidad','Telefono','Correo'],",");
+    					fputcsv($handle, ['Departamento','Provincia' ,'Complejo', 'Disciplina','Discapacidad','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Asistencia','Horario','Telefono','Correo'],",");
               
     	$query1 = "SELECT ubiDpto.ubinombre Departamento ,ubiProv.ubinombre Provincia  , ede.ede_nombre as Complejo,dis.dis_descripcion as Disciplina, grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, grPar.perapematerno ApellidoMaterno ,
                   grPar.pernombres,CONVERT(varchar, grPar.perfecnacimiento, 103) FechaNacimiento,
@@ -171,8 +171,8 @@ class ExportacionDataController extends Controller
                   cat.descripcion Categoria, asis.descripcion
                   Asistencia,CONVERT(varchar(100),hor.turno)+' '+CONVERT( varchar(100),CONVERT(VARCHAR(5), hor.horaInicio , 108))+' - '+CONVERT(varchar(100),CONVERT(VARCHAR(5), hor.horaFin , 108) )+' ,'+ CONVERT(varchar(40),hor.edadMinima)+' a '+ CONVERT(varchar(40),edadMaxima)+' anos' AS Horario,
                       CASE par.discapacitado
-                      WHEN 0 THEN 'No'
-                      WHEN 1 THEN 'Si'
+                      WHEN 0 THEN 'No Discapacitado'
+                      WHEN 1 THEN 'Discapacitado'
                       ELSE 'No se sabe' END
                       AS Discapacidad,
                       grApod.pertelefono Telefono,
@@ -216,7 +216,7 @@ class ExportacionDataController extends Controller
     	$results = $conn->query($query1);
     	while($row = $results->fetch()) {
 
-      	fputcsv($handle, array( $row['Departamento'],$row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Discapacidad'],$row['Telefono'],$row['Correo']  ), ",");
+      	fputcsv($handle, array( $row['Departamento'],$row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['Discapacidad'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Telefono'],$row['Correo']  ), ",");
 
       /*	fputcsv($handle, array( $row['Departamento'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Discapacidad'],$row['Telefono'],$row['Correo']  ), ',');*/
 
@@ -229,31 +229,31 @@ class ExportacionDataController extends Controller
     return $response;
   }
 
-    public function exportDataAction(Request $request){
+  public function exportDataAction(Request $request){
 
-      
-      $perfil = $this->getUser()->getIdPerfil();
-      $idComplejo = $this->getUser()->getIdComplejo();
-      
-      $em = $this->getDoctrine()->getManager();
-
-      if($perfil == 2){
-        
-        $mdlDepartamentosExport = $em->getRepository('AkademiaBundle:Departamento')->departamentosExport();   
-        $mdlComplejoDeportivoExport = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejoDeportivoExport();
     
-      }else if($perfil == 1 or $perfil == 3) {
-
-
-      $mdlDepartamentosExport = $em->getRepository('AkademiaBundle:Departamento')->departamentosExportFind2($idComplejo);        
-      $mdlComplejoDeportivoExport = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejoDeportivoExportFind2($idComplejo);
-      }
-      
-      $mdlDepartamentos = $em->getRepository('AkademiaBundle:Departamento')->departamentosAll();
-
-      $mdlDisciplinasDeportivasExport = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->disciplinaDeportivaExport();
-      
-      return $this->render('AkademiaBundle:Export:export.html.twig',array('departamentosExport' => $mdlDepartamentosExport,'departamentosAll' => $mdlDepartamentos,'ComplejoDeportivoExport' => $mdlComplejoDeportivoExport,'DisciplinaDeportivaExport' => $mdlDisciplinasDeportivasExport)); 
+    $perfil = $this->getUser()->getIdPerfil();
+    $idComplejo = $this->getUser()->getIdComplejo();
     
+    $em = $this->getDoctrine()->getManager();
+
+    if($perfil == 2){
+      
+      $mdlDepartamentosExport = $em->getRepository('AkademiaBundle:Departamento')->departamentosExport();   
+      $mdlComplejoDeportivoExport = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejoDeportivoExport();
+  
+    }else if($perfil == 1 or $perfil == 3) {
+
+
+    $mdlDepartamentosExport = $em->getRepository('AkademiaBundle:Departamento')->departamentosExportFind2($idComplejo);        
+    $mdlComplejoDeportivoExport = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejoDeportivoExportFind2($idComplejo);
     }
+    
+    $mdlDepartamentos = $em->getRepository('AkademiaBundle:Departamento')->departamentosAll();
+
+    $mdlDisciplinasDeportivasExport = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->disciplinaDeportivaExport();
+    
+    return $this->render('AkademiaBundle:Export:export.html.twig',array('departamentosExport' => $mdlDepartamentosExport,'departamentosAll' => $mdlDepartamentos,'ComplejoDeportivoExport' => $mdlComplejoDeportivoExport,'DisciplinaDeportivaExport' => $mdlDisciplinasDeportivasExport)); 
+  
+  }
 }
