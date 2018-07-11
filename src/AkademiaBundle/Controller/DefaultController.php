@@ -1057,6 +1057,7 @@ class DefaultController extends Controller
         }
     }
     public function crearDisciplinaAction(Request $request){
+        
         if($request->isXmlHttpRequest()){
             $idDisciplina = $request->request->get('idDisciplina');           
             $idComplejo = $this->getUser()->getIdComplejo();
@@ -1090,6 +1091,32 @@ class DefaultController extends Controller
                 return new JsonResponse($mensaje);           
             }
           
+        }
+    }
+
+    public function eliminarDisciplinaAction(Request $request){
+        if($request->isXmlHttpRequest()){
+
+            $idDisciplina = $request->request->get('codigoDisciplina');  
+            $idComplejo = $this->getUser()->getIdComplejo();
+
+            $em = $this->getDoctrine()->getManager();
+            $ediCodigo = $em->getRepository('AkademiaBundle:Horario')->getCapturarEdiCodigo($idComplejo, $idDisciplina);   
+            $codigoEdi = $ediCodigo[0]['edi_codigo'];
+
+            $cantidad = $em->getRepository('AkademiaBundle:Horario')->cantHorarioDisciplina($codigoEdi);
+
+            if(!empty($cantidad)){
+                $mensaje = 1;
+                return new JsonResponse($mensaje);
+            
+            }else{
+
+                $em->getRepository('AkademiaBundle:Horario')->eliminarDisciplina($codigoEdi);
+                $mensaje = 2;
+                return new JsonResponse($mensaje);
+            
+            }
         }
     }
 }

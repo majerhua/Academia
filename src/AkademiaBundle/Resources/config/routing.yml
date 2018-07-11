@@ -140,6 +140,11 @@ akademia_crearDisciplina:
    defaults: {_controller: AkademiaBundle:Default:crearDisciplina}
    methods: [GET,POST]
 
+akademia_eliminarDisciplina:
+    path:     /ajax/eliminarDisciplina
+    defaults: { _controller: AkademiaBundle:Default:eliminarDisciplina}  
+    methods:  [GET,POST]
+
 akademia_cambiarestado:
     path:   /ajax/cambiarestado
     defaults: {_controller: AkademiaBundle:Default:cambiarestado}

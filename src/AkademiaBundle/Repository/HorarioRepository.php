@@ -287,5 +287,24 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
             return $data;
         }
 
+        public function cantHorarioDisciplina($ediCodigo){
+
+            $query = "SELECT count(1) cantHorarios from academia.horario where edi_codigo = $ediCodigo;";
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+            $cantidad = $stmt->fetch();
+
+            return $cantidad;
+
+        }
+
+        public function eliminarDisciplina($ediCodigo){
+           
+            $query = " DELETE FROM catastro.edificacionDisciplina where edi_codigo = $ediCodigo";
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+            
+        }
+
 
 }
