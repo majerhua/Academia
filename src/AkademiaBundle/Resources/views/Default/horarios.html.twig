@@ -60,7 +60,6 @@
 						<a class="title-card" data-toggle="collapse" href="#caja{{complejosDisciplina['idDisciplina']}}" >
 							<strong>{{complejosDisciplina['nombreDisciplina']}}</strong>
 						</a>
-						<button title="Eliminar disciplina" type="button" id="{{complejosDisciplina['idDisciplina']}}" style="float:right;" class="btn btn-default btn-xs" data-toggle="modal" data-target="#confirmarEliminarDisciplina" onclick="xDisciplina({{complejosDisciplina['idDisciplina']}})"><i class="icon-trash" style="font-size:1em; margin-top:5px; color:#B40404" ></i></button>
 					</div>
 					
 					<div id="caja{{complejosDisciplina['idDisciplina']}}" class="collapse" role="tabpanel" data-parent="#accordion">
@@ -68,10 +67,24 @@
 						<div class="card-body">
 							<div class="row">
 								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-									<div class="input-group col-xs-4 col-sm-4 col-md-4 col-lg-4">
-									  <span class="input-group-addon">Buscar</span>
-									  <input class="filtrar form-control" type="text" ident-buscar="{{cont}}"  placeholder=" ingresa los campos a buscar ">
+									<div class="row">
+										<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+											<div class="input-group col-xs-8 col-sm-8 col-md-8 col-lg-8">
+											  <span class="input-group-addon">Buscar</span>
+											  <input class="filtrar form-control" type="text" ident-buscar="{{cont}}"  placeholder=" ingresa los campos a buscar ">
+											</div>
+										</div>
+										
+										<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+											<div style="float:right; margin-right:20px">
+												<span style="color:grey">Eliminar disciplina </span>
+												<button title="Eliminar disciplina" type="button" id="{{complejosDisciplina['idDisciplina']}}"  class="btn btn-default btn-xs" data-toggle="modal" data-target="#confirmarEliminarDisciplina" onclick="xDisciplina({{complejosDisciplina['idDisciplina']}})"><i class="icon-trash" style="font-size:1.6em; margin-top:5px; color:#B45F04" ></i></button>
+
+											</div>
+											
+										</div>
 									</div>
+									
 									<br>
 
 									<div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:50vh; ">			
@@ -79,30 +92,19 @@
 										<table class="table"  style="width: 100%; "> 
 											<thead style="background:#cb2f1d; color:#F2F2F2;" class="text-center"> 
 												<tr> 
-													<th class="text-center" style="font-size:14px" >Código</th>
+													<th class="text-center" style="font-size:14px" >Código de horario</th>
+													<th class="text-center" style="font-size:14px">Deporte</th>
 													<th class="text-center" style="font-size:14px">Turno</th> 
 													<th class="text-center" style="font-size:14px">Hora</th>
 													<th class="text-center" style="font-size:14px">Edades</th> 
-													<th class="text-center" style="font-size:14px">Discapacitad</th>
 													<th class="text-center" style="font-size:14px">Convocatoria</th>
-													<th class="text-center" style="font-size:14px" colspan="2"> Vacantes</th> 
-													<th class="text-center" style="font-size:14px">Matriculados</th>
-													<th></th>
-													<th></th>
-												</tr>
-												<tr style="background:#C9C5C5; color:#504B4B;"> 
-													<th class="text-center" style="font-size:14px"></th>
-													<th class="text-center" style="font-size:14px"></th> 
-													<th class="text-center" style="font-size:14px"></th>
-													<th class="text-center" style="font-size:14px"></th> 
-													<th class="text-center" style="font-size:14px"></th>
-													<th class="text-center" style="font-size:14px"></th>
 													<th class="text-center" style="font-size:14px">Límite de preinscripciones</th> 
-													<th class="text-center" style="font-size:14px">vacantes disponibles</th>
-													<th class="text-center" style="font-size:14px"></th>
+													<th class="text-center" style="font-size:14px">Vacantes disponibles</th>
+													<th class="text-center" style="font-size:14px">Inscritos</th>
 													<th></th>
 													<th></th>
 												</tr>
+												
 											</thead> 
 											
 											<tbody id="1{{complejosDisciplina['idDisciplina']}}" class="buscar"  > 
@@ -111,6 +113,11 @@
 											{% if horario['idDisciplina'] == complejosDisciplina['idDisciplina'] %}
 												<tr> 
 													<td id="1h{{horario['idHorario']}}" class="text-center">{{horario['idHorario']}}</td> 
+													{% if  horario['discapacidad'] == 0 %}
+														<td id="6h{{horario['idHorario']}}" class="text-center" > Regular </td> 
+													{% else %}
+														<td id="6h{{horario['idHorario']}}" class="text-center"> Adaptado </td> 
+													{% endif %}
 													<td id="2h{{horario['idHorario']}}" class="text-center">{{horario['turno']}}</td> 
 													<td id="3h{{horario['idHorario']}}" class="text-center">{{horario['horaInicio']|date('H:i')}} - {{horario['horaFin']|date('H:i')}}</td> 
 
@@ -120,11 +127,7 @@
 														<td id="4h{{horario['idHorario']}}"class="text-center">{{horario['edadMinima']}} años</td>
 													{% endif %}
  													
- 													{% if  horario['discapacidad'] == 0 %}
-														<td id="6h{{horario['idHorario']}}" class="text-center"> No </td> 
-													{% else %}
-														<td id="6h{{horario['idHorario']}}" class="text-center"> Si </td> 
-													{% endif %}
+ 													
 
 													{% if  horario['convocatoria'] == 1 %}
 														<td id="7h{{horario['idHorario']}}" class="text-center" style="color:green">Abierta</td>
@@ -530,13 +533,13 @@
 							<li class="list-group-item">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Discapacidad</strong></p>
+										<p><strong>DEPORTE</strong></p>
 									</div>
 									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
 										<select class="form-control" id="crear_discapacidad">
 											<option value="">--Seleccionar--</option>
-											<option value="0">No</option>
-											<option value="1">Si</option>
+											<option value="0">Regular</option>
+											<option value="1">Adaptado</option>
 										</select>
 									</div>
 								</div>
@@ -689,6 +692,7 @@
 	</div>
 </div>
 
+<!--CREAR NUEVA DISCIPLINA-->
 
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="confirmarDisciplina">
   <div class="modal-dialog">
@@ -708,6 +712,8 @@
   </div>
 </div>
 
+<!--NO SE PUEDE ELIMINAR HORARIO-->
+
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="errorEliminacionHorario">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -724,6 +730,7 @@
     </div>
   </div>
 </div>
+
 
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="confirmarEliminarHorario">
   <div class="modal-dialog">

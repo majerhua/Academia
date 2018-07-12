@@ -150,6 +150,10 @@ class DefaultController extends Controller
         return $this->render('AkademiaBundle:Default:cuestions.html.twig');
     }
 
+    public function configuracionAction(Request $request){
+        return $this->render('AkademiaBundle:Default:configuracion.html.twig');
+    }
+
     public function registrarAction(Request $request)
     {
         if($request->isXmlHttpRequest()){

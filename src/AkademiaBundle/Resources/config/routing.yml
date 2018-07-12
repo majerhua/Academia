@@ -150,6 +150,11 @@ akademia_cambiarestado:
     defaults: {_controller: AkademiaBundle:Default:cambiarestado}
     methods: [GET, POST]
 
+akademia_configuracion:
+    path:     /ajax/configuracion
+    defaults: { _controller: AkademiaBundle:Default:configuracion}
+    methods:  [GET,POST]
+
 akademia_login:
     path:    /login
     defaults: {_controller: AkademiaBundle:Default:login}
