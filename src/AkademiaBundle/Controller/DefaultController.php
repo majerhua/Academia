@@ -55,47 +55,4 @@ class DefaultController extends Controller
 
         return $this->render('AkademiaBundle:Default:cuestions.html.twig');
     }
-    
-  
-
-   /* public function pruebaAction(Request $request){
-    
-        $em = $this->getDoctrine()->getManager();
-        $IDParticipante = $em->getRepository('AkademiaBundle:Participante')->getApoderadoBusqueda('08161415');
-        return new JsonResponse($IDParticipante);
-    }
-    
-    public function postAction(Request $request){
-       
-        if($request->isXmlHttpRequest()){
-            $em = $this->getDoctrine()->getRepository(Post::class);
-            $posts = $em->findAll();
-            $encoders = array(new JsonEncoder());
-            $normalizer = new ObjectNormalizer();
-            $normalizers = array($normalizer);
-            $serializer = new Serializer($normalizers, $encoders);
-            $jsonContent = $serializer->serialize($posts, 'json');
-            return new JsonResponse($jsonContent);  
-        }
-    }*/
-   
-
-    public function panelAction(Request $request){
-
-        $idComplejo = $this->getUser()->getIdComplejo();
-        $em = $this->getDoctrine()->getManager();
-        $Nombre = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->nombreComplejo($idComplejo);
-        
-        if(!empty($Nombre)){ 
-          return $this->render('AkademiaBundle:Default:menuprincipal.html.twig', array("valor"=>"1", "nombreComplejo"=> $Nombre));
-        }else{
-          return $this->render('AkademiaBundle:Default:menuprincipal.html.twig', array("valor"=>"2"));
-        }
-      
-    }
-
-    public function inscritosAction(Request $request){
-        return $this->render('AkademiaBundle:Default:inscritos.html.twig');
-    }
-
 }
