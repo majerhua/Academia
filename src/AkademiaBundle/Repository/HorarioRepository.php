@@ -13,7 +13,7 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
 
     public function horariosFlagAll($flagDis,$edadBeneficiario)
     {
-        $query = "SELECT * from ACADEMIA.horario where convocatoria= 1  and vacantes <> 0 and preinscripciones <> 0 and estado = 1 and discapacitados='$flagDis' and '$edadBeneficiario'<=edadMaxima and '$edadBeneficiario'>=edadMinima;";
+        $query = "SELECT * from ACADEMIA.horario where convocatoria= 1  and preinscripciones<>0 and preinscripciones <> 0 and estado = 1 and discapacitados='$flagDis' and '$edadBeneficiario'<=edadMaxima and '$edadBeneficiario'>=edadMinima;";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $horarios = $stmt->fetchAll();
@@ -22,7 +22,7 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
 
     public function horariosFlagAllLanding($flagDis)
     {
-        $query = "SELECT * from ACADEMIA.horario where convocatoria= 1  and vacantes <> 0 and estado = 1 and discapacitados='$flagDis';";
+        $query = "SELECT * from ACADEMIA.horario where convocatoria= 1  and vacantes<>0 and estado = 1 and discapacitados='$flagDis';";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $horarios = $stmt->fetchAll();

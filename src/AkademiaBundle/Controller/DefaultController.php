@@ -26,7 +26,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class DefaultController extends Controller
 {
 
-    public function paginaPrincipalAction(Request $request,$estado){
+    public function paginaPreHorariosAction(Request $request,$estado){
 
         $em = $this->getDoctrine()->getManager();
 
@@ -40,7 +40,7 @@ class DefaultController extends Controller
         $mdlDisciplinasDeportivasFlag = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->disciplinasDeportivasFlagAllLanding($estado);
         $mdlhorariosFlag = $em->getRepository('AkademiaBundle:Horario')->horariosFlagAllLanding($estado);
 
-        return $this->render('AkademiaBundle:Default:horariosLanding.html.twig', array('departamentosFlag' => $mdlDepartamentosFlag , "provinciasFlag" => $mdlProvinciasFlag ,'distritosFlag' => $mdlDistritosFlag,'departamentos'=>$mdlDepartamentos,'provincias'=>$mdlProvincias,'distritos'=>$mdlDistritos, 'complejosDeportivos' => $mdlComplejosDeportivosFlag, 'disciplinasDeportivas' => $mdlDisciplinasDeportivasFlag ,'horarios' => $mdlhorariosFlag) );
+        return $this->render('AkademiaBundle:Default:horariosLanding.html.twig', array('departamentosFlag' => $mdlDepartamentosFlag , "provinciasFlag" => $mdlProvinciasFlag ,'distritosFlag' => $mdlDistritosFlag,'departamentos'=>$mdlDepartamentos,'provincias'=>$mdlProvincias,'distritos'=>$mdlDistritos, 'complejosDeportivos' => $mdlComplejosDeportivosFlag, 'disciplinasDeportivas' => $mdlDisciplinasDeportivasFlag ,'horarios' => $mdlhorariosFlag,'estado'=>$estado) );
     }
 
 
@@ -93,6 +93,11 @@ class DefaultController extends Controller
     }
     
     public function indexAction(Request $request){
+        
+        return $this->render('AkademiaBundle:Default:index.html.twig');     
+    }
+
+    public function indexPreInscripcionAction(Request $request){
         /*
         $Role = $this->getUser()->getIdPerfil();
         echo $Role;
@@ -142,8 +147,10 @@ class DefaultController extends Controller
         $mdlComplejoDisciplina = $em2->getRepository('AkademiaBundle:ComplejoDisciplina')->getComplejoDisciplinas();
     
         
-        return $this->render('AkademiaBundle:Default:index.html.twig' , array("complejosDeportivo" => $mdlComplejoDeportivo , "complejosDisciplinas" => $mdlComplejoDisciplina , "departamentos" => $mdlDepartamento,"provincias" => $mdlProvincia ,"distritos" => $mdlDistrito ,'ditritosCD' => $mdlDitritoCD , "departamentosCD" => $mdlDepartamentosCD ,'provinciasCD' => $mdlProvinciasCD ));     
+        return $this->render('AkademiaBundle:Default:indexPreInscripcion.html.twig' , array("complejosDeportivo" => $mdlComplejoDeportivo , "complejosDisciplinas" => $mdlComplejoDisciplina , "departamentos" => $mdlDepartamento,"provincias" => $mdlProvincia ,"distritos" => $mdlDistrito ,'ditritosCD' => $mdlDitritoCD , "departamentosCD" => $mdlDepartamentosCD ,'provinciasCD' => $mdlProvinciasCD ));     
     }
+
+
 
     public function consultaAction(Request $request)
     {

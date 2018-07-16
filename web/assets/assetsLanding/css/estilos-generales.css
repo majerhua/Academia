@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:400");
+
+
+html {
+  font-family: "Lato", sans-serif;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -moz-font-feature-settings: "liga" on; 
+}
+
+a {
+  outline: 0;
+  text-decoration: none;
+  transition: 0.7s;
+  color: inherit; 
+}
+
+button, .button {
+  
+  display: inline-block;
+  border: 1px solid #CB3F1D;
+  color: #6C63FF;
+  transition: 0.7s;
+  font-weight: bold;
+  white-space: nowrap;
+  cursor: pointer;
+  background-color: transparent;
+  border-radius: 30px;
+  margin-bottom: 1.3em;
+  transition: 0.7s;
+  text-align: center;
+  text-decoration: none; 
+}
+
+button:hover, button:focus, .button:hover, .button:focus {
+  outline: 0; 
+}
+
+button:hover, button:focus, .button:hover, .button:focus {
+  outline: 0; 
+}
+
+

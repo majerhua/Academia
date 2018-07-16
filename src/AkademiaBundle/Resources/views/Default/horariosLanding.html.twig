@@ -2,7 +2,43 @@
 {% block title %}La Academia{% endblock %}
 {% block body  %}
 
-<div class="proceso" style="display:flex !important;align-items: center !important;height:100vh; justify-content: center !important; ">
+
+<header>
+	 <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    
+                </button>                       
+                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="logoAcademia" />                                      
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <br>
+                <ul class="nav navbar-nav navbar-right">
+              
+                    <li title="Regresar"><a href="{{url('akademia_homepage')}}"><i class="icon-back" style="font-size:1.9em; color:white" ></i></a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="proceso" style="display:flex !important; flex-wrap:wrap !important; align-items: center !important; justify-content: center !important; ">
+
+	<h1 style="font-style:italic; font-weight:bold; color:#cf5336; ">
+		{% if estado == 0 %}
+			Deportes Regulares
+
+		{% else %}
+
+			Deportes Adaptados		
+
+		{% endif %}
+	</h1>
 
 	<div class="proceso-inscripcion__horarios" id="process4">
 
@@ -12,19 +48,6 @@
 
 				<hr>
 				<div class="complejo row" >
-
-					<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-3">
-		        		<label class="complejo-titulo" >Tipo Horario</label>
-		        		<div>
-			            	<select id="tipo-horario" name="tipo-horario" class="effect-3 " onchange="cambiarTipoHorario(this)" >
-			                	<option value=""> -- Seleccionar --</option>
-			                	<option value="0">No discapacitado</option>
-			                	<option value="1">Discapacitado</option>
-			            	</select>
-			            	<span class="focus-border"></span> 
-		            	</div>
-		        	</div>
-
 					<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-3">
 						<label class="text-left complejo-titulo">Departamento</label>
 						<div>
@@ -84,11 +107,11 @@
 
 		<div class="container-card col-xs-12 col-sm-12 col-md-4 col-lg-5">
 			<div class="card">
-				<p class="title-card text-center">DEPORTES Y HORARIOS</p>
+				<p class="title-card text-center">DISCIPLINAS Y HORARIOS</p>
 				<hr>
 		        <div class="form-group container-select-deporte">
 		        	<div>
-		        		<label class="complejo-titulo">Deporte </label>
+		        		<label class="complejo-titulo">Disciplina </label>
 		            	<select id="disciplinaDeportiva" name="disciplinaDeportiva" class="effect-3 text" onchange="cambiarDisciplinaDeportiva(this)" >
 		                	<option value=""> -- Seleccionar --</option>
 		            	</select>
@@ -126,9 +149,7 @@
 
 	</div>
 
-	<div id="loader" class="loader"></div>
-
-
+	<div id="loader" class="loader" style="display:none;" ></div>
 </div>
 
 <div id="myModal" class="modal fade" role="dialog">
@@ -158,10 +179,7 @@
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
 	<script>
 
-		$("#process5").hide();
-		$("#loader").hide();
-
-		var cambiarTipoHorario = (tipoHor)=>{
+{#		var cambiarTipoHorario = (tipoHor)=>{
 
 			var valtipoHor = tipoHor.value;
 
@@ -175,9 +193,8 @@
 				window.location.href ="{{url('akademia_paginaPrincipal',{estado:'1'})}}";
 			}	 
 				
-			
-
 		}
+#}
 
 		var departamentoHorario = document.querySelector("#departamentoHorario");
 		var cambiarDepartamentoHorario = (depHor)=>{
@@ -304,6 +321,9 @@
 			$("#horario").append("<option value='' >--Seleccionar--</option>");
 
 			var idComplejoDisciplina = comDis.value;
+
+			console.log(idComplejoDisciplina);
+
 				$("#boton-next-final").attr("disabled", false);
 				$("#rango-hora-horario").empty();
 				$("#rango-edad-horario").empty();
@@ -338,8 +358,6 @@
 
 		var cambiarHorario=  (horario)=>{
 
-			console.log("Edad niño ==>",sessionStorage.getItem("edad"));
-
 			$("#horaInicio").empty();
 			$("#horaFin").empty();
 			$("#edadMinima").empty();
@@ -355,7 +373,7 @@
 
 				if("{{horario['id']}}" == idHorario){
 
-					if(parseInt(sessionStorage.getItem("edad")) >= parseInt("{{horario['edadMinima']}}") && parseInt(sessionStorage.getItem("edad")) <= parseInt("{{horario['edadMaxima']}}")){
+					//if(parseInt(sessionStorage.getItem("edad")) >= parseInt("{{horario['edadMinima']}}") && parseInt(sessionStorage.getItem("edad")) <= parseInt("{{horario['edadMaxima']}}")){
 
 						localStorage.removeItem('idHorario');
 						sessionStorage.setItem("idHorario", "{{horario['id']}}");
@@ -372,7 +390,7 @@
 						
 						$("#rango-edad-horario").empty();
 						$("#rango-edad-horario").append(" <strong> De {{horario['edadMinima']}} a {{horario['edadMaxima']}} años. </strong> ");
-					}		
+					//}		
 				}
 
 			{% endfor %}
@@ -381,162 +399,8 @@
 
 $("#boton-next-final").on('click',function(){
 
-	var disciplinaDeportiva = document.getElementById('disciplinaDeportiva').value;
-	var horario =document.getElementById('horario').value;
-	
-	if( disciplinaDeportiva=="" || horario==""){
-			alertify.error('<p style="color:white">Debe seleccionar Disciplina y/o Horario </p>'); 
-	}else{
-		
-		$("#process4").hide();
-		$("#process5").show('slow');	
-		registrar();
-	}
 });
 
-function registrar(){
-	var dataRegisterApoderado={
-		//DATOS APODERADO
-		"dni" : sessionStorage.getItem('dni-apoderado'),
-		"apellidoPaterno" : sessionStorage.getItem('apellidoPaterno-apoderado'),
-		"apellidoMaterno" : sessionStorage.getItem('apellidoMaterno-apoderado'),
-		"nombre" : sessionStorage.getItem('nombre-apoderado'),
-		"fechaNacimiento" : sessionStorage.getItem('fechaNacimiento-apoderado'),
-		"sexo" : sessionStorage.getItem('sexo-apoderado'),
-		"distrito" : sessionStorage.getItem('distrito-apoderado'),
-		"direccion" : sessionStorage.getItem('direccion-apoderado'),
-		"telefono" : sessionStorage.getItem('telefono-apoderado'),
-		"correo" : sessionStorage.getItem('correo-apoderado'),
-		//HORARIO
-		'idHorario' : sessionStorage.getItem('idHorario'),
-		//DATOS HIJO
-		"dniParticipante" : sessionStorage.getItem('dni-participante'),
-		"apellidoPaternoParticipante" : sessionStorage.getItem('apellidoPaterno-participante'),
-		"apellidoMaternoParticipante" : sessionStorage.getItem('apellidoMaterno-partcipante'),
-		"nombreParticipante" : sessionStorage.getItem('nombre-partcipante'),
-		"fechaNacimientoParticipante" : sessionStorage.getItem('fechaNacimiento-partcipante'),
-		"sexoParticipante" : sessionStorage.getItem('sexo-partcipante'),
-		"parentesco" : sessionStorage.getItem('parentesco-partcipante'),
-		"tipoSeguro" : sessionStorage.getItem('tipoSeguro-partcipante'),
-		"discapacidad" :sessionStorage.getItem('flagDiscapacitado')
-	};
-	console.log("DATOS A REGISTRAR => ",dataRegisterApoderado);
-	$.ajax({
-		type:'POST',
-		dataType: "json",
-		url: "{{url('akademia_registrar')}}",
-		data: dataRegisterApoderado,
-		beforeSend: function(){	
-			$("#boton-next-final").attr("disabled", true);		
-		},
-		success: function(data){
-			$("#boton-next-final").attr("disabled", false);
-			if(data != 1){
-				$(".bar-inscripcion__4").removeClass('active');
-				$(".bar-inscripcion__5").addClass('active');
-				$("#process4").hide();
-				$("#process5").show();
-				var valor =JSON.parse(data)[0];
-				sessionStorage.removeItem("idInscripcion");
-				sessionStorage.setItem("idInscripcion",valor.id);
-				$("#ancla-imprimir-fichaInscripcion").attr('href',"/academia/web/ajax/pdf/inscripcion/"+sessionStorage.getItem("idInscripcion"));
-				$("#ancla-imprimir-declaracion-jurada").attr('href',"/academia/web/ajax/pdf/declaracion-jurada/"+sessionStorage.getItem("idInscripcion"));
-				$("#codigo-inscripcionRef").append(valor.id);
-				$("#nombre-ficha").append(valor.pernombres);
-				$("#apellidoPaterni-ficha").append(valor.perapepaterno);
-				$("#apellidoMaterno-ficha").append(valor.perapematerno);
-				$("#distrito-ficha").append(valor.distrito);
-				$("#domicilio-ficha").append(valor.perdomdireccion);
-				$("#fechaNacimiento-ficha").append(valor.perfecnacimiento);
-				$("#telefono-ficha").append(valor.pertelefono);
-				$("#dni-ficha").append(valor.dni);
-				$("#edad-ficha").append(sessionStorage.getItem("edad"));
-				$("#email-ficha").append(valor.percorreo);
-				$("#deporte-ficha").append(valor.nombreDisciplina);
-				$("#complejo-ficha").append(valor.nombreComplejo);
-				$("#horario-ficha").append(valor.horaInicio+" a "+valor.horaFin);
-				$("#nombrePadre-declaracion-jurada").append(valor.nombrePadre);
-				$("#codigo-inscripcion").val(valor.id);
-			    enviarEmailApoderado(valor.percorreo,valor.nombrePadre,valor.id);
-			}else{
-				showAlertMessage('#alerta-error', "Lo sentimos, se agotaron las vacantes para este horario. ");
-				$("#boton-next-final").attr("disabled", true);
-				$("#process5").hide();
-			}			
-		},
-		error: function(error){
-			console.log("Error - oh no!");
-		}
-	});
-}
-
-function enviarEmailApoderado($correoApod,$nombre,$id){
-
-	var correoApoderado = {
-		"correo" : $correoApod,
-		"nombre" : $nombre,
-		"id" : $id,
-	};
-
-	$.ajax({
-		type:'POST',
-		dataType: 'json',
-		url: "{{url('akademia_sendemailapoderado')}}",
-		data: correoApoderado,
-		beforeSend: function(){
-			
-		},
-		success: function(data){
-			 alertify.success('<p style="color:black">Correo enviando exitosamente.</p>');
-		},
-		error: function(error){
-			 alertify.error('<p style="color:white">Se produjo un problema al enviar la información a su correo electrónico.</p> ');
-		}	
-	});
-}
-
-
-$("#inscribirPreinscrito").on('click',function(){
-	var id = $('#codigo-inscripcion').val();
-	console.log(id);
-	var dataFicha = {
-		"id" : id,
-	}
-	$.ajax({
-		type:'POST',
-		dataType: 'json',
-		url: "{{url('akademia_cambiarestado')}}",
-		data: dataFicha,
-		beforeSend: function(){	
-			$("#btn-inscripcion").attr("disabled", true);	
-		},
-		success: function(data){
-			if (data == 1){
-				$("#btn-confirmar-inscripcion").attr("disabled", true);
-				$('#input-codigo-inscripcion').focus();
-				showAlertMessage('#alerta-confirmacionFicha', "Ficha inscrita exitosamente !");
-			
-			}else if( data == 2){
-				$("#btn-confirmar-inscripcion").attr("disabled", true);
-				$('#input-codigo-inscripcion').focus();
-				showAlertMessage('#alerta-errorFicha', "No existen vacantes disponibles para este Horario. ");
-			
-			}else if( data == 3){
-				$("#btn-confirmar-inscripcion").attr("disabled", true);
-				$('#input-codigo-inscripcion').focus();
-				showAlertMessage('#alerta-errorFicha', "Este alumno ya se encuentra inscrito en esta disciplina. ");
-			
-			}else if( data == 4){
-				$("#btn-confirmar-inscripcion").attr("disabled", true);
-				$('#input-codigo-inscripcion').focus();
-				showAlertMessage('#alerta-errorFicha', "El alumno excedió la cantidad de Inscripciones posibles.");
-			}
-		},
-		error: function(error){
-			console.log("Error en la captura de datos");
-		}
-    });
-});
 
 	</script>
 

@@ -6,9 +6,13 @@
 
 ##PAGINA principal
 
-akademia_paginaPrincipal:
-    path: /pagina-principal/{estado}
-    defaults: { _controller: AkademiaBundle:Default:paginaPrincipal}
+akademia_paginaPreHorarios:
+    path: /pre-horarios/{estado}
+    defaults: { _controller: AkademiaBundle:Default:paginaPreHorarios}
+
+akademia_paginaPreInscripcion:
+    path: /pre-inscripcion
+    defaults: { _controller: AkademiaBundle:Default:indexPreInscripcion}
 
 ##END
 
