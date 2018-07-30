@@ -56,6 +56,7 @@ class DefaultController extends Controller
         return $this->render('AkademiaBundle:Default:cuestions.html.twig');
     }
 
+    //PANEL PRINCIPAL 
     public function panelAction(Request $request){
   
         $idComplejo = $this->getUser()->getIdComplejo();
@@ -67,5 +68,11 @@ class DefaultController extends Controller
 
         }
     }
+
+    //VISTA INSCRIPCION DIRECTA
+    public function inscritosAction(Request $request){
+        return $this->render('AkademiaBundle:Default:inscritos.html.twig');
+    }
+
 
 }

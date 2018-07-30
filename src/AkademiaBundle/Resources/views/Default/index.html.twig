@@ -19,11 +19,7 @@
 	        <ul class="nav navbar-nav navbar-right">
 
 	            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') or is_granted('ROLE_DOCENTE') %}	
-	            	
-	            	<!--<li><a href="{{url('akademia_homepage')}}">Inscripción directa</a></li>
-                	<li><a href="{{url('akademia_inscritos')}}">Inscritos</a></li>
-                	<li><a href="{{url('akademia_horarios')}}">Horarios</a></li>
-                    <li><a href="{{url('akademia_logout')}}">Cerrar sesión</a></li>-->
+	            
                     <li title="Inicio"><a href="{{url('akademia_panel')}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
                     <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
                 

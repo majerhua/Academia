@@ -26,10 +26,10 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class HorarioController extends Controller
 {
 
+    // FUNCION PARA RENDERIZAR LA VISTA DE HORARIOS
   	public function horariosAction(Request $request){
 
         $idComplejo = $this->getUser()->getIdComplejo();
-
         $em2 = $this->getDoctrine()->getManager();
       
         $ComplejoDisciplinas = $em2->getRepository('AkademiaBundle:ComplejoDisciplina')->getComplejosDisciplinasHorarios($idComplejo);
@@ -47,6 +47,7 @@ class HorarioController extends Controller
 
     }
 
+    // FUNCION PARA LA CREACION DE HORARIOS
     public function crearHorarioAction(Request $request){
         if($request->isXmlHttpRequest()){
 
@@ -124,6 +125,8 @@ class HorarioController extends Controller
         }
     }
 
+    // FUNCION PARA MOSTRAR HORARIOS INDIVIDUALES
+
     public function mostrarHorarioIndividualAction(Request $request){  
         if($request->isXmlHttpRequest()){
             $idHorario=$request->request->get('idHorario');
@@ -148,6 +151,8 @@ class HorarioController extends Controller
             }
         }
     }
+
+    // FUNCION PARA ACTUALIZAR LOS HORARIOS 
 
     public function actualizarHorarioAction(Request $request){
         if($request->isXmlHttpRequest()){
@@ -182,6 +187,8 @@ class HorarioController extends Controller
         }
     }
 
+    // FUNCION PARA OCULTAR O ELIMINAR HORARIOS
+
     public function ocultarHorarioAction(Request $request){
         if($request->isXmlHttpRequest()){
 
@@ -198,11 +205,4 @@ class HorarioController extends Controller
             }
         }
     }
-
-
-   
-
-
-
-
 }

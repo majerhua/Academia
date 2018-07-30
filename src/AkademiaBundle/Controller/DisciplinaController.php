@@ -25,7 +25,9 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class DisciplinaController extends Controller
 {
-	public function crearDisciplinaAction(Request $request){    
+	// CREAR NUEVA DISCIPLINA 
+
+    public function crearDisciplinaAction(Request $request){    
         if($request->isXmlHttpRequest()){
 
             $idDisciplina = $request->request->get('idDisciplina');           
@@ -63,6 +65,9 @@ class DisciplinaController extends Controller
         }
     }
 
+
+    // ELIMINAR DISCIPLINA
+    
     public function eliminarDisciplinaAction(Request $request){
         if($request->isXmlHttpRequest()){
 

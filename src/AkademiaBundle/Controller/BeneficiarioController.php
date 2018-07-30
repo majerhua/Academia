@@ -26,6 +26,8 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class BeneficiarioController extends Controller
 {
 
+    // FUNCION PARA EL RENDERIZADO INICIAL 
+
  	public function beneficiariosAction(Request $request, $idHorario){
         
         $em = $this->getDoctrine()->getManager();
@@ -41,6 +43,7 @@ class BeneficiarioController extends Controller
         return $this->render('AkademiaBundle:Default:beneficiarios.html.twig', array("horarios" => $Horarios, "beneficiarios" => $Beneficiarios, "asistencias" => $Asistencias, "categorias" => $Categorias, "asistentes" => $movAsis, "retirados" => $movRet, "seleccionados" => $movSel, "id" =>$idHorario));
     }
     
+    // GENERAR NUEVO MOVIMIENTO
     public function estadoBeneficiarioAction(Request $request){
        
         if($request->isXmlHttpRequest()){
@@ -75,6 +78,8 @@ class BeneficiarioController extends Controller
         }
     }
 
+    // CANTIDAD DE INSCRITOS 
+    
     public function cantInscritosAction(Request $request){
         if($request->isXmlHttpRequest()){
 

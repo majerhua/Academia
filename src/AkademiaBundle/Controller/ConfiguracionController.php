@@ -25,7 +25,8 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class ConfiguracionController extends Controller
 {
-
+	// VISTA PARA EL MODULO DE CONFIGURACION 
+	
 	public function configuracionAction(Request $request){
         return $this->render('AkademiaBundle:Default:configuracion.html.twig');
     }
