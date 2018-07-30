@@ -33,8 +33,6 @@ akademia_contador:
     path:     /contador
     defaults: { _controller: AkademiaBundle:Default:contador }
     
-
-
 akademia_panel:
     path:     /panel
     defaults: { _controller: AkademiaBundle:Default:panel}

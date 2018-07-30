@@ -55,4 +55,17 @@ class DefaultController extends Controller
 
         return $this->render('AkademiaBundle:Default:cuestions.html.twig');
     }
+
+    public function panelAction(Request $request){
+  
+        $idComplejo = $this->getUser()->getIdComplejo();
+        $em = $this->getDoctrine()->getManager();
+        $Nombre = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->nombreComplejo($idComplejo);
+
+        if(!empty($Nombre)){ 
+           return $this->render('AkademiaBundle:Default:menuprincipal.html.twig', array("valor"=>"1", "nombreComplejo"=> $Nombre));
+
+        }
+    }
+
 }
