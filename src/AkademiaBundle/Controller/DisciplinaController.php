@@ -69,6 +69,7 @@ class DisciplinaController extends Controller
     // ELIMINAR DISCIPLINA
     
     public function eliminarDisciplinaAction(Request $request){
+
         if($request->isXmlHttpRequest()){
 
             $idDisciplina = $request->request->get('codigoDisciplina');  
@@ -80,12 +81,15 @@ class DisciplinaController extends Controller
 
             $cantidad = $em->getRepository('AkademiaBundle:Horario')->cantHorarioDisciplina($codigoEdi);
 
-            if(!empty($cantidad)){
+            //echo $cantidad['cantHorarios'];
+            //exit;
+
+            if(!empty($cantidad['cantHorarios'])){
                 $mensaje = 1;
                 return new JsonResponse($mensaje);
             
             }else{
-
+                
                 $em->getRepository('AkademiaBundle:Horario')->eliminarDisciplina($codigoEdi);
                 $mensaje = 2;
                 return new JsonResponse($mensaje);

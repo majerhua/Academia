@@ -95,7 +95,6 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
             $stmt = $this->getEntityManager()->getConnection()->prepare($query);
             $stmt->execute();
             $horarios = $stmt->fetchAll();
-
             return $horarios;
     }
 
@@ -289,7 +288,7 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
 
         public function cantHorarioDisciplina($ediCodigo){
 
-            $query = "SELECT count(1) cantHorarios from academia.horario where edi_codigo = $ediCodigo;";
+            $query = "SELECT count(1) cantHorarios from academia.horario where edi_codigo = $ediCodigo and estado!=0;";
             $stmt = $this->getEntityManager()->getConnection()->prepare($query);
             $stmt->execute();
             $cantidad = $stmt->fetch();
@@ -300,7 +299,7 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
 
         public function eliminarDisciplina($ediCodigo){
            
-            $query = " DELETE FROM catastro.edificacionDisciplina where edi_codigo = $ediCodigo";
+            $query = " UPDATE  catastro.edificacionDisciplina SET edi_estado=0 where edi_codigo = $ediCodigo";
             $stmt = $this->getEntityManager()->getConnection()->prepare($query);
             $stmt->execute();
             

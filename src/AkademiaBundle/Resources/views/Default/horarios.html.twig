@@ -1067,6 +1067,7 @@
 						url: "{{url('akademia_cantInscritos')}}",
 						data: data,
 						success: function(data){
+
 							if(data == 2){
 								$("#errorEliminacionHorario").modal('show');
 							}else{
@@ -1717,6 +1718,7 @@
 			beforeSend: function(){				
 			},
 			success: function(data){
+				console.log("DATA Eliminar DIsciplina => ",data);
 				if(data == 1){
 					alertify.error('<p style="color:white">Esta disciplina no puede eliminarse.</p>');					
 				}else if(data == 2){
