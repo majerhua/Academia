@@ -18,12 +18,16 @@ body{
 
 	display: flex;
 	padding: 12px 4px;
+	flex-wrap: wrap;
 	justify-content: center;
 
 }
 
 .container-button-exportPREINS> button{
 	margin-left: 10px;
+	width: 45%;
+	padding: 7px 7px;
+	max-width: 160px;
 }
 
 /*FIN*/

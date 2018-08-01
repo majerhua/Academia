@@ -456,6 +456,8 @@
 
         });
 
+		// EDITAR PARTICIPANTE
+		
 		function editarParticipante(idParticipante){
 
 			var idParticipante = idParticipante;
@@ -531,23 +533,23 @@
 
 		}
 
-			$('#asistenciaParticipante').on('click', function(){
+		$('#asistenciaParticipante').on('click', function(){
 
-				var cbx_asist = document.getElementById("asistenciaParticipante").value;
+			var cbx_asist = document.getElementById("asistenciaParticipante").value;
 
-				if(cbx_asist == 2){
+			if(cbx_asist == 2){
 
-					$("#cbx-categoria").show();
+				$("#cbx-categoria").show();
 
-				}else if (cbx_asist == 3){
-					
-					$("#cbx-categoria").hide();
-				}else{
+			}else if (cbx_asist == 3){
+				
+				$("#cbx-categoria").hide();
+			}else{
 
-					$("#cbx-categoria").hide();
-				}
+				$("#cbx-categoria").hide();
+			}
 
-			});
+		});
 
 		function clearData(){
 

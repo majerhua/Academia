@@ -42,11 +42,21 @@
 
 		<h4 style="color:grey">PANEL DE ADMINISTRACIÓN</h4>
 		<hr>
-		<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px; margin-bottom: 20px;">
+		{% if  is_granted('ROLE_ANALISTA') %}	
+			<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px; margin-bottom: 20px;">
+			<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+			<p> Utilizar las siguiente herramientas para administrar las funcionalidades como Administrador del sistema La Academia.</p>
+		</div>
+
+
+		{% else %}
+			<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px; margin-bottom: 20px;">
 			<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
 			<p> Utilizar las siguiente herramientas para administrar su complejo deportivo, horarios, beneficiarios, pre- inscripción directa, etc.</p>
 		</div>
 
+		{% endif %}
+		
 		<div class="row text-center">	
 			{% if is_granted('ROLE_ADMIN') %}	
 			<div id="option-beneficiarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
@@ -114,6 +124,15 @@
 						</div>
 					</a>
 				</div>
+				<div id="option-talentos" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
+					<a href="{{url('akademia_configuracion')}}">
+						<div class="card">
+							<img src="{{ asset('assets/images/temporada.jpg') }}" width="120" height="120">
+							<p class="title-card">Lanzamiento de Temporadas</p>
+						</div>
+					</a>
+				</div>
+
 			{% elseif is_granted('ROLE_DOCENTE') %}
 				
 				<div id="option-horarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">

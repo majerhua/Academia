@@ -15,15 +15,57 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 class ExportacionDataController extends Controller
 {
 
+  // MODULO DE EXORTACION
+
+  public function exportInscripcionesRegionesAction(Request $request){
+
+    $conn = $this->get('database_connection');
+    
+    $response = new StreamedResponse(function() use($conn) {
+      $handle = fopen('php://output','w+');
+              fputcsv($handle, ['Departamento','Provincia', 'Disciplina', 'Modalidad','InscritosTotales','CantidadInscritosVigentes','CantidadRetirados'],",");
+
+      $results = $conn->query("exec ACADEMIA.inscripcionesRegiones");
+
+      while($row = $results->fetch()) {
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Disciplina'],$row['Modalidad'],$row['InscritosTotales'],$row['CantidadInscritosVigentes'],$row['CantidadRetirados']), ",");
+      }
+      fclose($handle);
+    });
+    $response->setStatusCode(200);
+    $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+    $response->headers->set('Content-Disposition', 'attachment; filename="InscripcionesPorRegiones.csv"');
+    return $response;
+  }
+
+  public function exportInscripcionesLimaCallaosAction(Request $request){
+
+    $conn = $this->get('database_connection');
+    
+    $response = new StreamedResponse(function() use($conn) {
+      $handle = fopen('php://output','w+');
+              fputcsv($handle, ['Departamento','Provincia','Complejo','Disciplina','Modalidad','InscritosTotales','CantidadInscritosVigentes','CantidadRetirados'],",");
+
+      $results = $conn->query("exec ACADEMIA.inscripcionesLimaCallao");
+
+      while($row = $results->fetch()) {
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['Modalidad'],$row['InscritosTotales'],$row['CantidadInscritosVigentes'],$row['CantidadRetirados']), ",");
+      }
+      fclose($handle);
+    });
+    $response->setStatusCode(200);
+    $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+    $response->headers->set('Content-Disposition', 'attachment; filename="InscripcionesLimaCallaos.csv"');
+    return $response;
+  }
+
 
   public function exportCantidadPreInscritosAction(Request $request){
 
     $idComplejo = $request->query->get('idComplejo');
-
     $conn = $this->get('database_connection');
-
+    
     $response = new StreamedResponse(function() use($conn,$idComplejo) {
-
       $handle = fopen('php://output','w+');
               fputcsv($handle, ['Departamento', 'Provincia', 'Complejo','Disciplina','Discapacidad','CodigoHorario','Horario','NroPre-Inscritos'],",");
 
@@ -41,9 +83,9 @@ class ExportacionDataController extends Controller
   }
 
   public function exportCantidadInscritosAction(Request $request){
-        $idComplejo = $request->query->get('idComplejo');
+    
+    $idComplejo = $request->query->get('idComplejo');
     $conn = $this->get('database_connection');
-
     $response = new StreamedResponse(function() use($conn,$idComplejo) {
 
       $handle = fopen('php://output','w+');

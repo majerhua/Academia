@@ -1,4 +1,3 @@
 <?php
- header('Location: http://appweb.ipd.gob.pe/academia/web/');
- 
+ header('Location: http://appweb.ipd.gob.pe/academia/web/'); 
 ?>
