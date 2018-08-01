@@ -63,7 +63,11 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $Nombre = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->nombreComplejo($idComplejo);
 
+        
+
+
         if(!empty($Nombre)){ 
+
            return $this->render('AkademiaBundle:Default:menuprincipal.html.twig', array("valor"=>"1", "nombreComplejo"=> $Nombre));
 
         }

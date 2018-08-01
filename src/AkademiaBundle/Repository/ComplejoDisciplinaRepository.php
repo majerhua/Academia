@@ -50,8 +50,6 @@ class ComplejoDisciplinaRepository extends \Doctrine\ORM\EntityRepository
 
         return $complejosDeportivos;
 
-
-
 	}
 
 	public function getCompararEstado($idComplejo, $idDisciplina){
