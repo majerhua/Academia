@@ -119,25 +119,21 @@
 
 	<div class="proceso" id="process5">
 
-		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_DOCENTE') %}
+		<!-- RENDERIZADO DE VISTAS POR ACCESO DEL PERFIL-->
 
+		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_DOCENTE') %}
 		<div class="row proceso">
-		
 			<div class="container-card col-xs-12 col-sm12 col-md-5 col-ld-5">
 				<div class="card">
 						<p class="title-card text-center">FICHA DE INSCRIPCIÓN</p>
 						<p class="title-card text-center">ACADEMIA IPD INVIERNO 2018</p>
 						<hr>
-						
 						<div id="alerta-confirmacionFicha" class="alert alert-success collapse"></div>
 						<div id="alerta-errorFicha" class="alert alert-danger collapse"></div>
-
 						<div class="row">
-
-							<a class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right" id="inscribirPreinscrito"><button id="btn-inscripcion" class="btn btn-danger"><i class="icon-pencil-square-o" style="font-size:1.3em;"></i> Confirmar Inscripción</button></a>
-
+							<a class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-right" id="inscribirPreinscrito"><button id="btn-inscripcion" class="btn btn-danger"><i class="icon-pencil-square-o" style="font-size:1.3em;"></i> Confirmar Inscripción</button>
+							</a>
 						</div>
-						
 						<hr>
 						<div class="pdf_inscripcion__ficha row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -176,17 +172,13 @@
 									<input type="hidden" name="codigo-inscripcion" id="codigo-inscripcion">
 								</div>
 							</div>
-							
 						</div>
 						<hr>
 						<div class="row">
-							
 							<a class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center" href="" id="ancla-imprimir-fichaInscripcion"  target="_blank" ><button id="btn-imprimir-fichaInscripcion"  class="btn btn-default" style="margin: 5px;"><i class="icon-print" style="font-size:1.3em;" ></i> Imprimir Ficha</button></a>
 
 							<a class="col-xs-12 col-sm-5 col-md-5 col-lg-5 text-center" href=""  id="ancla-imprimir-declaracion-jurada" target="_blank"><button id="btn-imprimir-declaracion-jurada" class="btn btn-default" style="margin: 5px;"><i class="icon-print" style="font-size:1.3em;"></i> Imprimir Declaración Jurada</button></a>
-					
 						</div>
-
 					</div>
 			</div>
 
@@ -195,14 +187,12 @@
 		{% else %}
 
 		<div class="row">
-
 			<div class="container-card col-xs-12 col-sm-12 col-md-8 col-lg-7">
 				<div class="card">
 					<p class="title-card text-center">PRE-INSCRIPCIÓN CONFIRMADA <i class="icon-checklist" style="font-size:1.4em;"></i></p>
 					<hr>
 					<p class="text-center">
 						Valida tu inscripción en el complejo deportivo <br> que seleccionaste de 3 p.m. a 6 p.m.
-	
 					</p><br>
 					<p class="text-center" style="color: #BB2626">
 						<strong>NO SE RESERVAN VACANTES.</strong>
@@ -224,19 +214,16 @@
 					</div>
 				</div>
 			</div>
-
 			<div class="container-card col-xs-12 col-sm-12 col-md-4 col-lg-5">
 				<div class="card">
 					<p class="title-card text-center">FICHA DE INSCRIPCIÓN</p>
 					<p class="title-card text-center">ACADEMIA IPD INVIERNO 2018</p>
 					<hr>
-					
 					<div id="alerta-confirmacion" class="alert alert-success collapse"></div>
 					<div id="alerta-error" class="alert alert-danger collapse"></div>
 					
 					<div class="pdf_inscripcion__ficha row">
 						<div class="campos col-xs-4 col-sm-4 col-md-4 col-lg-4"> 	
-
 							<p>Nombre</p>
 							<p>Ape. Paterno</p>
 							<p>Ape. Materno</p>
@@ -251,7 +238,6 @@
 							<p>Complejo</p>
 							<p>Horario</p>
 						</div>
-
 						<div class="valores col-xs-8 col-sm-8 col-md-8 col-lg-8"> 
 							<p id="nombre-ficha"></p>
 							<p id="apellidoPaterni-ficha"></p>
@@ -284,15 +270,19 @@
 
 {% block javascripts %}
 
+	<script src="{{asset('assets/vendor/js/googleMapsComplejo.js')}}"></script>
 	<script>
+		// PASO FINAL EN LA PRE-INSCRIPCION 
+		/*
+			Se debe seleccionar el departamento, provincia, distrito y complejo
+			para listar sus respectivas disciplinas con horarios disponibles.
+		*/
 
 		$("#process5").hide();
 
 		var departamentoHorario = document.querySelector("#departamentoHorario");
 		var cambiarDepartamentoHorario = (depHor)=>{
-
 			var valDepHor = depHor.value;
-
 			$("#provinciaHorario").empty();
 			$("#distritoHorario").empty();
 			$("#provinciaHorario").append("<option value='' >--Seleccionar--</option>");
@@ -515,7 +505,15 @@
 		}
 	});
 
+
+//FUNCION PARA REGISTRAR LA PRE-INSCRIPCION 
+
+/*
+	Se obtienen los valores de las variables en el localstorage.
+*/
+
 function registrar(){
+	
 	var dataRegisterApoderado={
 		//DATOS APODERADO
 		"dni" : sessionStorage.getItem('dni-apoderado'),
@@ -530,6 +528,7 @@ function registrar(){
 		"correo" : sessionStorage.getItem('correo-apoderado'),
 		//HORARIO
 		'idHorario' : sessionStorage.getItem('idHorario'),
+		
 		//DATOS HIJO
 		"dniParticipante" : sessionStorage.getItem('dni-participante'),
 		"apellidoPaternoParticipante" : sessionStorage.getItem('apellidoPaterno-participante'),
@@ -541,7 +540,7 @@ function registrar(){
 		"tipoSeguro" : sessionStorage.getItem('tipoSeguro-partcipante'),
 		"discapacidad" :sessionStorage.getItem('flagDiscapacitado')
 	};
-	console.log("DATOS A REGISTRAR => ",dataRegisterApoderado);
+	
 	$.ajax({
 		type:'POST',
 		dataType: "json",
@@ -583,19 +582,10 @@ function registrar(){
 				$("#nombrePadre-declaracion-jurada").append(valor.nombrePadre);
 				$("#codigo-inscripcion").val(valor.id);
 			    enviarEmailApoderado(valor.percorreo,valor.nombrePadre,valor.id);
-
 			}else{
 
-				//if( data == 1){
-					showAlertMessage('#alerta-error', "Lo sentimos, se agotaron las vacantes para este horario. ");
-					$("#boton-next-final").attr("disabled", true);
-					//$("#process5").hide();
-				//}else{
-
-				/*	showAlertMessage('#alerta-error', "Lo sentimos, Se excedió el límite de preinscripciones posibles para este horario.");
-					$("#boton-next-final").attr("disabled", true);
-					$("#process5").hide();
-				}*/
+				showAlertMessage('#alerta-error', "Lo sentimos, se agotaron las vacantes para este horario. ");
+				$("#boton-next-final").attr("disabled", true);
 			}		
 		},
 
@@ -604,6 +594,9 @@ function registrar(){
 		}
 	});
 }
+
+
+// FUNCION PARA ENVIAR CORREO AL APODERADO
 
 function enviarEmailApoderado($correoApod,$nombre,$id){
 
@@ -622,7 +615,7 @@ function enviarEmailApoderado($correoApod,$nombre,$id){
 			
 		},
 		success: function(data){
-			 alertify.success('<p style="color:black">Correo enviando exitosamente.</p>');
+			 alertify.success('<p style="color:black">Correo enviando exitósamente.</p>');
 		},
 		error: function(error){
 			 alertify.error('<p style="color:white">Se produjo un problema al enviar la información a su correo electrónico.</p> ');
@@ -675,7 +668,7 @@ $("#inscribirPreinscrito").on('click',function(){
 
 	</script>
 
-	<script src="{{asset('assets/vendor/js/googleMapsComplejo.js')}}"></script>
+
 
 {% endblock %}
 

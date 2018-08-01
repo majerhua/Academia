@@ -15,15 +15,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 class ExportacionDataController extends Controller
 {
 
+  // MODULO DE EXORTACION
+
 
   public function exportCantidadPreInscritosAction(Request $request){
 
     $idComplejo = $request->query->get('idComplejo');
-
     $conn = $this->get('database_connection');
-
+    
     $response = new StreamedResponse(function() use($conn,$idComplejo) {
-
       $handle = fopen('php://output','w+');
               fputcsv($handle, ['Departamento', 'Provincia', 'Complejo','Disciplina','Discapacidad','CodigoHorario','Horario','NroPre-Inscritos'],",");
 
@@ -41,9 +41,9 @@ class ExportacionDataController extends Controller
   }
 
   public function exportCantidadInscritosAction(Request $request){
-        $idComplejo = $request->query->get('idComplejo');
+    
+    $idComplejo = $request->query->get('idComplejo');
     $conn = $this->get('database_connection');
-
     $response = new StreamedResponse(function() use($conn,$idComplejo) {
 
       $handle = fopen('php://output','w+');

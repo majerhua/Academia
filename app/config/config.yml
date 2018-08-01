@@ -23,12 +23,13 @@ framework:
     #serializer: { enable_annotations: true }
     templating:
         engines: ['twig']
-    default_locale: '%locale%'
+    default_locale: '%locale%'                                                                                                                                                                                                         
     trusted_hosts: ~
     session:
         # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id: session.handler.native_file
-        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+        #save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+        save_path:   /var/lib/php/sessions
     fragments: ~
     http_method_override: true
     assets: ~
@@ -72,8 +73,10 @@ doctrine:
         host: '%database_host%'
         port: '%database_port%'
         dbname: '%database_name%'
-        user: '%database_user%'
-        password: '%database_password%'
+        user:     "%database.user_ipdsrv%"
+        password: "%database.password_ipdsrv%"
+        #user: '%database_user%'
+        #password: '%database_password%'
         charset: UTF8
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml

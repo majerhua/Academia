@@ -67,10 +67,24 @@
 						<div class="card-body">
 							<div class="row">
 								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-									<div class="input-group col-xs-4 col-sm-4 col-md-4 col-lg-4">
-									  <span class="input-group-addon">Buscar</span>
-									  <input class="filtrar form-control" type="text" ident-buscar="{{cont}}"  placeholder=" ingresa los campos a buscar ">
+									<div class="row">
+										<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+											<div class="input-group col-xs-8 col-sm-8 col-md-8 col-lg-8">
+											  <span class="input-group-addon">Buscar</span>
+											  <input class="filtrar form-control" type="text" ident-buscar="{{cont}}"  placeholder=" ingresa los campos a buscar ">
+											</div>
+										</div>
+										
+										<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+											<div style="float:right; margin-right:20px">
+												<span style="color:grey">Eliminar disciplina </span>
+												<button title="Eliminar disciplina" type="button" id="{{complejosDisciplina['idDisciplina']}}"  class="btn btn-default btn-xs" data-toggle="modal" data-target="#confirmarEliminarDisciplina" onclick="xDisciplina({{complejosDisciplina['idDisciplina']}})"><i class="icon-trash" style="font-size:1.6em; margin-top:5px; color:#B45F04" ></i></button>
+
+											</div>
+											
+										</div>
 									</div>
+									
 									<br>
 
 									<div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:50vh; ">			
@@ -78,38 +92,32 @@
 										<table class="table"  style="width: 100%; "> 
 											<thead style="background:#cb2f1d; color:#F2F2F2;" class="text-center"> 
 												<tr> 
-													<th class="text-center" style="font-size:14px" >Código</th>
+													<th class="text-center" style="font-size:14px" >Código de horario</th>
+													<th class="text-center" style="font-size:14px">Deporte</th>
 													<th class="text-center" style="font-size:14px">Turno</th> 
 													<th class="text-center" style="font-size:14px">Hora</th>
 													<th class="text-center" style="font-size:14px">Edades</th> 
-													<th class="text-center" style="font-size:14px">Discapacitad</th>
 													<th class="text-center" style="font-size:14px">Convocatoria</th>
-													<th class="text-center" style="font-size:14px" colspan="2"> Vacantes</th> 
-													<th class="text-center" style="font-size:14px">Matriculados</th>
-													<th></th>
-													<th></th>
-												</tr>
-												<tr style="background:#C9C5C5; color:#504B4B;"> 
-													<th class="text-center" style="font-size:14px"></th>
-													<th class="text-center" style="font-size:14px"></th> 
-													<th class="text-center" style="font-size:14px"></th>
-													<th class="text-center" style="font-size:14px"></th> 
-													<th class="text-center" style="font-size:14px"></th>
-													<th class="text-center" style="font-size:14px"></th>
 													<th class="text-center" style="font-size:14px">Límite de preinscripciones</th> 
-													<th class="text-center" style="font-size:14px">vacantes disponibles</th>
-													<th class="text-center" style="font-size:14px"></th>
+													<th class="text-center" style="font-size:14px">Vacantes disponibles</th>
+													<th class="text-center" style="font-size:14px">Inscritos</th>
 													<th></th>
 													<th></th>
 												</tr>
+												
 											</thead> 
 											
-											<tbody id="1{{complejosDisciplina['idDisciplina']}}" class="buscar" > 
+											<tbody id="1{{complejosDisciplina['idDisciplina']}}" class="buscar"  > 
 											
 											{% for horario in horarios %}
 											{% if horario['idDisciplina'] == complejosDisciplina['idDisciplina'] %}
 												<tr> 
 													<td id="1h{{horario['idHorario']}}" class="text-center">{{horario['idHorario']}}</td> 
+													{% if  horario['discapacidad'] == 0 %}
+														<td id="6h{{horario['idHorario']}}" class="text-center" > Regular </td> 
+													{% else %}
+														<td id="6h{{horario['idHorario']}}" class="text-center"> Adaptado </td> 
+													{% endif %}
 													<td id="2h{{horario['idHorario']}}" class="text-center">{{horario['turno']}}</td> 
 													<td id="3h{{horario['idHorario']}}" class="text-center">{{horario['horaInicio']|date('H:i')}} - {{horario['horaFin']|date('H:i')}}</td> 
 
@@ -119,11 +127,7 @@
 														<td id="4h{{horario['idHorario']}}"class="text-center">{{horario['edadMinima']}} años</td>
 													{% endif %}
  													
- 													{% if  horario['discapacidad'] == 0 %}
-														<td id="6h{{horario['idHorario']}}" class="text-center"> No </td> 
-													{% else %}
-														<td id="6h{{horario['idHorario']}}" class="text-center"> Si </td> 
-													{% endif %}
+ 													
 
 													{% if  horario['convocatoria'] == 1 %}
 														<td id="7h{{horario['idHorario']}}" class="text-center" style="color:green">Abierta</td>
@@ -145,9 +149,9 @@
 
 													{% else %}
 													
-													<td><button  title="Editar horario" type="button" id="{{horario['idHorario']}}" onclick="editarHorario({{horario['idHorario']}},{{horario['idDisciplina']}} )" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1em; margin-top:5px; color:white" ></i></button></td>
+													<td><button  title="Editar horario" type="button" id="{{horario['idHorario']}}" onclick="editarHorario({{horario['idHorario']}},{{horario['idDisciplina']}} )" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1.2em; margin-top:5px; color:white" ></i></button></td>
 													
-													<td><a href="{{url('akademia_beneficiarios',{idHorario:horario['idHorario']})}}"  title="Mostrar Inscritos" type="button" class="btn btn-default"><i class="icon-checklist" style="font-size: 1.3em;"></i></a></td>
+													<td><a href="{{url('akademia_beneficiarios',{idHorario:horario['idHorario']})}}"  title="Mostrar Inscritos" type="button" class="btn btn-default btn-xs"><i class="icon-checklist" style="font-size: 1.3em;"></i></a></td>
 													{% endif %}
 												</tr> 
 												<input type="hidden" value="{{horario['idDisciplina']}}">				
@@ -529,13 +533,13 @@
 							<li class="list-group-item">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Discapacidad</strong></p>
+										<p><strong>DEPORTE</strong></p>
 									</div>
 									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
 										<select class="form-control" id="crear_discapacidad">
 											<option value="">--Seleccionar--</option>
-											<option value="0">No</option>
-											<option value="1">Si</option>
+											<option value="0">Regular</option>
+											<option value="1">Adaptado</option>
 										</select>
 									</div>
 								</div>
@@ -688,6 +692,7 @@
 	</div>
 </div>
 
+<!--CREAR NUEVA DISCIPLINA-->
 
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="confirmarDisciplina">
   <div class="modal-dialog">
@@ -707,6 +712,8 @@
   </div>
 </div>
 
+<!--NO SE PUEDE ELIMINAR HORARIO-->
+
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="errorEliminacionHorario">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -723,6 +730,7 @@
     </div>
   </div>
 </div>
+
 
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="confirmarEliminarHorario">
   <div class="modal-dialog">
@@ -745,6 +753,30 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="confirmarEliminarDisciplina">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="">
+      		<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+			<p class="title-card">Mensaje de confirmación. </p>
+      </div>
+      <div class="modal-body">
+      		<strong><p class="text-center" style="color:#0B2161; font-weight:bold">¿Estás seguro de eliminar esta disciplina? </p></strong>
+      		<p class="" style="color:grey">
+      		Recuerda que:<br>
+			Para la eliminación de una disciplina, no deben existir registros creados de horarios ni beneficiarios.</p>
+      </div>
+      <div class="modal-footer">
+      	<strong><p class="text-center" style="color:#B40404; font-weight:bold">¿Desea continuar? </p></strong>
+
+        <button type="button" class="btn btn-danger" id="modal-btn-si-disciplina">Si</button>
+        <button type="button" class="btn btn-default" id="modal-btn-no-disciplina">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 {% endblock %}
 {% block javascripts %}
@@ -842,6 +874,8 @@
 
         });
         
+        // FUNCION PARA SELECCIONAR LA FRECUENCIA EN LOS HORARIOS 
+
         var turno = document.getElementById('turno')
 		var diasElegidos = []
 		var elemento = []
@@ -889,6 +923,7 @@
 		}
 
 		/*LIMPIAR CAJAS */
+
 		function clearData(){
 			$("#editar_codigo_horario").empty();
 			$("#editar_disciplina_horario").empty();
@@ -1013,6 +1048,8 @@
 		    }
 		});		
 
+		// ACTUALIZAR Y ELIMINAR HORARIOS 
+
 		function actualizarHorario(){
 
 			if(sessionStorage.getItem('flagOcularHorario') == '1' ){
@@ -1031,11 +1068,10 @@
 						data: data,
 						success: function(data){
 							if(data == 2){
-								
 								$("#errorEliminacionHorario").modal('show');
-								console.log(data);
-							
 							}else{
+
+								/*FUNCION PARA ELIMINAR HORARIO*/
 
 								var confirmarHorario = function(callback){
 			
@@ -1053,7 +1089,7 @@
 
 								confirmarHorario(function(confirm){
 								  
-								  if(confirm){
+								if(confirm){
 
 								  	var idHorario = $("#editar_codigo_horario").text();	
 									
@@ -1091,6 +1127,8 @@
 				})
 				
 			}else{
+
+				// ACTUALIZAR LOS HORARIOS
 				console.log(sessionStorage.getItem('flagOcularHorario'));
 				if($("#editar_vacantes_horario").val()==""){
 	               	alertify.error('<p style="color:white">Se requiere que ingrese la cantidad de vacantes. </p>'); 
@@ -1107,7 +1145,7 @@
 					alertify.error('<p style="color:white">Verifique el número de vacantes. </p>');
 
 	            }else if(parseInt($("#editar_preinscripciones_horario").val()) < parseInt($("#editar_vacantes_horario").val())){
-	            	//alertify.error('<p style="color:white">Verifique que la cantidad de Pre-inscripciones se mayor al número de Vacantes disponibles</p>');
+	            	
 	            	$("#btn-actualizar").attr("data-dismiss", "");
 	            	showAlertMessage('#alerta-errorEditarVacante', "Verifique que el Nº vacantes de Preinscritos sea mayor al Nº de vacantes de Inscritos.");
 
@@ -1136,7 +1174,7 @@
 							data: dataActualizarHorario,
 
 							beforeSend: function(){				
-								//$("#btn-actualizar-horario").attr("disabled", true);
+					
 							},
 
 							success: function(data){
@@ -1170,12 +1208,9 @@
 										$("#7h"+dataHorario.id).text("Cerrado");
 										$("#7h"+dataHorario.id).css("color","red");
 										$("#7h"+dataHorario.id).css("font-weight","bold");
-
 									}
 
-									alertify.success('<p style="color:black">Horario Actualizado .</p>');
-								//	window.location.href = "{{url('akademia_horarios')}}";
-									
+									alertify.success('<p style="color:black">Horario Actualizado .</p>');					
 								}else{
 									alertify.error('<p style="color:white">Error al actualizar los datos </p>'); 
 								}
@@ -1186,8 +1221,6 @@
 	            }
 
 				console.log(idHorario, idDisciplina, vacantes , convocatoria, preinscripciones);
-
-				
 			}
 			
 		} 
@@ -1218,6 +1251,7 @@
 		}
 		
 		/*CREAR NUEVO HORARIO*/
+
 		$("#btn-crear-horario").on("click", function(){			
 
 			if( 
@@ -1251,6 +1285,9 @@
 
 				console.log("IdDisciplina Gimnasia =>",idDisciplina);
 				
+				/* VALIDACION PARA CREAR HORARIO EN GIMNASIA CODIGO: 21
+					Considerando que la creacion de horarios en esta disciplina es a partir de los 4 años
+				*/
 				if( idDisciplina  == 21 ){
 
 					if(((discapacidad == 0 && edadMinima <= 17 && edadMaxima <= 17 ) || (discapacidad == 1 && edadMinima <= 59 && edadMaxima <= 59 )) 
@@ -1398,6 +1435,8 @@
 
 				}else{
 
+					// VALIDACION PARA CREAR HORARIOS EN LAS DISTINTAS DISCIPLINAS QUE NO SEAN GIMNASIA
+
 					if(((discapacidad == 0 && edadMinima <= 17 && edadMaxima <= 17 ) || (discapacidad == 1 && edadMinima <= 59 && edadMaxima <= 59 )) 
 						&& (edadMinima >= 6) 
 						&& (edadMaxima >= 6) 
@@ -1437,12 +1476,9 @@
 										dataType: 'json',
 										url: "{{url('akademia_crearHorario')}}",
 										data: dataCrearHorario,
-										beforeSend: function()
-										{
-
+										beforeSend: function(){
 										},
-										success: function(data)
-										{
+										success: function(data){
 											diasElegidos = [];
 							
 											if (data == 1){
@@ -1639,6 +1675,63 @@
 			alertify.error('<p style="color:white">Debe seleccionar una disciplina a crear. </p>');			
 		}
 	}
+
+	/*ELIMINAR DISCIPLINA*/
+
+	function xDisciplina($idDisciplina){
+		
+		console.log($idDisciplina);
+
+		var modalConfirmDisciplina = function(callback){
+
+		  	$("#modal-btn-si-disciplina").on("click", function(){
+		    	callback(true);
+		    	$("#confirmarEliminarDisciplina").modal('hide');
+		  	});
+		  
+		  	$("#modal-btn-no-disciplina").on("click", function(){
+		    	callback(false);
+		    	$('#confirmarEliminarDisciplina').modal('hide');
+		  	});
+
+		}
+
+		modalConfirmDisciplina(function(confirm){
+			if(confirm){
+				eliminarDisciplina($idDisciplina);
+			}
+		});
+
+	}
+
+	// ELIMINAR DISCIPLINA
+
+	function eliminarDisciplina($idDisciplina){
+
+		console.log("codigo de la disciplina =>",$idDisciplina);
+		$.ajax({
+			type:'POST',
+			dataType: 'json',
+			url: "{{url('akademia_eliminarDisciplina')}}",
+			data:{codigoDisciplina:$idDisciplina},
+			beforeSend: function(){				
+			},
+			success: function(data){
+				if(data == 1){
+					alertify.error('<p style="color:white">Esta disciplina no puede eliminarse.</p>');					
+				}else if(data == 2){
+					alertify.success('<p style="color:white">La disciplina se eliminó correctamente.</p>');	
+					window.location.href = "{{url('akademia_horarios')}}";
+				}
+			},
+			
+			error: function(error){
+				console.log(data);
+			},
+		});
+	}
+
+
 
 	/* MOSTRAR MENSAJE DE ALERTA */
 	function showAlertMessage(alert, mensaje){
