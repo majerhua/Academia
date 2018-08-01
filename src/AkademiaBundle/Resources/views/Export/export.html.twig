@@ -143,11 +143,16 @@
 				<div class="text-center">
 
 					<div class="container-button-exportPREINS">
-						<button class="btn btn-danger" id="export-pre-inscritos">N° de Pre- inscrito</button>
-						<button class="btn btn-danger" id="export-inscritos">N° de Inscritos</button>
+						<button class="btn btn-danger" id="export-pre-inscritos">N° Pre- inscrito</button>
+						<button class="btn btn-danger" id="export-inscritos" >N° Inscritos</button>
+					</div>
+
+					<div class="container-button-exportPREINS">
+						<button class="btn btn-danger" id="export-inscripciones-regiones" > N° Ins-Regiones</button>
+						<button class="btn btn-danger" id="export-inscripciones-lima-callao"> N° Ins-Lima-Callao</button>
 					</div>
 					
-					<button class="btn btn-danger" id="export-horario-creados"> N° de Horarios creados</button>
+					<button class="btn btn-danger" id="export-horario-creados"> N° Horarios creados</button>
 				<hr>
 				</div>
 
@@ -207,6 +212,10 @@
 	const $exportData = $("#export-data");
 	const $exportPreInscritos = $("#export-pre-inscritos");
 	const $exportInscritos = $("#export-inscritos");
+
+	const $exportInscripcionesRegiones = $("#export-inscripciones-regiones");
+	const $exportInscripcionesLimaCallao = $("#export-inscripciones-lima-callao");
+
 	const $exportHorarioCreados = $("#export-horario-creados");
 	const $selectAno = $("#select-ano");
 	const $selectMes = $("#select-mes");
@@ -217,6 +226,14 @@
 	const $containerComplejo = $("#container-complejo");
 	const $containerAnalista = $("#container-analista");
 
+
+	$exportInscripcionesLimaCallao.on('click',function(){
+		location.href='exportInscripcionesLimaCallaos';
+	});
+
+	$exportInscripcionesRegiones.on('click',function(){
+		location.href='exportInscripcionesRegiones';
+	});
 
 	$exportPreInscritos.on('click',function(){
 		location.href='exportCantidadPreInscritos?idComplejo='+{{app.user.idComplejo}};
@@ -233,6 +250,8 @@
 	$exportData.on('click',function(){
 		location.href='export?ano='+$selectAno.val()+'&mes='+$selectMes.val()+'&departamento='+$selectDepartamento.val()+'&complejo='+$selectComplejo.val()+'&disciplina='+$selectDisciplina.val();
 	});
+
+
 
 	const cambiarDepartamentoExport =  (depExp)=>{
 
