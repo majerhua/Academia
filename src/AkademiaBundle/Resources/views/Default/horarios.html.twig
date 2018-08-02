@@ -396,6 +396,8 @@
 	</div>
 </div>
 
+
+<!--MODAL CREAR HORARIO-->
 <div id="modal-crear" class="modal fade" role="dialog">
 	<div class="modal-dialog">
 		<!-- Modal content-->
@@ -419,131 +421,40 @@
 						<div id="alerta-errorCrear" class="alert alert-danger collapse text-center"></div>
 
 						<ul class="list-group">
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-										<p><strong>Turno</strong></p>
-									</div>
-									<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 " >
-
-										<div class="checkbox">
-										  <label><input type="checkbox" id="Lun" value="1" onclick="elegirDias(this)">Lunes</label>
-										</div>
-										<div class="checkbox">
-										  <label><input type="checkbox" id="Mar" value="2" onclick="elegirDias(this)">Martes</label>
-										</div>
-										<div class="checkbox">
-										  <label><input type="checkbox" id="Mie" value="3" onclick="elegirDias(this)">Miércoles</label>
-										</div>
-
-										<div class="checkbox">
-										  <label><input type="checkbox" id="Jue" value="4" onclick="elegirDias(this)">Jueves</label>
-										</div>
-										
-									</div>
-									<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 " >
-										<div class="checkbox">
-										  <label><input type="checkbox" id="Vie" value="5" onclick="elegirDias(this)"> Viernes </label>
-										</div>
-										<div class="checkbox ">
-										  <label><input type="checkbox" id="Sab" value="6" onclick="elegirDias(this)"> Sábado </label>
-										</div>
-										<div class="checkbox ">
-										  <label><input type="checkbox" id="Dom" value="7" onclick="elegirDias(this)"> Domingo </label>
-										</div>
-									</div>
-								</div>
-								<hr>
-								<p style="font-size:14px; color:grey">Turno creado : <span id="turno"></span></p>
-							</li>
-
 
 							<li class="list-group-item">
+
 								<div class="row">
-									<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-										<p><strong>Hora Inicio</strong></p>
-									</div>
-									<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" >
-										<div class="input-group">
-											<span class="input-group-addon">hh</span>
 
-											<input class="form-control placeholder " placeholder=" Ej: 09 " id="hora-inicio"
-											    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-											    type = "number"
-											    maxlength = "2"
-											    min = "1"
-											    max = "24"
-											 />
-										</div>
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
+										<p><strong>Modalidad</strong></p>
 									</div>
-									<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-										<div class="input-group">
-											<span class="input-group-addon">mm</span>
-											
-											<input class="form-control placeholder" placeholder=" Ej: 00 " id="min-inicio"
-											    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-											    type = "number"
-											    maxlength = "2"
-											    min = "0"
-											    max = "60"
-											 />
-											
-										</div>
-									</div>
-								</div>
-							</li>
 
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-										<p><strong>Hora Fin</strong></p>
-									</div>
-									<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" >
-										<div class="input-group">
-											<span class="input-group-addon">hh</span>
-
-											<input class="form-control placeholder" placeholder=" Ej: 10 " id="hora-fin"
-											    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-											    type = "number"
-											    maxlength = "2"
-											    min = "1"
-											    max = "24"
-											 />
-										</div>
-									</div>
-									<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-										<div class="input-group">
-											<span class="input-group-addon">mm</span>
-											<input class="form-control placeholder" placeholder=" Ej: 00 " id="min-fin"
-											    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-											    type = "number"
-											    maxlength = "2"
-											    min = "1"
-											    max = "60"
-											 />
-										</div>
-									</div>
-								</div>
-								<br>
-								<p style="font-size:14px; color:grey">El formato es de 24 horas.</p>
-							</li>		
-
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>DEPORTE</strong></p>
-									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-										<select class="form-control" id="crear_discapacidad">
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" >
+										<select class="form-control" >
 											<option value="">--Seleccionar--</option>
-											<option value="0">Regular</option>
-											<option value="1">Adaptado</option>
+											<option value="0">No discapacitado</option>
+											<option value="1">Discapacitado</option>
 										</select>
 									</div>
+
+									<div class="col-xs-3 col-sm-2 col-md-1 col-lg-1">
+										<p><strong>Etapa</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" style="margin-left:12px;" >
+										<select class="form-control" >
+											<option value="">--Seleccionar--</option>
+											<option value="formacion">Formación</option>
+											<option value="masificacion">Masificación</option>
+										</select>
+									</div>
+
 								</div>
+
 								<br>
 								<p style="font-size:14px; color:grey">Edades comprendidas: <span style="font-size:14px;" id="textEdad"></span></p>
-							</li>				
+							</li>
 
 							<li class="list-group-item">
 
@@ -589,6 +500,133 @@
 									</div>
 								</div>
 							</li>
+
+							<li class="list-group-item">
+
+								<div class="row">
+
+									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+										<p ><strong><b>Turnos y Horarios:</b></strong></p>
+									</div>
+
+									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom:8px;" >
+
+										<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+											<p class="text-left"><strong>Frecuencia</strong></p>
+										</div>
+
+										<div class="col-xs-9 col-sm-8 col-md-8 col-lg-8 "  >
+
+											<label style="font-size:14px; font-weight:normal; "><input type="checkbox" id="Lun" value="1" onclick="elegirDias(this)">Lun</label>
+
+											<label style="font-size:14px; font-weight:normal; margin-left:2px;"><input type="checkbox" id="Mar" value="2" onclick="elegirDias(this)">Mar</label>
+
+											<label style="font-size:14px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Mie" value="3" onclick="elegirDias(this)">Miér</label>
+
+											<label style="font-size:14px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Jue" value="4" onclick="elegirDias(this)">Juev</label>
+
+											<label style="font-size:14px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Vie" value="5" onclick="elegirDias(this)"> Vier</label>
+
+											<label style="font-size:14px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Sab" value="6" onclick="elegirDias(this)"> Sáb</label>
+
+											<label style="font-size:14px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Dom" value="7" onclick="elegirDias(this)"> Dom</label>
+
+										</div>
+									</div>
+
+									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom:15px;" >
+
+										<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+											<p class="text-left"><strong>Hora Inicio</strong></p>
+										</div>
+
+										<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" >
+											<div class="input-group">
+												<span class="input-group-addon">hh</span>
+
+												<input class="form-control placeholder " placeholder=" Ej: 09 " id="hora-inicio"
+												    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+												    type = "number"
+												    maxlength = "2"
+												    min = "1"
+												    max = "24"
+												 />
+											</div>
+										</div>
+
+										<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+											<div class="input-group">
+												<span class="input-group-addon">mm</span>
+												
+												<input class="form-control placeholder" placeholder=" Ej: 00 " id="min-inicio"
+												    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+												    type = "number"
+												    maxlength = "2"
+												    min = "0"
+												    max = "60"
+												 />
+											</div>
+										</div>
+									</div>
+
+									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom:15px;" >
+
+									<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+										<p class="text-left"><strong>Hora Fin</strong></p>
+									</div>
+									<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" >
+										<div class="input-group">
+											<span class="input-group-addon">hh</span>
+
+											<input class="form-control placeholder" placeholder=" Ej: 10 " id="hora-fin"
+											    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+											    type = "number"
+											    maxlength = "2"
+											    min = "1"
+											    max = "24"
+											 />
+										</div>
+									</div>
+									<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+										<div class="input-group">
+											<span class="input-group-addon">mm</span>
+											<input class="form-control placeholder" placeholder=" Ej: 00 " id="min-fin"
+											    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+											    type = "number"
+											    maxlength = "2"
+											    min = "1"
+											    max = "60"
+											 />
+										</div>
+									</div>
+									</div>
+
+									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"  style="margin-bottom:15px;">
+										<div class="col-xs-9 col-sm-9 col-md-9 col-lg-8">
+											<p class="text-left" style="font-size:14px; color:grey">El formato es de 24 horas.</p>
+										</div>
+
+										<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style=" display:flex; flex-wrap:wrap; justify-content:center; " >
+											<button style="margin-left:20px;" class="btn btn-default" id="agregar-turnos">Agregar</button>
+										</div>
+									</div>
+
+									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+										<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+											<p class="text-left" style="font-size:14px;"><strong>Seleccionados:</strong></p>
+										</div>
+
+										<div class="col-xs-3 col-sm-9 col-md-9 col-lg-9" style="background:yellow; " >
+											<div id="turnos-seleccionados" >
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</li>
+			
+
 							<li class="list-group-item">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
@@ -782,7 +820,7 @@
 <script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
 <script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
-
+<script src="{{asset('assets/vendor/js/Horario/agregarTurnos.js')}}"></script>
 
 <script type="text/javascript">
 		
@@ -875,50 +913,7 @@
         // FUNCION PARA SELECCIONAR LA FRECUENCIA EN LOS HORARIOS 
 
         var turno = document.getElementById('turno')
-		var diasElegidos = []
-		var elemento = []
 
-    	function elegirDias(element){
-
-		    if (element.checked) {
-		        diasElegidos.push(element.value)
-		    }else{
-		        diasElegidos.splice( diasElegidos.indexOf( element.value ), 1 )
-		    }
-
-			arregloAOrdenar=ordenarCheckbox(diasElegidos);
-
-			function ordenarCheckbox(arreglo){
-				var cadenaHorario = '';
-
-			    for(i=0;i<(arreglo.length-1);i++){
-
-			   		for(j=0;j<(arreglo.length-i);j++){
-			 
-				        if(arreglo[j]>arreglo[j+1]){
-				             
-				             aux=arreglo[j];
-				             arreglo[j]=arreglo[j+1];
-				             arreglo[j+1]=aux;
-				        }
-			   		}				 	
-			 	}
-
-			 	dia = {1:'Lun', 2:'Mar', 3:'Mie', 4:'Jue', 5:'Vie', 6:'Sab', 7:'Dom'}
-
-			 	for(var i = 0; i < arreglo.length; i++){	
-
-			 		if(i!=arreglo.length-1)
-			 			cadenaHorario+=dia[arreglo[i]]+',';
-			 		else 
-			 			cadenaHorario+=dia[arreglo[i]];
-			 	}
-
-			 	turno.innerHTML = cadenaHorario
-			 	return arreglo
-			}
-	
-		}
 
 		/*LIMPIAR CAJAS */
 
