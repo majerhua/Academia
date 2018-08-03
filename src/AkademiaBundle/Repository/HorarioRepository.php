@@ -271,7 +271,6 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
             $stmt = $this->getEntityManager()->getConnection()->prepare($query);
             $stmt->execute();
             $cantidad = $stmt->fetchAll();
-
             return $cantidad;
 
         }
