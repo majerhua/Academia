@@ -114,8 +114,27 @@ class PreinscripcionController extends Controller
     public function registrarAction(Request $request){
         
         if($request->isXmlHttpRequest()){
-            $idHorario = $request->request->get('idHorario');
             $em = $this->getDoctrine()->getManager();
+
+            $dniParticipante = $request->request->get('dniParticipante');
+
+            $idInscribeteOrDataParticipante = $em->getRepository('AkademiaBundle:Participante')->getPreInscripcionUnica($dniParticipante);
+            
+            if( !empty($idInscribeteOrDataParticipante[0]['id']) ){
+
+                $encoders = array(new JsonEncoder());
+                $normalizer = new ObjectNormalizer();
+                $normalizer->setCircularReferenceLimit(1);
+                $normalizer->setCircularReferenceHandler(function ($object) {
+                    return $object->getId();
+                });
+                $normalizers = array($normalizer);
+                $serializer = new Serializer($normalizers, $encoders);
+                $jsonContent = $serializer->serialize($idInscribeteOrDataParticipante,'json');
+                return new JsonResponse($jsonContent);
+            }
+
+            $idHorario = $request->request->get('idHorario');
             
             $vacantesHorario = $em->getRepository('AkademiaBundle:Horario')->getHorariosVacantes($idHorario);
             $cantVacantes = $vacantesHorario[0]['vacantes'];
@@ -136,7 +155,6 @@ class PreinscripcionController extends Controller
                 
 
                 //DATOS PARTICIPANTE
-                $dniParticipante = $request->request->get('dniParticipante');
                 $apellidoPaternoParticipante = $request->request->get('apellidoPaternoParticipante');
                 $apellidoMaternoParticipante = $request->request->get('apellidoMaternoParticipante');
                 $nombreParticipante = $request->request->get('nombreParticipante'); 
@@ -146,7 +164,7 @@ class PreinscripcionController extends Controller
                 $tipoSeguro = $request->request->get('tipoSeguro');
                 $estado = 1;
                 $discapacidad = $request->request->get('discapacidad');
-               
+
                 //REGISTRAR APODERADO
                 $em = $this->getDoctrine()->getManager();
                 //BUSACMOS AL APODERADO EN LA TABLA GRPERSONA CATASTRO.

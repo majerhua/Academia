@@ -39,14 +39,13 @@
 		<p class="text-right" style="color:grey" >Usuario: {{ app.user.username}} </p>
 	</div>
 	<div class="proceso text-center">
-		<h2>Administración de Pre - Inscritos</h2>
-		<h4 style="color:grey">HORARIOS DESACTIVADOS</h4>
+		<h2>Insripción directa a beneficiarios.</h2>
+		<!--<h4 style="color:grey">HORARIOS DESACTIVADOS</h4>-->
 
-		<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px;">
+		<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="width:80%; max-width:700px; margin-top: 10px;">
 			<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
-			<p>Previsualiza los horarios para los registros antiguos. Inscripción de preinscritos.</p>
+			<p>Se podrán inscribir a los beneficiarios en horarios abiertos y cerrados con vacantes y pre-inscripciones disponibles, no se necesita descargar las ficha de pre-inscripción</p>
 		</div>
-
 	</div>	
 		
 	{% else %}
@@ -495,6 +494,30 @@
 		</div>
 	</div>
 </div>
+
+
+
+<!-- Modal -->
+<div id="modalInscripcionUnica" class="modal fade" role="dialog" >
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content" style="background-color:#cb2f1d; color:white;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h3 class="modal-title">La academia IPD</h3>
+      </div>
+      <div class="modal-body">
+        <p> El participante aun está inscrito con el Código de Inscripción <b style="color:9b9d9f; font-size:1.2em;" id="ins-unique-idInscripcion"></b> en la disciplina <b style="color:9b9d9f; font-size:1.2em;" id="ins-unique-disciplina"></b> con la modalidad <b style="color:9b9d9f; font-size:1.2em;" id="ins-unique-modalidad" ></b> del Complejo Deportivo <b style="color:9b9d9f; font-size:1.2em;" id="ins-unique-complejo-deportivo"></b> en caso de haberse retirado, acudir al complejo para la actualización de su matrícula</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Salir</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
 </section>
 <br><br>

@@ -64,14 +64,16 @@ class HorarioController extends Controller
             $idComplejo = $this->getUser()->getIdComplejo();
             
 
+
             $em = $this->getDoctrine()->getManager();
  
             $ediCodigo = $em->getRepository('AkademiaBundle:Horario')->getCapturarEdiCodigo($idComplejo, $idDisciplina);         
             $codigoEdi = $ediCodigo[0]['edi_codigo'];
            
-            $data = $em->getRepository('AkademiaBundle:Horario')->getDiferenciarHorarios($turno,$edadMinima,$edadMaxima,$horaInicio,$horaFin,$discapacitados,$codigoEdi);
+            $data[0]['turno'] = $em->getRepository('AkademiaBundle:Horario')->getDiferenciarHorarios($turno,$edadMinima,$edadMaxima,$horaInicio,$horaFin,$discapacitados,$codigoEdi);
 
-            if(!empty($data)){
+
+            if(!empty($data[0]['turno'])){
                 $mensaje = 1;
                 return new JsonResponse($mensaje);
             }else{

@@ -91,7 +91,7 @@
 											<thead style="background:#cb2f1d; color:#F2F2F2;" class="text-center"> 
 												<tr> 
 													<th class="text-center" style="font-size:14px" >Código de horario</th>
-													<th class="text-center" style="font-size:14px">Deporte</th>
+													<th class="text-center" style="font-size:14px">Modalidad</th>
 													<th class="text-center" style="font-size:14px">Turno</th> 
 													<th class="text-center" style="font-size:14px">Hora</th>
 													<th class="text-center" style="font-size:14px">Edades</th> 
@@ -112,9 +112,9 @@
 												<tr> 
 													<td id="1h{{horario['idHorario']}}" class="text-center">{{horario['idHorario']}}</td> 
 													{% if  horario['discapacidad'] == 0 %}
-														<td id="6h{{horario['idHorario']}}" class="text-center" > Regular </td> 
+														<td id="6h{{horario['idHorario']}}" class="text-center" > Convencional </td> 
 													{% else %}
-														<td id="6h{{horario['idHorario']}}" class="text-center"> Adaptado </td> 
+														<td id="6h{{horario['idHorario']}}" class="text-center"> Persona con Discapacidad </td> 
 													{% endif %}
 													<td id="2h{{horario['idHorario']}}" class="text-center">{{horario['turno']}}</td> 
 													<td id="3h{{horario['idHorario']}}" class="text-center">{{horario['horaInicio']|date('H:i')}} - {{horario['horaFin']|date('H:i')}}</td> 
@@ -303,7 +303,7 @@
 								<li class="list-group-item">
 									<div class="row">
 										<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-											<p><strong>Discapacidad</strong></p>
+											<p><strong>Modalidad</strong></p>
 										</div>
 										<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
 											<p id="editar_discapacidad_horario"></p>
@@ -531,13 +531,13 @@
 							<li class="list-group-item">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>DEPORTE</strong></p>
+										<p><strong>Modalidad</strong></p>
 									</div>
 									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
 										<select class="form-control" id="crear_discapacidad">
 											<option value="">--Seleccionar--</option>
-											<option value="0">Regular</option>
-											<option value="1">Adaptado</option>
+											<option value="0">Convencional</option>
+											<option value="1">Persona con Discapacidad</option>
 										</select>
 									</div>
 								</div>
@@ -1002,9 +1002,9 @@
 						$("#editar_edades_horario").append(dataHorario.edadMinima + ' - ' + dataHorario.edadMaxima +' años.');
 						
 						if(dataHorario.discapacidad == 0){
-							$("#editar_discapacidad_horario").append("No");
+							$("#editar_discapacidad_horario").append("Convencional");
 						}else{
-							$("#editar_discapacidad_horario").append("Si");
+							$("#editar_discapacidad_horario").append("Persona con Discapacidad");
 						}
 
 						if(dataHorario.convocatoria == 0){

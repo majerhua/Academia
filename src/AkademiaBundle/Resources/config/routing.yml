@@ -261,7 +261,6 @@ akademia_visibilidadApp:
 
 ##INCIO EXPORTAR DATA ##
 
-
 akademia_exportInscripcionesRegiones:
    path:    /exportInscripcionesRegiones
    defaults: {_controller: AkademiaBundle:ExportacionData:exportInscripcionesRegiones}
@@ -291,6 +290,11 @@ akademia_exportCantidadHorariosCreadosRegion:
 akademia_exportData:
    path:    /exportData
    defaults: {_controller: AkademiaBundle:ExportacionData:exportData}
+   methods: [GET,POST]
+
+akademia_exportDataBeneficiarios:
+   path:    /exportDataBeneficiarios
+   defaults: {_controller: AkademiaBundle:ExportacionData:exportDataBeneficiarios}
    methods: [GET,POST]
 #FIN 
 

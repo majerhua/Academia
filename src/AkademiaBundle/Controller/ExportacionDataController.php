@@ -129,7 +129,7 @@ class ExportacionDataController extends Controller
     return $response;
   }
 
-  public function exportAction(Request $request)
+  public function exportDataBeneficiariosAction(Request $request)
   {
 
     $ano = $request->query->get('ano');
@@ -194,7 +194,7 @@ class ExportacionDataController extends Controller
                     WHEN 1 THEN 'Masculino'
                     ELSE 'Otro' END
                     AS sexo,
-                  CONVERT(varchar, mov.fecha_modificacion, 103) FechaMovimiento,
+                  mov.fecha_modificacion FechaMovimiento,
                       CASE MONTH(mov.fecha_modificacion) 
                       WHEN 1 THEN 'Enero'
                       WHEN 2 THEN 'Febrero'
@@ -213,14 +213,31 @@ class ExportacionDataController extends Controller
                   cat.descripcion Categoria, asis.descripcion
                   Asistencia,CONVERT(varchar(100),hor.turno)+' '+CONVERT( varchar(100),CONVERT(VARCHAR(5), hor.horaInicio , 108))+' - '+CONVERT(varchar(100),CONVERT(VARCHAR(5), hor.horaFin , 108) )+' ,'+ CONVERT(varchar(40),hor.edadMinima)+' a '+ CONVERT(varchar(40),edadMaxima)+' anos' AS Horario,
                       CASE hor.discapacitados
-                      WHEN 0 THEN 'No Discapacitado'
-                      WHEN 1 THEN 'Discapacitado'
+                      WHEN 0 THEN 'Convencional'
+                      WHEN 1 THEN 'PersonasDiscapacidad'
                       ELSE 'No se sabe' END
-                      AS Discapacidad,
+                      AS Modalidad,
                       grApod.pertelefono Telefono,
                       grApod.percorreo Correo
                       
                       FROM ACADEMIA.inscribete AS ins 
+                      INNER JOIN 
+                      (
+                      SELECT MAX(movi.fecha_modificacion) fechaModificacion ,inscri.id inscribeteId 
+                      FROM ACADEMIA.participante parti
+                      INNER JOIN ACADEMIA.inscribete inscri ON inscri.participante_id = parti.id
+                      INNER JOIN ACADEMIA.movimientos movi ON movi.inscribete_id = inscri.id
+                      GROUP BY inscri.id,parti.id
+                      HAVING MAX(movi.fecha_modificacion)=
+                      (SELECT MAX(mov2.fecha_modificacion) FROM ACADEMIA.participante par2
+                      INNER JOIN ACADEMIA.inscribete ins2 ON ins2.participante_id = par2.id
+                      INNER JOIN ACADEMIA.movimientos mov2 ON mov2.inscribete_id = ins2.id
+                      WHERE
+                      par2.id = parti.id
+                      GROUP BY par2.id)
+                      
+                      ) insUltimo ON insUltimo.inscribeteId = ins.id
+  
                       inner join ACADEMIA.participante par on par.id = ins.participante_id
                       inner join grpersona grPar on grPar.percodigo = par.percodigo
                       inner join ACADEMIA.horario hor on hor.id=ins.horario_id
@@ -258,9 +275,7 @@ class ExportacionDataController extends Controller
     	$results = $conn->query($query1);
     	while($row = $results->fetch()) {
 
-      	fputcsv($handle, array( $row['Departamento'],$row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['Discapacidad'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Telefono'],$row['Correo']  ), ",");
-
-      /*	fputcsv($handle, array( $row['Departamento'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Discapacidad'],$row['Telefono'],$row['Correo']  ), ',');*/
+      	fputcsv($handle, array( $row['Departamento'],$row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['Modalidad'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['pernombres'],$row['FechaNacimiento'],$row['edad'],$row['sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Asistencia'],$row['Horario'],$row['Telefono'],$row['Correo']  ), ",");
 
     	}
     	fclose($handle);

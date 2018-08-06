@@ -150,6 +150,7 @@
 									<p>Edad</p>
 									<p>Email</p>
 									<p>Deporte</p>
+									<P>Modalidad</P>
 									<p>Complejo</p>
 									<p>Horario</p>
 								</div>
@@ -167,6 +168,7 @@
 									<p id="edad-ficha"></p>
 									<p id="email-ficha"></p>
 									<p id="deporte-ficha"></p>
+									<p id="deporte-modalidad"></p>
 									<p id="complejo-ficha"></p>
 									<p id="horario-ficha"></p>
 									<input type="hidden" name="codigo-inscripcion" id="codigo-inscripcion">
@@ -235,6 +237,7 @@
 							<p>Edad</p>
 							<p>Email</p>
 							<p>Deporte</p>
+							<p>Modalidad</p>
 							<p>Complejo</p>
 							<p>Horario</p>
 						</div>
@@ -250,6 +253,7 @@
 							<p id="edad-ficha"></p>
 							<p id="email-ficha"></p>
 							<p id="deporte-ficha"></p>
+							<p id="deporte-modalidad"></p>
 							<p id="complejo-ficha"></p>
 							<p id="horario-ficha"></p>
 							<input type="hidden" name="codigo-inscripcion" id="codigo-inscripcion">
@@ -497,10 +501,7 @@
 		
 		if( disciplinaDeportiva=="" || horario==""){
 				alertify.error('<p style="color:white">Debe seleccionar Disciplina y/o Horario </p>'); 
-		}else{
-			
-			$("#process4").hide();
-			$("#process5").show('slow');	
+		}else{	
 			registrar();
 		}
 	});
@@ -547,45 +548,75 @@ function registrar(){
 		url: "{{url('akademia_registrar')}}",
 		data: dataRegisterApoderado,
 		beforeSend: function(){	
-			$("#boton-next-final").attr("disabled", true);		
+			$("#boton-next-final").attr("disabled", true);	
+			$('#ins-unique-idInscripcion').empty();
+			$('#ins-unique-disciplina').empty();
+			$('#ins-unique-modalidad').empty();
+			$('#ins-unique-complejo-deportivo').empty();	
 		},
 		success: function(data){
 			
-			console.log(data);
+			console.log("Datos Registro Final =>",data);
 			$("#boton-next-final").attr("disabled", false);
-			
-			if(data != 1 ){
+			var valor = JSON.parse(data)[0];
+			console.log(Object.keys(valor).length);
+			if(Object.keys(valor).length == 4){
+				console.log("Alerta");
+				//showAlertMessage('#alerta-error', "El participante se encuentro inscrito con el Código de Inscripción "+valor.id+" en la disciplina"+valor.Displina+"con la modalidad"+valor.Modalidad+"del Complejo Deportivo"+valor.ComplejoDeportivo);
+				$('#modalInscripcionUnica').modal('show');
+				$('#ins-unique-idInscripcion').append(valor.id);
+				$('#ins-unique-disciplina').append(valor.Disciplina);
 
-				$(".bar-inscripcion__4").removeClass('active');
-				$(".bar-inscripcion__5").addClass('active');
-				$("#process4").hide();
-				$("#process5").show();
-				var valor =JSON.parse(data)[0];
-				sessionStorage.removeItem("idInscripcion");
-				sessionStorage.setItem("idInscripcion",valor.id);
-				$("#ancla-imprimir-fichaInscripcion").attr('href',"/academia/web/ajax/pdf/inscripcion/"+sessionStorage.getItem("idInscripcion"));
-				$("#ancla-imprimir-declaracion-jurada").attr('href',"/academia/web/ajax/pdf/declaracion-jurada/"+sessionStorage.getItem("idInscripcion"));
-				$("#codigo-inscripcionRef").append(valor.id);
-				$("#nombre-ficha").append(valor.pernombres);
-				$("#apellidoPaterni-ficha").append(valor.perapepaterno);
-				$("#apellidoMaterno-ficha").append(valor.perapematerno);
-				$("#distrito-ficha").append(valor.distrito);
-				$("#domicilio-ficha").append(valor.perdomdireccion);
-				$("#fechaNacimiento-ficha").append(valor.perfecnacimiento);
-				$("#telefono-ficha").append(valor.pertelefono);
-				$("#dni-ficha").append(valor.dni);
-				$("#edad-ficha").append(sessionStorage.getItem("edad"));
-				$("#email-ficha").append(valor.percorreo);
-				$("#deporte-ficha").append(valor.nombreDisciplina);
-				$("#complejo-ficha").append(valor.nombreComplejo);
-				$("#horario-ficha").append(valor.horaInicio+" a "+valor.horaFin);
-				$("#nombrePadre-declaracion-jurada").append(valor.nombrePadre);
-				$("#codigo-inscripcion").val(valor.id);
-			    enviarEmailApoderado(valor.percorreo,valor.nombrePadre,valor.id);
+				if(valor.Modalidad == 0)
+					$('#ins-unique-modalidad').append('Convencional');
+				else
+					$('#ins-unique-modalidad').append('Personas con Discapacidad');
+
+				$('#ins-unique-complejo-deportivo').append(valor.ComplejoDeportivo);
+
 			}else{
 
-				showAlertMessage('#alerta-error', "Lo sentimos, se agotaron las vacantes para este horario. ");
-				$("#boton-next-final").attr("disabled", true);
+				if(data != 1 ){
+
+					$("#process4").hide();
+					$("#process5").show('slow');
+
+					$(".bar-inscripcion__4").removeClass('active');
+					$(".bar-inscripcion__5").addClass('active');
+					$("#process4").hide();
+					$("#process5").show();
+					sessionStorage.removeItem("idInscripcion");
+					sessionStorage.setItem("idInscripcion",valor.id);
+					$("#ancla-imprimir-fichaInscripcion").attr('href',"/academia/web/ajax/pdf/inscripcion/"+sessionStorage.getItem("idInscripcion"));
+					$("#ancla-imprimir-declaracion-jurada").attr('href',"/academia/web/ajax/pdf/declaracion-jurada/"+sessionStorage.getItem("idInscripcion"));
+					$("#codigo-inscripcionRef").append(valor.id);
+					$("#nombre-ficha").append(valor.pernombres);
+					$("#apellidoPaterni-ficha").append(valor.perapepaterno);
+					$("#apellidoMaterno-ficha").append(valor.perapematerno);
+					$("#distrito-ficha").append(valor.distrito);
+					$("#domicilio-ficha").append(valor.perdomdireccion);
+					$("#fechaNacimiento-ficha").append(valor.perfecnacimiento);
+					$("#telefono-ficha").append(valor.pertelefono);
+					$("#dni-ficha").append(valor.dni);
+					$("#edad-ficha").append(sessionStorage.getItem("edad"));
+					$("#email-ficha").append(valor.percorreo);
+					$("#deporte-ficha").append(valor.nombreDisciplina);
+					if(valor.discapacitados == 0)
+						$("#deporte-modalidad").append("Convencional");
+					else
+						$("#deporte-modalidad").append("Personas con Discapacidad");
+
+					$("#complejo-ficha").append(valor.nombreComplejo);
+					$("#horario-ficha").append(valor.horaInicio+" a "+valor.horaFin);
+					$("#nombrePadre-declaracion-jurada").append(valor.nombrePadre);
+					$("#codigo-inscripcion").val(valor.id);
+				    enviarEmailApoderado(valor.percorreo,valor.nombrePadre,valor.id);
+				}else{
+
+					showAlertMessage('#alerta-error', "Lo sentimos, se agotaron las vacantes para este horario. ");
+					$("#boton-next-final").attr("disabled", true);
+				}
+
 			}		
 		},
 
