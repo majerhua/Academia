@@ -1,5 +1,4 @@
 
-
 // Equivalent of jQuery .ready
 document.addEventListener('DOMContentLoaded',function(){
 
@@ -120,11 +119,23 @@ document.addEventListener('DOMContentLoaded',function(){
 
 			var lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 			// if the current body position is less than 20 pixels away from our converter, convert
-			if (lastScrollTop > (getOffset( document.getElementById('title-etapas-deportivas') ).top - 150)){
+			if (lastScrollTop > (getOffset( document.getElementById('title-etapas-deportivas') ).top - 230)){
 				
-			 removeClass(document.querySelector('.container__menu-movile'),'container__menu-movile-transparent');
+			//removeClass(document.querySelector('.container-movil'),'container__menu-movile-transparent');
+
+			$("#men-mov").removeClass("container__menu-movile-transparent");
+				removeClass(document.querySelector('.container__menu-movile'),'container__menu-movile-transparent');
+				$("#logo-principal-menu").removeClass("hide");
+				console.log("majerhua");
+				$("#titulo-principal-menu").addClass("hide");
+
 			} else {
 				addNewClass(document.querySelector('.container__menu-movile'),'container__menu-movile-transparent');
+				$("#men-mov").addClass("container__menu-movile-transparent");
+				$("#menu-movile").addClass("colorFondoScrollMenu");
+				$("#logo-principal-menu").addClass("hide");
+				$("#titulo-principal-menu").removeClass("hide");
+				
 			}
 		}
 

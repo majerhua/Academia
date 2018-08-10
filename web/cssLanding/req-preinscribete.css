@@ -100,7 +100,10 @@
 @media(min-width: 768px){
 
 	.container__ul-list-req{
-		padding: 10px 0 0 0;
+		padding: 20px 0 0 0;
+		max-width: 630px;
+
+
 	}
 
 	.container__list-req{
@@ -141,9 +144,17 @@
 
 @media(min-width: 992px){
 
+
 	.req-preinscribete{
-		padding-top: 14vh;
+		padding-top: 16vh;
 		padding-bottom: 10vh;
+	}
+
+	.btn-success-mod {
+		border-radius:20px;
+		font-size: 1.3em;
+		padding: 9px 40px;
+		margin-left: -12px;
 	}
 
 	.container__hero__button{
@@ -152,9 +163,8 @@
 
 	.container__buton-pre-inscribete{
 		display: block;
-		padding: 10px;
+		padding: 10px 10px 10px 0;
 	}
-
 
 	.container__img-preinscripcion__lista{
 		display: flex;
@@ -166,6 +176,7 @@
 	}
 	.container__lista__titulo{
 		width: 60%;
+		padding-left: 60px;
 	}
 	.container__img-inscripcion{
 		width: 39%;	
@@ -208,7 +219,7 @@
 			}
 
 				.container__list-req>div p{
-					font-size: 1.2em; 
+					font-size: 1.39em; 
 				}
 
 		.container__hero__button> button{
@@ -217,7 +228,7 @@
 			}
 
 	.container__texto > h2{
-		font-size: 2.2em;
+		font-size: 1.9em;
 	}
 }
 

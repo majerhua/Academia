@@ -26,6 +26,13 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class PreinscripcionController extends Controller
 {
 
+
+public function indexAction(Request $request){
+
+    return $this->render('AkademiaBundle:Default:indexLanding.html.twig'); 
+}
+
+/*
     public function indexAction(Request $request){
         if($request->isXmlHttpRequest()){
             
@@ -66,7 +73,7 @@ class PreinscripcionController extends Controller
         
         return $this->render('AkademiaBundle:Default:index.html.twig' , array("complejosDeportivo" => $mdlComplejoDeportivo , "complejosDisciplinas" => $mdlComplejoDisciplina , "departamentos" => $mdlDepartamento,"provincias" => $mdlProvincia ,"distritos" => $mdlDistrito ,'ditritosCD' => $mdlDitritoCD , "departamentosCD" => $mdlDepartamentosCD ,'provinciasCD' => $mdlProvinciasCD ));     
     }
-
+*/
     //FUNCION PARA CARGAR LOS DATOS DE LAS DISCIPLINAS Y HORARIOS SELECCIONADOS
 
 	public function registroFinalAction(Request $request,$estado){

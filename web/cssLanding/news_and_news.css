@@ -50,6 +50,12 @@
                         max-width: 420px;
                     }
 
+                    .container__iframe__noticia > .container-mensaje-iframe{
+
+                        padding-top: 20px;
+                        width: 85%;
+                        max-width: 420px;
+                    }
 
 @media (min-width:572px){
 
@@ -58,6 +64,8 @@
         max-width: 450px;
         height: 90px;
     }
+
+
 
         .container__iframe__noticia > .container__texto h2:nth-child(2) {
             font-style: italic;
@@ -76,6 +84,13 @@
 
 
 @media (min-width:992px){
+
+    .container__iframe__noticia > .container-mensaje-iframe{
+
+        padding-top: 20px;
+        width: 100%;
+        max-width: 450px;
+    }
 
     .container__news-and-news{
         padding: 80px 0 10px 0;

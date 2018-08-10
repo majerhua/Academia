@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class DefaultController extends Controller
 {
-    // LANDING PRINCIPAL 
+    // LANDING PRINCIPAL HORARIOS LANDING
 
     public function paginaPreHorariosAction(Request $request,$estado){
 

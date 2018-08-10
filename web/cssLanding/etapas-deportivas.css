@@ -8,7 +8,7 @@
 }
 
 	.title__etapas__deportivas{
-		font-size: 2em;
+		font-size: 1.8em;
 		font-weight: bold;
 		text-align: center;
 	}
@@ -45,9 +45,10 @@
 			}
 
 			.card > p{
-				padding: 0 2px;
-				text-align: center;
+				padding: 0 8px;
 				font-size: 0.9em;
+				padding-left: 25px;
+
 			}
 
 			.container__imagen{
@@ -58,7 +59,7 @@
 			}
 
 				.container__imagen > img{
-					width: 80px;
+					width: 85px;
 					border-radius: 5px 5px 0 0;
 				}
 
@@ -72,10 +73,13 @@
 	}
 
 		.container__imagen > img{
-			width: 85px;
+			width: 110px;
 			border-radius: 5px 5px 0 0;
 		}
-
+		.card > p{
+			font-size: 0.95em;
+			padding-left: 20px;
+		}
 }
 
 @media(min-width:500px){
@@ -92,8 +96,8 @@
 		}
 
 		.card > p{
-			text-align: center;
 			font-size: 0.9em;
+			padding-left: 35px;
 		}
 
 }
@@ -112,7 +116,6 @@
 		}
 
 		.card > p{
-			text-align: center;
 			font-size: 1em;
 		}
 
@@ -126,7 +129,7 @@
 }
 
 	.title__etapas__deportivas{
-		font-size: 2.2em;
+		font-size: 1.8em;
 		font-weight: bold;
 		text-align: center;
 	}
@@ -157,12 +160,12 @@
 			}
 
 			.card > p{
-				text-align: center;
 				font-size: 1em;
+				padding-left: 5px;
 			}
 
 			.container__imagen > img{
-				width: 180px;
+				width: 200px;
 				border-radius: 5px 5px 0 0;
 			}
 
@@ -174,12 +177,12 @@
 
 .etapas__deportivas{
 
-	padding-top: 14vh;
+	padding-top: 17vh;
 	padding-bottom: 10vh;
 }
 
 	.title__etapas__deportivas{
-		font-size: 2.4em;
+		font-size: 2em;
 		font-weight: bold;
 		text-align: center;
 	}
@@ -208,18 +211,20 @@
 			.card > h4{
 				text-align: center;
 				font-size: 1.6em;
+				padding-top: 10px;
 				font-weight: bold;
 			}
 
 			.card > p{
-				text-align: center;
-				font-size: 1.1em;
+				font-size: 1.02em;
+				padding-left: 17px;
 			}
 
 			.container__imagen > img{
-				width: 180px;
+				width: 280px;
 				border-radius: 5px 5px 0 0;
 			}
 
 }
 
+s

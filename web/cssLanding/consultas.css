@@ -1,5 +1,5 @@
 .consultas{
-	padding: 11vh 5px 5vh 0;
+	padding: 13vh 5px 5vh 0;
 	width: 100%;
 	display: flex;
 	flex-wrap: wrap;
@@ -12,11 +12,8 @@
 
 .container__btn__informacion{
 
-	display: flex;
-	justify-content: center;
-	flex-wrap: wrap;
 	width: 80%;
-	margin-top: 25px;
+	margin-top: 10px;
 	background-color: #fff;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	transition: 0.3s;
@@ -32,7 +29,6 @@
 	.container__btn__informacion>div{
 		display: flex;
 		flex-wrap: wrap;
-		line-height: 40px;
 		justify-content: center;
 	}
 
@@ -44,6 +40,11 @@
   		border-radius: 4px;
   		box-shadow: none;
   		text-shadow: none;
+	}
+
+	.btn__informacion-sucess{
+		background-color: rgba(64, 172, 44, 1);
+		border-color: rgba(64, 172, 44, 1);
 	}
 
 
@@ -118,18 +119,18 @@
 		}
 
 		.container__btn__informacion{
-
+			padding: 0;
 		}
 
 		.container__btn__informacion>div{
-			display: flex;
-			flex-wrap: wrap;
-			height: 67px !important;
-			justify-content: center;
+
+			padding-top: 18px;
+			padding-bottom: 0;
+
 		}
 
 			.container__btn__informacion>div button{
-				width: 160px;
+				width: 125px;
 			}
 
 		.form-group>div:nth-child(1) i{
@@ -137,13 +138,17 @@
 		}
 
 	.container-btn-enviar>button{
-		line-height: 40px;
+		line-height: 39px;
 	}
 
 }
 
 
 @media(min-width: 992px){
+
+	.consultas{
+		padding: 21vh 5px 4vh 0;
+	}
 
 	.form-group:nth-child(4)>div:nth-child(2){
  	

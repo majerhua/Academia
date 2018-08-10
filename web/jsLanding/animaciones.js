@@ -45,6 +45,7 @@ $(".inicio").click(function(){
 
 
 functionScroll('.inicio','.header-principal');
+functionScroll('.inicio-logo-menu','.header-principal');
 functionScroll('#etapas','.etapas__deportivas');
 functionScroll('#requisitos','.req-preinscribete');
 functionScroll('#app','.download-app');
