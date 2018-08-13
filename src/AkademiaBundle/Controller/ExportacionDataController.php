@@ -135,56 +135,27 @@ class ExportacionDataController extends Controller
     $ano = $request->query->get('ano');
     $numMes = $request->query->get('mes');
     $departamento = $request->query->get('departamento');
-    $complejo = $request->query->get('complejo');
-    $disciplina = $request->query->get('disciplina');
 
     $conn = $this->get('database_connection');
     $response = new StreamedResponse(function() use($conn,$ano,$numMes,$departamento,$complejo,$disciplina) {
       
       $query2='';
-      //MONTH(mov.fecha_modificacion)='$numMes'
       
       if( empty($numMes) && empty($departamento) )
         $query2 = " YEAR(mov.fecha_modificacion)='$ano' ";  
       
-
-      else if(!empty($numMes) && !empty($departamento) ){
-
-        if(!empty($complejo)){
-
-            if(!empty($disciplina))
-                $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' AND MONTH(mov.fecha_modificacion)='$numMes' AND ede.ede_codigo='$complejo' AND dis.dis_codigo='$disciplina' ";     
-            else
-                $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' AND MONTH(mov.fecha_modificacion)='$numMes' AND ede.ede_codigo='$complejo' ";              
-        }
-
-        else
-               $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' AND MONTH(mov.fecha_modificacion)='$numMes' ";    
-      }
-
+      else if(!empty($numMes) && !empty($departamento) )
+        $query2 = " YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' AND MONTH(mov.fecha_modificacion)='$numMes' ";    
+      
       else if(!empty($numMes) && empty($departamento) )
-            $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND MONTH(mov.fecha_modificacion)='$numMes' "; 
+        $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND MONTH(mov.fecha_modificacion)='$numMes' "; 
         
-
-      else if(empty($numMes) && !empty($departamento)  ){
-
-            if(!empty($complejo)){
-                
-                if(!empty($disciplina))
-                    $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' AND ede.ede_codigo='$complejo' AND dis.dis_codigo='$disciplina' ";                        
-                else
-                    $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' AND ede.ede_codigo='$complejo' ";         
-                
-            }
-
-            else
-                $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' ";     
-            
-      }
-
+      else if(empty($numMes) && !empty($departamento)  )
+        $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' ";     
+      
     	$handle = fopen('php://output','w+');
 
-    					fputcsv($handle, ['Departamento','Provincia' ,'Complejo', 'Disciplina','Discapacidad','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Asistencia','Horario','Telefono','Correo'],",");
+			fputcsv($handle, ['Departamento','Provincia' ,'Complejo', 'Disciplina','Discapacidad','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Asistencia','Horario','Telefono','Correo'],",");
               
     	$query1 = "SELECT ubiDpto.ubinombre Departamento ,ubiProv.ubinombre Provincia  , ede.ede_nombre as Complejo,dis.dis_descripcion as Disciplina, grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, grPar.perapematerno ApellidoMaterno ,
                   grPar.pernombres,CONVERT(varchar, grPar.perfecnacimiento, 103) FechaNacimiento,
