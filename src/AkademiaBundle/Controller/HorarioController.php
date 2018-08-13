@@ -49,8 +49,26 @@ class HorarioController extends Controller
 
     // FUNCION PARA LA CREACION DE HORARIOS
     public function crearHorarioAction(Request $request){
-        if($request->isXmlHttpRequest()){
 
+
+        if($request->isXmlHttpRequest()){
+            $vacantes =$request->request->get('vacantes-horario');
+            $preinscripciones = $request->request->get('preinscripciones-horario');
+            $modalidad = $request->request->get('modalidad-horario');
+            $tipo = $request->request->get('tipo-horario');
+            $vacantes = $request->request->get('vacantes');
+            $preinscripciones = $request->request->get('preinscripciones');
+            $turnos = $request->request->get('turnos-seleccionados');
+            $usuario = $this->getUser()->getId();
+            $idDisciplina = $request->request->get('idDisciplina');           
+            $idComplejo = $this->getUser()->getIdComplejo();
+
+            $em = $this->getDoctrine()->getManager();
+     
+            echo 1;
+            exit;
+
+        /*
             $horaInicio =$request->request->get('horarioInicio');
             $horaFin = $request->request->get('horarioFin');
             $edadMinima = $request->request->get('edadMinima');
@@ -124,6 +142,7 @@ class HorarioController extends Controller
                     return new JsonResponse($mensaje);
                 }
             } 
+        */
         }
     }
 

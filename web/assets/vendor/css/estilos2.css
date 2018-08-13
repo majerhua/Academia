@@ -26,9 +26,24 @@ body{
 .container-button-exportPREINS> button{
 	margin-left: 10px;
 	width: 45%;
-	padding: 7px 7px;
-	max-width: 160px;
+	padding: 9px 7px;
+	background-color: red;
+	font-weight: bold;
+	max-width: 220px;
 }
+
+.container-button-gp{
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+	.container-button-gp > button{
+		background-color: red;
+		padding: 9px 7px;
+		font-weight: bold;
+	}
+
 
 /*FIN*/
 
