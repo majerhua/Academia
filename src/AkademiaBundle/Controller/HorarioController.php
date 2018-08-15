@@ -42,7 +42,6 @@ class HorarioController extends Controller
             return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"1", "nombreComplejo"=> $Nombre)); 
         }else{
             return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"2")); 
-         
         }
 
     }
@@ -50,8 +49,8 @@ class HorarioController extends Controller
     // FUNCION PARA LA CREACION DE HORARIOS
     public function crearHorarioAction(Request $request){
 
-
         if($request->isXmlHttpRequest()){
+            
             $vacantes =$request->request->get('vacantes-horario');
             $preinscripciones = $request->request->get('preinscripciones-horario');
             $modalidad = $request->request->get('modalidad-horario');
