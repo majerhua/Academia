@@ -11,7 +11,6 @@ namespace AkademiaBundle\Repository;
 class ParticipanteRepository extends \Doctrine\ORM\EntityRepository
 {
 
-
     public function getPreInscripcionUnica($dniParticipante){
         $query = "EXEC ACADEMIA.preInscripcionUnica '$dniParticipante' ";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);

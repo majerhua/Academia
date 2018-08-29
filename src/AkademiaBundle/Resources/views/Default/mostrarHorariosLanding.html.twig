@@ -14,7 +14,7 @@
                     <span class="icon-bar"></span>
                 </button>                       
 
-                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="logoAcademia" />                                      
+                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="logoAcademia" />                    
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <br>
@@ -30,16 +30,17 @@
 
 <div class="proceso" style="display:flex !important; flex-wrap:wrap !important; align-items: center !important; justify-content: center !important; ">
 
-	<h1 style="font-style:italic; font-weight:bold; color:#cf5336; ">
+	<h1 style=" font-weight:bold; color:gray; font-size:1.7em;">
 		{% if estado == 0 %}
-			Deportes Regulares
-
+			Modalidad de Deportes Convencionales
 		{% else %}
-
-			Deportes Adaptados		
-
+			Modalidad de Deportes Adaptados		
 		{% endif %}
 	</h1>
+
+	<h2 style=" font-weight:bold; color:#000; font-size:1.4em;">
+		Temporada Invierno 2018 (Marzo-Noviembre)
+	</h2>
 
 	<div class="proceso-inscripcion__horarios" id="process4">
 
@@ -54,15 +55,11 @@
 						<div>
 			            	<select id="departamentoHorario" class="effect-3"  name="departamentoHorario" onchange="cambiarDepartamentoHorario(this)">
 			                	<option value="">--Seleccionar--</option>
-			                	{% for  dep in  departamentos  %}
 									{% for depFlag in departamentosFlag %}
 
-										{%  if dep['id'] == depFlag['idDepartamento'] %}
-											<option value="{{dep['id']}}">{{dep['nombre']}}</option>
-										{% endif %}
+										<option value="{{depFlag['id']}}">{{depFlag['nombre']}}</option>
 
-									{% endfor %}
-			                	{% endfor %}	
+									{% endfor %}	
 			            	</select>
 			            	<span class="focus-border"></span>
 			        	</div>
@@ -106,8 +103,8 @@
 		</div>
 
 
-		<div class="container-card col-xs-12 col-sm-12 col-md-4 col-lg-5">
-			<div class="card">
+		<div class="container-card col-xs-12 col-sm-12 col-md-4 col-lg-5" >
+			<div class="card" style="height:62vh !important;">
 				<p class="title-card text-center">DISCIPLINAS Y HORARIOS</p>
 				<hr>
 		        <div class="form-group container-select-deporte">
@@ -120,37 +117,34 @@
 		        	</div>
 		        </div>
 		        <br>
+
 		        <div class="form-group container-select-deporte">
 		        	<div>
-		        		<label class="complejo-titulo" >Horario </label>
-		            	<select id="horario" name="horario" class="effect-3 " onchange="cambiarHorario(this)" >
-		                	<option value=""> -- Seleccionar --</option>
-		            	</select>
-		            	<span class="focus-border"></span> 
-		        	</div>
+		        		<div style="width:100%; display:flex;justify-content:center; " >
+		        			<label class="complejo-titulo" style="font-size:1.1em;text-align: center;" >Horarios con vacantes disponibles.</label>
+		        		</div>
+
+			        	<table class="table table-hover   table-horario" id="tableHorario" style="width:100%;"  >
+			        	</table>
+
+			        	<div class="container-loader-horario" id="container-loader-horario">
+			        		<div>
+			        			<div class="loader-horario"></div>
+			        		</div>
+			        		
+			        	</div>
+			        	
+			        </div>
 		        </div>
-		        <br>
-		        <div id="alerta-error" class="alert alert-danger collapse"></div>
-		        <br>
-		        <div class="form-group  container-horario-participante">
-		        	<div id="rango-edad-horario" ></div>
-		        	<div>
-		        		<div id="turno"></div>
-		        		<div id="rango-hora-horario"></div>
-		        	</div>
-		        	
-		        	<div id="vacantes"  style="color:grey; font-size:14px;"></div>
-		        	<br>
-		        	<div id="mensaje" style="color:grey; font-size:16px;"></div>
-		        </div>
-		        <br>
-		        <hr>
+		        
+			</div>
+
+			<div style=" width:100%; display:flex; justify-content:center; align-items:center;" >
+				<button  id="pre-inscribete" class="btn btn-success"  style="padding:8px 12px; background:rgba(64, 172, 44, 1); font-weight:bold; " >Pre-Inscribete</button>
 			</div>
 		</div>
 
-	</div>
 
-	<div id="loader" class="loader" style="display:none;" ></div>
 </div>
 
 <div id="myModal" class="modal fade" role="dialog">
@@ -180,28 +174,10 @@
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
 	<script>
 
-{#		var cambiarTipoHorario = (tipoHor)=>{
-
-			var valtipoHor = tipoHor.value;
-
-			$("#process4").hide();
-			$("#loader").show();
-
-			if(valtipoHor == 0){
-				window.location.href ="{{url('akademia_paginaPrincipal',{estado:'0'})}}";
-
-			}else{
-				window.location.href ="{{url('akademia_paginaPrincipal',{estado:'1'})}}";
-			}	 
-				
-		}
-#}
-
 		var departamentoHorario = document.querySelector("#departamentoHorario");
 		var cambiarDepartamentoHorario = (depHor)=>{
 
 			var valDepHor = depHor.value;
-
 			$("#provinciaHorario").empty();
 			$("#distritoHorario").empty();
 			$("#provinciaHorario").append("<option value='' >--Seleccionar--</option>");
@@ -211,19 +187,17 @@
 			$("#disciplinaDeportiva").empty();
 			$("#disciplinaDeportiva").append("<option value='' >--Seleccionar--</option>");
 			$("#horario").empty();
+			$("#tableHorario").empty();
 			$("#horario").append("<option value='' >--Seleccionar--</option>");
 
-		    {% for  pro in  provincias  %}
+			{% for proFlag in provinciasFlag %}
+					
+				if ( "{{proFlag['idDepartamento']}}" == valDepHor ){
 
-				{% for proFlag in provinciasFlag %}
-						
-					if ( "{{pro['idDepartamento']}}" == "{{proFlag['idDepartamento']}}" && "{{pro['idProvincia']}}" == "{{proFlag['idProvincia']}}" &&  "{{proFlag['idDepartamento']}}" == valDepHor ){
-
-						$("#provinciaHorario").append("<option value={{proFlag['idProvincia']}}  data-departamento={{pro['idDepartamento']}} >{{pro['nombreProvincia']}}</option>");
-					}
-
-				{% endfor %}
-		  	{% endfor %}
+					$("#provinciaHorario").append("<option value={{proFlag['idProvincia']}}  data-departamento = {{proFlag['idDepartamento']}} >{{proFlag['nombreProvincia']}}</option>");
+				}
+				
+			{% endfor %}
 
 		}
 
@@ -238,18 +212,17 @@
 			$("#complejosDeportivo").append("<option value='' >--Seleccionar--</option>");
 			$("#disciplinaDeportiva").empty();
 			$("#disciplinaDeportiva").append("<option value='' >--Seleccionar--</option>");
+			$("#tableHorario").empty();
 			$("#horario").empty();
 			$("#horario").append("<option value='' >--Seleccionar--</option>");
 
-		  	{% for  dis in  distritos  %}	
-				{% for disFlag in distritosFlag %}
+			{% for disFlag in distritosFlag %}
+						
+				if( "{{disFlag['idDepartamento']}}" == idDepartamentoHorario &&  "{{disFlag['idProvincia']}}" == valProHor){
 							
-					if("{{dis['idDepartamento']}}" == "{{disFlag['idDepartamento']}}" && "{{dis['idProvincia']}}" == "{{disFlag['idProvincia']}}" &&  "{{dis['idDistrito']}}" == "{{disFlag['idDistrito']}}" &&  "{{disFlag['idDepartamento']}}" == idDepartamentoHorario &&  "{{disFlag['idProvincia']}}" == valProHor){
-								
-						$("#distritoHorario").append("<option value={{disFlag['identDistrito']}}>{{disFlag['nombreDistrito']}}</option>");
-						}
-				{% endfor %}
-			  {% endfor %}
+					$("#distritoHorario").append("<option value={{disFlag['ubigeoDistrito']}}>{{disFlag['nombreDistrito']}}</option>");
+					}
+			{% endfor %}
 		}
 
 		for (let i = 0; i < departamentoHorario.length; i++) {
@@ -269,8 +242,6 @@
 			}
 		}
 
-
-
 		var cambiarDistritoHorario =  (disHor)=>{
 
 			var idDistritoHorario = disHor.value;
@@ -279,6 +250,7 @@
 			$("#disciplinaDeportiva").empty();
 			$("#disciplinaDeportiva").append("<option value='' >--Seleccionar--</option>");
 			$("#horario").empty();
+			$("#tableHorario").empty();
 			$("#horario").append("<option value='' >--Seleccionar--</option>");
 
 			{% for comDep in complejosDeportivos  %}
@@ -297,6 +269,7 @@
 			$("#turno").empty();
 			$("#rango-edad-horario").empty();
 			$("#rango-hora-horario").empty();
+			$("#tableHorario").empty();
 			$("#mensaje").empty();	
 
 			$("#disciplinaDeportiva").empty();
@@ -321,87 +294,42 @@
 			$("#horario").empty();
 			$("#horario").append("<option value='' >--Seleccionar--</option>");
 
-			var idComplejoDisciplina = comDis.value;
+			let idComplejoDisciplina = comDis.value;
 
-			console.log(idComplejoDisciplina);
-
-				$("#boton-next-final").attr("disabled", false);
-				$("#rango-hora-horario").empty();
-				$("#rango-edad-horario").empty();
-				$(".horario-otrasEdades").empty();
-				$("#turno").empty();
-				$("#vacantes").empty();
-				$("#mensaje").empty();
-						
-				var cantHorarios = 0;
-
-				{% for horario in horarios  %}
-
-					var horaInicio ="{{horario['horaInicio']}}".substr(0,5);
-					var horaFin = "{{horario['horaFin']}}".substr(0,5);
-
-					if("{{horario['edi_codigo']}}" == idComplejoDisciplina){
-							
-						$("#horario").append("<option value={{horario['id']}} > {{horario['turno']}} " + " de "+horaInicio+" a "+horaFin+" en edades de {{horario['edadMinima']}} a {{horario['edadMaxima']}} años</option>");
-						cantHorarios = cantHorarios + $('#horario').length;
-					}
-				{% endfor %}
-
-				if(cantHorarios == 0){
-					$("#rango-hora-horario").empty();
-					$("#rango-edad-horario").empty();
-					$("#turno").empty();
-					$("#mensaje").empty();
-					$("#vacantes").append("<strong> No hay vacantes disponibles. </strong>");
-				}
-
-		}
-
-		var cambiarHorario=  (horario)=>{
-
-			$("#horaInicio").empty();
-			$("#horaFin").empty();
-			$("#edadMinima").empty();
-			$("#edadMaxima").empty();
+			$("#boton-next-final").attr("disabled", false);
+			$("#rango-hora-horario").empty();
+			$("#rango-edad-horario").empty();
+			$(".horario-otrasEdades").empty();
+			$("#turno").empty();
 			$("#vacantes").empty();
 			$("#mensaje").empty();
-			var idHorario = horario.value;
 
-			{% for horario in horarios  %}
+			let datos = {
+				'idComplejoDisciplina':idComplejoDisciplina,
+				'flag':0,
+				'flagDiscapacidad':"{{estado}}"
+			};
 
-				var horaInicio ="{{horario['horaInicio']}}".substr(0,5);
-				var horaFin = "{{horario['horaFin']}}".substr(0,5);
+			$.ajax({
 
-				if("{{horario['id']}}" == idHorario){
-
-					//if(parseInt(sessionStorage.getItem("edad")) >= parseInt("{{horario['edadMinima']}}") && parseInt(sessionStorage.getItem("edad")) <= parseInt("{{horario['edadMaxima']}}")){
-
-						localStorage.removeItem('idHorario');
-						sessionStorage.setItem("idHorario", "{{horario['id']}}");
-
-						$("#vacantes").empty();
-						$("#turno").empty();
-						$("#turno").append(" {{horario['turno']}} ");
-
-						$("#rango-hora-horario").empty();
-						$("#rango-hora-horario").append(" : De  "+horaInicio+" a "+horaFin);
-
-						$("#mensaje").empty();
-						$("#mensaje").append(mensaje);
-						
-						$("#rango-edad-horario").empty();
-						$("#rango-edad-horario").append(" <strong> De {{horario['edadMinima']}} a {{horario['edadMaxima']}} años. </strong> ");
-					//}		
+				type:'POST',
+				url: "{{url('tableHorario')}}",
+				data: datos,
+				beforeSend:function(){
+					$("#container-loader-horario").show();
+					$("#tableHorario").empty();
+					console.log(datos);
+				},
+				success:function(data){
+					$("#container-loader-horario").hide();
+					$("#tableHorario").html(data);
 				}
-
-			{% endfor %}
+			});
 		}
-	
 
-$("#boton-next-final").on('click',function(){
-
-});
-
+		$("#pre-inscribete").on('click',function(){
+			window.open("{{url('akademia_fichaPreInscripcion')}}");
+		});
 
 	</script>
 

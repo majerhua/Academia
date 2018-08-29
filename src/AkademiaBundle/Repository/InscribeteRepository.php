@@ -11,7 +11,6 @@ namespace AkademiaBundle\Repository;
 class InscribeteRepository extends \Doctrine\ORM\EntityRepository
 {
 
-
 	public function getFicha($idInscripcion){
       $query = "SELECT 
                 inscribete.id as id, 
@@ -22,23 +21,23 @@ class InscribeteRepository extends \Doctrine\ORM\EntityRepository
                 personaApoderado.perapepaterno as apellidoPaternoApoderado,
                 (cast(datediff(dd,personaParticipante.perfecnacimiento,GETDATE()) / 365.25 as int)) as edad,
                 personaApoderado.pernombres as nombrePadre,
-                horario.horaInicio, 
-                horario.horaFin, 
-                horario.turno, 
-                horario.discapacitados,
                 personaParticipante.pernombres, 
                 personaParticipante.perapepaterno, 
                 personaParticipante.perapematerno, 
                 participante.dni, 
                 personaApoderado.perdomdireccion,
                 personaApoderado.percorreo,
-
                 personaApoderado.pertelefono,
                 grubigeo.ubinombre as distrito,
-                
+                horario.id horario_id,
                 personaParticipante.perfecnacimiento,
                 disciplina.dis_descripcion as nombreDisciplina, 
-                edificacionDeportiva.ede_nombre as nombreComplejo
+                edificacionDeportiva.ede_nombre as nombreComplejo,
+                CASE horario.discapacitados
+                WHEN '0' THEN 'Convencional'
+                WHEN '1' THEN 'Personas con Discapacidad'
+                END AS modalidad
+
                 FROM
                 ACADEMIA.inscribete as inscribete, 
                 ACADEMIA.horario as horario,

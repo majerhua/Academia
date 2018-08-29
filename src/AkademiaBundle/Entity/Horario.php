@@ -139,6 +139,14 @@ class Horario
      */
     private $usuarioCrea;
 
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="etapa", type="integer")
+    */
+    private $etapa;
+
     /**
      * Get id
      *
@@ -333,6 +341,30 @@ class Horario
     public function getDiscapacitados()
     {
         return $this->discapacitados;
+    }
+
+    /**
+     * Set etapa
+     *
+     * @param int $etapa
+     *
+     * @return Horario
+     */
+    public function setEtapa($etapa)
+    {
+        $this->etapa = $etapa;
+
+        return $this;
+    }
+
+    /**
+     * Get etapa
+     *
+     * @return int
+     */
+    public function getEtapa()
+    {
+        return $this->etapa;
     }
 
     /**

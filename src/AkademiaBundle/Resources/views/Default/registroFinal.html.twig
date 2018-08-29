@@ -14,15 +14,14 @@
 						<div>
 			            	<select id="departamentoHorario" class="effect-3"  name="departamentoHorario" onchange="cambiarDepartamentoHorario(this)">
 			                	<option value="">--Seleccionar--</option>
-			                	{% for  dep in  departamentos  %}
+			                	{#{% for  dep in  departamentos  %}#}
 									{% for depFlag in departamentosFlag %}
-
-										{%  if dep['id'] == depFlag['idDepartamento'] %}
-											<option value="{{dep['id']}}">{{dep['nombre']}}</option>
-										{% endif %}
+										{#{%  if dep['id'] == depFlag['idDepartamento'] %}#}
+											<option value="{{depFlag['id']}}">{{depFlag['nombre']}}</option>
+										{#{% endif %}#}
 
 									{% endfor %}
-			                	{% endfor %}	
+			                	{#{% endfor %}#}	
 			            	</select>
 			            	<span class="focus-border"></span>
 			        	</div>
@@ -65,9 +64,9 @@
 		   </div>
 		</div>
 
-
 		<div class="container-card col-xs-12 col-sm-12 col-md-4 col-lg-5">
-			<div class="card">
+
+			<div class="card" style="height:67vh !important;">
 				<p class="title-card text-center">DEPORTES Y HORARIOS</p>
 				<hr>
 		        <div class="form-group container-select-deporte">
@@ -80,47 +79,35 @@
 		        	</div>
 		        </div>
 		        <br>
+
 		        <div class="form-group container-select-deporte">
+
 		        	<div>
-		        		<label>Horario </label>
-		            	<select id="horario" name="horario" class="effect-3 " onchange="cambiarHorario(this)" >
-		                	<option value=""> -- Seleccionar --</option>
-		            	</select>
-		            	<span class="focus-border"></span> 
-		        	</div>
+		        		<div style="width:100%; display:flex;justify-content:center; " >
+	        				<label class="complejo-titulo" style="font-size:1.05em;text-align: center;" >Horarios según la edad del participante con vacantes disponibles</label>
+        				</div>
+
+			        	<table class="table table-horario table-hover" id="tableHorario" style="width: 100%" >
+			        	</table>
+
+			        	<div class="container-loader-horario" id="container-loader-horario">
+			        		<div>
+			        			<div class="loader-horario"></div>
+			        		</div>
+			        	</div>
+
+			        </div>
 		        </div>
-		        <br>
-		        <div id="alerta-error" class="alert alert-danger collapse"></div>
-		        <br>
-		        <div class="form-group  container-horario-participante">
-		        	<div id="rango-edad-horario" ></div>
-		        	<div>
-		        		<div id="turno"></div>
-		        		<div id="rango-hora-horario"></div>
-		        	</div>
-		        	
-		        	<div id="vacantes"  style="color:grey; font-size:14px;"></div>
-		        	<br>
-		        	<div id="mensaje" style="color:grey; font-size:16px;"></div>
-		        </div>
-		        <br>
-		        <hr>
-		        <div class="form-group row" >
-		        	<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
-		        		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Otras Edades</button>
-		        	</div>
-					<div class="form-group container-boton-final col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center">
-						<button class="btn btn-danger" id="boton-next-final">Finalizar Pre-inscripción</button>
-					</div>	
-				</div>	
+			</div>
+
+			<div style=" width:100%; display:flex; justify-content:center; align-items:center;" >
+				<button  id="boton-next-final" class="btn btn-danger"  style="padding:8px 12px; background:red; font-weight:bold; " >Finalizar Pre-inscripción</button>
 			</div>
 		</div>
 	</div>
 
 	<div class="proceso" id="process5">
-
 		<!-- RENDERIZADO DE VISTAS POR ACCESO DEL PERFIL-->
-
 		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_DOCENTE') %}
 		<div class="row proceso">
 			<div class="container-card col-xs-12 col-sm12 col-md-5 col-ld-5">
@@ -255,7 +242,9 @@
 							<p id="deporte-ficha"></p>
 							<p id="deporte-modalidad"></p>
 							<p id="complejo-ficha"></p>
-							<p id="horario-ficha"></p>
+							<p id="horario-ficha">
+
+							</p>
 							<input type="hidden" name="codigo-inscripcion" id="codigo-inscripcion">
 						</div>
 					</div>
@@ -274,18 +263,20 @@
 
 {% block javascripts %}
 
+	<script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
+	<script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
 	<script src="{{asset('assets/vendor/js/googleMapsComplejo.js')}}"></script>
+	<script src="{{asset('assets/vendor/js/fichaPreInscripcion/tolTip.js')}}"></script>
+
 	<script>
-		// PASO FINAL EN LA PRE-INSCRIPCION 
-		/*
-			Se debe seleccionar el departamento, provincia, distrito y complejo
-			para listar sus respectivas disciplinas con horarios disponibles.
-		*/
 
 		$("#process5").hide();
-
+		$("#boton-next-final").attr("disabled", true);
+		
 		var departamentoHorario = document.querySelector("#departamentoHorario");
+
 		var cambiarDepartamentoHorario = (depHor)=>{
+
 			var valDepHor = depHor.value;
 			$("#provinciaHorario").empty();
 			$("#distritoHorario").empty();
@@ -295,21 +286,16 @@
 			$("#complejosDeportivo").append("<option value='' >--Seleccionar--</option>");
 			$("#disciplinaDeportiva").empty();
 			$("#disciplinaDeportiva").append("<option value='' >--Seleccionar--</option>");
-			$("#horario").empty();
-			$("#horario").append("<option value='' >--Seleccionar--</option>");
+			$("#tableHorario").empty();
 
-		    {% for  pro in  provincias  %}
+			{% for proFlag in provinciasFlag %}
+					
+				if ( "{{proFlag['idDepartamento']}}" == valDepHor ){
 
-				{% for proFlag in provinciasFlag %}
-						
-					if ( "{{pro['idDepartamento']}}" == "{{proFlag['idDepartamento']}}" && "{{pro['idProvincia']}}" == "{{proFlag['idProvincia']}}" &&  "{{proFlag['idDepartamento']}}" == valDepHor ){
-
-						$("#provinciaHorario").append("<option value={{proFlag['idProvincia']}}  data-departamento={{pro['idDepartamento']}} >{{pro['nombreProvincia']}}</option>");
-					}
-
-				{% endfor %}
-		  	{% endfor %}
-
+					$("#provinciaHorario").append("<option value={{proFlag['idProvincia']}}  data-departamento = {{proFlag['idDepartamento']}} >{{proFlag['nombreProvincia']}}</option>");
+				}
+				
+			{% endfor %}
 		}
 
 		var cambiarProvinciaHorario = (proHor)=>{
@@ -323,18 +309,15 @@
 			$("#complejosDeportivo").append("<option value='' >--Seleccionar--</option>");
 			$("#disciplinaDeportiva").empty();
 			$("#disciplinaDeportiva").append("<option value='' >--Seleccionar--</option>");
-			$("#horario").empty();
-			$("#horario").append("<option value='' >--Seleccionar--</option>");
+			$("#tableHorario").empty();
 
-		  	{% for  dis in  distritos  %}	
-				{% for disFlag in distritosFlag %}
+			{% for disFlag in distritosFlag %}
+						
+				if( "{{disFlag['idDepartamento']}}" == idDepartamentoHorario &&  "{{disFlag['idProvincia']}}" == valProHor){
 							
-					if("{{dis['idDepartamento']}}" == "{{disFlag['idDepartamento']}}" && "{{dis['idProvincia']}}" == "{{disFlag['idProvincia']}}" &&  "{{dis['idDistrito']}}" == "{{disFlag['idDistrito']}}" &&  "{{disFlag['idDepartamento']}}" == idDepartamentoHorario &&  "{{disFlag['idProvincia']}}" == valProHor){
-								
-						$("#distritoHorario").append("<option value={{disFlag['identDistrito']}}>{{disFlag['nombreDistrito']}}</option>");
-						}
-				{% endfor %}
-			  {% endfor %}
+					$("#distritoHorario").append("<option value={{disFlag['ubigeoDistrito']}}>{{disFlag['nombreDistrito']}}</option>");
+					}
+			{% endfor %}
 		}
 
 		for (let i = 0; i < departamentoHorario.length; i++) {
@@ -363,8 +346,7 @@
 			$("#complejosDeportivo").append("<option value='' >--Seleccionar--</option>");
 			$("#disciplinaDeportiva").empty();
 			$("#disciplinaDeportiva").append("<option value='' >--Seleccionar--</option>");
-			$("#horario").empty();
-			$("#horario").append("<option value='' >--Seleccionar--</option>");
+			$("#tableHorario").empty();
 
 			{% for comDep in complejosDeportivos  %}
 
@@ -386,8 +368,7 @@
 
 			$("#disciplinaDeportiva").empty();
 			$("#disciplinaDeportiva").append("<option value='' >--Seleccionar--</option>");
-			$("#horario").empty();
-			$("#horario").append("<option value='' >--Seleccionar--</option>");
+			$("#tableHorario").empty();
 
 			{% for disDep in disciplinasDeportivas  %}
 
@@ -402,108 +383,50 @@
 
 
 		var cambiarDisciplinaDeportiva = (comDis)=>{
-			
-			$("#horario").empty();
-			$("#horario").append("<option value='' >--Seleccionar--</option>");
 
 			var idComplejoDisciplina = comDis.value;
-				$("#boton-next-final").attr("disabled", false);
-				$("#rango-hora-horario").empty();
-				$("#rango-edad-horario").empty();
-				$(".horario-otrasEdades").empty();
-				$("#turno").empty();
-				$("#vacantes").empty();
-				$("#mensaje").empty();
+
+			let datos = {
+							'idComplejoDisciplina':idComplejoDisciplina,
+							'edadBeneficiario':sessionStorage.getItem("edad"),
+							'flag':1,
+							'flagDiscapacidad':sessionStorage.getItem('flagDiscapacitado')
+						};
+
+			if(idComplejoDisciplina == ''){
+				$("#tableHorario").empty();
+			}else{
+				$.ajax({
+					type:'POST',
+					url: "{{url('tableHorario')}}",
+					data: datos,
+					beforeSend:function(){
+						console.log(datos);
+						$("#boton-next-final").attr("disabled", true);
+						$("#container-loader-horario").show();
+						$("#tableHorario").empty();
+					},
+					success:function(data){
 						
-				var cantHorarios = 0;
-
-				{% for horario in horarios  %}
-
-					var horaInicio ="{{horario['horaInicio']}}".substr(0,5);
-					var horaFin = "{{horario['horaFin']}}".substr(0,5);
-
-					if("{{horario['edi_codigo']}}" == idComplejoDisciplina){
-							
-    					if(parseInt(sessionStorage.getItem("edad")) >= parseInt("{{horario['edadMinima']}}") && parseInt(sessionStorage.getItem("edad")) <= parseInt("{{horario['edadMaxima']}}")){
-
-								localStorage.removeItem('idHorario');
-								sessionStorage.setItem("idHorario", "{{horario['id']}}");
-								
-								$("#horario").append("<option value={{horario['id']}} > {{horario['turno']}} " + " de "+horaInicio+" a "+horaFin+"</option>");
-								cantHorarios = cantHorarios + $('#horario').length;
-
-
-						}else{
-
-							$(".horario-otrasEdades").append("{{horario['edadMinima']}} a {{horario['edadMaxima']}} años  "+horaInicio+"  a  "+horaFin+" am. {{horario['turno']}}<br>");
-						}
+						$("#container-loader-horario").hide();
+						$("#tableHorario").html(data);
 					}
-				{% endfor %}
-
-				if(cantHorarios == 0){
-					$("#rango-hora-horario").empty();
-					$("#rango-edad-horario").empty();
-					$("#turno").empty();
-					$("#mensaje").empty();
-					$("#vacantes").append("<strong> No hay vacantes disponibles. </strong>");
-				}
+				});
+			}
 
 		}
 
-		var cambiarHorario=  (horario)=>{
-
-			console.log("Edad niño ==>",sessionStorage.getItem("edad"));
-
-			$("#horaInicio").empty();
-			$("#horaFin").empty();
-			$("#edadMinima").empty();
-			$("#edadMaxima").empty();
-			$("#vacantes").empty();
-			$("#mensaje").empty();
-			var idHorario = horario.value;
-
-			{% for horario in horarios  %}
-
-				var horaInicio ="{{horario['horaInicio']}}".substr(0,5);
-				var horaFin = "{{horario['horaFin']}}".substr(0,5);
-				var mensaje = "{{mensaje}}"
-
-				if("{{horario['id']}}" == idHorario){
-
-					if(parseInt(sessionStorage.getItem("edad")) >= parseInt("{{horario['edadMinima']}}") && parseInt(sessionStorage.getItem("edad")) <= parseInt("{{horario['edadMaxima']}}")){
-
-						localStorage.removeItem('idHorario');
-						sessionStorage.setItem("idHorario", "{{horario['id']}}");
-
-						$("#vacantes").empty();
-						$("#turno").empty();
-						$("#turno").append(" {{horario['turno']}} ");
-
-						$("#rango-hora-horario").empty();
-						$("#rango-hora-horario").append(" : De  "+horaInicio+" a "+horaFin);
-
-						$("#mensaje").empty();
-						$("#mensaje").append(mensaje);
-						
-						$("#rango-edad-horario").empty();
-						$("#rango-edad-horario").append(" <strong> De {{horario['edadMinima']}} a {{horario['edadMaxima']}} años. </strong> ");
-					}		
-				}
-
-			{% endfor %}
-		}
-	
 
 	$("#boton-next-final").on('click',function(){
 
-		var disciplinaDeportiva = document.getElementById('disciplinaDeportiva').value;
-		var horario =document.getElementById('horario').value;
+		//var disciplinaDeportiva = document.getElementById('disciplinaDeportiva').value;
+		//var horario =document.getElementById('horario').value;
 		
-		if( disciplinaDeportiva=="" || horario==""){
-				alertify.error('<p style="color:white">Debe seleccionar Disciplina y/o Horario </p>'); 
-		}else{	
+		//if( disciplinaDeportiva=="" || horario==""){
+		//		alertify.error('<p style="color:white">Debe seleccionar Disciplina y/o Horario </p>'); 
+		//}else{	
 			registrar();
-		}
+		//}
 	});
 
 
@@ -518,6 +441,7 @@ function registrar(){
 	var dataRegisterApoderado={
 		//DATOS APODERADO
 		"dni" : sessionStorage.getItem('dni-apoderado'),
+		"tipoDocumentoApoderado": sessionStorage.getItem('tipo_documento'),
 		"apellidoPaterno" : sessionStorage.getItem('apellidoPaterno-apoderado'),
 		"apellidoMaterno" : sessionStorage.getItem('apellidoMaterno-apoderado'),
 		"nombre" : sessionStorage.getItem('nombre-apoderado'),
@@ -528,10 +452,10 @@ function registrar(){
 		"telefono" : sessionStorage.getItem('telefono-apoderado'),
 		"correo" : sessionStorage.getItem('correo-apoderado'),
 		//HORARIO
-		'idHorario' : sessionStorage.getItem('idHorario'),
-		
+		'idHorario': $('input:radio[name=codHorario]:checked').val(),
 		//DATOS HIJO
 		"dniParticipante" : sessionStorage.getItem('dni-participante'),
+		"tipoDocumentoParticipante": sessionStorage.getItem('tipo_documentoHijo'),
 		"apellidoPaternoParticipante" : sessionStorage.getItem('apellidoPaterno-participante'),
 		"apellidoMaternoParticipante" : sessionStorage.getItem('apellidoMaterno-partcipante'),
 		"nombreParticipante" : sessionStorage.getItem('nombre-partcipante'),
@@ -541,7 +465,8 @@ function registrar(){
 		"tipoSeguro" : sessionStorage.getItem('tipoSeguro-partcipante'),
 		"discapacidad" :sessionStorage.getItem('flagDiscapacitado')
 	};
-	
+
+
 	$.ajax({
 		type:'POST',
 		dataType: "json",
@@ -552,14 +477,17 @@ function registrar(){
 			$('#ins-unique-idInscripcion').empty();
 			$('#ins-unique-disciplina').empty();
 			$('#ins-unique-modalidad').empty();
-			$('#ins-unique-complejo-deportivo').empty();	
+			$('#ins-unique-complejo-deportivo').empty();
+			console.log(dataRegisterApoderado);	
 		},
 		success: function(data){
 			
-			console.log("Datos Registro Final =>",data);
+
 			$("#boton-next-final").attr("disabled", false);
 			var valor = JSON.parse(data)[0];
-			console.log(Object.keys(valor).length);
+
+			console.log(valor);
+
 			if(Object.keys(valor).length == 4){
 				console.log("Alerta");
 				//showAlertMessage('#alerta-error', "El participante se encuentro inscrito con el Código de Inscripción "+valor.id+" en la disciplina"+valor.Displina+"con la modalidad"+valor.Modalidad+"del Complejo Deportivo"+valor.ComplejoDeportivo);
@@ -567,17 +495,23 @@ function registrar(){
 				$('#ins-unique-idInscripcion').append(valor.id);
 				$('#ins-unique-disciplina').append(valor.Disciplina);
 
-				if(valor.Modalidad == 0)
-					$('#ins-unique-modalidad').append('Convencional');
-				else
-					$('#ins-unique-modalidad').append('Personas con Discapacidad');
-
+				//if(valor.Modalidad == 0)
+				//	$('#ins-unique-modalidad').append('Convencional');
+				//else
+				//	$('#ins-unique-modalidad').append('Personas con Discapacidad');
 				$('#ins-unique-complejo-deportivo').append(valor.ComplejoDeportivo);
 
-			}else{
+			}
+			else if(data==5){
+				location.reload();
+				showAlertMessage('#alerta-error', "Lo sentimos, Ocurrio un Error en el Sistema.");
+			}
+			else{
 
 				if(data != 1 ){
 
+
+					console.log(data);
 					$("#process4").hide();
 					$("#process5").show('slow');
 
@@ -601,13 +535,13 @@ function registrar(){
 					$("#edad-ficha").append(sessionStorage.getItem("edad"));
 					$("#email-ficha").append(valor.percorreo);
 					$("#deporte-ficha").append(valor.nombreDisciplina);
-					if(valor.discapacitados == 0)
-						$("#deporte-modalidad").append("Convencional");
-					else
-						$("#deporte-modalidad").append("Personas con Discapacidad");
-
+					$("#deporte-modalidad").append(valor.modalidad);
 					$("#complejo-ficha").append(valor.nombreComplejo);
-					$("#horario-ficha").append(valor.horaInicio+" a "+valor.horaFin);
+
+					valor.turnos.forEach(function(value,index){
+						$("#horario-ficha").append(`<div>${value.frecuencia} de ${value.hora}</div>`);
+					});
+
 					$("#nombrePadre-declaracion-jurada").append(valor.nombrePadre);
 					$("#codigo-inscripcion").val(valor.id);
 				    enviarEmailApoderado(valor.percorreo,valor.nombrePadre,valor.id);

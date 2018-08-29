@@ -19,12 +19,13 @@
 
         <table>
             <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
             </thead>
+
             <tbody>
                     
                    <tr>
@@ -101,19 +102,23 @@
                                  <tr>
                                     <td style="width:100px;    padding-bottom: 4px;"></td>
                                     <td  style="width:40%;    padding-bottom: 4px; font-weight:bold;"> Modalidad:</td>
-                                    
-                                    {% if inscripcion[0]['discapacitados']  == 0 %}
-                                        <td  style="width:40%;    padding-bottom: 4px;">Convencional </td>
-                                    {% else %}
-                                        <td  style="width:40%;    padding-bottom: 4px;"> Personas con Discapacidad</td>
-                                    {% endif %}
-
+                                    <td  style="width:40%;    padding-bottom: 4px;">{{inscripcion[0]['modalidad']}}</td>
                                 </tr>
 
                                 <tr>
                                     <td style="width:100px;    padding-bottom: 4px;"></td>
                                     <td  style="width:40%;    padding-bottom: 4px; font-weight:bold;"> Horarios : </td>
-                                    <td  style="width:40%;    padding-bottom: 4px;">{{inscripcion[0]['horaInicio']}} a {{inscripcion[0]['horaFin']}} - {{inscripcion[0]['turno']}}.</td>
+                                    <td  style="width:40%;    padding-bottom: 4px;">
+
+                                        {% for turno in {{inscripcion[0]['turnos']}} %}
+                                            <div>
+                                                {{turno.frecuencia}} de {{turno.hora}}
+                                            </div>
+
+                                        {% endfor %}
+                                         
+
+                                    </td>
                                 </tr> <br><br><br>
                                 <tr>
                                     <td style="width:120px;"></td>

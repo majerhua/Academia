@@ -31,7 +31,7 @@
 	<div class="container text-center" style="margin-top: 10px; margin-bottom: 30px;">
 		
 		{% if  is_granted('ROLE_ANALISTA') %}	
-			<h1>LA ACADEMIA IPD </h1>
+			<h1>ANALISTA DEPORTIVO </h1>
 		{% else %}
 			{% if valor == '1'%}
 				<h1> CP {{nombreComplejo[0]['nombreComplejo'] }} </h1>
@@ -45,7 +45,7 @@
 		{% if  is_granted('ROLE_ANALISTA') %}	
 			<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px; margin-bottom: 20px;">
 			<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
-			<p> Utilizar las siguiente herramientas para administrar las funcionalidades como Administrador del sistema La Academia.</p>
+			<p>Detección, gestión de potenciales talentos deportivos y beneficiarios.</p>
 		</div>
 
 
@@ -60,7 +60,7 @@
 		<div class="row text-center">	
 			{% if is_granted('ROLE_ADMIN') %}	
 			<div id="option-beneficiarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
-				<a href="{{url('akademia_homepage')}}">
+				<a href="{{url('akademia_fichaPreInscripcion')}}">
 					<div class="card">
 						
 						<img src="{{ asset('assets/images/preinscripcion-directa.png') }}" width="130" height="140">
@@ -82,7 +82,7 @@
 			<div id="option-horarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
 				<a href="{{url('akademia_horarios')}}">
 					<div class="card">
-						<img src="{{ asset('assets/images/icon_horarios.png') }}" width="120" height="115">
+						<img src="{{ asset('assets/images/icon_horarios.png') }}" width="130" height="140">
 						<p class="title-card"   >Disciplinas / Horarios / Beneficiarios</p>
 					</div>
 				</a>
@@ -121,14 +121,6 @@
 						<div class="card">
 							<img src="{{ asset('assets/images/talent.png') }}" width="120" height="120">
 							<p class="title-card">Gestión de talentos</p>
-						</div>
-					</a>
-				</div>
-				<div id="option-talentos" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
-					<a href="{{url('akademia_configuracion')}}">
-						<div class="card">
-							<img src="{{ asset('assets/images/temporada.jpg') }}" width="120" height="120">
-							<p class="title-card">Lanzamiento de Temporadas</p>
 						</div>
 					</a>
 				</div>

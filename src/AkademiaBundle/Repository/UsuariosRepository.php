@@ -10,4 +10,34 @@ namespace AkademiaBundle\Repository;
  */
 class UsuariosRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function getIdDepartamentoUsuario($idUsuario){
+
+	    $query = "SELECT ubiDpto.ubidpto
+				FROM ACADEMIA.usuario usu
+				INNER JOIN CATASTRO.edificacionesdeportivas  ede ON ede.ede_codigo= usu.id_complejo
+				INNER JOIN grubigeo ubi on ubi.ubicodigo = ede.ubicodigo
+				INNER JOIN grubigeo ubiProv on ubiProv.ubiprovincia = ubi.ubiprovincia 
+				INNER JOIN grubigeo ubiDpto on ubiDpto.ubidpto = ubi.ubidpto
+				WHERE
+
+				usu.id='$idUsuario' AND
+				ubi.ubidistrito <> '00' AND 
+				ubi.ubiprovincia <> '00' AND 
+				ubi.ubiprovincia <> '00' AND 
+
+				ubiProv.ubidpto = ubi.ubidpto AND
+				ubiProv.ubidistrito = '00' AND 
+				ubiProv.ubiprovincia <> '00' AND 
+				ubiProv.ubidpto <> '00' AND
+
+				ubiDpto.ubidistrito = '00' AND 
+				ubiDpto.ubiprovincia = '00' AND 
+				ubiDpto.ubidpto <> '00'";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    $idDepartamento = $stmt->fetchAll();
+	    
+	    return $idDepartamento;
+	}
 }

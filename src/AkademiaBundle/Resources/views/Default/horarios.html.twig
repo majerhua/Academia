@@ -20,7 +20,6 @@
                
                     <li title="Inicio"><a href="{{url('akademia_panel')}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
                     <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
-                    
                 </ul>
             </div>
         </div>
@@ -47,6 +46,7 @@
 			<h4 style="color:grey">ADMINISTRACIÓN DE HORARIOS</h4>
 
 			<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px; margin-bottom: 20px;">
+
 				<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
 				<p> Administra los horarios asignados a tu complejo deportivo. <br>También puedes actualizar el número de vacantes, abrir o cerrar las convocatorias de los horarios y visualizar la lista de sus inscritos.</p>
 			</div>
@@ -54,9 +54,10 @@
 			{% set cont = 0 %}
 			{% for complejosDisciplina in complejosDisciplinas %}
 			
-			<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-10 col-lg-10">	
+			<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-11 col-lg-11">	
+
 				<div class="card" id="listadoDisciplinas">
-					<div class="card-header text-center" role="tab" id="">
+					<div class="card-header text-center" role="tab" id="" style="height:50px; padding-top:12px;" >
 						<a class="title-card" data-toggle="collapse" href="#caja{{complejosDisciplina['idDisciplina']}}" >
 							<strong>{{complejosDisciplina['nombreDisciplina']}}</strong>
 						</a>
@@ -68,6 +69,7 @@
 							<div class="row">
 								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 									<div class="row">
+
 										<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
 											<div class="input-group col-xs-8 col-sm-8 col-md-8 col-lg-8">
 											  <span class="input-group-addon">Buscar</span>
@@ -81,6 +83,7 @@
 												<button title="Eliminar disciplina" type="button" id="{{complejosDisciplina['idDisciplina']}}"  class="btn btn-default btn-xs" data-toggle="modal" data-target="#confirmarEliminarDisciplina" onclick="xDisciplina({{complejosDisciplina['idDisciplina']}})"><i class="icon-trash" style="font-size:1.6em; margin-top:5px; color:#B45F04" ></i></button>
 											</div>
 										</div>
+
 									</div>
 									
 									<br>
@@ -90,14 +93,15 @@
 										<table class="table"  style="width: 100%;"> 
 											<thead style="background:#cb2f1d; color:#F2F2F2;" class="text-center"> 
 												<tr> 
-													<th class="text-center" style="font-size:14px" >Código de horario</th>
+													<th class="text-center" style="font-size:14px">Código</th>
 													<th class="text-center" style="font-size:14px">Modalidad</th>
-													<th class="text-center" style="font-size:14px">Turno</th> 
-													<th class="text-center" style="font-size:14px">Hora</th>
+													<th class="text-center" style="font-size:14px">Etapa</th>
 													<th class="text-center" style="font-size:14px">Edades</th> 
+													<th class="text-center" style="font-size:14px">Frecuencia</th>
+													<th class="text-center" style="font-size:14px">Hora</th> 
 													<th class="text-center" style="font-size:14px">Convocatoria</th>
-													<th class="text-center" style="font-size:14px">Límite de preinscripciones</th> 
 													<th class="text-center" style="font-size:14px">Vacantes disponibles</th>
+													<th class="text-center" style="font-size:14px">Límite de preinscripciones</th> 
 													<th class="text-center" style="font-size:14px">Inscritos</th>
 													<th></th>
 													<th></th>
@@ -110,36 +114,58 @@
 											{% for horario in horarios %}
 											{% if horario['idDisciplina'] == complejosDisciplina['idDisciplina'] %}
 												<tr> 
-													<td id="1h{{horario['idHorario']}}" class="text-center">{{horario['idHorario']}}</td> 
-													{% if  horario['discapacidad'] == 0 %}
-														<td id="6h{{horario['idHorario']}}" class="text-center" > Convencional </td> 
-													{% else %}
-														<td id="6h{{horario['idHorario']}}" class="text-center"> Persona con Discapacidad </td> 
-													{% endif %}
-													<td id="2h{{horario['idHorario']}}" class="text-center">{{horario['turno']}}</td> 
-													<td id="3h{{horario['idHorario']}}" class="text-center">{{horario['horaInicio']|date('H:i')}} - {{horario['horaFin']|date('H:i')}}</td> 
+													<td id="1h{{horario['idHorario']}}" class="text-center">{{horario['idHorario']}}</td>
+													<td id="2h{{horario['idHorario']}}" class="text-center" >  
+														{% if  horario['discapacidad'] == 0 %}
+														 	Convencional
+														{% else %}
+														    Personas con Discapacidad
+														{% endif %}
+													</td> 
+													<td id="3h{{horario['idHorario']}}" class="text-center"> 
+														{% if  horario['etapa'] == 0 %}
+														    Formación  
+														{% else %}
+															Masificación
+														{% endif %}
+													</td>
+													<td id="4h{{horario['idHorario']}}" class="text-center">
+														{% if  horario['edadMaxima'] != horario['edadMinima'] %}
+															{{horario['edadMinima']}} - {{horario['edadMaxima']}} años</td>
+														{% else %}
+															{{horario['edadMinima']}} años
+														{% endif %}
+													</td> 
+													
+													<td id="5h{{horario['idHorario']}}" class="text-center" >
+														{% for turno in turnos %}
+															{% if turno['horario_id'] == horario['idHorario']  %}
+																	<div   >{{turno['dias']}}</div>
+															{% endif %}
+														{% endfor %}
+													</td> 
+													<td id="6h{{horario['idHorario']}}" class="text-center">
+														{% for turno in turnos %}
+															{% if turno['horario_id'] == horario['idHorario']  %}
+																<div style="width:110px;  padding-bottom:5px;">{{turno['hora']}}</div>
+															{% endif %}
+														{% endfor %}
+													</td> 
 
-													{% if  horario['edadMaxima'] != horario['edadMinima'] %}
-														<td id="4h{{horario['idHorario']}}"class="text-center">{{horario['edadMinima']}} - {{horario['edadMaxima']}} años</td>
-													{% else %}
-														<td id="4h{{horario['idHorario']}}"class="text-center">{{horario['edadMinima']}} años</td>
-													{% endif %}
- 													
- 								
-
-													{% if  horario['convocatoria'] == 1 %}
-														<td id="7h{{horario['idHorario']}}" class="text-center" style="color:green">Abierta</td>
-													{% else %}
-														<td id="7h{{horario['idHorario']}}" class="text-center" style="color:red; font-weight:bold;"> Cerrado </td> 
-													{% endif %}
-													{% if horario['preinscripciones'] == 0 %}
-														<td id="9h{{horario['idHorario']}}" class="text-center" style="color:red; font-weight:bold;">{{horario['preinscripciones']}}</td> 
-													{% else %}
-														<td id="9h{{horario['idHorario']}}" class="text-center">{{horario['preinscripciones']}}</td> 
+													<td id="7h{{horario['idHorario']}}" class="text-center">
+														{% if  horario['convocatoria'] == 1 %}
+															<p  style="color:green" >Abierta</p>
+														{% else %}
+														<p style="color:red; font-weight:bold;"> Cerrado </p> 
 													{% endif %}
 
-													<td id="5h{{horario['idHorario']}}" class="text-center">{{horario['vacantes']}}</td> 
-													<td id="8h{{horario['idHorario']}}" class="text-center">{{horario['inscritos']}}</td>
+													<td id="8h{{horario['idHorario']}}" class="text-center">
+														
+														{{horario['vacantes']}} 
+													</td>
+
+													<td id="9h{{horario['idHorario']}}" class="text-center">{{horario['preinscripciones']}}</td> 
+													<td id="10h{{horario['idHorario']}}" class="text-center">{{horario['inscritos']}}</td>
 												
 													{% if is_granted('ROLE_DOCENTE')%}
 													
@@ -224,7 +250,6 @@
 <!-- modal -->
 <div id="modal-editar" class="modal fade" role="dialog">
 	<div class="modal-dialog">
-
 		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header text-center">
@@ -243,6 +268,7 @@
 								<p style="font-size:14px">Edición de las vacantes y convocatoria.</p>
 							</div>
 							<ul class="list-group">
+
 								<li class="list-group-item">
 									<div class="row">
 										<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
@@ -254,35 +280,29 @@
 										</div>
 									</div>
 								</li>
-								<li class="list-group-item">
-									<div class="row">
-										<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-											<p><strong>Disciplina</strong></p>
-										</div>
-										<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-											<p id="editar_disciplina_horario"></p>
-										</div>
-									</div>
-								</li>
 
 								<li class="list-group-item">
 									<div class="row">
-										<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-											<p><strong>Turno</strong></p>
-										</div>
-										<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-											<p id="editar_turno_horario"></p>
-										</div>
-									</div>
-								</li>
 
-								<li class="list-group-item">
-									<div class="row">
-										<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-											<p><strong>Hora</strong></p>
+										<div class="col-xs-5 col-sm-5 col-md-3 col-lg-3">
+											<p><strong>Modalidad</strong></p>
 										</div>
-										<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-											<p id="editar_hora_horario"></p>
+										<div class="col-xs-7 col-sm-7 col-md-3 col-lg-3">
+											<p id="editar_modalidad_horario"></p>
+											<input type="hidden" id="modalidad">
+										</div>
+
+										<div class="col-xs-5 col-sm-5 col-md-2 col-lg-2">
+											<p><strong>Etapa</strong></p>
+										</div>
+										<div class="col-xs-7 col-sm-7 col-md-4 col-lg-4">
+
+											<select class="form-control" id="editar_etapa_horario">
+												<option value="">--Seleccionar--</option>
+												<option value="0">Formación</option>
+												<option value="1">Masificación</option>
+											</select>
+											<input type="hidden" id="etapa">
 										</div>
 									</div>
 								</li>
@@ -290,23 +310,37 @@
 								<li class="list-group-item">
 									<div class="row">
 										
-										<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<div class="col-xs-5 col-sm-5 col-md-3 col-lg-3">
 											<p><strong>Edades</strong></p>
 										</div>
 
-										<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<div class="col-xs-7 col-sm-7 col-md-3 col-lg-3">
 											<p id="editar_edades_horario"></p>
+										</div>
+
+										<div class="col-xs-5 col-sm-5 col-md-3 col-lg-3">
+											<p><strong>Disciplina</strong></p>
+										</div>
+										<div class="col-xs-7 col-sm-7 col-md-3 col-lg-3">
+											<p id="editar_disciplina_horario"></p>
 										</div>
 
 									</div>
 								</li>
+
 								<li class="list-group-item">
 									<div class="row">
-										<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-											<p><strong>Modalidad</strong></p>
+										
+										<div class="col-xs-5 col-sm-5 col-md-3 col-lg-3">
+											<p><strong>Turnos y Horarios</strong></p>
 										</div>
-										<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-											<p id="editar_discapacidad_horario"></p>
+
+										<div class="col-xs-7 col-sm-7 col-md-5 col-lg-5">
+											<div id="editar_frecuencia_horario"></div>
+										</div>
+
+										<div class="col-xs-7 col-sm-7 col-md-4 col-lg-4">
+											<div id="editar_dias_horario"></div>
 										</div>
 									</div>
 								</li>
@@ -425,7 +459,7 @@
 							<li class="list-group-item">
 
 								<div class="row">
-
+									<input type="hidden" name="idDisciplinaNewHorario" id="idDisciplinaNewHorario" >
 									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
 										<p><strong>Modalidad</strong></p>
 									</div>
@@ -433,8 +467,8 @@
 									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" >
 										<select class="form-control" id="modalidad-horario" >
 											<option value="">--Seleccionar--</option>
-											<option value="0">No discapacitado</option>
-											<option value="1">Discapacitado</option>
+											<option value="0">Convencional</option>
+											<option value="1">Persona con Discapacidad</option>
 										</select>
 									</div>
 
@@ -445,15 +479,15 @@
 									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" style="margin-left:12px;" >
 										<select class="form-control" id="etapa-horario">
 											<option value="">--Seleccionar--</option>
-											<option value="formacion">Formación</option>
-											<option value="masificacion">Masificación</option>
+											<option value="0">Formación</option>
+											<option value="1">Masificación</option>
 										</select>
 									</div>
 
 								</div>
 
 								<br>
-								<p style="font-size:14px; color:grey">Edades comprendidas: <span style="font-size:14px;" id="textEdad"></span></p>
+								<p style="font-size:14px; color:grey;font-weight:bold;">Edades comprendidas: <span style="font-size:14px;" id="textEdad"></span></p>
 							</li>
 
 							<li class="list-group-item">
@@ -472,7 +506,7 @@
 												    type = "number"
 												    maxlength = "2"
 												    min = "1"
-												    max = "40"
+												    max = "24"
 												 />
 											</div>
 										</div>
@@ -492,7 +526,7 @@
 												    type = "number"
 												    maxlength = "2"
 												    min = "1"
-												    max = "40"
+												    max = "24"
 												 />
 
 											</div>
@@ -517,19 +551,19 @@
 
 										<div class="col-xs-9 col-sm-8 col-md-8 col-lg-8 "  >
 
-											<label style="font-size:14px; font-weight:normal; "><input type="checkbox" id="Lun" value="1" onclick="elegirDias(this)">Lun</label>
+											<label style="font-size:13.5px; font-weight:normal; "><input type="checkbox" id="Lun" value="1" onclick="elegirDias(this)">Lun</label>
 
-											<label style="font-size:14px; font-weight:normal; margin-left:2px;"><input type="checkbox" id="Mar" value="2" onclick="elegirDias(this)">Mar</label>
+											<label style="font-size:13.5px; font-weight:normal; margin-left:2px;"><input type="checkbox" id="Mar" value="2" onclick="elegirDias(this)">Mar</label>
 
-											<label style="font-size:14px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Mie" value="3" onclick="elegirDias(this)">Miér</label>
+											<label style="font-size:13.5px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Mie" value="3" onclick="elegirDias(this)">Miér</label>
 
-											<label style="font-size:14px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Jue" value="4" onclick="elegirDias(this)">Juev</label>
+											<label style="font-size:13.5px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Jue" value="4" onclick="elegirDias(this)">Juev</label>
 
-											<label style="font-size:14px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Vie" value="5" onclick="elegirDias(this)"> Vier</label>
+											<label style="font-size:13.5px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Vie" value="5" onclick="elegirDias(this)"> Vier</label>
 
-											<label style="font-size:14px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Sab" value="6" onclick="elegirDias(this)"> Sáb</label>
+											<label style="font-size:13.5px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Sab" value="6" onclick="elegirDias(this)"> Sáb</label>
 
-											<label style="font-size:14px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Dom" value="7" onclick="elegirDias(this)"> Dom</label>
+											<label style="font-size:13.5px; font-weight:normal;margin-left:2px;"><input type="checkbox" id="Dom" value="7" onclick="elegirDias(this)"> Dom</label>
 
 										</div>
 									</div>
@@ -544,12 +578,8 @@
 											<div class="input-group">
 												<span class="input-group-addon">hh</span>
 
-												<input class="form-control placeholder " placeholder=" Ej: 09 " id="hora-inicio"
-												    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-												    type = "number"
-												    maxlength = "2"
-												    min = "1"
-												    max = "24"
+												<input class="form-control placeholder " placeholder=" Ej: 9 " id="hora-inicio"
+												    oninput="validateHora(this)" maxlength = "2" min = "0" max = "24"
 												 />
 											</div>
 										</div>
@@ -559,11 +589,7 @@
 												<span class="input-group-addon">mm</span>
 												
 												<input class="form-control placeholder" placeholder=" Ej: 00 " id="min-inicio"
-												    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-												    type = "number"
-												    maxlength = "2"
-												    min = "0"
-												    max = "60"
+												    oninput="validateMinuto(this)" maxlength = "2" min = "0" max = "60"
 												 />
 											</div>
 										</div>
@@ -579,11 +605,7 @@
 											<span class="input-group-addon">hh</span>
 
 											<input class="form-control placeholder" placeholder=" Ej: 10 " id="hora-fin"
-											    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-											    type = "number"
-											    maxlength = "2"
-											    min = "1"
-											    max = "24"
+											    oninput="validateHora(this)" maxlength = "2" min = "0" max = "24"
 											 />
 										</div>
 									</div>
@@ -591,38 +613,15 @@
 										<div class="input-group">
 											<span class="input-group-addon">mm</span>
 											<input class="form-control placeholder" placeholder=" Ej: 00 " id="min-fin"
-											    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-											    type = "number"
-											    maxlength = "2"
-											    min = "1"
-											    max = "60"
+											    oninput="validateMinuto(this)" maxlength = "2" min = "0" max = "60"
 											 />
 										</div>
 									</div>
-<<<<<<< HEAD
-								</div>
-								<br>
-								<p style="font-size:14px; color:grey">El formato es de 24 horas.</p>
-							</li>		
-
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Modalidad</strong></p>
-									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-										<select class="form-control" id="crear_discapacidad">
-											<option value="">--Seleccionar--</option>
-											<option value="0">Convencional</option>
-											<option value="1">Persona con Discapacidad</option>
-										</select>
-=======
->>>>>>> javier
 									</div>
 
 									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"  style="margin-bottom:15px;">
 										<div class="col-xs-9 col-sm-9 col-md-9 col-lg-8">
-											<p class="text-left" style="font-size:14px; color:grey">El formato es de 24 horas.</p>
+											<p class="text-left" style="font-size:14px; color:grey;font-weight:bold;">El formato es de 24 horas.</p>
 										</div>
 
 										<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style=" display:flex; flex-wrap:wrap; justify-content:center; " >
@@ -636,10 +635,11 @@
 											<p class="text-left" style="font-size:14px;"><strong>Seleccionados:</strong></p>
 										</div>
 
-										<div class="col-xs-3 col-sm-9 col-md-9 col-lg-9" style="background:yellow; " >
-											<div id="turnos-seleccionados" >
+										<div class="col-xs-3 col-sm-9 col-md-9 col-lg-9" style="background:#ffffcc;border-color:#fcf8e3;border-radius:2px;" id="container-turnos-seleccionados">
+											<div id="turnos-seleccionados"  style="height:50px;" >
 											</div>
 										</div>
+										<input type="hidden" name="flag-turnos" id="flag-turnos">
 									</div>
 
 								</div>
@@ -677,7 +677,7 @@
 									</div>
 								</div>
 								<br>
-								<p style="font-size:14px; color:grey"> * El Nº de vacantes de preinscritos debe ser mayor al Nº de vacantes de inscritos.</p>
+								<p style="font-size:14px; color:grey;font-weight:bold;"> * El N° de Límite de pre-inscritos debe ser igual o mayor que el N° de vacantes disponibles.</p>
 							</li>		
 							<div id="alerta-errorCrearVacante" class="alert alert-danger collapse text-center"></div>
 						</ul>
@@ -838,141 +838,16 @@
 
 <script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
 <script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
-<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
-<script src="{{asset('assets/vendor/js/Horario/agregarTurnos.js')}}"></script>
+<script src="{{asset('assets/vendor/js/Horario/validacionesHorario2.js')}}"></script>
+<script src="{{asset('assets/vendor/js/Horario/agregarTurnos2.js')}}"></script>
 
 <script type="text/javascript">
 		
-		/*VALIDAR NEGATIVOS*/
-		
-		jQuery('#hora-inicio, #hora-fin, #min-inicio, #min-fin, #edad-minima, #edad-maxima, #vacantes-horario, #editar_vacantes_horario, #preinscripciones-horario, #editar_preinscripciones_horario').on('keypress', function (e) {
-
-		    if (e.keyCode == 101 || e.keyCode == 45 || e.keyCode == 46 || e.keyCode == 43 || e.keyCode == 44 || e.keyCode == 47 || e.keyCode == 69 ) {
-		        return false;
-		    }
-		    soloNumeros(e.keyCode);
-		});
-		
-		function soloNumeros(e) {
-		    var key = window.Event ? e.which : e.keyCode
-		        return (key >= 48 && key <= 57)
-		}
-
-		/*EDADES MÁXIMAS*/
-		var edad = document.getElementById('textEdad');
-
-		function validar(val){
-		  switch (val){
-		   case "0":
-		   	edad.innerHTML = 'De 6 a 17 años.' ;
-		   break;
-		   case "1":
-		   edad.innerHTML = 'De 6 a 59 años.';
-		   break;
-		   default : edad.innerHTML = '';
-		  }
-		}
-
-		var edadGimnasia = document.getElementById('textEdad');
-		
-		function validarGimnasia(val) {
-		  switch (val){
-		   case "0":
-		   	edadGimnasia.innerHTML = 'De 4 a 17 años.' ;
-		   break;
-		   case "1":
-		   edadGimnasia.innerHTML = 'De 4 a 59 años.';
-		   break;
-		   default : edadGimnasia.innerHTML = '';
-		  }	
-		}
-
-		/* CARGAR ALERTAS */
-		$(document).ready(function(){
-			
-
-			$('#btn-close-alert-info').click(function(){
-				hideAlertMessage('#alert-info');
-			});	
-
-			$('#btn-close-alert-editar-info').click(function(){
-				hideAlertMessage('#alert-editar-info');
-			});	
-
-			$('#btn-close-alert-crear-info').click(function(){
-				hideAlertMessage('#alert-crear-info');
-			});	
-		});
-
-
-		/*FILTROS */
-		$(document).ready(function () {
-
-            (function ($) {
-
-            	var jsFiltrar = document.querySelectorAll('.filtrar');
-            	var jsBuscar = document.querySelectorAll('.buscar');
-
-            	for (var i = 0; i < jsFiltrar.length; i++) {
-            		$(jsFiltrar[i]).keyup(function () {
-
-            			var idfil = $(this).attr('ident-buscar');
-	                    var rex = new RegExp($(this).val(),'i');
-	                    $(jsBuscar[idfil]).children('tr').hide();
-	                    $(jsBuscar[idfil]).children('tr').filter(function () {
-	                        return rex.test($(this).text());
-	                    }).show();
-                	})
-            	}  
-
-            }(jQuery));
-
-        });
-        
+	
         // FUNCION PARA SELECCIONAR LA FRECUENCIA EN LOS HORARIOS 
 
-        var turno = document.getElementById('turno')
+        var turno = document.getElementById('turno');
 
-
-		/*LIMPIAR CAJAS */
-
-		function clearData(){
-			$("#editar_codigo_horario").empty();
-			$("#editar_disciplina_horario").empty();
-			$("#editar_turno_horario").empty();
-			$("#editar_hora_horario").empty();
-			$("#editar_edades_horario").empty();
-			$("#editar_discapacidad_horario").empty();
-			$("#editar_vacantes_horario").val("");
-			$("#editar_preinscripciones_horario").val("");
-			$("#editar_convocatoria_horario").val("");
-			$("#turno").empty();
-			$("#textEdad").empty();
-		}
-
-		function clearDataCrear(){
-
-			$("#textEdad").empty();
-			$("#turno").empty();
-			$("#hora-inicio").val("");
-			$("#min-inicio").val("");
-			$("#hora-fin").val("");
-			$("#min-fin").val("");
-			$("#edad-minima").val("");
-			$("#edad-maxima").val("");
-			$("#vacantes-horario").val("");
-			$("#preinscripciones-horario").val("");
-			$("#crear_discapacidad").val("");
-			$("#Lun").prop('checked', false);
-			$("#Mar").prop('checked', false); 
-			$("#Mie").prop('checked', false);
-			$("#Jue").prop('checked', false); 
-			$("#Vie").prop('checked', false);
-			$("#Sab").prop('checked', false); 
-			$("#Dom").prop('checked', false);
-			
-
-		}
 
 		/* EDITAR HORARIO*/
 
@@ -1006,31 +881,31 @@
 					if(data != 1){
 
 						var dataHorario =JSON.parse(data)[0];
-						let horaInicio = String(dataHorario.horaInicio).split(":");
-						let horaFin = String(dataHorario.horaFin).split(":");
+						console.log("Data Horario =>",dataHorario);
 
 						$("#editar_codigo_horario").append(dataHorario.idHorario);
 						$("#editar_disciplina_horario").append(dataHorario.nombreDisciplina);
-						$("#editar_turno_horario").append(dataHorario.turno);
-						$("#editar_hora_horario").append(horaInicio[0]+':'+horaInicio[1] + ' - ' + horaFin[0]+':'+horaFin[1]);
-						$("#editar_edades_horario").append(dataHorario.edadMinima + ' - ' + dataHorario.edadMaxima +' años.');
-						
-						if(dataHorario.discapacidad == 0){
-							$("#editar_discapacidad_horario").append("Convencional");
-						}else{
-							$("#editar_discapacidad_horario").append("Persona con Discapacidad");
-						}
+						$("#editar_edades_horario").append(dataHorario.edad);
+						$("#editar_modalidad_horario").append(dataHorario.modalidad);
 
-						if(dataHorario.convocatoria == 0){
-							$("#editar_convocatoria_horario").val(0);
-						}else{
-							$("#editar_convocatoria_horario").val(1);
+						if(dataHorario.etapa=='Formación'){
+							$("#editar_etapa_horario").val(0);
+							console.log("Formacion")
+						}else if(dataHorario.etapa=='Masificación'){
+							$("#editar_etapa_horario").val(1);
+							console.log("Masificación");
 						}
+						
+						$("#editar_convocatoria_horario").val(dataHorario.convocatoria);
 						$("#editar_vacantes_horario").val(dataHorario.vacantes);
 						$("#editar_preinscripciones_horario").val(dataHorario.preinscripciones);
 						
-					}else{
+						dataHorario.turnos.forEach(function(value,index){
+							$("#editar_frecuencia_horario").append(`<div>${value.frecuencia}</div>`);
+							$("#editar_dias_horario").append(`<div>${value.hora}</div>`);
+						});
 
+					}else{
 						alertify.error('<p style="color:white">Se produjo un error al cargar los datos del Horario. </p>'); 
 					}
 
@@ -1064,6 +939,8 @@
 
 		function actualizarHorario(){
 
+			console.log('Flag Horario =>',sessionStorage.getItem('flagOcularHorario'));
+
 			if(sessionStorage.getItem('flagOcularHorario') == '1' ){
 
 				var codHorario = $("#editar_codigo_horario").text();	
@@ -1085,9 +962,8 @@
 							}else{
 
 								/*FUNCION PARA ELIMINAR HORARIO*/
-
 								var confirmarHorario = function(callback){
-			
+											
 									$("#confirmarEliminarHorario").modal('show');					
 									$("#modal-btn-si-horario").on("click", function(){
 								    	callback(true);
@@ -1102,34 +978,32 @@
 
 								confirmarHorario(function(confirm){
 								  
-								if(confirm){
+									if(confirm){
 
-								  	var idHorario = $("#editar_codigo_horario").text();	
-									
-									var dataOcultarHorario={
-										"idHorario" : idHorario
-									};
+									  	var idHorario = $("#editar_codigo_horario").text();	
+										
+										var dataOcultarHorario={
+											"idHorario" : idHorario
+										};
 
-									$.ajax({
-										type:'POST',
-										dataType: "json",
-										url: "{{url('akademia_ocultarHorario')}}",
-										data: dataOcultarHorario,
-										beforeSend: function(){				
-
-										},
-										success: function(data){
-											if(data == 1){
-												console.log(data);
-												window.location.href = "{{url('akademia_horarios')}}";
+										$.ajax({
+											type:'POST',
+											dataType: "json",
+											url: "{{url('akademia_ocultarHorario')}}",
+											data: dataOcultarHorario,
+											beforeSend: function(){				
+											},
+											success: function(data){
+												if(data == 1){
+													console.log(data);
+													window.location.href = "{{url('akademia_horarios')}}";
+												}
+											},
+											error: function(error){
+												console.log(error);
 											}
-										},
-										error: function(error){
-											console.log(error);
-										}
-									});
-
-								  }
+										});
+									}
 								});
 
 							}
@@ -1170,13 +1044,15 @@
 						var vacantes = $("#editar_vacantes_horario").val();
 						var preinscripciones = $("#editar_preinscripciones_horario").val()
 						var convocatoria = $("#editar_convocatoria_horario").val();
+						var etapa = $("#editar_etapa_horario").val();
 
 
 						var dataActualizarHorario={
 							"idHorario" : idHorario,
 							"vacantes" :vacantes,
 							"preinscripciones" : preinscripciones,
-							"convocatoria" : convocatoria
+							"convocatoria" : convocatoria,
+							"etapa" : etapa
 						};
 
 						$.ajax({
@@ -1198,12 +1074,29 @@
 									console.log(dataHorario);
 
 									$("#1h"+dataHorario.id).empty();
-									$("#5h"+dataHorario.id).empty();
 									$("#7h"+dataHorario.id).empty();
+									$("#8h"+dataHorario.id).empty();
+									$("#9h"+dataHorario.id).empty();
 
 									$("#1h"+dataHorario.id).text(dataHorario.id);
-									$("#5h"+dataHorario.id).text(dataHorario.vacantes);
+
+									if(dataHorario.convocatoria == 1){
+										$("#7h"+dataHorario.id).text("Abierto");
+										$("#7h"+dataHorario.id).css("color","green");
+									}else{
+										$("#7h"+dataHorario.id).text("Cerrado");
+										$("#7h"+dataHorario.id).css("color","red");
+										$("#7h"+dataHorario.id).css("font-weight","bold");
+									}
+
+									$("#8h"+dataHorario.id).text(dataHorario.vacantes);
 									
+									if(dataHorario.etapa == 0){
+										$("#3h"+dataHorario.id).text("Formación");
+									}else if(dataHorario.etapa == 1){
+										$("#3h"+dataHorario.id).text("Masificación");	
+									}
+
 									if(dataHorario.preinscripciones == 0){
 										$("#9h"+dataHorario.id).text(dataHorario.preinscripciones);
 										$("#9h"+dataHorario.id).css("color","red");
@@ -1214,14 +1107,7 @@
 										$("#9h"+dataHorario.id).css("color","black");
 									}
 									
-									if(dataHorario.convocatoria == 1){
-										$("#7h"+dataHorario.id).text("Abierto");
-										$("#7h"+dataHorario.id).css("color","green");
-									}else{
-										$("#7h"+dataHorario.id).text("Cerrado");
-										$("#7h"+dataHorario.id).css("color","red");
-										$("#7h"+dataHorario.id).css("font-weight","bold");
-									}
+
 
 									alertify.success('<p style="color:black">Horario Actualizado .</p>');					
 								}else{
@@ -1232,8 +1118,6 @@
 							}
 						});
 	            }
-
-				console.log(idHorario, idDisciplina, vacantes , convocatoria, preinscripciones);
 			}
 			
 		} 
@@ -1247,27 +1131,15 @@
 
 			diasElegidos = [];
 			clearDataCrear();
+
+			$("#idDisciplinaNewHorario").val(idDisciplina2);
 			$("#diasTurno :checkbox").attr('checked', false);
 			$("#idDisciplina").val(idDisciplina2);
 			var idDisciplina = $("#idDisciplina").val();
-			
-			if( idDisciplina == 21){
-				$("#crear_discapacidad").on("change", function(event) { 
-				     validarGimnasia(this.value);
-				});
-				
-			}else{	
-				$("#crear_discapacidad").on("change", function(event) { 
-				     validar(this.value);
-				});
-			}
 		}
 		
 		/*CREAR NUEVO HORARIO*/
 
-
-
-		
 		$("#CrearDisc").on("click", function(){
 			$("#Disciplina").val(0);
 		});
@@ -1416,8 +1288,6 @@
 		});
 	}
 
-
-
 	/* MOSTRAR MENSAJE DE ALERTA */
 	function showAlertMessage(alert, mensaje){
 		$(alert).text(mensaje).show('fade');
@@ -1429,8 +1299,42 @@
 	/* COULTAR ALERTA*/
 	function hideAlertMessage(alert){
 		$(alert).hide('fade');
-
 	}
+
+	function validateHora(n){
+		
+		if ( n.length > n.maxLength ) 
+	        n.value = n.value.slice(0, n.maxLength);
+	    
+	   if ( n.value > n.max ) 
+	        n.value = n.value.slice(0, n.maxLength-1);
+	    
+	    if ( n.value < n.min ) 
+	        n.value = n.value.slice(0, 0);
+	}
+
+	function validateMinuto(n){
+		
+		if ( n.length > n.maxLength ) 
+	        n.value = n.value.slice(0, n.maxLength);
+	    
+	   if ( n.value > n.max ) 
+	        n.value = n.value.slice(0, n.maxLength-1);
+	    
+	    if ( n.value < n.min ) 
+	        n.value = n.value.slice(0, 0);
+	}
+
+	$("#modalidad-horario").on('change',function(){
+
+		if( $("#modalidad-horario").val() == '0' ){
+			$("#textEdad").html('<b style="font-size:1em;" >6 a 17 años.</b>');
+		}else if( $("#modalidad-horario").val() == '1' ){
+			$("#textEdad").html('<b style="font-size:1em;">6 a 59 años.</b>');
+		}else{
+			$("#textEdad").html('');
+		}
+	});
 
 </script>
 

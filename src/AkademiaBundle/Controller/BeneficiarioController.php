@@ -31,16 +31,21 @@ class BeneficiarioController extends Controller
  	public function beneficiariosAction(Request $request, $idHorario){
         
         $em = $this->getDoctrine()->getManager();
+
         $Horarios = $em->getRepository('AkademiaBundle:Horario')->getHorarioBeneficiario($idHorario);
+        $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($Horarios[0]['idHorario']);
+        $Horarios[0]['turnos']=$fichaTurnoHorario;
+
         $Beneficiarios = $em->getRepository('AkademiaBundle:Horario')->getBeneficiarios($idHorario);
         $Asistencias = $em->getRepository('AkademiaBundle:Asistencia')->getMostrarAsistencia();
         $Categorias = $em->getRepository('AkademiaBundle:Categoria')->getMostrarCategoria();
 
+        $horInscritos = $em->getRepository('AkademiaBundle:Movimientos')->getCantInscritos($idHorario);
         $movAsis = $em->getRepository('AkademiaBundle:Movimientos')->getCantAsistencias(2,$idHorario);
         $movRet = $em->getRepository('AkademiaBundle:Movimientos')->getCantRetirados(3,$idHorario);
         $movSel = $em->getRepository('AkademiaBundle:Movimientos')->getCantSeleccionados(2,$idHorario);
      
-        return $this->render('AkademiaBundle:Default:beneficiarios.html.twig', array("horarios" => $Horarios, "beneficiarios" => $Beneficiarios, "asistencias" => $Asistencias, "categorias" => $Categorias, "asistentes" => $movAsis, "retirados" => $movRet, "seleccionados" => $movSel, "id" =>$idHorario));
+        return $this->render('AkademiaBundle:Default:beneficiarios.html.twig', array("horarios" => $Horarios, "beneficiarios" => $Beneficiarios, "asistencias" => $Asistencias, "categorias" => $Categorias, "asistentes" => $movAsis, "retirados" => $movRet, "seleccionados" => $movSel , "inscritos"=>$horInscritos , "id" =>$idHorario ));
     }
     
     // GENERAR NUEVO MOVIMIENTO

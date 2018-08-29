@@ -51,13 +51,14 @@
 	
 	</div>
 
-	<div class="container">
+	{% if app.user.idComplejo == 0 %}
+	<div class="container container-analista">
 
 		<strong><h2 class="text-center">Parametros de Exportación</h2></strong>
 
 		<div class="container-card col-xs-12 col-sm-8 col-md-5  col-lg-5  col-md-offset-1">
 			<div class="card">	
-				<p class="title-card text-center"  >Beneficiarios</p>
+				<p class="title-card text-center">Beneficiarios</p>
 				<div class="alert alert-success">
 					<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
 					<p>Beneficiarios Acumulados según su ultimo estado.</p>
@@ -90,7 +91,7 @@
 					</div>
 				</div>
 
-				<div class="row" id="container-analista" >
+				<div class="row" >
 
 					<br>
 					<div class="form-group col-md-6 col-md-offset-3"  id="container-departamento">
@@ -112,7 +113,7 @@
 				</div>
 
 				<div class="container-button-exportPREINS">
-					<button class="btn btn-danger" id="export-beneficiarios">Descargar Beneficiarios</button>
+					<button class="btn btn-danger" id="export-beneficiarios-analista">Descargar Beneficiarios</button>
 				</div>
 
 			</div>		   
@@ -131,7 +132,7 @@
 
 						<label>Año</label>
 						<select class="form-control" id="select-ano-informe" >
-							<option value="2018">2018</option>
+							<option selected value="2018">2018</option>
 							<option value="2019">2019</option>
 							<option value="2020" >2020</option>
 						</select>
@@ -152,14 +153,13 @@
 					</div>
 				</div>
 
-				<div class="row" id="container-analista" >
+				<div class="row" >
 
 					<br>
 					<div class="form-group col-md-6 col-md-offset-3"  id="container-informe">
 						
 						<label>Reporte</label>
 						<select class="form-control"  id="select-informe" >
-							<option value="" >--SELECCIONAR--</option>
 							<option value="1" >Regional</option>
 							<option value="2">Lima-Callao</option>
 				    	</select>
@@ -173,7 +173,7 @@
 			</div>		   
 		</div>
 
-		<div class="container-card col-xs-12 col-sm-12 col-md-12  col-lg-8  col-lg-offset-2">
+		<div class="container-card col-xs-12 col-sm-12 col-md-12  col-lg-8  col-lg-offset-2 ">
 			<div class="card">	
 				<p class="title-card text-center">Gestión de Procesos</p>
 				<hr>
@@ -182,7 +182,7 @@
 						<button class="btn btn-danger" id="export-horario-creados" >RENDIMIENTOS DE HORARIOS CREADOS</button>
 					</div>
 
-					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6 container-button-gp">
+					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6 container-button-gp container-analista">
 						<button class="btn btn-danger" id="export-usuarios-password-complejos" >USUARIOS CONTRASEÑAS DE COMPLEJOS</button>
 					</div>
 				</div>
@@ -190,8 +190,72 @@
 
 			</div>		   
 		</div>
-
 	</div>
+	{% endif %}
+
+	<!--CONTAINER COMPLEJO-->
+	{%  if app.user.idComplejo != 0 %}
+	<div class="container container-complejo">
+
+		<strong><h2 class="text-center">Parametros de Exportación</h2></strong>
+
+		<div class="container-card col-xs-12 col-sm-8 col-md-6  col-lg-6  col-md-offset-3">
+			<div class="card">	
+				<p class="title-card text-center">Beneficiarios</p>
+				<div class="alert alert-success">
+					<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+					<p>Beneficiarios Acumulados según su ultimo estado.</p>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+						<label>Año</label>
+						<select class="form-control" id="select-ano" >
+							<option value="2018">2018</option>
+							<option value="2019">2019</option>
+							<option value="2020" >2020</option>
+						</select>
+
+					</div>
+
+					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+						<label>Hasta el mes de</label>
+						<select class="form-control" id="select-mes" >
+
+							<option value="">--Seleccionar--</option>
+							{% for mes in meses %}
+							<option value="{{cont}}">{{mes}}</option>
+							{% set cont = cont + 1 %}
+							{% endfor %}
+						</select>
+
+					</div>
+				</div>
+
+				<div class="container-button-exportPREINS">
+					<button class="btn btn-danger" id="export-beneficiarios-complejo">Descargar Beneficiarios</button>
+				</div>
+
+			</div>		   
+		</div>
+
+		<div class="container-card col-xs-12 col-sm-12 col-md-12  col-lg-6  col-lg-offset-3 ">
+			<div class="card">	
+				<p class="title-card text-center">Gestión de Procesos</p>
+				<hr>
+				<div class="row">
+					<div class="form-group col-xs-6 col-sm-6 col-md-10 col-lg-12  container-button-gp">
+						<button class="btn btn-danger" id="export-horario-creados" >RENDIMIENTOS DE HORARIOS CREADOS</button>
+					</div>
+				</div>
+
+
+			</div>		   
+		</div>
+	</div>
+	{% endif %}
 
 </div>
 <hr>
@@ -241,9 +305,12 @@
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
 
 <script>
-
+	
+	const $containerCompelejo = $(".container-complejo");
+	const $containerAnalista = $(".container-analista");
 		
-	const $exportBeneficiarios = $("#export-beneficiarios");
+	const $exportBeneficiariosAnalista = $("#export-beneficiarios-analista");
+	const $exportBeneficiariosComplejo = $("#export-beneficiarios-complejo");
 
 	const $exportInforme = $("#export-informe");
 	const $selectInforme = $("#select-informe");
@@ -254,16 +321,21 @@
 	const $exportHorarioCreados = $("#export-horario-creados");
 	const $exportUsuariosPasswordComplejos = $("#export-usuarios-password-complejos");
 
-	const $containerAnalista = $("#container-analista");
+	
 	const $containerDepartamento = $("#container-departamento");
 	const $selectAno = $("#select-ano");
 	const $selectMes = $("#select-mes");
 	const $selectDepartamento = $("#select-departamento");
 
 	
-	$exportBeneficiarios.on('click',function(){
-		location.href='exportDataBeneficiarios?ano='+$selectAno.val()+'&mes='+$selectMes.val()+'&departamento='+$selectDepartamento.val();
-		console.log('exportDataBeneficiarios?ano='+$selectAno.val()+'&mes='+$selectMes.val()+'&departamento='+$selectDepartamento.val());
+	$exportBeneficiariosAnalista.on('click',function(){
+
+			location.href='exportDataBeneficiariosAnalista?ano='+$selectAno.val()+'&mes='+$selectMes.val()+'&departamento='+$selectDepartamento.val();
+	});
+
+	$exportBeneficiariosComplejo.on('click',function(){
+
+			location.href='exportDataBeneficiariosComplejo?ano='+$selectAno.val()+'&mes='+$selectMes.val();
 	});
 
 	$exportInforme.on('click',function(){
@@ -276,13 +348,13 @@
 
 
 	$exportHorarioCreados.on('click',function(){
+		console.log("majerhua");
 		location.href='exportCantidadHorariosCreadosRegion?idComplejo='+'{{app.user.idComplejo}}';
 	});
 
 	$exportUsuariosPasswordComplejos.on('click',function(){
-		location.href='exportCantidadHorariosCreadosRegion?idComplejo='+'{{app.user.idComplejo}}';
+		location.href='exportCantidadUsuarios';
 	});
-
 
 </script>
 
