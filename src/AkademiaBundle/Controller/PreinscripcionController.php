@@ -438,6 +438,8 @@ class PreinscripcionController extends Controller
         $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($mdlFicha[0]['horario_id']);
         $mdlFicha[0]['turnos']=$fichaTurnoHorario;
 
+        //return $this->render('AkademiaBundle:Pdf:inscripcionPdf.html.twig', ["inscripcion" => $mdlFicha]);  
+        //exit;
         $html = $this->renderView('AkademiaBundle:Pdf:inscripcionPdf.html.twig', ["inscripcion" => $mdlFicha]);
 
         $pdf = $this->container->get("white_october.tcpdf")->create();
