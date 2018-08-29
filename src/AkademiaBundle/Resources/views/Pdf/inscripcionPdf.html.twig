@@ -110,7 +110,7 @@
                                     <td  style="width:40%;    padding-bottom: 4px; font-weight:bold;"> Horarios : </td>
                                     <td  style="width:40%;    padding-bottom: 4px;">
 
-                                        {% for turno in {{inscripcion[0]['turnos']}} %}
+                                        {% for turno in inscripcion[0]['turnos'] %}
                                             <div>
                                                 {{turno.frecuencia}} de {{turno.hora}}
                                             </div>
