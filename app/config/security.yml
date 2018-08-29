@@ -60,8 +60,8 @@ security:
             
     access_control:
         - {path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY}
-        - {path: ^/pre-horarios, roles: IS_AUTHENTICATED_ANONYMOUSLY}
-        - {path: ^/pre-inscripcion, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/ficha-preinscripcion, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - {path: ^/horarios-disponibles, roles: IS_AUTHENTICATED_ANONYMOUSLY}
         - {path: ^/activacion, roles: IS_AUTHENTICATED_ANONYMOUSLY}
         - {path: ^/registrofinal, roles: IS_AUTHENTICATED_ANONYMOUSLY}
         - {path: ^/control, roles: IS_AUTHENTICATED_ANONYMOUSLY}

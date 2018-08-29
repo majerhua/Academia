@@ -72,7 +72,7 @@
 				<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-6 col-md-7 col-lg-7">
 					<div class="card">
 						<p class="title-card text-center">FICHA DE INSCRIPCIÓN</p>
-						<p class="title-card text-center">ACADEMIA IPD VERANO 2018</p>
+						<p class="title-card text-center">ACADEMIA IPD INVIERNO 2018</p>
 						<hr>
 						<div id="alerta-confirmacion" class="alert alert-success collapse"></div>
 						<div id="alerta-error" class="alert alert-danger collapse"></div>
@@ -187,7 +187,19 @@
 												<strong><p id="horario-participante"></p></strong>
 											</div>
 										</div>
-									</li>	
+									</li>
+
+									<li class="list-group-item">
+										<div class="row">
+											<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+												<p>Modalidad</p>
+											</div>
+											<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+												<strong><p id="horario-modalidad-participante"></p></strong>
+											</div>
+										</div>
+									</li>
+
 								</ul>
 							</div>
 						</div>						
@@ -264,9 +276,10 @@
 				},
 
 				success: function(data){
-										
+					
+					console.log(JSON.parse(data));						
 					clearFicha();
-
+					console.log("majerhua");
 					if(data != 1){
 
 						var valor =JSON.parse(data)[0];
@@ -281,7 +294,6 @@
 							$('#btn-confirmar-inscripcion').attr("disabled", false);
 						}
 
-
 						$("#nombre-participante").append(valor.pernombres);
 						$("#apellido-paterno-participante").append(valor.perapepaterno);
 						$("#apellido-materno-participante").append(valor.perapematerno);
@@ -289,14 +301,18 @@
 					  	$("#edad-participante").append(valor.edad + " años");
 						$("#deporte-participante").append(valor.nombreDisciplina);
 						$("#complejo-participante").append(valor.nombreComplejo);
-						$("#horario-participante").append(valor.horaInicio+" a "+valor.horaFin +" - "+ valor.turno);
+						$("#horario-modalidad-participante").append(valor.modalidad);
 
+						valor.turnos.forEach(function(value,index){
+							$("#horario-participante").append("<div>"+value.frecuencia+" de "+value.hora+"</div>");
+						});
+						
 					}else{
 
 						$("#btn-confirmar-inscripcion").attr("disabled", true);
 						$('#input-codigo-inscripcion').focus();
 						showAlertMessage('#alerta-error', "No existe ningún pre-inscrito con este código. ");
-					}
+					} 
 				},
 				error: function(error){
 					console.log("Error En la captura de dataa");

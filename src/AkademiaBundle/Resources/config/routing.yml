@@ -4,49 +4,46 @@
 #  defaults: { _controller: AkademiaBundle:ExportacionData:exportPrueba }
 
 
-##PAGINA principal
-
-akademia_paginaPreHorarios:
-    path: /pre-horarios/{estado}
-    defaults: { _controller: AkademiaBundle:Default:paginaPreHorarios}
-
-akademia_paginaPreInscripcion:
-    path: /pre-inscripcion
-    defaults: { _controller: AkademiaBundle:Default:indexPreInscripcion}
+##PAGINA MOSTRAR HORARIOS
 
 ##END
 
-## LOGIN - INICIO DE SESSION
-akademia_login:
-    path:    /login
-    defaults: {_controller: AkademiaBundle:Login:login}
+## MOD HORARIOS
 
-akademia_login_check:
-    path:    /login_check
+akademia_paginaHorariosDisponibles:
+    path: /horarios-disponibles/{estado}
+    defaults: { _controller: AkademiaBundle:Horario:mostrarHorariosLanding}
 
-akademia_logout:
-    path:    /logout
+tableHorario:
+    path: /ajax/tableHorario
+    defaults: { _controller: AkademiaBundle:Horario:tableHorario}
+
+akademia_mostrarHorarioIndividual:
+   path:    /ajax/mostrarHorarioIndividual
+   defaults: {_controller: AkademiaBundle:Horario:mostrarHorarioIndividual}
+   methods: [GET,POST]
+
+akademia_crearHorario:
+   path:    /ajax/crearHorario
+   defaults: {_controller: AkademiaBundle:Horario:crearHorario}
+   methods: [GET,POST]
+
+akademia_actualizarHorario:
+   path:    /ajax/actualizarHorario
+   defaults: {_controller: AkademiaBundle:Horario:actualizarHorario}
+   methods: [GET,POST]
+
+akademia_ocultarHorario:
+   path:    /ajax/ocultarHorario
+   defaults: {_controller: AkademiaBundle:Horario:ocultarHorario}
+   methods: [GET,POST]
+
+akademia_horarios:
+    path:    /horarios
+    defaults: {_controller: AkademiaBundle:Horario:horarios}
+    methods: [GET,POST]
 
 ##END
-
-entradas_list:
-    path: /pruebas/entradas
-    defaults: { _controller: AppBundle:Pruebas:entradas}
-
-akademia_contador:
-    path:     /contador
-    defaults: { _controller: AkademiaBundle:Default:contador }
-    
-akademia_panel:
-    path:     /panel
-    defaults: { _controller: AkademiaBundle:Default:panel}
-    methods:  [GET,POST]
-
-akademia_getPost:
-    path:     /ajax/post/get
-    defaults: { _controller: AkademiaBundle:Default:post}
-    methods:  [GET,POST]
-
 
 ## PRE INSCRIPCION
 
@@ -60,8 +57,12 @@ akademia_registrar:
     defaults: { _controller: AkademiaBundle:Preinscripcion:registrar }
     methods:  [GET,POST]
 
+akademia_fichaPreInscripcion:
+    path: /ficha-preinscripcion
+    defaults: { _controller: AkademiaBundle:Preinscripcion:fichaPreInscripcion}
+
 akademia_registroFinal:
-    path:     /registrofinal/{estado}
+    path:     /registrofinal/{disability}
     defaults: { _controller: AkademiaBundle:Preinscripcion:registroFinal }
     methods:  [GET,POST]
 
@@ -113,34 +114,6 @@ akademia_inscritos:
     defaults: {_controller: AkademiaBundle:Default:inscritos}
     methods: [GET,POST]
   
-## MOD HORARIOS
-akademia_mostrarHorarioIndividual:
-   path:    /ajax/mostrarHorarioIndividual
-   defaults: {_controller: AkademiaBundle:Horario:mostrarHorarioIndividual}
-   methods: [GET,POST]
-
-akademia_crearHorario:
-   path:    /ajax/crearHorario
-   defaults: {_controller: AkademiaBundle:Horario:crearHorario}
-   methods: [GET,POST]
-
-akademia_actualizarHorario:
-   path:    /ajax/actualizarHorario
-   defaults: {_controller: AkademiaBundle:Horario:actualizarHorario}
-   methods: [GET,POST]
-
-akademia_ocultarHorario:
-   path:    /ajax/ocultarHorario
-   defaults: {_controller: AkademiaBundle:Horario:ocultarHorario}
-   methods: [GET,POST]
-
-akademia_horarios:
-    path:    /horarios
-    defaults: {_controller: AkademiaBundle:Horario:horarios}
-    methods: [GET,POST]
-
-##END
-
 ## MOD DISCIPLINAS
 akademia_crearDisciplina:
    path:    /ajax/crearDisciplina
@@ -168,10 +141,6 @@ akademia_configuracion:
     path:     /ajax/configuracion
     defaults: { _controller: AkademiaBundle:Default:configuracion}
     methods:  [GET,POST]
-
-akademia_login:
-    path:    /login
-    defaults: {_controller: AkademiaBundle:Default:login}
 
 ## END 
 
@@ -271,20 +240,14 @@ akademia_exportInscripcionesLimaCallaos:
    defaults: {_controller: AkademiaBundle:ExportacionData:exportInscripcionesLimaCallaos}
    methods: [GET,POST]
 
-
-akademia_exportCantidadPreInscritos:
-   path:    /exportCantidadPreInscritos
-   defaults: {_controller: AkademiaBundle:ExportacionData:exportCantidadPreInscritos}
-   methods: [GET,POST]
-
-akademia_exportCantidadInscritos:
-   path:    /exportCantidadInscritos
-   defaults: {_controller: AkademiaBundle:ExportacionData:exportCantidadInscritos}
-   methods: [GET,POST]
-
 akademia_exportCantidadHorariosCreadosRegion:
    path:    /exportCantidadHorariosCreadosRegion
    defaults: {_controller: AkademiaBundle:ExportacionData:exportCantidadHorariosCreadosRegion}
+   methods: [GET,POST]
+
+akademia_exportCantidadUsuarios:
+   path:    /exportCantidadUsuarios
+   defaults: {_controller: AkademiaBundle:ExportacionData:exportCantidadUsuarios}
    methods: [GET,POST]
 
 akademia_exportData:
@@ -292,11 +255,47 @@ akademia_exportData:
    defaults: {_controller: AkademiaBundle:ExportacionData:exportData}
    methods: [GET,POST]
 
-akademia_exportDataBeneficiarios:
-   path:    /exportDataBeneficiarios
-   defaults: {_controller: AkademiaBundle:ExportacionData:exportDataBeneficiarios}
+akademia_exportDataBeneficiariosAnalista:
+   path:    /exportDataBeneficiariosAnalista
+   defaults: {_controller: AkademiaBundle:ExportacionData:exportDataBeneficiariosAnalista}
+   methods: [GET,POST]
+
+akademia_exportDataBeneficiariosComplejo:
+   path:    /exportDataBeneficiariosComplejo
+   defaults: {_controller: AkademiaBundle:ExportacionData:exportDataBeneficiariosComplejo}
    methods: [GET,POST]
 #FIN 
+
+## LOGIN - INICIO DE SESSION
+akademia_login:
+    path:    /login
+    defaults: {_controller: AkademiaBundle:Login:login}
+
+akademia_login_check:
+    path:    /login_check
+
+akademia_logout:
+    path:    /logout
+
+##END
+
+entradas_list:
+    path: /pruebas/entradas
+    defaults: { _controller: AppBundle:Pruebas:entradas}
+
+akademia_contador:
+    path:     /contador
+    defaults: { _controller: AkademiaBundle:Default:contador }
+    
+akademia_panel:
+    path:     /panel
+    defaults: { _controller: AkademiaBundle:Default:panel}
+    methods:  [GET,POST]
+
+akademia_getPost:
+    path:     /ajax/post/get
+    defaults: { _controller: AkademiaBundle:Default:post}
+    methods:  [GET,POST]
 
 #### INICIO API REST 
 

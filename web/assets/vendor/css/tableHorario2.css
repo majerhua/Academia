@@ -1,0 +1,34 @@
+
+div.options{
+  padding:0;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+}
+div.options > label > input {
+    
+    width:0;
+    visibility: hidden;
+}
+
+div.options > label {
+    display: block;   
+    padding:0 5px 0 0;
+}
+
+div.options > label > img {
+    display: inline-block;
+    padding: 0;
+    border: 2px solid #CB3F1D;
+    background-color:rgba(203, 63, 29, 0.1);
+    height:16px;
+    width:16px;
+}
+
+div.options > label > input:checked +img {  
+    background: url(http://cdn1.iconfinder.com/data/icons/onebit/PNG/onebit_34.png);
+    background-repeat: no-repeat;
+    background-position:center center;
+    background-size:15px 15px;
+}

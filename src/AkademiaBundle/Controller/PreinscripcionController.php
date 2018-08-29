@@ -22,18 +22,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer; 
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 class PreinscripcionController extends Controller
 {
 
-
-public function indexAction(Request $request){
-
-    return $this->render('AkademiaBundle:Default:indexLanding.html.twig'); 
-}
-
-/*
     public function indexAction(Request $request){
+
+        return $this->render('AkademiaBundle:Default:index.html.twig'); 
+    }
+
+    public function fichaPreInscripcionAction(Request $request){
+
         if($request->isXmlHttpRequest()){
             
             $parentesco = $request->request->get('persona');
@@ -58,311 +58,112 @@ public function indexAction(Request $request){
                     return new JsonResponse($mensaje);
                 }
             }
-        }   
+        }  
 
-        $em2 = $this->getDoctrine()->getManager();
-        $mdlDitritoCD = $em2->getRepository('AkademiaBundle:Distrito')->getDitritosCD();
-        $mdlProvinciasCD = $em2->getRepository('AkademiaBundle:Distrito')->getProvinciasCD();
-        $mdlDepartamentosCD = $em2->getRepository('AkademiaBundle:Distrito')->getDepartamentosCD();
-        $mdlDepartamento = $em2->getRepository('AkademiaBundle:Distrito')->getDepartamentos();
-        $mdlProvincia = $em2->getRepository('AkademiaBundle:Distrito')->getProvincias();
-        $mdlDistrito = $em2->getRepository('AkademiaBundle:Distrito')->getDistritos();
-        $mdlComplejoDeportivo = $em2->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplejosDeportivos();
-        $mdlComplejoDisciplina = $em2->getRepository('AkademiaBundle:ComplejoDisciplina')->getComplejoDisciplinas();
-    
+        $role = $this->getUser();
+
+        if(!empty($role)){
+            $flagUser = 1;
+        } else{
+            $flagUser = 0;
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $mdlDitritoCD = $em->getRepository('AkademiaBundle:Distrito')->getDitritosCD();
+        $mdlProvinciasCD = $em->getRepository('AkademiaBundle:Distrito')->getProvinciasCD();
+        $mdlDepartamentosCD = $em->getRepository('AkademiaBundle:Distrito')->getDepartamentosCD();
+        $mdlDepartamento = $em->getRepository('AkademiaBundle:Distrito')->getDepartamentos();
+        $mdlProvincia = $em->getRepository('AkademiaBundle:Distrito')->getProvincias();
+        $mdlDistrito = $em->getRepository('AkademiaBundle:Distrito')->getDistritos();
+        $mdlComplejoDeportivo = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplejosDeportivos();
+        $mdlComplejoDisciplina = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getComplejoDisciplinas();
         
-        return $this->render('AkademiaBundle:Default:index.html.twig' , array("complejosDeportivo" => $mdlComplejoDeportivo , "complejosDisciplinas" => $mdlComplejoDisciplina , "departamentos" => $mdlDepartamento,"provincias" => $mdlProvincia ,"distritos" => $mdlDistrito ,'ditritosCD' => $mdlDitritoCD , "departamentosCD" => $mdlDepartamentosCD ,'provinciasCD' => $mdlProvinciasCD ));     
+        return $this->render('AkademiaBundle:Default:fichaPreInscripcion.html.twig' , array("complejosDeportivo" => $mdlComplejoDeportivo , "complejosDisciplinas" => $mdlComplejoDisciplina , "departamentos" => $mdlDepartamento,"provincias" => $mdlProvincia ,"distritos" => $mdlDistrito ,'ditritosCD' => $mdlDitritoCD , "departamentosCD" => $mdlDepartamentosCD ,'provinciasCD' => $mdlProvinciasCD, 'flagUser'=>$flagUser ));     
+    }
+
+
+  /*  public function tableHorarioPreInscripcionAction(Request $request){
+
+        $idComplejoDisciplina = $request->request->get('idComplejoDisciplina');  
+        $em = $this->getDoctrine()->getManager();
+
+        $mdlhorariosComplejoDisciplina = $em->getRepository('AkademiaBundle:Horario')->getHorariosComplejoDisciplina($idComplejoDisciplina);
+        $mdlturnosComplejoDisciplina = $em->getRepository('AkademiaBundle:Horario')->getTurnosComplejoDisciplina($idComplejoDisciplina);
+
+        echo $this->renderView('AkademiaBundle:Default:tableHorario.html.twig',array('horarios' => $mdlhorariosComplejoDisciplina , "turnos" => $mdlturnosComplejoDisciplina));
+        exit;
     }
 */
     //FUNCION PARA CARGAR LOS DATOS DE LAS DISCIPLINAS Y HORARIOS SELECCIONADOS
 
-	public function registroFinalAction(Request $request,$estado){
+	public function registroFinalAction(Request $request,$disability){
 
-        $Role = $this->getUser();
-        $edadBeneficiario =$request->request->get('edadBeneficiario');
+        $ageBeneficiario =$request->request->get('edadBeneficiario');
+
         $em = $this->getDoctrine()->getManager();
-
+        $Role = $this->getUser();
+        
+        $flagUser='';
+        //VISUALIZAR REGISTRO FINAL USUARIOS COMPLEJOS
         if($Role != NULL){
             
-            $mdlDepartamentosFlag = $em->getRepository('AkademiaBundle:Departamento')->departamentosPromotor($estado);
-            $mdlProvinciasFlag = $em->getRepository('AkademiaBundle:Provincia')->provinciasPromotor($estado);
-            $mdlDistritosFlag = $em->getRepository('AkademiaBundle:Distrito')->distritosPromotor($estado);
-            $mdlDepartamentos = $em->getRepository('AkademiaBundle:Departamento')->departamentosAll();
-            $mdlProvincias = $em->getRepository('AkademiaBundle:Provincia')->provinciasAll();
-            $mdlDistritos = $em->getRepository('AkademiaBundle:Distrito')->distritosAll();
-            $mdlComplejosDeportivosFlag = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejosDeportivosPromotor($estado);
-            $mdlDisciplinasDeportivasFlag = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->disciplinasDeportivasPromotor($estado);
-            $mdlhorariosFlag = $em->getRepository('AkademiaBundle:Horario')->getHorariosPromotores($estado);
-            
+            $flagUser ='1';
+
+            $mdDepartmentsByDisability = $em->getRepository('AkademiaBundle:Departamento')->getDepartmentsPromotorByDisability($disability,$ageBeneficiario);
+
+            $mdProvincesByDisability = $em->getRepository('AkademiaBundle:Provincia')->getProvincesPromotorByDisability($disability,$ageBeneficiario);
+
+            $mdDistrictsByDisability = $em->getRepository('AkademiaBundle:Distrito')->getDistrictsPromotorByDisability($disability,$ageBeneficiario);
+
+            $mdComplexesByDisability = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplexesPromotorByDisability($disability,$ageBeneficiario);
+
+            $mdlDisciplinesByDisability = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinesPromotorByDisability($disability,$ageBeneficiario);
+        //VISUALIZAR REGISTRO FINAL PUBLICO GENERAL
         }else{
-    
-            $mdlDepartamentosFlag = $em->getRepository('AkademiaBundle:Departamento')->departamentosFlagAll($estado);
-            $mdlProvinciasFlag = $em->getRepository('AkademiaBundle:Provincia')->provinciasFlagAll($estado);
-            $mdlDistritosFlag = $em->getRepository('AkademiaBundle:Distrito')->distritosFlagAll($estado);
-            $mdlDepartamentos = $em->getRepository('AkademiaBundle:Departamento')->departamentosAll();
-            $mdlProvincias = $em->getRepository('AkademiaBundle:Provincia')->provinciasAll();
-            $mdlDistritos = $em->getRepository('AkademiaBundle:Distrito')->distritosAll();
-            $mdlComplejosDeportivosFlag = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->complejosDeportivosFlagAll($estado,$edadBeneficiario);
-            $mdlDisciplinasDeportivasFlag = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->disciplinasDeportivasFlagAll($estado,$edadBeneficiario);
-            $mdlhorariosFlag = $em->getRepository('AkademiaBundle:Horario')->horariosFlagAll($estado,$edadBeneficiario);
+            
+            $flagUser = '0';
+
+            $mdDepartmentsByDisability = $em->getRepository('AkademiaBundle:Departamento')->getDepartmentsPublicGeneralByDisability($disability,$ageBeneficiario);
+
+            $mdProvincesByDisability = $em->getRepository('AkademiaBundle:Provincia')->getProvincesPublicGeneralByDisability($disability,$ageBeneficiario);
+
+            $mdDistrictsByDisability = $em->getRepository('AkademiaBundle:Distrito')->getDistrictsPublicGeneralByDisability($disability,$ageBeneficiario);
+
+            $mdComplexesByDisability = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplexesPublicGeneralByDisability($disability,$ageBeneficiario);
+            
+            $mdlDisciplinesByDisability = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinesPublicGeneralByDisability($disability,$ageBeneficiario);
+            //$mdlhorariosFlag = $em->getRepository('AkademiaBundle:Horario')->horariosFlagAll($disability,$edadBeneficiario);
         }
 
-        if($estado == 1){
-
+        if($disability == 1){
             $mensaje = 'Sólo para participantes con discapacidad.';
         }else{
             $mensaje = '';
         }
 
-        return $this->render('AkademiaBundle:Default:registroFinal.html.twig' , array('departamentosFlag' => $mdlDepartamentosFlag , "provinciasFlag" => $mdlProvinciasFlag ,'distritosFlag' => $mdlDistritosFlag,'departamentos'=>$mdlDepartamentos,'provincias'=>$mdlProvincias,'distritos'=>$mdlDistritos, 'complejosDeportivos' => $mdlComplejosDeportivosFlag, 'disciplinasDeportivas' => $mdlDisciplinasDeportivasFlag ,'horarios' => $mdlhorariosFlag, 'mensaje' => $mensaje ));     
+        return $this->render('AkademiaBundle:Default:registroFinal.html.twig' , array('departamentosFlag' => $mdDepartmentsByDisability , "provinciasFlag" => $mdProvincesByDisability ,'distritosFlag' => $mdDistrictsByDisability,'complejosDeportivos' => $mdComplexesByDisability, 'disciplinasDeportivas' => $mdlDisciplinesByDisability ,'mensaje' => $mensaje ));     
     }
 
     //FUNCION PARA REGISTRAR A LOS PREINSCRITOS 
     public function registrarAction(Request $request){
         
+
+
         if($request->isXmlHttpRequest()){
-            $em = $this->getDoctrine()->getManager();
 
-            $dniParticipante = $request->request->get('dniParticipante');
+            $distrito = $request->request->get('distrito');
 
-            $idInscribeteOrDataParticipante = $em->getRepository('AkademiaBundle:Participante')->getPreInscripcionUnica($dniParticipante);
-            
-            if( !empty($idInscribeteOrDataParticipante[0]['id']) ){
+            if(intval($distrito) <> 0 ){
+                //INICIO  VALIDACION DISTRITO
 
-                $encoders = array(new JsonEncoder());
-                $normalizer = new ObjectNormalizer();
-                $normalizer->setCircularReferenceLimit(1);
-                $normalizer->setCircularReferenceHandler(function ($object) {
-                    return $object->getId();
-                });
-                $normalizers = array($normalizer);
-                $serializer = new Serializer($normalizers, $encoders);
-                $jsonContent = $serializer->serialize($idInscribeteOrDataParticipante,'json');
-                return new JsonResponse($jsonContent);
-            }
-
-            $idHorario = $request->request->get('idHorario');
-            
-            $vacantesHorario = $em->getRepository('AkademiaBundle:Horario')->getHorariosVacantes($idHorario);
-            $cantVacantes = $vacantesHorario[0]['vacantes'];
-
-            if($cantVacantes > 0){
-                //DATOS APODERADO
-                $dni = $request->request->get('dni');
-                $apellidoPaterno = $request->request->get('apellidoPaterno');
-                $apellidoMaterno = $request->request->get('apellidoMaterno');
-                $nombre = $request->request->get('nombre'); 
-                $fechaNacimiento = $request->request->get('fechaNacimiento');
-                $sexo = $request->request->get('sexo');
-                $distrito = $request->request->get('distrito');
-                $direccion = $request->request->get('direccion');
-                $telefono = $request->request->get('telefono');
-                $correo = $request->request->get('correo');
-                $estado = $request->request->get('estado');
-                
-
-                //DATOS PARTICIPANTE
-                $apellidoPaternoParticipante = $request->request->get('apellidoPaternoParticipante');
-                $apellidoMaternoParticipante = $request->request->get('apellidoMaternoParticipante');
-                $nombreParticipante = $request->request->get('nombreParticipante'); 
-                $fechaNacimientoParticipante = $request->request->get('fechaNacimientoParticipante');
-                $sexoParticipante = $request->request->get('sexoParticipante');
-                $parentesco = $request->request->get('parentesco');
-                $tipoSeguro = $request->request->get('tipoSeguro');
-                $estado = 1;
-                $discapacidad = $request->request->get('discapacidad');
-
-                //REGISTRAR APODERADO
                 $em = $this->getDoctrine()->getManager();
-                //BUSACMOS AL APODERADO EN LA TABLA GRPERSONA CATASTRO.
-                $percodigoApoderado = $em->getRepository('AkademiaBundle:Apoderado')->getbuscarApoderadoPersona($dni);
-                if(!empty($percodigoApoderado)){
-                    
-                    // CAPTURAMOS EL ULTIMO RGISTRO DEL APODERADO EN PERSONA
-                    $codigo = $em->getRepository('AkademiaBundle:Apoderado')->maxDniPersona($dni);
-                    $percodigoApod = $codigo[0]['percodigo'];
-                   
-                    //ACTUALIZAR LOS DATOS DEL APODERADO
-                    $em->getRepository('AkademiaBundle:Apoderado')->actualizarPersona($apellidoPaterno, $apellidoMaterno, $nombre, $fechaNacimiento, $percodigoApod, $telefono, $correo, $direccion, intval($distrito),$sexo);
 
-                    //Búsqueda en Academia.apoderado
-                    $IDApoderado = $em->getRepository('AkademiaBundle:Apoderado')->getbuscarApoderado($dni);
+                $dniParticipante = $request->request->get('dniParticipante');
+
+                $idInscribeteOrDataParticipante = $em->getRepository('AkademiaBundle:Participante')->getPreInscripcionUnica($dniParticipante);
                 
-                    if(!empty($IDApoderado)){
-                        // SI EXISTE APODERADO EN LA ENTIDAD ACADEMIA.APODERADO SE ACTUALIZA SUS DATOS
-                        $em = $this->getDoctrine()->getManager();
-                        $codigo = $em->getRepository('AkademiaBundle:Apoderado')->maxDniAcademiaApod($dni);
-                        $idApoderado = $codigo[0]['id'];
-                        $em = $this->getDoctrine()->getRepository(Apoderado::class);
-                        $apoderado = $em->find($idApoderado);
-                        $apoderado->setPercodigo($percodigoApod);
-                        $em = $this->getDoctrine()->getManager();
-                        $em->flush();
-                        $idApod = $apoderado->getId();
-                    }else{
-                        
-                        // SI NO EXISTE EL APODERADO EN LA ENTIDAD APODERADO , SE REGISTRA UN NUEVO REGISTRO.
-                        $apoderado = new Apoderado();
-                        $apoderado->setDni($dni);
-                        $apoderado->setPercodigo($percodigoApod);
-                        $em = $this->getDoctrine()->getManager();
-                        $em->persist($apoderado);
-                        $em->flush();
-                        $idApod = $apoderado->getId();                 
-                    }
-                }else{
-                    
-                    //si no existe apoderado en grpersona, registramos al usuario
-                    $datosApoderado = $em->getRepository('AkademiaBundle:Apoderado')->guardarPersona($dni,$apellidoPaterno,$apellidoMaterno, $nombre,$fechaNacimiento,$sexo,$telefono, $correo, $direccion,intval($distrito));
-                    //retornar el percodigo del nuevo registro
-                    $percodigoApoderado = $em->getRepository('AkademiaBundle:Apoderado')->getbuscarApoderadoPersona($dni);
-                    $percodigoApod = $percodigoApoderado[0]['id'];
-                    //Búsqueda en Academia.apoderadO
-                    $IDApoderado = $em->getRepository('AkademiaBundle:Apoderado')->getbuscarApoderado($dni);
-                
-                    if(!empty($IDApoderado)){
-                        
-                        $codigo = $em->getRepository('AkademiaBundle:Apoderado')->maxDniAcademiaApod($dni);
-                        $idApoderado = $codigo[0]['id'];
-                        $em = $this->getDoctrine()->getRepository(Apoderado::class);
-                        $apoderado = $em->find($idApoderado);
-                        $apoderado->setPercodigo($percodigoApod);
-                        $em = $this->getDoctrine()->getManager();
-                        $em->flush();
-                        $idApod = $apoderado->getId();
-                    }else{
-                        $apoderado = new Apoderado();
-                        $apoderado->setDni($dni);
-                        $apoderado->setPercodigo($percodigoApod);
-                                  
-                        $em = $this->getDoctrine()->getManager();
-                        $em->persist($apoderado);
-                        $em->flush();
-                        $idApod = $apoderado->getId();                 
-                    }
-                } 
-            
-                //REGISTRAR PARTICIPANTE
-                $em = $this->getDoctrine()->getManager();
-                $percodigoParticipante = $em->getRepository('AkademiaBundle:Participante')->getbuscarParticipantePersona($dniParticipante);
-            
-                if(!empty($percodigoParticipante)){
-            
-                    $codigo = $em->getRepository('AkademiaBundle:Apoderado')->maxDniPersona($dniParticipante);
-                    $percodigoPart = $codigo[0]['percodigo'];
-                    $em->getRepository('AkademiaBundle:Apoderado')->actualizarPersona($apellidoPaternoParticipante,$apellidoMaternoParticipante,$nombreParticipante,$fechaNacimientoParticipante, $percodigoPart, $telefono, $correo, $direccion, intval($distrito), $sexoParticipante);
-                    
-                    // Búsqueda en academia.participantes 
-                    $IDParticipante = $em->getRepository('AkademiaBundle:Participante')->getbuscarParticipante($dniParticipante);
-        
-                    if(!empty($IDParticipante)){      
-                   
-                        $codigo = $em->getRepository('AkademiaBundle:Participante')->maxDniAcademiaPart($dniParticipante);
-                        $idParticipante = $codigo[0]['id'];
-                        $em = $this->getDoctrine()->getRepository(Participante::class);
-                        $participante = $em->find($idParticipante);
-                        $participante->setPercodigo($percodigoPart);
-                       
-                        $em = $this->getDoctrine()->getManager();
-                        $em->flush();
-                        $idParticipanteN = $participante->getId();
+                if( !empty($idInscribeteOrDataParticipante[0]['id']) ){
 
-                        $em = $this->getDoctrine()->getManager();
-                        $em->getRepository('AkademiaBundle:Participante')->getActualizarApoderado($idApod, $idParticipanteN);  
-                       
-                    }else{
-                        
-                        $participante = new Participante();
-                        $participante->setDni($dniParticipante);
-                        $participante->setParentesco($parentesco);
-                        $participante->setTipoDeSeguro($tipoSeguro);
-                        $participante->setDiscapacitado($discapacidad);
-                        $participante->setPercodigo($percodigoPart);
-                        $em = $this->getDoctrine()->getRepository(Apoderado::class);
-                        $buscarApoderadoInscripcion = $em->find($idApod);
-                        $participante->setApoderado($buscarApoderadoInscripcion);
-                        $em = $this->getDoctrine()->getManager();
-                        $em->persist($participante);
-                        $em->flush();
-                        $idParticipanteN= $participante->getId();  
-
-                    } 
-
-                }else{
-                    
-                    //Si no existe participante en grpersona, registramos al usuario
-                    $em = $this->getDoctrine()->getManager();
-                    $datosParticipante = $em->getRepository('AkademiaBundle:Apoderado')->guardarPersona($dniParticipante,$apellidoPaternoParticipante,$apellidoMaternoParticipante, $nombreParticipante,$fechaNacimientoParticipante,$sexoParticipante,$telefono, $correo, $direccion,intval($distrito));
-                   
-                    //Retornar el percodigo del nuevo registro
-                    $percodigoParticipante = $em->getRepository('AkademiaBundle:Apoderado')->getbuscarApoderadoPersona($dniParticipante);
-                    $percodigoPart = $percodigoParticipante[0]['id'];
-                    
-                    //Búsqueda en academia.participantes 
-                    $IDParticipante = $em->getRepository('AkademiaBundle:Participante')->getbuscarParticipante($dniParticipante);
-            
-                   
-                    if(!empty($IDParticipante)){      
-                        
-                        $codigo = $em->getRepository('AkademiaBundle:Participante')->maxDniAcademiaPart($dniParticipante);
-                        $idParticipante = $codigo[0]['id'];
-                        $em = $this->getDoctrine()->getRepository(Participante::class);
-                        $participante = $em->find($idParticipante);
-                        $participante->setPercodigo($percodigoPart);           
-                        $em = $this->getDoctrine()->getManager();
-                        $em->flush();
-                        $idParticipanteN = $participante->getId();
-
-                        $em = $this->getDoctrine()->getManager();
-                        $em->getRepository('AkademiaBundle:Participante')->getActualizarApoderado($idApod, $idParticipanteN);
-                       
-                    }else{
-                        
-                        //Participantes nuevos academia.participante
-                        $participante = new Participante();
-                        $participante->setDni($dniParticipante);
-                        $participante->setParentesco($parentesco);
-                        $participante->setTipoDeSeguro($tipoSeguro);
-                        $participante->setDiscapacitado($discapacidad);
-                        $participante->setPercodigo($percodigoPart);
-                        $em = $this->getDoctrine()->getRepository(Apoderado::class);
-                        $buscarApoderadoInscripcion = $em->find($idApod);
-                        $participante->setApoderado($buscarApoderadoInscripcion);
-                        $em = $this->getDoctrine()->getManager();
-                        $em->persist($participante);
-                        $em->flush();
-                        $idParticipanteN= $participante->getId();       
-                    } 
-                }
-                    $idHorario = $request->request->get('idHorario');
-                    $fechaInscripcion = $hoy = date("Y-m-d");
-                    $inscripcion = new Inscribete();
-                    $estado=1;
-                    $inscripcion->setFechaInscripcion(new \DateTime($fechaInscripcion));
-                    $inscripcion->setEstado($estado);
-                    $em = $this->getDoctrine()->getRepository(Participante::class);
-                    $buscarParticipante = $em->find($idParticipanteN);
-                    $inscripcion->setParticipante($buscarParticipante);
-                    $em = $this->getDoctrine()->getRepository(Horario::class);
-                    $buscarHorario = $em->find($idHorario);
-                    $inscripcion->setHorario($buscarHorario);            
-                    
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($inscripcion);
-                    $em->flush();
-                    
-                    //Actualizar cantidad de preinscripciones disponibles
-
-                    $preinscripciones = $em->getRepository('AkademiaBundle:Horario')->getActualizarPreinscripcionesHorarios($idHorario);   
-                    $preinsHorario = $em->getRepository('AkademiaBundle:Horario')->getHorariosPreinscripciones($idHorario);
-                    $cantPre = $preinsHorario[0]['preinscripciones'];
-                    if($cantPre == 0){
-                        $actConvocatoria = $em->getRepository('AkademiaBundle:Horario')->getActualizaConv($idHorario);
-                    }
-
-                    $em2 = $this->getDoctrine()->getManager();
-                    $mdlFicha = $em2->getRepository('AkademiaBundle:Inscribete')->getFicha($inscripcion->getId());
-                                   
                     $encoders = array(new JsonEncoder());
                     $normalizer = new ObjectNormalizer();
                     $normalizer->setCircularReferenceLimit(1);
@@ -371,13 +172,259 @@ public function indexAction(Request $request){
                     });
                     $normalizers = array($normalizer);
                     $serializer = new Serializer($normalizers, $encoders);
-                    $jsonContent = $serializer->serialize($mdlFicha,'json');
+                    $jsonContent = $serializer->serialize($idInscribeteOrDataParticipante,'json');
                     return new JsonResponse($jsonContent);
+                }
+
+                $idHorario = $request->request->get('idHorario');
+                
+                $vacantesHorario = $em->getRepository('AkademiaBundle:Horario')->getHorariosVacantes($idHorario);
+                $cantVacantes = $vacantesHorario[0]['vacantes'];
+
+                if($cantVacantes > 0){
+                    //DATOS APODERADO
+                    $dni = $request->request->get('dni');
+                    $tipoDocumentoApoderado = $request->request->get('tipoDocumentoApoderado');
+                    $apellidoPaterno = $request->request->get('apellidoPaterno');
+                    $apellidoMaterno = $request->request->get('apellidoMaterno');
+                    $nombre = $request->request->get('nombre'); 
+                    $fechaNacimiento = $request->request->get('fechaNacimiento');
+                    $sexo = $request->request->get('sexo');
+                    $direccion = $request->request->get('direccion');
+                    $telefono = $request->request->get('telefono');
+                    $correo = $request->request->get('correo');
+                    $estado = $request->request->get('estado');
+                    
+
+                    //DATOS PARTICIPANTE
+                    $tipoDocumentoParticipante = $request->request->get('tipoDocumentoParticipante');
+                    $apellidoPaternoParticipante = $request->request->get('apellidoPaternoParticipante');
+                    $apellidoMaternoParticipante = $request->request->get('apellidoMaternoParticipante');
+                    $nombreParticipante = $request->request->get('nombreParticipante'); 
+                    $fechaNacimientoParticipante = $request->request->get('fechaNacimientoParticipante');
+                    $sexoParticipante = $request->request->get('sexoParticipante');
+                    $parentesco = $request->request->get('parentesco');
+                    $tipoSeguro = $request->request->get('tipoSeguro');
+                    $estado = 1;
+                    $discapacidad = $request->request->get('discapacidad');
+
+                    //REGISTRAR APODERADO
+                    $em = $this->getDoctrine()->getManager();
+                    //BUSACMOS AL APODERADO EN LA TABLA GRPERSONA CATASTRO.
+                    $percodigoApoderado = $em->getRepository('AkademiaBundle:Apoderado')->getbuscarApoderadoPersona($dni);
+                    if(!empty($percodigoApoderado)){
+                        
+                        // CAPTURAMOS EL ULTIMO RGISTRO DEL APODERADO EN PERSONA
+                        $codigo = $em->getRepository('AkademiaBundle:Apoderado')->maxDniPersona($dni);
+                        $percodigoApod = $codigo[0]['percodigo'];
+                       
+                        //ACTUALIZAR LOS DATOS DEL APODERADO
+                        $em->getRepository('AkademiaBundle:Apoderado')->actualizarPersona($apellidoPaterno, $apellidoMaterno, $nombre, $fechaNacimiento, $percodigoApod, $telefono, $correo, $direccion, intval($distrito),$sexo,$tipoDocumentoApoderado);
+
+                        //Búsqueda en Academia.apoderado
+                        $IDApoderado = $em->getRepository('AkademiaBundle:Apoderado')->getbuscarApoderado($dni);
+                    
+                        if(!empty($IDApoderado)){
+                            // SI EXISTE APODERADO EN LA ENTIDAD ACADEMIA.APODERADO SE ACTUALIZA SUS DATOS
+                            $em = $this->getDoctrine()->getManager();
+                            $codigo = $em->getRepository('AkademiaBundle:Apoderado')->maxDniAcademiaApod($dni);
+                            $idApoderado = $codigo[0]['id'];
+                            $em = $this->getDoctrine()->getRepository(Apoderado::class);
+                            $apoderado = $em->find($idApoderado);
+                            $apoderado->setPercodigo($percodigoApod);
+                            $em = $this->getDoctrine()->getManager();
+                            $em->flush();
+                            $idApod = $apoderado->getId();
+                        }else{
+                            
+                            // SI NO EXISTE EL APODERADO EN LA ENTIDAD APODERADO , SE REGISTRA UN NUEVO REGISTRO.
+                            $apoderado = new Apoderado();
+                            $apoderado->setDni($dni);
+                            $apoderado->setPercodigo($percodigoApod);
+                            $em = $this->getDoctrine()->getManager();
+                            $em->persist($apoderado);
+                            $em->flush();
+                            $idApod = $apoderado->getId();                 
+                        }
+
+                    }else{
+                        
+                        //si no existe apoderado en grpersona, registramos al usuario
+                        $datosApoderado = $em->getRepository('AkademiaBundle:Apoderado')->guardarPersona($dni,$apellidoPaterno,$apellidoMaterno, $nombre,$fechaNacimiento,$sexo,$telefono, $correo, $direccion,intval($distrito),$tipoDocumentoApoderado);
+                        //retornar el percodigo del nuevo registro
+                        $percodigoApoderado = $em->getRepository('AkademiaBundle:Apoderado')->getbuscarApoderadoPersona($dni);
+                        $percodigoApod = $percodigoApoderado[0]['id'];
+                        //Búsqueda en Academia.apoderadO
+                        $IDApoderado = $em->getRepository('AkademiaBundle:Apoderado')->getbuscarApoderado($dni);
+                    
+                        if(!empty($IDApoderado)){
+                            
+                            $codigo = $em->getRepository('AkademiaBundle:Apoderado')->maxDniAcademiaApod($dni);
+                            $idApoderado = $codigo[0]['id'];
+                            $em = $this->getDoctrine()->getRepository(Apoderado::class);
+                            $apoderado = $em->find($idApoderado);
+                            $apoderado->setPercodigo($percodigoApod);
+                            $em = $this->getDoctrine()->getManager();
+                            $em->flush();
+                            $idApod = $apoderado->getId();
+                        }else{
+                            $apoderado = new Apoderado();
+                            $apoderado->setDni($dni);
+                            $apoderado->setPercodigo($percodigoApod);
+                                      
+                            $em = $this->getDoctrine()->getManager();
+                            $em->persist($apoderado);
+                            $em->flush();
+                            $idApod = $apoderado->getId();                 
+                        }
+                    } 
+                
+                    //REGISTRAR PARTICIPANTE
+                    $em = $this->getDoctrine()->getManager();
+                    $percodigoParticipante = $em->getRepository('AkademiaBundle:Participante')->getbuscarParticipantePersona($dniParticipante);
+                
+                    if(!empty($percodigoParticipante)){
+                
+                        $codigo = $em->getRepository('AkademiaBundle:Apoderado')->maxDniPersona($dniParticipante);
+                        $percodigoPart = $codigo[0]['percodigo'];
+                        $em->getRepository('AkademiaBundle:Apoderado')->actualizarPersona($apellidoPaternoParticipante,$apellidoMaternoParticipante,$nombreParticipante,$fechaNacimientoParticipante, $percodigoPart, $telefono, $correo, $direccion, intval($distrito), $sexoParticipante,$tipoDocumentoParticipante);
+                        
+                        // Búsqueda en academia.participantes 
+                        $IDParticipante = $em->getRepository('AkademiaBundle:Participante')->getbuscarParticipante($dniParticipante);
             
-            }else{
-                $mensaje = 1;
-                return new JsonResponse($mensaje);
-            }                        
+                        if(!empty($IDParticipante)){      
+                       
+                            $codigo = $em->getRepository('AkademiaBundle:Participante')->maxDniAcademiaPart($dniParticipante);
+                            $idParticipante = $codigo[0]['id'];
+                            $em = $this->getDoctrine()->getRepository(Participante::class);
+                            $participante = $em->find($idParticipante);
+                            $participante->setPercodigo($percodigoPart);
+                           
+                            $em = $this->getDoctrine()->getManager();
+                            $em->flush();
+                            $idParticipanteN = $participante->getId();
+
+                            $em = $this->getDoctrine()->getManager();
+                            $em->getRepository('AkademiaBundle:Participante')->getActualizarApoderado($idApod, $idParticipanteN);  
+                           
+                        }else{
+                            
+                            $participante = new Participante();
+                            $participante->setDni($dniParticipante);
+                            $participante->setParentesco($parentesco);
+                            $participante->setTipoDeSeguro($tipoSeguro);
+                            $participante->setDiscapacitado($discapacidad);
+                            $participante->setPercodigo($percodigoPart);
+                            $em = $this->getDoctrine()->getRepository(Apoderado::class);
+                            $buscarApoderadoInscripcion = $em->find($idApod);
+                            $participante->setApoderado($buscarApoderadoInscripcion);
+                            $em = $this->getDoctrine()->getManager();
+                            $em->persist($participante);
+                            $em->flush();
+                            $idParticipanteN= $participante->getId();  
+
+                        } 
+
+                    }else{
+                        
+                        //Si no existe participante en grpersona, registramos al usuario
+                        $em = $this->getDoctrine()->getManager();
+                        $datosParticipante = $em->getRepository('AkademiaBundle:Apoderado')->guardarPersona($dniParticipante,$apellidoPaternoParticipante,$apellidoMaternoParticipante, $nombreParticipante,$fechaNacimientoParticipante,$sexoParticipante,$telefono, $correo, $direccion,intval($distrito),$tipoDocumentoParticipante);
+                       
+                        //Retornar el percodigo del nuevo registro
+                        $percodigoParticipante = $em->getRepository('AkademiaBundle:Apoderado')->getbuscarApoderadoPersona($dniParticipante);
+                        $percodigoPart = $percodigoParticipante[0]['id'];
+                        
+                        //Búsqueda en academia.participantes 
+                        $IDParticipante = $em->getRepository('AkademiaBundle:Participante')->getbuscarParticipante($dniParticipante);
+                
+                       
+                        if(!empty($IDParticipante)){      
+                            
+                            $codigo = $em->getRepository('AkademiaBundle:Participante')->maxDniAcademiaPart($dniParticipante);
+                            $idParticipante = $codigo[0]['id'];
+                            $em = $this->getDoctrine()->getRepository(Participante::class);
+                            $participante = $em->find($idParticipante);
+                            $participante->setPercodigo($percodigoPart);           
+                            $em = $this->getDoctrine()->getManager();
+                            $em->flush();
+                            $idParticipanteN = $participante->getId();
+
+                            $em = $this->getDoctrine()->getManager();
+                            $em->getRepository('AkademiaBundle:Participante')->getActualizarApoderado($idApod, $idParticipanteN);
+                           
+                        }else{
+                            
+
+                            //Participantes nuevos academia.participante
+                            $participante = new Participante();
+                            $participante->setDni($dniParticipante);
+                            $participante->setParentesco($parentesco);
+                            $participante->setTipoDeSeguro($tipoSeguro);
+                            $participante->setDiscapacitado($discapacidad);
+                            $participante->setPercodigo($percodigoPart);
+                            $em = $this->getDoctrine()->getRepository(Apoderado::class);
+                            $buscarApoderadoInscripcion = $em->find($idApod);
+                            $participante->setApoderado($buscarApoderadoInscripcion);
+                            $em = $this->getDoctrine()->getManager();
+                            $em->persist($participante);
+                            $em->flush();
+                            $idParticipanteN= $participante->getId();       
+                        } 
+                    }
+                        $idHorario = $request->request->get('idHorario');
+                        $fechaInscripcion = $hoy = date("Y-m-d");
+                        $inscripcion = new Inscribete();
+                        $estado=1;
+                        $inscripcion->setFechaInscripcion(new \DateTime($fechaInscripcion));
+                        $inscripcion->setEstado($estado);
+                        $em = $this->getDoctrine()->getRepository(Participante::class);
+                        $buscarParticipante = $em->find($idParticipanteN);
+                        $inscripcion->setParticipante($buscarParticipante);
+                        $em = $this->getDoctrine()->getRepository(Horario::class);
+                        $buscarHorario = $em->find($idHorario);
+                        $inscripcion->setHorario($buscarHorario);            
+                        
+                        $em = $this->getDoctrine()->getManager();
+                        $em->persist($inscripcion);
+                        $em->flush();
+                        
+                        //Actualizar cantidad de preinscripciones disponibles
+                        $preinscripciones = $em->getRepository('AkademiaBundle:Horario')->getActualizarPreinscripcionesHorarios($idHorario);   
+                        $preinsHorario = $em->getRepository('AkademiaBundle:Horario')->getHorariosPreinscripciones($idHorario);
+                        $cantPre = $preinsHorario[0]['preinscripciones'];
+                        if($cantPre == 0){
+                            $actConvocatoria = $em->getRepository('AkademiaBundle:Horario')->getActualizaConv($idHorario);
+                        }
+
+                        $em2 = $this->getDoctrine()->getManager();
+
+                        $mdlFicha = $em2->getRepository('AkademiaBundle:Inscribete')->getFicha($inscripcion->getId());
+                        $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($idHorario);
+                        $mdlFicha[0]['turnos']=$fichaTurnoHorario;
+                                       
+                        $encoders = array(new JsonEncoder());
+                        $normalizer = new ObjectNormalizer();
+                        $normalizer->setCircularReferenceLimit(1);
+                        $normalizer->setCircularReferenceHandler(function ($object) {
+                            return $object->getId();
+                        });
+                        $normalizers = array($normalizer);
+                        $serializer = new Serializer($normalizers, $encoders);
+                        $jsonContent = $serializer->serialize($mdlFicha,'json');
+                        return new JsonResponse($jsonContent);
+                
+                }else{
+                    $mensaje = 1;
+                    return new JsonResponse($mensaje);
+                }
+
+                //FIN VALIDACION DISTRITO
+            }
+
+            else{
+                return new JsonResponse('5');
+            }                
         }
     }
     
@@ -385,9 +432,14 @@ public function indexAction(Request $request){
 
 	public function generarPdfInscripcionAction(Request $request , $id){   
  	     
-        $em2 = $this->getDoctrine()->getManager();
-        $mdlFicha = $em2->getRepository('AkademiaBundle:Inscribete')->getFicha($id);
+        $em = $this->getDoctrine()->getManager();
+
+        $mdlFicha = $em->getRepository('AkademiaBundle:Inscribete')->getFicha($id);
+        $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($mdlFicha[0]['horario_id']);
+        $mdlFicha[0]['turnos']=$fichaTurnoHorario;
+
         $html = $this->renderView('AkademiaBundle:Pdf:inscripcionPdf.html.twig', ["inscripcion" => $mdlFicha]);
+
         $pdf = $this->container->get("white_october.tcpdf")->create();
         $pdf->SetAuthor('IPD');
         $pdf->setPrintHeader(false);
@@ -407,8 +459,10 @@ public function indexAction(Request $request){
     // FUNCION PARA GENERAR LA DECLARACION JURADA
 
     public function generarPdfDeclaracionJuradaAction(Request $request , $id){
+        
         $em2 = $this->getDoctrine()->getManager();
         $mdlFicha = $em2->getRepository('AkademiaBundle:Inscribete')->getFicha($id);
+        
         $html = $this->renderView('AkademiaBundle:Pdf:declaracionJuradaPdf.html.twig', ["inscripcion" => $mdlFicha]);
      
         $pdf = $this->container->get("white_october.tcpdf")->create();
@@ -443,7 +497,7 @@ public function indexAction(Request $request){
             $headers = 'From: soporte@ipd.gob.pe' . "\r\n" .
                 'X-Mailer: PHP/' . phpversion();
             mail($correo, $subject, $message, $headers);
-            return new JsonResponse("Enviado");
+            return new JsonResponse("1");
         }
     }
     

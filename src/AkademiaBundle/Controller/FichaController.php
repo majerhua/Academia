@@ -32,10 +32,13 @@ class FichaController extends Controller
         if($request->isXmlHttpRequest()){
            
             $idFicha = $request->request->get('id');
-            $em2 = $this->getDoctrine()->getManager();
-            $ficha = $em2->getRepository('AkademiaBundle:Inscribete')->getFicha($idFicha);
-            
-            if(!empty($ficha)){
+            $em = $this->getDoctrine()->getManager();
+            $ficha = $em->getRepository('AkademiaBundle:Inscribete')->getFicha($idFicha);
+            $idHorario = $ficha[0]['horario_id'];
+            $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($idHorario);
+            $ficha[0]['turnos'] = $fichaTurnoHorario;
+
+            if( !empty($ficha) && !empty($fichaTurnoHorario) ){
                 $encoders = array(new JsonEncoder());
                 $normalizer = new ObjectNormalizer();
                 $normalizer->setCircularReferenceLimit(1);

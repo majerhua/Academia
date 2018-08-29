@@ -9,7 +9,7 @@ namespace ApiRestFullAcademiaBundle\Repository;
  * repository methods below.
  */
 
-use Doctrine\DBAL\DBALException;
+
 
 
 
@@ -525,19 +525,17 @@ class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
 
     public function registrarUsuario($nombre,$paterno,$materno,$numeroDoc,$telefono,$correo,$organizacion,$estado,$password,$token,$fechaNacimiento,$sexo,$tipoDoc){
 
-        try{
+        $query = " INSERT INTO ACADEMIA.usuario_app(nombre,paterno,materno,numeroDoc,telefono,correo,organizacion,estado,password,token,fechaNacimiento,sexo,tipoDoc) VALUES('$nombre','$paterno','$materno','$numeroDoc','$telefono','$correo','$organizacion','$estado','$password','$token', '$fechaNacimiento','$sexo','$tipoDoc'); ";
 
-            $query = " INSERT INTO ACADEMIA.usuario_app(nombre,paterno,materno,numeroDoc,telefono,correo,organizacion,estado,password,token,fechaNacimiento,sexo,tipoDoc) VALUES('$nombre','$paterno','$materno','$numeroDoc','$telefono','$correo','$organizacion','$estado','$password','$token', '$fechaNacimiento','$sexo','$tipoDoc'); ";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
 
-            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
-            $stmt->execute();
+        $query2 ="SELECT id FROM ACADEMIA.usuario_app WHERE correo = '$correo'";
+        $stmt2 = $this->getEntityManager()->getConnection()->prepare($query2);
+        $stmt2->execute();
+        $idUsuario = $stmt2->fetchAll();
 
-            $query2 ="SELECT id FROM ACADEMIA.usuario_app WHERE correo = '$correo'";
-            $stmt2 = $this->getEntityManager()->getConnection()->prepare($query2);
-            $stmt2->execute();
-            $idUsuario = $stmt2->fetchAll();
-
-            return $idUsuario; 
+        return $idUsuario; 
     }
 
     public function activarCuentaUsuario($token){
