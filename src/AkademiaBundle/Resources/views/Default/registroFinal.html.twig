@@ -605,6 +605,7 @@ $("#inscribirPreinscrito").on('click',function(){
 			$("#btn-inscripcion").attr("disabled", true);	
 		},
 		success: function(data){
+
 			if (data == 1){
 				$("#btn-confirmar-inscripcion").attr("disabled", true);
 				$('#input-codigo-inscripcion').focus();
