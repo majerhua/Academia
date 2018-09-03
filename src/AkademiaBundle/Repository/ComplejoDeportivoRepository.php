@@ -13,7 +13,7 @@ class ComplejoDeportivoRepository extends \Doctrine\ORM\EntityRepository
 
 	public function getComplexesPublicGeneralByDisability($disability,$ageBeneficiario)
 	{
-		$query = "SELECT distinct edde.ede_codigo as id, edde.ede_nombre as nombre ,edde.ubicodigo ,edde.ede_direccion as direccion, edde.ede_estado as estado,edde.ede_discapacitado as discapacitado from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis, CATASTRO.edificacionesdeportivas AS edde where hor.discapacitados='$disability' and hor.estado=1 and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and hor.vacantes <> 0 and hor.convocatoria=1 and '$ageBeneficiario'<=hor.edadMaxima and '$ageBeneficiario'>=hor.edadMinima;";
+		$query = "SELECT distinct edde.ede_codigo as id, edde.ede_nombre as nombre ,edde.ubicodigo ,edde.ede_direccion as direccion, edde.ede_estado as estado,edde.ede_discapacitado as discapacitado from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis, CATASTRO.edificacionesdeportivas AS edde where hor.discapacitados='$disability' and hor.estado=1 and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and hor.vacantes <> 0 and hor.convocatoria=1 and hor.etapa = 1 and '$ageBeneficiario'<=hor.edadMaxima and '$ageBeneficiario'>=hor.edadMinima;";
 
 		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
 		$stmt->execute();

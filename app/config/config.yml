@@ -80,7 +80,6 @@ doctrine:
         #user: "%database.user_ipdsrv%"
         #password: "%database.password_ipdsrv%"
 
-
         #user: '%database_user%'
         #password: '%database_password%'
         charset: UTF8

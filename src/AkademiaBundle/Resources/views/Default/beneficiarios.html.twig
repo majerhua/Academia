@@ -361,6 +361,7 @@
 								</div>
 							</li>
 
+{# cbasistencia #}
 							<li class="list-group-item">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
@@ -478,7 +479,6 @@
         });
 
 		// EDITAR PARTICIPANTE
-		
 		function editarParticipante(idParticipante){
 
 			var idParticipante = idParticipante;
@@ -511,7 +511,11 @@
 					if(idAsis == 1){
 						
 						$("#asistenciaParticipante").val(0);
-
+						$("#optiones").attr('hidden',true);
+						$("#optiones2").attr('hidden',true);
+						$("#categoriaParticipante").attr('readonly',false);
+						$("#categoriaParticipante").attr('disabled',false);
+						$("#categoriaParticipante").val(0);
 
 					}else{
 

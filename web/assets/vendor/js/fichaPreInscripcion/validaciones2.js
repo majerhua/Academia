@@ -87,7 +87,7 @@ jQuery('#dniApoderado, #dni-hijo').on('keypress', function (e) {
 
 		switch(tipo){
 			case 'letras': 
-			filtro = 'abcdefghijklmñnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZÑ';
+			filtro = 'abcdefghijklmnñopqrstuvwxyz ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
 			break;
 			case 'letrasNumeros': 
 			filtro = 'abcdefghijklmnopqrstuvwxñyzABCDEFGHIÑJKLMNOPQRSTUVWXYZ 0123456789';
