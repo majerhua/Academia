@@ -25,6 +25,7 @@ class DisciplinaDeportivaRepository extends \Doctrine\ORM\EntityRepository
                             hor.edi_codigo = eddis.edi_codigo AND 
                             edde.ede_codigo=eddis.ede_codigo AND 
                             dis.dis_codigo=eddis.dis_codigo AND 
+                            hor.etapa = 1 AND
 
                             hor.estado=1 AND 
                             hor.vacantes<> 0 AND

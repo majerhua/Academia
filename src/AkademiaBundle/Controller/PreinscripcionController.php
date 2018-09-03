@@ -81,19 +81,6 @@ class PreinscripcionController extends Controller
         return $this->render('AkademiaBundle:Default:fichaPreInscripcion.html.twig' , array("complejosDeportivo" => $mdlComplejoDeportivo , "complejosDisciplinas" => $mdlComplejoDisciplina , "departamentos" => $mdlDepartamento,"provincias" => $mdlProvincia ,"distritos" => $mdlDistrito ,'ditritosCD' => $mdlDitritoCD , "departamentosCD" => $mdlDepartamentosCD ,'provinciasCD' => $mdlProvinciasCD, 'flagUser'=>$flagUser ));     
     }
 
-
-  /*  public function tableHorarioPreInscripcionAction(Request $request){
-
-        $idComplejoDisciplina = $request->request->get('idComplejoDisciplina');  
-        $em = $this->getDoctrine()->getManager();
-
-        $mdlhorariosComplejoDisciplina = $em->getRepository('AkademiaBundle:Horario')->getHorariosComplejoDisciplina($idComplejoDisciplina);
-        $mdlturnosComplejoDisciplina = $em->getRepository('AkademiaBundle:Horario')->getTurnosComplejoDisciplina($idComplejoDisciplina);
-
-        echo $this->renderView('AkademiaBundle:Default:tableHorario.html.twig',array('horarios' => $mdlhorariosComplejoDisciplina , "turnos" => $mdlturnosComplejoDisciplina));
-        exit;
-    }
-*/
     //FUNCION PARA CARGAR LOS DATOS DE LAS DISCIPLINAS Y HORARIOS SELECCIONADOS
 
 	public function registroFinalAction(Request $request,$disability){

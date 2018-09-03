@@ -57,7 +57,7 @@ class HorarioController extends Controller
         $flagUser = '0';
         $em = $this->getDoctrine()->getManager();
 
-        //Visualizar Horarios de Referencia para Preinscripcion, Publico en General
+        //Visualizar Horarios de Referencia para Preinscripcion, Landing Page
         if( $flag == 0 ){
 
             $mdlScheduleDiscipline = $em->getRepository('AkademiaBundle:Horario')->getScheduleDisciplineLanding($idCompleDis,$flagDiscapacitado);

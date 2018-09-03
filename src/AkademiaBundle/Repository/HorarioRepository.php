@@ -38,7 +38,7 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
                     FROM ACADEMIA.horario hor
                     WHERE 
                     convocatoria= 1  AND
-                    vacantes <> 0 AND estado = 1 AND edi_codigo = $idCompleDis AND '$edadBeneficiario'<=edadMaxima AND  '$edadBeneficiario'>=edadMinima AND hor.discapacitados = $flagDiscapacitado ORDER BY hor.edadMinima ASC";
+                    vacantes <> 0 AND estado = 1 AND etapa=1 AND edi_codigo = $idCompleDis AND '$edadBeneficiario'<=edadMaxima AND '$edadBeneficiario'>=edadMinima AND hor.discapacitados = $flagDiscapacitado ORDER BY hor.edadMinima ASC";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $horariosComplejoDisciplina = $stmt->fetchAll();

@@ -29,6 +29,7 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 	                hor.discapacitados = '$disability' AND
 	                hor.vacantes <> 0 AND
 	                hor.convocatoria = 1 AND
+	                hor.etapa = 1 AND
 
 	                ubiDpto.ubidpto <> '00' AND 
 	                ubiDpto.ubidistrito ='00' AND

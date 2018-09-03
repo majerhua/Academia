@@ -30,6 +30,7 @@ class DistritoRepository extends \Doctrine\ORM\EntityRepository
                 hor.discapacitados = '$disability' AND
                 hor.vacantes <> 0 AND
                 hor.convocatoria = 1 AND
+                hor.etapa = 1 AND
                 
                 ubi.ubidistrito <> '00' AND 
                 ubi.ubiprovincia <> '00' AND 
