@@ -425,7 +425,10 @@ class PreinscripcionController extends Controller
         $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($mdlFicha[0]['horario_id']);
         $mdlFicha[0]['turnos']=$fichaTurnoHorario;
 
+    //return $this->render('AkademiaBundle:Pdf:inscripcionPdf.html.twig', ["inscripcion" => $mdlFicha]);
+
         $html = $this->renderView('AkademiaBundle:Pdf:inscripcionPdf.html.twig', ["inscripcion" => $mdlFicha]);
+
 
         $pdf = $this->container->get("white_october.tcpdf")->create();
         $pdf->SetAuthor('IPD');
@@ -433,7 +436,7 @@ class PreinscripcionController extends Controller
         $pdf->SetTitle('Ficha de Inscripcion');
         $pdf->SetSubject('Mecenazgo Deportivo');
         $pdf->SetKeywords('TCPDF, PDF, Mecenazgo Deportivo, IPD, Sistemas IPD, Deportistas');       
-        $pdf->AddPage();
+        //$pdf->AddPage();
         $pdf->setCellPaddings(0, 0, 0, 0);                
         $pdf->writeHTMLCell(
                     $w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true
