@@ -74,14 +74,12 @@ doctrine:
         port: '%database_port%'
         dbname: '%database_name%'
         
-        user:   '%database_user%'
-        password: '%database_password%'
-
-        #user: "%database.user_ipdsrv%"
-        #password: "%database.password_ipdsrv%"
-
-        #user: '%database_user%'
+        #user:   '%database_user%'
         #password: '%database_password%'
+
+        user: "%database.user_ipdsrv%"
+        password: "%database.password_ipdsrv%"
+
         charset: UTF8
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
