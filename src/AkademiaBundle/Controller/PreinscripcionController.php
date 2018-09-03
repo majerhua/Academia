@@ -429,14 +429,13 @@ class PreinscripcionController extends Controller
 
         $html = $this->renderView('AkademiaBundle:Pdf:inscripcionPdf.html.twig', ["inscripcion" => $mdlFicha]);
 
-
-        $pdf = $this->container->get("white_october.tcpdf")->create();
+        $pdf = $this->container->get("white_october.tcpdf")->create('vertical', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $pdf->SetAuthor('IPD');
         $pdf->setPrintHeader(false);
         $pdf->SetTitle('Ficha de Inscripcion');
-        $pdf->SetSubject('Mecenazgo Deportivo');
-        $pdf->SetKeywords('TCPDF, PDF, Mecenazgo Deportivo, IPD, Sistemas IPD, Deportistas');       
-        //$pdf->AddPage();
+        $pdf->SetSubject('La academia IPD');
+        $pdf->SetKeywords('TCPDF, PDF, La Academia, IPD, Sistemas IPD, Deportistas');       
+        $pdf->AddPage();
         $pdf->setCellPaddings(0, 0, 0, 0);                
         $pdf->writeHTMLCell(
                     $w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true
