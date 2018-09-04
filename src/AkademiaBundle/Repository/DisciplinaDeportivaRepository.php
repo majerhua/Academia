@@ -11,6 +11,25 @@ namespace AkademiaBundle\Repository;
 class DisciplinaDeportivaRepository extends \Doctrine\ORM\EntityRepository
 {
 
+public function getDisciplinasActivas()
+    {
+        $query = "  SELECT dis.dis_codigo codigo,
+                    dis.dis_descripcion disciplina,
+                    ced.edad_min_discapacitado,
+                    ced.edad_max_discapacitado,
+                    ced.edad_min_convencional,
+                    ced.edad_max_convencional 
+                    FROM CATASTRO.disciplina dis
+                    INNER JOIN ACADEMIA.ConfiguracionEdadesDisciplina ced ON ced.disciplina_id=dis.dis_codigo
+                    WHERE dis.dis_estado=1";
+        
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $disciplinasActivas = $stmt->fetchAll();
+        return $disciplinasActivas;
+    }
+
+
     public function getDisciplinesPublicGeneralByDisability($disability,$ageBeneficiario)
     {
         $query = "SELECT  distinct 

@@ -4,7 +4,11 @@
 #  defaults: { _controller: AkademiaBundle:ExportacionData:exportPrueba }
 
 
-##PAGINA MOSTRAR HORARIOS
+##PAGINA MOSTRAR DISCIPLINAS
+
+akademia_disciplinasPrincipal:
+  path: /disciplinas
+  defaults: { _controller: AkademiaBundle:MigracionAsistencia:disciplinaPrincipal}
 
 ##END
 
