@@ -173,7 +173,7 @@ const eventAgregarTurnos = ()=>{
 			totalTurnosAcumulados[keyArray]= turnosAcumulados;			
 			cont++;
 
-			$turnosSeleccionado.append("<div class=' row div-cont-turno' key-div="+keyArray+" ><div class='col-md-6' >"+turno_dias+"</div>"+"<div class='col-md-5'> de "+intHoraInicio+":"+turMinInicio+" a "+intHoraFin+":"+turMinFin+"</div><div class='col-md-1'><i title='eliminar turno' style='cursor:pointer;' class='icon-trash'  onclick=eliminarTurno("+keyArray+")></i></div></div>");
+			$turnosSeleccionado.append("<div class=' row div-cont-turno' key-div="+keyArray+"  ><div class='col-md-6'  >*"+turno_dias+"</div>"+"<div class='col-md-5'> de "+intHoraInicio+":"+turMinInicio+" a "+intHoraFin+":"+turMinFin+"</div><div class='col-md-1'><i title='eliminar turno' style='cursor:pointer;' class='icon-trash'  onclick=eliminarTurno("+keyArray+")></i></div></div>");
 			$containerTurnosSeleccionados.css('background-color','#ffffcc');
 		}else{
 
@@ -194,7 +194,7 @@ const eventAgregarTurnos = ()=>{
 			}else{
 
 				totalTurnosAcumulados[keyArray]= turnosAcumulados;		
-				$turnosSeleccionado.append("<div class=' row div-cont-turno' key-div="+keyArray+" ><div class='col-md-6' >"+turno_dias+"</div>"+"<div class='col-md-5'> de "+intHoraInicio+":"+turMinInicio+" a "+intHoraFin+":"+turMinFin+"</div><div class='col-md-1'><i title='eliminar turno' style='cursor:pointer;' class='icon-trash'  onclick=eliminarTurno("+keyArray+")></i></div></div>" );
+				$turnosSeleccionado.append("<div class=' row div-cont-turno' key-div="+keyArray+"><div class='col-md-6' >*"+turno_dias+"</div>"+"<div class='col-md-5'> de "+intHoraInicio+":"+turMinInicio+" a "+intHoraFin+":"+turMinFin+"</div><div class='col-md-1'><i title='eliminar turno' style='cursor:pointer;' class='icon-trash'  onclick=eliminarTurno("+keyArray+")></i></div></div>" );
 				$containerTurnosSeleccionados.css('background-color','#ffffcc');
 			
 			}

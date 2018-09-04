@@ -501,28 +501,38 @@ label[for="imagen-ficha"] {
 }
 
 .mapa{
-
-	height: 45vh;
-
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
 }
 
 .mapa>iframe{
 
 	height: 45vh;
+	width: 95%;
 
 }
 /*FIN PROCESO DE INSCRIPCION */
 
+
+
 .card{
 
-	padding: 2px;
+	padding: 7px;
 	width: 100%;
 	margin-bottom: 10px;
 	margin-top: 20px;
 	border-radius: 2px;
+	background: #fbfbfb;
 	box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-
 }
+
+	.card-padding{
+		box-sizing: content-box;
+		padding: 7px 18px 7px 18px;
+	}
 
 .title-card{
 
@@ -768,17 +778,7 @@ label[for="imagen-ficha"] {
 
 }
 
-.card{
 
-	padding: 7px;
-	width: 100%;
-	margin-bottom: 10px;
-	margin-top: 20px;
-	border-radius: 2px;
-	box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-	background: #fbfbfb;
-
-}
 .btn{
 
 	

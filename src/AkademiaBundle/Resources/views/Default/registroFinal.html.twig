@@ -5,7 +5,9 @@
 <div class="proceso">
 	<div class="proceso-inscripcion__horarios" id="process4">
 		<div class="container-card col-xs-12 col-sm-12 col-md-8 col-lg-7">
-			<div class="card">
+
+			<div class="card card-padding" style="overflow: hidden;">
+
 				<p class="title-card text-center">ELIGE UN COMPLEJO DEPORTIVO</p>
 				<hr>
 				<div class="complejo row">
@@ -14,14 +16,9 @@
 						<div>
 			            	<select id="departamentoHorario" class="effect-3"  name="departamentoHorario" onchange="cambiarDepartamentoHorario(this)">
 			                	<option value="">--Seleccionar--</option>
-			                	{#{% for  dep in  departamentos  %}#}
 									{% for depFlag in departamentosFlag %}
-										{#{%  if dep['id'] == depFlag['idDepartamento'] %}#}
 											<option value="{{depFlag['id']}}">{{depFlag['nombre']}}</option>
-										{#{% endif %}#}
-
 									{% endfor %}
-			                	{#{% endfor %}#}	
 			            	</select>
 			            	<span class="focus-border"></span>
 			        	</div>
@@ -58,10 +55,14 @@
 		        	</div>
 				</div>
 
-				<div class="mapa row">
-					<!--<iframe  id="iframe_lugar" class= "well well-sm col-xs-12 col-sm-12" width="800" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/search?q='Peru%20lima'&key=AIzaSyCzpAv7N7yZaVqzwB7r-xuhJZnVWEvVimo" allowfullscreen></iframe>-->
-					<iframe  id="iframe_lugar" class= "well well-sm col-xs-12 col-sm-12"  width="800" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q='Peru%20lima'&key=AIzaSyCzpAv7N7yZaVqzwB7r-xuhJZnVWEvVimo" allowfullscreen></iframe>
+				<div class="row">
+					<div class="mapa">
+						<iframe  id="iframe_lugar" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q='Peru%20lima'&key=AIzaSyCzpAv7N7yZaVqzwB7r-xuhJZnVWEvVimo" allowfullscreen></iframe>
+					</div>
 				</div>
+
+				
+
 		   </div>
 		</div>
 
@@ -522,8 +523,8 @@ function registrar(){
 					$("#process5").show();
 					sessionStorage.removeItem("idInscripcion");
 					sessionStorage.setItem("idInscripcion",valor.id);
-					$("#ancla-imprimir-fichaInscripcion").attr('href',"/academia/web/ajax/pdf/inscripcion/"+sessionStorage.getItem("idInscripcion"));
-					$("#ancla-imprimir-declaracion-jurada").attr('href',"/academia/web/ajax/pdf/declaracion-jurada/"+sessionStorage.getItem("idInscripcion"));
+					$("#ancla-imprimir-fichaInscripcion").attr('href',"ajax/pdf/inscripcion/"+sessionStorage.getItem("idInscripcion"));
+					$("#ancla-imprimir-declaracion-jurada").attr('href',"ajax/pdf/declaracion-jurada/"+sessionStorage.getItem("idInscripcion"));
 					$("#codigo-inscripcionRef").append(valor.id);
 					$("#nombre-ficha").append(valor.pernombres);
 					$("#apellidoPaterni-ficha").append(valor.perapepaterno);

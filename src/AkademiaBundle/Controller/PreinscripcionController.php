@@ -425,23 +425,25 @@ class PreinscripcionController extends Controller
         $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($mdlFicha[0]['horario_id']);
         $mdlFicha[0]['turnos']=$fichaTurnoHorario;
 
-    //return $this->render('AkademiaBundle:Pdf:inscripcionPdf.html.twig', ["inscripcion" => $mdlFicha]);
-
+        //return $this->render('AkademiaBundle:Pdf:inscripcionPdf.html.twig', ["inscripcion" => $mdlFicha]);
         $html = $this->renderView('AkademiaBundle:Pdf:inscripcionPdf.html.twig', ["inscripcion" => $mdlFicha]);
 
-        $pdf = $this->container->get("white_october.tcpdf")->create('vertical', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        $pdf->SetAuthor('IPD');
+        $pdf = $this->container->get("white_october.tcpdf")->create(
+               'PORTRAID', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false
+        );
+        $pdf->SetAuthor('DNRPD');
+        $pdf->SetTitle('La Academia IPD');
+        $pdf->SetSubject('La Academia IPD');
+        $pdf->SetKeywords('TCPDF, PDF, La Academia IPD, IPD, Sistemas IPD, Deportistas');
+        $pdf->setFontSubsetting(true);
         $pdf->setPrintHeader(false);
-        $pdf->SetTitle('Ficha de Inscripcion');
-        $pdf->SetSubject('La academia IPD');
-        $pdf->SetKeywords('TCPDF, PDF, La Academia, IPD, Sistemas IPD, Deportistas');       
+        $pdf->SetFont('helvetica', '', 11, '', true);
         $pdf->AddPage();
-        $pdf->setCellPaddings(0, 0, 0, 0);                
+        $pdf->setCellPaddings(0, 0, 0, 0);
         $pdf->writeHTMLCell(
-                    $w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true
-            );         
-        $pdf->writeHTML($html); 
-        $pdf->Output("compromisoIPD.pdf", 'I');
+               $w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true
+        );
+        $pdf->Output("LaAcademia.pdf", 'I');
         exit;
     }
     
@@ -454,19 +456,22 @@ class PreinscripcionController extends Controller
         
         $html = $this->renderView('AkademiaBundle:Pdf:declaracionJuradaPdf.html.twig', ["inscripcion" => $mdlFicha]);
      
-        $pdf = $this->container->get("white_october.tcpdf")->create();
-        $pdf->SetAuthor('IPD');
+        $pdf = $this->container->get("white_october.tcpdf")->create(
+               'PORTRAID', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false
+        );
+        $pdf->SetAuthor('DNRPD');
+        $pdf->SetTitle('La Academia IPD');
+        $pdf->SetSubject('La Academia IPD');
+        $pdf->SetKeywords('TCPDF, PDF, La Academia IPD, IPD, Sistemas IPD, Deportistas');
+        $pdf->setFontSubsetting(true);
         $pdf->setPrintHeader(false);
-        $pdf->SetTitle('Declaracion Jurada');
-        $pdf->SetSubject('Mecenazgo Deportivo');
-        $pdf->SetKeywords('TCPDF, PDF, Mecenazgo Deportivo, IPD, Sistemas IPD, Deportistas');       
+        $pdf->SetFont('helvetica', '', 11, '', true);
         $pdf->AddPage();
-        $pdf->setCellPaddings(0, 0, 0, 0);                
+        $pdf->setCellPaddings(0, 0, 0, 0);
         $pdf->writeHTMLCell(
-                    $w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true
-            );         
-        $pdf->writeHTML($html);
-        $pdf->Output("compromisoIPD.pdf", 'I');
+               $w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true
+        );
+        $pdf->Output("LaAcademia.pdf", 'I');
         exit;
 
     }

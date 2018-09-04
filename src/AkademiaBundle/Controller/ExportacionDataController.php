@@ -88,7 +88,6 @@ class ExportacionDataController extends Controller
     return $response;
   }
 
-
   public function exportCantidadHorariosCreadosRegionAction(Request $request){
 
     $idComplejo = $request->query->get('idComplejo');
@@ -97,17 +96,17 @@ class ExportacionDataController extends Controller
     $response = new StreamedResponse(function() use($conn,$idComplejo) {
 
       $handle = fopen('php://output','w+');
-              fputcsv($handle,['Departamento','Provincia','Complejo','Disciplina','Discapacidad','CodigoHorario','Horario','Convocatoria','Estado'],",");
+              fputcsv($handle,['Departamento','Provincia','Complejo','Disciplina','Modalidad','CodigoHorario','Horario','Etapa','Convocatoria','Estado'],",");
 
       $results = $conn->query("exec ACADEMIA.cantidadHorariosCreadosRegion '$idComplejo' ");
 
       while($row = $results->fetch()){
-        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['Discapacidad'],$row['CodigoHorario'],$row['Horario'],$row['Convocatoria'],$row['Estado']), ",");
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['Modalidad'],$row['CodigoHorario'],$row['Horario'],$row['Etapa'],$row['Convocatoria'],$row['Estado']), ",");
       }
       fclose($handle);
     });
     $response->setStatusCode(200);
-    $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+    $response->headers->set('Content-Type', 'text/csv; charset=UTF-16LE');
     $response->headers->set('Content-Disposition', 'attachment; filename="cantidadHorariosCreadosRegion.csv"');
     return $response;
   }
@@ -160,7 +159,7 @@ class ExportacionDataController extends Controller
       
       $handle = fopen('php://output','w+');
 
-      fputcsv($handle, ['Departamento','Provincia' ,'Complejo','Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Matricula','Asistencia','Horario','Modalidad','TipoSeguro','Telefono','Correo'],",");
+      fputcsv($handle, ['Departamento','Provincia' ,'Complejo','Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Matricula','Asistencia','Horario','Modalidad','Etapa','TipoSeguro','Telefono','Correo'],",");
   
       $queryConMes = "SELECT ubiDpto.ubinombre Departamento ,ubiProv.ubinombre Provincia  , ede.ede_nombre as Complejo,
                               dis.dis_descripcion as Disciplina, grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, 
@@ -228,6 +227,13 @@ class ExportacionDataController extends Controller
                                 WHEN 1 THEN 'PersonasDiscapacidad'
                                 ELSE 'No se sabe' END
                                 AS Modalidad,
+                                CAST(
+                                   CASE 
+                                      WHEN hor.etapa = 0 
+                                       THEN 'Formacion' 
+                                      ELSE 'Masificacion' 
+                                   END AS VARCHAR)
+                                as 'Etapa',
                                 par.tipoDeSeguro TipoSeguro,
                                 grApod.pertelefono Telefono,
                                 grApod.percorreo Correo
@@ -357,6 +363,13 @@ class ExportacionDataController extends Controller
                                 WHEN 1 THEN 'PersonasDiscapacidad'
                                 ELSE 'No se sabe' END
                                 AS Modalidad,
+                                CAST(
+                                   CASE 
+                                      WHEN hor.etapa = 0 
+                                       THEN 'Formacion' 
+                                      ELSE 'Masificacion' 
+                                   END AS VARCHAR)
+                                as 'Etapa',
                                 par.tipoDeSeguro TipoSeguro,
                                 grApod.pertelefono Telefono,
                                 grApod.percorreo Correo
@@ -427,7 +440,7 @@ class ExportacionDataController extends Controller
                
           while($row = $results->fetch()) {
 
-            fputcsv($handle, array( $row['Departamento'],$row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['Nombres'],$row['FechaNacimiento'],$row['Edad'],$row['Sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Matricula'],$row['Asistencia'],$row['Horario'],$row['Modalidad'],$row['TipoSeguro'],$row['Telefono'],$row['Correo']  ), ",");
+            fputcsv($handle, array( $row['Departamento'],$row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['Nombres'],$row['FechaNacimiento'],$row['Edad'],$row['Sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Matricula'],$row['Asistencia'],$row['Horario'],$row['Modalidad'],$row['Etapa'],$row['TipoSeguro'],$row['Telefono'],$row['Correo']  ), ",");
           }
           fclose($handle);
         });
@@ -450,7 +463,7 @@ class ExportacionDataController extends Controller
        
       $handle = fopen('php://output','w+');
 
-      fputcsv($handle, ['Departamento','Provincia' ,'Complejo','Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Matricula','Asistencia','Horario','Modalidad','TipoSeguro','Telefono','Correo'],",");
+      fputcsv($handle, ['Departamento','Provincia' ,'Complejo','Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Matricula','Asistencia','Horario','Modalidad','Etapa','TipoSeguro','Telefono','Correo'],",");
   
       $queryConMes = "SELECT ubiDpto.ubinombre Departamento ,ubiProv.ubinombre Provincia  , ede.ede_nombre as Complejo,
                               dis.dis_descripcion as Disciplina, grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, 
@@ -520,6 +533,13 @@ class ExportacionDataController extends Controller
                                 WHEN 1 THEN 'PersonasDiscapacidad'
                                 ELSE 'No se sabe' END
                                 AS Modalidad,
+                                CAST(
+                                   CASE 
+                                      WHEN hor.etapa = 0 
+                                       THEN 'Formacion' 
+                                      ELSE 'Masificacion' 
+                                   END AS VARCHAR)
+                                as 'Etapa',
                                 par.tipoDeSeguro TipoSeguro,
                                 grApod.pertelefono Telefono,
                                 grApod.percorreo Correo
@@ -647,6 +667,13 @@ class ExportacionDataController extends Controller
                                 WHEN 1 THEN 'PersonasDiscapacidad'
                                 ELSE 'No se sabe' END
                                 AS Modalidad,
+                                CAST(
+                                   CASE 
+                                      WHEN hor.etapa = 0 
+                                       THEN 'Formacion' 
+                                      ELSE 'Masificacion' 
+                                   END AS VARCHAR)
+                                as 'Etapa',
                                 par.tipoDeSeguro TipoSeguro,
                                 grApod.pertelefono Telefono,
                                 grApod.percorreo Correo
@@ -717,7 +744,7 @@ class ExportacionDataController extends Controller
                
           while($row = $results->fetch()) {
 
-            fputcsv($handle, array( $row['Departamento'],$row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['Nombres'],$row['FechaNacimiento'],$row['Edad'],$row['Sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Matricula'],$row['Asistencia'],$row['Horario'],$row['Modalidad'],$row['TipoSeguro'],$row['Telefono'],$row['Correo']  ), ",");
+            fputcsv($handle, array( $row['Departamento'],$row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['Nombres'],$row['FechaNacimiento'],$row['Edad'],$row['Sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Matricula'],$row['Asistencia'],$row['Horario'],$row['Modalidad'],$row['Etapa'],$row['TipoSeguro'],$row['Telefono'],$row['Correo']  ), ",");
           }
           fclose($handle);
         });

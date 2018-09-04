@@ -134,7 +134,7 @@
 
 				<td  style="float:left; display:block;"  class="col-xs-2">
 					<div class="options">
-		    			<label  id="label-checkbox" data-toggle="tooltip" title="Click aquí para escoger horario!" >
+		    			<label  class="label-checkbox"  data-toggle="tooltip" title="Click aquí para escoger horario!" >
 		        			<input type="radio" name="codHorario" value="{{horario.id}}" />
 		        			<img  style="cursor:pointer;"  class="img-checkbox" />   
 		   				</label>
@@ -152,30 +152,11 @@
 <script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
 <script>
 
-	var $imgCheckbox = $(".img-checkbox");
+	var $imgCheckbox = $(".label-checkbox");
 	$('[data-toggle="tooltip"]').tooltip(); 
+	
 	$imgCheckbox.on('click',function(){
 		$("#boton-next-final").attr("disabled", false);
 	});
 
-
-/*
-	jQuery("#label-checkbox").mouseenter(function (e) {             
-    var posMouse = e.pageX - this.offsetLeft; 
-    var textoTooltip = jQuery(this).attr("title"); 
-             
-	    if (textoTooltip.length &gt; 0) {
-	        jQuery(this).append('&lt;div class="tooltip"&gt;' + textoTooltip + '&lt;/div&gt;');
-	        jQuery("#label-checkbox &gt; div.tooltip").css("left", "" + posMouse - 103 + "px");
-	        jQuery("#label-checkbox &gt; div.tooltip").fadeIn(300);
-	    }
-	});
-
-	jQuery("#label-checkbox").mouseleave(function () {             
-	    jQuery("#label-checkbox &gt; div.tooltip").fadeOut(300).delay(300).queue(function () {
-	        jQuery(this).remove();
-	        jQuery(this).dequeue();
-	    });
-	});
-*/
 </script>
