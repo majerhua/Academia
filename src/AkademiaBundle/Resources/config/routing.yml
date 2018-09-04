@@ -5,11 +5,19 @@
 
 
 ##PAGINA MOSTRAR DISCIPLINAS
-
 akademia_disciplinasPrincipal:
   path: /disciplinas
   defaults: { _controller: AkademiaBundle:MigracionAsistencia:disciplinaPrincipal}
 
+akademia_disciplinaConfiguracionById:
+  path: /get/disciplina
+  defaults: { _controller: AkademiaBundle:MigracionAsistencia:disciplinaConfiguracionById}
+  methods: [GET,POST]
+
+akademia_updateDisciplina:
+  path: /update/disciplina
+  defaults: { _controller: AkademiaBundle:MigracionAsistencia:updateDisciplina}
+  methods: [GET,POST]
 ##END
 
 ## MOD HORARIOS

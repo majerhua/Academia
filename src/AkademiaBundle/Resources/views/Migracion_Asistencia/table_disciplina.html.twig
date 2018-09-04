@@ -1,0 +1,27 @@
+<table class="table table-hover" width="100%;"> 
+	<thead style="color:#fff; background-color:#CB3F1D; display:block;"> 
+		<tr style="display:block;" > 
+			<th class="text-center col-xs-2" style=" background-color:#CB3F1D;float:left; display:block; font-size:14px;" >Código</th>
+			<th class="text-center col-xs-3" style=" background-color:#CB3F1D;float:left; display:block;font-size:14px;" >Disciplina</th> 
+			<th class="text-center col-xs-2" style=" background-color:#CB3F1D;float:left; display:block;font-size:14px;">Convencional</th>
+			<th class="text-center col-xs-3" style=" background-color:#CB3F1D;float:left; display:block;font-size:14px;" >Personas Discapacitadas</th> 
+			<th class="text-center col-xs-1" style=" background-color:#CB3F1D;float:left; display:block;font-size:14px;" class="col-xs-1">Editar</th> 
+			<th class="col-xs-1" style="float:left; background-color:#CB3F1D; display:block;font-size:14px;">Elim</th>
+		</tr>
+
+	</thead> 
+
+	<tbody id="bodyHorario" style=" height:50vh;overflow-y:auto ; width:100%; display:block; ">
+		{% for disciplina in disciplinas %}
+		 	<tr style="display:block;">
+		 		<td class="text-center col-xs-2" style="float:left; display:block;font-size:15px;"  >{{disciplina['codigo']}}</td>
+		 		<td class="text-center col-xs-3" style="float:left; display:block;font-size:15px;" >{{disciplina['disciplina']}}</td>
+		 		<td class="text-center col-xs-2" style="float:left; display:block;font-size:15px;" >{{disciplina['rango_edad_convencional']}} </td>
+		 		<td class="text-center col-xs-3" style="float:left; display:block;font-size:15px;" >{{disciplina['rango_edad_discapacitado']}}</td>
+		 		<td class="text-center col-xs-1" style="float:left; display:block;font-size:15px;"><button class="btn btn-success" onclick="getDisciplinaConfiguracionById({{disciplina['codigo']}})" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1em; margin-top:5px; color:white" ></i></button></td>
+		 		<td class="text-center col-xs-1" style="float:left; display:block;font-size:15px;" ><button class="btn btn-danger"><i class='icon-trash'></i></button></td>
+		 	</tr>			    
+		 {% endfor %} 							
+	</tbody> 
+
+</table>
