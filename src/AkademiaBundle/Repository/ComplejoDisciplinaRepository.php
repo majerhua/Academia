@@ -41,7 +41,7 @@ class ComplejoDisciplinaRepository extends \Doctrine\ORM\EntityRepository
 				FROM CATASTRO.edificacionDisciplina as a 
 				inner join CATASTRO.disciplina as b on a.dis_codigo = b.dis_codigo 
 				inner join CATASTRO.edificacionesdeportivas as c on a.ede_codigo=c.ede_codigo 
-				WHERE a.ede_codigo = $idComplejo and a.edi_estado = 1
+				WHERE a.ede_codigo = $idComplejo and a.edi_estado = 1 and b.dis_estado=1
 				ORDER BY b.dis_descripcion ASC";
 
 		$stmt = $this->getEntityManager()->getConnection()->prepare($query);

@@ -41,13 +41,12 @@
 						<h3>Deportes Generales</h3> 
 					</div>
 					<hr>
-					
 					<div class="card-body">
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 								<div class="input-group col-xs-4 col-sm-4 col-md-4 col-lg-4">
 								 	<span class="input-group-addon">Buscar</span>
-								  	<input class="filtrar form-control" type="text" placeholder=" ingresa los campos a buscar ">
+								  	<input class="filtrar form-control" type="text"   placeholder=" ingresa los campos a buscar">
 								</div>
 								<br>
 									
@@ -91,6 +90,7 @@
 									</div>
 								</div>
 							</li>
+
 							<li class="list-group-item">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
@@ -102,48 +102,101 @@
 								</div>
 							</li>
 
+
+
 							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Edad Mínima</strong></p>
-									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-5">
-										<input class="form-control" id="convencional-edad-minima">
+
+								
+								<div class="col-lg-12">
+									<div class="row">
+										<p><strong>Modalidad Convencional</strong></p>
 									</div>
 								</div>
+
+								<br/>
+								<br/>
+
+								<div class="row" >
+
+									<div class="col-lg-6">
+										<div class="row">
+											<div class="col-xs-5 col-sm-5 col-md-5 col-lg-6">
+												<p>Edad Mínima</p>
+											</div>
+											<div class="col-xs-7 col-sm-7 col-md-7 col-lg-6">
+												<input class="form-control" id="convencional-edad-minima">
+											</div>
+										</div>
+									</div>
+
+									<div class="col-lg-6">
+										<div class="row">
+											<div class="col-xs-5 col-sm-5 col-md-5 col-lg-6">
+												<p>Edad Máxima</p>
+											</div>
+											<div class="col-xs-7 col-sm-7 col-md-7 col-lg-6">
+												<input  class="form-control" id="convencional-edad-maxima">
+											</div>
+										</div>
+									</div>
+
+								</div>
+
 							</li>
 
 
 							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Edad Máxima</strong></p>
+
+								
+								<div class="col-lg-12">
+									<div class="row">
+										<p><strong>Modalidad Personas con Discapacidad</strong></p>
 									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-5">
-										<input  class="form-control" id="convencional-edad-maxima">
+								</div>
+								
+								<br/>
+								<br/>
+
+								<div class="row" >
+
+									<div class="col-lg-6">
+										<div class="row">
+											<div class="col-xs-5 col-sm-5 col-md-5 col-lg-6">
+												<p>Edad Mínima</p>
+											</div>
+											<div class="col-xs-7 col-sm-7 col-md-7 col-lg-6">
+												<input class="form-control" id="discapacitado-edad-minima">
+											</div>
+										</div>
+									</div>
+
+									<div class="col-lg-6">
+										<div class="row">
+											<div class="col-xs-5 col-sm-5 col-md-5 col-lg-6">
+												<p>Edad Máxima</p>
+											</div>
+											<div class="col-xs-7 col-sm-7 col-md-7 col-lg-6">
+												<input  class="form-control" id="discapacitado-edad-maxima">
+											</div>
+										</div>
 									</div>
 								</div>
 							</li>
 
 							<li class="list-group-item">
 								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Edad Mínima</strong></p>
-									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-5">
-										<input class="form-control" id="discapacitado-edad-minima">
-									</div>
-								</div>
-							</li>
 
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Edad Máxima</strong></p>
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-3">
+										<p><strong>Estado</strong></p>
 									</div>
+
 									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-5">
-										<input  class="form-control" id="discapacitado-edad-maxima">
+										<select class="form-control" id="estado-disciplina" >
+											<option value="1">Abierto</option>
+											<option value="0">Cerrado</option>
+										</select>
 									</div>
+
 								</div>
 							</li>
 
@@ -165,7 +218,28 @@
 <script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
 <script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
-<script src="{{asset('assets/vendor/js/MigracionAsistencia/disciplina.js')}}"> </script>
+<script src="{{asset('assets/vendor/js/MigracionAsistencia/disciplina2.js')}}"> </script>
 
+<script>
+
+	$(document).ready(function () {
+		(function ($) {
+			var jsFiltrar = document.querySelectorAll('.filtrar');
+			var jsBuscar = document.querySelectorAll('.buscar');
+
+			for (var i = 0; i < jsFiltrar.length; i++) {
+
+				$(jsFiltrar[i]).keyup(function () {
+
+		            var rex = new RegExp($(this).val(),'i');
+		            $(jsBuscar).children('tr').hide();
+		            $(jsBuscar).children('tr').filter(function () {
+		                return rex.test($(this).text());
+		            }).show();
+		    	})
+			}  
+		}(jQuery));
+	 });
+</script>
 
 {% endblock %}

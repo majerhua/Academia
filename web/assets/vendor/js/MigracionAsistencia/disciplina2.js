@@ -6,7 +6,13 @@
 	$discapacitadoEdadMaxima = $("#discapacitado-edad-maxima");
 	$btnActualizarDisciplina = $("#btn-actualizarDisciplina");
 
-	var getDisciplinaConfiguracionById = (idDisciplina)=> {
+	$containerTableDisciplina = $("#container-table-disciplina");
+
+	$estadoDisciplina = $("#estado-disciplina");
+
+	const getDisciplinaConfiguracionById = (idDisciplina)=> {
+
+		
 
 		var datos = {
 					'idDisciplina': idDisciplina
@@ -24,6 +30,8 @@
 				var disciplina = JSON.parse(data);
 				var disciplinaSize = disciplina.length;
 
+				console.log(disciplina);
+
 				for (let i = 0; i < disciplinaSize; i++) {
 
 					$codigoDisciplina.text(disciplina[0].codigo);
@@ -32,8 +40,10 @@
 					$convencionalEdadMaxima.val(disciplina[0].edad_max_convencional);
 					$discapacitadoEdadMinima.val(disciplina[0].edad_min_discapacitado);
 					$discapacitadoEdadMaxima.val(disciplina[0].edad_max_discapacitado);
+					$estadoDisciplina.val(disciplina[0].estado);
 				}
 
+				change_select_estado_modal_editar();
 			},
 			error:function(error){
 				alertify.error('<p style="color:white">Se produjo un error.</p>');
@@ -42,14 +52,15 @@
 		});
 	}
 
-	var actualizarDisciplina = ()=>{
+	const actualizarDisciplina = ()=>{
 
 		var datos = {
 						'idDisciplina': $codigoDisciplina.text(),
 						'convencional-edad-minima':$convencionalEdadMinima.val(),
 						'convencional-edad-maxima': $convencionalEdadMaxima.val(),
 						'discapacitado-edad-minima': $discapacitadoEdadMinima.val(),
-						'discapacitado-edad-maxima': $discapacitadoEdadMaxima.val()
+						'discapacitado-edad-maxima': $discapacitadoEdadMaxima.val(),
+						'estado-disciplina': $estadoDisciplina.val()
 					};
 
 		$.ajax({
@@ -60,7 +71,7 @@
 				console.log(datos);
 			},
 			success:function(data){
-				console.log(data);
+				$containerTableDisciplina.html(data);
 			},
 			error:function(error){
 				alertify.error('<p style="color:white">Se produjo un error.</p>');
@@ -69,4 +80,16 @@
 		});
 	}
 
+	const change_select_estado_modal_editar = ()=>{
+		$estadoDisciplina.removeAttr('class');
+		if($estadoDisciplina.val() == 1){
+			$estadoDisciplina.attr('class','estado-visible form-control');
+		}else{
+			$estadoDisciplina.attr('class','estado-oculto form-control');
+		}
+	}
+
+	change_select_estado_modal_editar();
+
 	$btnActualizarDisciplina.on('click',actualizarDisciplina);
+	$estadoDisciplina.on('change',change_select_estado_modal_editar);

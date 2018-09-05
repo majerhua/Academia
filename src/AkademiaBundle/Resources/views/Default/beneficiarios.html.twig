@@ -160,7 +160,7 @@
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 								<div class="input-group col-xs-4 col-sm-4 col-md-4 col-lg-4">
 								 	<span class="input-group-addon">Buscar</span>
-								  	<input class="filtrar form-control" type="text" ident-buscar="{{cont}}"  placeholder=" ingresa los campos a buscar ">
+								  	<input class="filtrar form-control" type="text" ident-buscar="{{cont}}"  placeholder=" ingresa los campos a buscar">
 								</div>
 								<br>
 									
@@ -184,7 +184,6 @@
 										<tbody class="buscar" style="color:#494343"> 
 
 											{% for beneficiario in beneficiarios %}
-												
 												{% if "now"|date("t") - 5 - "now"|date("d") <= 0 and  ("now"|date("m") > beneficiario['fechita']|date("m") or beneficiario['TipoAsistencia'] == 1)  %}
 													<tr style="background-color: #EF9A9A">
 												{% else %}
@@ -223,7 +222,7 @@
 													<td><button type="button" title="Editar datos" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar" onclick="editarParticipante({{beneficiario['idParticipante']}})"><i class="icon-pencil-square-o" style="font-size:1em; margin-top:5px; color:white" ></button></td>
 												</tr> 
 												
-											{% set cont = cont + 1 %}
+												{% set cont = cont + 1 %}
 											{% endfor %}								
 										</tbody> 
 									</table>

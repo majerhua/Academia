@@ -18,9 +18,10 @@ class MigracionAsistenciaController extends Controller
 	public function disciplinaPrincipalAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager(); 
+        $estadoUpdDis = NULL;
 
-        $disciplinasTotalesActivas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasActivas();
-        return $this->render('AkademiaBundle:Migracion_Asistencia:disciplinas.html.twig', array('disciplinas' => $disciplinasTotalesActivas));
+        $disciplinasTotalesActivas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasTotales();
+        return $this->render('AkademiaBundle:Migracion_Asistencia:disciplinas.html.twig', array('estadoUpdDis'=>$estadoUpdDis,'disciplinas' => $disciplinasTotalesActivas));
     }
 
 	public function disciplinaConfiguracionByIdAction(Request $request)
@@ -51,12 +52,17 @@ class MigracionAsistenciaController extends Controller
     	$convencionalEdadMaxima = $request->get('convencional-edad-maxima');
     	$discapacitadoEdadMinima = $request->get('discapacitado-edad-minima');
     	$discapacitadoEdadMaxima = $request->get('discapacitado-edad-maxima');
+        $estadoDisciplina = $request->get('estado-disciplina');
 
         $em = $this->getDoctrine()->getManager(); 
 
-       	$estadoUpdDis = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->updateDisciplina($idDisciplina,$convencionalEdadMinima,$convencionalEdadMaxima,$discapacitadoEdadMinima,$discapacitadoEdadMaxima);
 
-        return new JsonResponse($estadoUpdDis);
+       	$estadoUpdDis = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->updateDisciplina($idDisciplina,$convencionalEdadMinima,$convencionalEdadMaxima,$discapacitadoEdadMinima,$discapacitadoEdadMaxima,$estadoDisciplina);
+
+        $disciplinasTotalesActivas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasTotales();
+
+        echo $this->renderView('AkademiaBundle:Migracion_Asistencia:table_disciplina.html.twig',array('estadoUpdDis'=>$estadoUpdDis,'disciplinas' => $disciplinasTotalesActivas));
+        exit;
     }
 
 }

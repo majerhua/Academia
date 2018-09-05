@@ -1,0 +1,25 @@
+#estado-disciplina {
+	font-weight: bold;
+}
+
+.estado-visible{
+	border: 1px solid green;
+	color:green;
+}
+
+.estado-oculto{
+	border: 1px solid red;
+	color:red;
+}
+
+.estado-visible-td{
+	color:green;
+}
+
+.estado-oculto-td{
+	color:red;
+}
+
+#estado-disciplina > option {
+	color:black;
+}
