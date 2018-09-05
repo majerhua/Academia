@@ -152,7 +152,7 @@ class ExportacionDataController extends Controller
                     WHEN 1 THEN 'Masculino'
                     ELSE 'Otro' END
                     AS sexo,
-                  CONVERT(varchar, mov.fecha_modificacion, 103) FechaMovimiento,
+                    mov.fecha_modificacion FechaMovimiento,
                       CASE MONTH(mov.fecha_modificacion) 
                       WHEN 1 THEN 'Enero'
                       WHEN 2 THEN 'Febrero'
