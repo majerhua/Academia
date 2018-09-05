@@ -47,19 +47,27 @@ class MovimientosRepository extends \Doctrine\ORM\EntityRepository
         return $asistencias;
     }
 
+    public function getCantInscritos($idHorario){
+
+        $query = "SELECT COUNT(1) inscritos FROM ACADEMIA.inscribete WHERE horario_id = '$idHorario' AND estado = 2";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $inscritos = $stmt->fetchAll();
+
+        return $inscritos;
+    }
+
     public function getCantRetirados($idRetirado, $idHorario){
-    	$query = "SELECT count(*)retirados
-                FROM 
-                ACADEMIA.inscribete ins 
-                inner join 
-                (SELECT m.inscribete_id as mov_ins_id, MAX(m.id) mov_id
-                FROM ACADEMIA.movimientos m
-                GROUP BY m.inscribete_id) ids
-                ON ins.id = ids.mov_ins_id
-                inner join academia.horario hor on ins.horario_id = hor.id 
-                inner join academia.participante par on ins.participante_id = par.id
-                inner join academia.movimientos mov on mov.id = ids.mov_id
-                WHERE hor.id = $idHorario and ins.estado = 1 and mov.asistencia_id=$idRetirado";
+
+    	$query = "  SELECT count(*)retirados
+                    FROM ACADEMIA.inscribete ins   
+                    INNER JOIN 
+                    (SELECT m.inscribete_id as mov_ins_id, MAX(m.id) mov_id
+                        FROM ACADEMIA.movimientos m GROUP BY m.inscribete_id) ids ON ins.id = ids.mov_ins_id
+                    INNER JOIN ACADEMIA.horario hor on ins.horario_id = hor.id 
+                    INNER JOIN ACADEMIA.movimientos mov on mov.id = ids.mov_id
+                    WHERE hor.id = $idHorario and ins.estado = 1 and mov.asistencia_id=$idRetirado";
 
 		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
@@ -79,7 +87,6 @@ class MovimientosRepository extends \Doctrine\ORM\EntityRepository
                 GROUP BY m.inscribete_id) ids
                 ON ins.id = ids.mov_ins_id
                 inner join academia.horario hor on ins.horario_id = hor.id 
-                inner join academia.participante par on ins.participante_id = par.id
                 inner join academia.movimientos mov on mov.id = ids.mov_id
                 WHERE hor.id = $idHorario and ins.estado = 2 and mov.categoria_id=$idCategoria";
 

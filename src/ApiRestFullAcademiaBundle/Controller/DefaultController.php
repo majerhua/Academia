@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
 use ApiRestFullAcademiaBundle\Entity\PersonaApi;
 
+
+
 class DefaultController extends FOSRestController
 {
 
@@ -60,7 +62,7 @@ class DefaultController extends FOSRestController
     }
     return $restresult;
   }
-
+  
   /**
    * @Rest\Get("/provincia")
    */
@@ -332,18 +334,6 @@ class DefaultController extends FOSRestController
 
       $restresult = intval($result[0]['id']);
 
-      //if($restresult == 1){
-       /* $subject =  'La Academia App Ipd';
-        $message =  '<html>'.
-                    '<head><title>La Academia App</title></head>'.
-                    '<body><h3>Bienvenido a la Academia App estimado(a)! '.$nombre.' </h3>'.
-                    '<a href="http://appweb.ipd.gob.pe/academia/web/activacion/cuenta/'.$token.'">Activa tu cuenta aquí </a>'.
-                    '</body>'.
-                    '</html>';
-                
-        $headers = 'From: soporte@ipd.gob.pe' . "\r\n" .'MIME-Version: 1.0'. "\r\n" .'Content-Type: text/html; charset=UTF-8'. "\r\n";
-        mail($correo,$subject,$message,$headers);*/
-      //}
     }else{
       
       return new View("No se pudo registrar", Response::HTTP_NOT_FOUND);
@@ -359,9 +349,6 @@ class DefaultController extends FOSRestController
   {
     
     $correo = $request->get('correo');
-    //$password = $request->get('password');
-    //$passwordEncrypt = base64_encode( $password );
-
     $em = $this->getDoctrine()->getManager(); 
     
     if( !empty($correo)   /*&& !empty($password)*/ ){

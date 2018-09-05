@@ -10,7 +10,7 @@
 			var dist = distrito.options[distrito.selectedIndex].text;
 			
 			var direccion = depa+' '+prov+' '+dist+'IPD COMPLEJO DEPORTIVO '+ selectedOption.text;
-			var search = "https://www.google.com/maps/embed/v1/search?q='peru%20"+direccion+"'&key=AIzaSyDv9gTXqhO_IlpmDDEpVyE2DHpYcsVKp80";
+			var search = "https://www.google.com/maps/embed/v1/place?q='peru%20"+direccion+"'&key=AIzaSyCzpAv7N7yZaVqzwB7r-xuhJZnVWEvVimo";
 			
 			$("#iframe_lugar").attr('src',search);
 	});

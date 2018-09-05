@@ -11,11 +11,27 @@ namespace AkademiaBundle\Repository;
 class DepartamentoRepository extends \Doctrine\ORM\EntityRepository
 {
 
-	public function departamentosFlagAll($flagDis){
+	public function getDepartmentsPublicGeneralByDisability($disability,$ageBeneficiario){
 
-        $query = " SELECT distinct ubidpto as idDepartamento from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis,CATASTRO.edificacionesdeportivas AS edde, grubigeo as ubi where hor.discapacitados='$flagDis' and hor.estado=1
-    			and hor.edi_codigo = eddis.edi_codigo and edde.ede_codigo = eddis.ede_codigo and ubi.ubicodigo = edde.ubicodigo
-    			and ubidistrito != '00' AND ubidpto != '00' AND ubiprovincia != '00' and hor.vacantes <> 0 and hor.convocatoria = 1; ";
+        $query = "  SELECT DISTINCT ubiDpto.ubidpto id ,
+                                    ubiDpto.ubinombre nombre
+                    FROM  ACADEMIA.horario AS hor 
+                    INNER JOIN CATASTRO.edificacionDisciplina AS edi ON edi.edi_codigo = hor.edi_codigo
+                    INNER JOIN CATASTRO.edificacionesdeportivas AS ede ON ede.ede_codigo = edi.ede_codigo
+                    INNER JOIN grubigeo AS ubi ON ubi.ubicodigo = ede.ubicodigo
+                    INNER JOIN grubigeo AS ubiDpto ON ubiDpto.ubidpto = ubi.ubidpto
+                    WHERE
+                    hor.estado = 1 AND 
+                    hor.discapacitados = '$disability' AND
+                    hor.vacantes <> 0 AND
+                    hor.etapa = 1 AND
+                    hor.convocatoria = 1 AND
+                    ubiDpto.ubidpto <> '00' AND 
+                    ubiDpto.ubidistrito ='00' AND
+                    ubiDpto.ubiprovincia ='00' AND
+                    '$ageBeneficiario' <= hor.edadMaxima AND 
+                    '$ageBeneficiario' >= hor.edadMinima ";
+
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $departamentos = $stmt->fetchAll();
@@ -23,8 +39,55 @@ class DepartamentoRepository extends \Doctrine\ORM\EntityRepository
 	
 	}
 
+    public function getDepartmentsPromotorByDisability($disability,$ageBeneficiario){
+    
+        $query = "  SELECT DISTINCT ubiDpto.ubidpto id ,
+                                    ubiDpto.ubinombre nombre
+                    FROM  ACADEMIA.horario AS hor 
+                    INNER JOIN CATASTRO.edificacionDisciplina AS edi ON edi.edi_codigo = hor.edi_codigo
+                    INNER JOIN CATASTRO.edificacionesdeportivas AS ede ON ede.ede_codigo = edi.ede_codigo
+                    INNER JOIN grubigeo AS ubi ON ubi.ubicodigo = ede.ubicodigo
+                    INNER JOIN grubigeo AS ubiDpto ON ubiDpto.ubidpto = ubi.ubidpto
+                    WHERE
+                    hor.estado = 1 AND 
+                    hor.discapacitados = '$disability' AND
+                    hor.vacantes <> 0 AND
+                    ubiDpto.ubidpto <> '00' AND 
+                    ubiDpto.ubidistrito ='00' AND
+                    ubiDpto.ubiprovincia ='00'  AND
+                    '$ageBeneficiario' <= hor.edadMaxima AND 
+                    '$ageBeneficiario' >= hor.edadMinima  ";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $departamentos = $stmt->fetchAll();
+        return $departamentos;
+    }
+
+    public function getDepartmentsLandingByDisability($disability){
+    
+        $query = "  SELECT DISTINCT ubiDpto.ubidpto id ,
+                                    ubiDpto.ubinombre nombre
+                    FROM  ACADEMIA.horario AS hor 
+                    INNER JOIN CATASTRO.edificacionDisciplina AS edi ON edi.edi_codigo = hor.edi_codigo
+                    INNER JOIN CATASTRO.edificacionesdeportivas AS ede ON ede.ede_codigo = edi.ede_codigo
+                    INNER JOIN grubigeo AS ubi ON ubi.ubicodigo = ede.ubicodigo
+                    INNER JOIN grubigeo AS ubiDpto ON ubiDpto.ubidpto = ubi.ubidpto
+                    WHERE
+                    hor.estado = 1 AND 
+                    hor.discapacitados = '$disability' AND
+                    hor.vacantes <> 0 AND
+                    hor.convocatoria = 1 AND
+                    ubiDpto.ubidpto <> '00' AND 
+                    ubiDpto.ubidistrito ='00' AND
+                    ubiDpto.ubiprovincia ='00' ";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $departamentos = $stmt->fetchAll();
+        return $departamentos;
+    }
 
     public function departamentosExport(){
+
         $query = "SELECT distinct ubiDpto.ubidpto idDepartamento
                     FROM ACADEMIA.inscribete AS ins
                     inner join (SELECT m.inscribete_id as mov_ins_id, MAX(m.id) mov_id FROM ACADEMIA.movimientos m
@@ -80,24 +143,11 @@ class DepartamentoRepository extends \Doctrine\ORM\EntityRepository
     public function departamentosExportFind2($id){
 
         $query = " SELECT distinct ubiDpto.ubidpto idDepartamento
-        FROM 
+                    FROM 
             grubigeo ubiDpto 
-
         inner join CATASTRO.edificacionesdeportivas ede on ede.ubicodigo = ubiDpto.ubicodigo
         WHERE  ede.ede_codigo='$id' ";
 
-        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
-        $stmt->execute();
-        $departamentos = $stmt->fetchAll();
-        return $departamentos;
-    
-    }
-
-    public function departamentosPromotor($flagDis){
-    
-        $query = "SELECT distinct ubidpto as idDepartamento from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis,CATASTRO.edificacionesdeportivas AS edde, grubigeo as ubi where hor.discapacitados='$flagDis' and hor.estado=1
-            and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and ubi.ubicodigo=edde.ubicodigo
-            and ubidistrito!='00' AND ubidpto!='00' AND ubiprovincia!='00' and hor.vacantes<>0";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $departamentos = $stmt->fetchAll();

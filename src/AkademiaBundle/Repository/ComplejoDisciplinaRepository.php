@@ -36,15 +36,19 @@ class ComplejoDisciplinaRepository extends \Doctrine\ORM\EntityRepository
 
 	public function getComplejosDisciplinasHorarios($idComplejo){
 
-		$query = "SELECT a.edi_codigo as idDistrito,c.ede_nombre as nombreComplejo, a.ede_codigo as idComplejoDeportivo, rtrim(b.dis_descripcion) as nombreDisciplina,b.dis_codigo as idDisciplina ,c.ede_discapacitado as discapacidad from CATASTRO.edificacionDisciplina as a inner join CATASTRO.disciplina as b on a.dis_codigo = b.dis_codigo inner join CATASTRO.edificacionesdeportivas as c on a.ede_codigo=c.ede_codigo where a.ede_codigo = $idComplejo and a.edi_estado = 1";
+		$query = "SELECT a.edi_codigo as idDistrito,c.ede_nombre as nombreComplejo, a.ede_codigo as idComplejoDeportivo, 
+				rtrim(b.dis_descripcion) as nombreDisciplina,b.dis_codigo as idDisciplina ,c.ede_discapacitado as discapacidad 
+				FROM CATASTRO.edificacionDisciplina as a 
+				inner join CATASTRO.disciplina as b on a.dis_codigo = b.dis_codigo 
+				inner join CATASTRO.edificacionesdeportivas as c on a.ede_codigo=c.ede_codigo 
+				WHERE a.ede_codigo = $idComplejo and a.edi_estado = 1
+				ORDER BY b.dis_descripcion ASC";
 
 		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $complejosDeportivos = $stmt->fetchAll();
 
         return $complejosDeportivos;
-
-
 
 	}
 

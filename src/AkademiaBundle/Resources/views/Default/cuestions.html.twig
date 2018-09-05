@@ -322,7 +322,7 @@
 {% block javascripts %}
 <script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
 <script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
-<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
+
 
 
 <script type="text/javascript">
@@ -334,9 +334,7 @@
             "email" : $("#email").val(),
             "message" : $("#message").val()
         }
-
-     //   console.log(enviosugerencia);
-
+  
        $.ajax({
             type:'POST',
             dataType: 'json',
@@ -366,7 +364,6 @@
              alertify.error('<p style="color:white">Se requiere el correo electrónico.</p>'); 
         }else if($("#message").val()==""){
              alertify.error('<p style="color:white">Se requiere el contenido del mensaje</p>'); 
-
         }
 
     });

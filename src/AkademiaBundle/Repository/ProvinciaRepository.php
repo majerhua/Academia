@@ -11,9 +11,41 @@ namespace AkademiaBundle\Repository;
 class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 {
 
-	public function provinciasFlagAll($flagDis){
+	public function getprovincesPublicGeneralByDisability($disability,$ageBeneficiario){
 
-	    $query = "SELECT distinct ubidpto as idDepartamento,ubiprovincia as idProvincia from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis, CATASTRO.edificacionesdeportivas AS edde, grubigeo as ubi where hor.discapacitados='$flagDis' and hor.estado=1 and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and ubi.ubicodigo=edde.ubicodigo and ubidistrito!='00' AND ubidpto!='00' AND ubiprovincia!='00' and hor.vacantes<>0 and hor.convocatoria=1;";
+	    $query = "SELECT DISTINCT ubiDpto.ubidpto idDepartamento, 
+					ubiProv.ubiprovincia idProvincia,
+					ubiProv.ubinombre nombreProvincia
+					
+	                FROM  ACADEMIA.horario AS hor 
+	                INNER JOIN CATASTRO.edificacionDisciplina AS edi ON edi.edi_codigo = hor.edi_codigo
+	                INNER JOIN CATASTRO.edificacionesdeportivas AS ede ON ede.ede_codigo = edi.ede_codigo
+	                INNER JOIN grubigeo AS ubi ON ubi.ubicodigo = ede.ubicodigo
+	                INNER JOIN grubigeo AS ubiDpto ON ubiDpto.ubidpto = ubi.ubidpto
+	                INNER JOIN grubigeo AS ubiProv ON ubiProv.ubiprovincia = ubi.ubiprovincia
+	                WHERE
+
+	                hor.estado = 1 AND 
+	                hor.discapacitados = '$disability' AND
+	                hor.vacantes <> 0 AND
+	                hor.convocatoria = 1 AND
+	                hor.etapa = 1 AND
+
+	                ubiDpto.ubidpto <> '00' AND 
+	                ubiDpto.ubidistrito ='00' AND
+	                ubiDpto.ubiprovincia ='00' AND
+	                
+	                ubiProv.ubidpto = ubi.ubidpto AND
+	                ubiProv.ubidpto <> '00' AND
+	                ubiProv.ubiprovincia <> '00' AND
+	                ubiProv.ubidistrito = '00' AND
+	                
+	                ubi.ubidistrito <> '00' AND 
+	                ubi.ubiprovincia <> '00' AND 
+	                ubi.ubiprovincia <> '00' AND 
+	                
+	                '$ageBeneficiario' <= hor.edadMaxima AND 
+                    '$ageBeneficiario' >= hor.edadMinima ";
 	    
 	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
 	    $stmt->execute();
@@ -22,9 +54,40 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 	    return $provincias;
 	}
 
-	public function provinciasPromotor($flagDis){
+	public function getProvincesPromotorByDisability($disability,$ageBeneficiario){
 
-	    $query = "SELECT distinct ubidpto as idDepartamento,ubiprovincia as idProvincia from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis, CATASTRO.edificacionesdeportivas AS edde, grubigeo as ubi where hor.discapacitados='$flagDis' and hor.estado=1 and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and ubi.ubicodigo=edde.ubicodigo and ubidistrito!='00' AND ubidpto!='00' AND ubiprovincia!='00' and hor.vacantes<>0 ";
+	    $query = "SELECT DISTINCT ubiDpto.ubidpto idDepartamento, 
+					ubiProv.ubiprovincia idProvincia,
+					ubiProv.ubinombre nombreProvincia
+
+	                FROM  ACADEMIA.horario AS hor 
+	                INNER JOIN CATASTRO.edificacionDisciplina AS edi ON edi.edi_codigo = hor.edi_codigo
+	                INNER JOIN CATASTRO.edificacionesdeportivas AS ede ON ede.ede_codigo = edi.ede_codigo
+	                INNER JOIN grubigeo AS ubi ON ubi.ubicodigo = ede.ubicodigo
+	                INNER JOIN grubigeo AS ubiDpto ON ubiDpto.ubidpto = ubi.ubidpto
+	                INNER JOIN grubigeo AS ubiProv ON ubiProv.ubiprovincia = ubi.ubiprovincia
+	                WHERE
+
+	                hor.estado = 1 AND
+	                hor.convocatoria = 1 AND 
+	                hor.discapacitados = '$disability' AND
+	                hor.vacantes <> 0 AND
+
+	                ubiDpto.ubidpto <> '00' AND 
+	                ubiDpto.ubidistrito ='00' AND
+	                ubiDpto.ubiprovincia ='00' AND
+	                
+	                ubiProv.ubidpto = ubi.ubidpto AND
+	                ubiProv.ubidpto <> '00' AND
+	                ubiProv.ubiprovincia <> '00' AND
+	                ubiProv.ubidistrito = '00' AND
+	                
+	                ubi.ubidistrito <> '00' AND 
+	                ubi.ubiprovincia <> '00' AND 
+	                ubi.ubiprovincia <> '00' AND
+
+	                '$ageBeneficiario' <= hor.edadMaxima AND 
+                    '$ageBeneficiario' >= hor.edadMinima ";
 	    
 	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
 	    $stmt->execute();
@@ -33,6 +96,45 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 	    return $provincias;
 	}
 	
+
+	public function getProvincesLandingByDisability($disability){
+
+	    $query = "SELECT DISTINCT ubiDpto.ubidpto idDepartamento, 
+					ubiProv.ubiprovincia idProvincia,
+					ubiProv.ubinombre nombreProvincia
+
+	                FROM  ACADEMIA.horario AS hor 
+	                INNER JOIN CATASTRO.edificacionDisciplina AS edi ON edi.edi_codigo = hor.edi_codigo
+	                INNER JOIN CATASTRO.edificacionesdeportivas AS ede ON ede.ede_codigo = edi.ede_codigo
+	                INNER JOIN grubigeo AS ubi ON ubi.ubicodigo = ede.ubicodigo
+	                INNER JOIN grubigeo AS ubiDpto ON ubiDpto.ubidpto = ubi.ubidpto
+	                INNER JOIN grubigeo AS ubiProv ON ubiProv.ubiprovincia = ubi.ubiprovincia
+	                WHERE
+
+	                hor.estado = 1 AND 
+	                hor.discapacitados = '$disability' AND
+	                hor.vacantes <> 0 AND
+	                hor.convocatoria = 1 AND
+	                
+	                ubiDpto.ubidpto <> '00' AND 
+	                ubiDpto.ubidistrito ='00' AND
+	                ubiDpto.ubiprovincia ='00' AND
+	                
+	                ubiProv.ubidpto = ubi.ubidpto AND
+	                ubiProv.ubidpto <> '00' AND
+	                ubiProv.ubiprovincia <> '00' AND
+	                ubiProv.ubidistrito = '00' AND
+	                
+	                ubi.ubidistrito <> '00' AND 
+	                ubi.ubiprovincia <> '00' AND 
+	                ubi.ubiprovincia <> '00' ";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    $provincias = $stmt->fetchAll();
+	    
+	    return $provincias;
+	}
 
 	public function provinciasAll(){
 		

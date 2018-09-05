@@ -27,7 +27,7 @@ class AppKernel extends Kernel
             new Realestate\MssqlBundle\RealestateMssqlBundle(),
             new ApiRestFullAcademiaBundle\ApiRestFullAcademiaBundle(),
         ];
-
+        
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();

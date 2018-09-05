@@ -1,0 +1,289 @@
+{% extends '::base.html.twig' %}
+{% block title %}La Academia{% endblock %}
+{% block body  %}
+<header>
+	 <nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    
+                </button>                       
+                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="logoAcademia" />                            	          
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <br>
+                <ul class="nav navbar-nav navbar-right">
+                	 <li title="Inicio"><a href="{{url('akademia_panel')}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
+                    <li><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.4em; color:white" ></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<section  class="proceso-inscripcion">
+	<div style="width:93%">
+		<p class="text-right" style="color:grey"> Sesión iniciada: {{ app.user.username}} </p>
+	</div>
+	<div class="proceso" style="margin-bottom: 60px;">
+		<h2>Lanzamiento de Temporadas</h2>
+		<h4 style="color:grey">PANEL DE CREACIÓN</h4>
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="row">
+					<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+					</div>
+					<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+						<div id="alert-info" class="alert alert-success alert-dismissible" role="alert" style="margin-top: 10px; margin-bottom: 20px;font-size:12px;">
+							<h4>FUNCIONALIDADES: </h4>
+							<p> 1) Cierra la temporada en curso con todos los <span style="color:red; font-weight:bold;">horarios, disciplinas y beneficiarios</span> a nivel nacional.</p>
+							<p> 2) Todos las disciplinas, horarios y beneficiarios de todos los complejos deportivos a nivel nacional <span style="color:red; font-weight:bold;"> DESAPARECERÁN </span>pero estarán disponible en los reportes de exportación. </p>
+							<p> 3) Recuerde que el cambio que realices al usar este módulo es <span style="color:red; font-weight:bold;">IRREVERSIBLE</span> y sólo podrás realizarlo 1 sola vez cada 3 meses. </p>
+						</div>
+
+					</div>
+					<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+					</div>
+				</div>
+				
+			</div>
+		</div>	
+		<div class="container-card col-xs-6 col-sm-6 col-md-6 col-lg-6">
+			<div class="card" id="idPaso1" name="idPaso1">
+				<div class="card-body" >
+					<center>
+						<img src="{{ asset('assets/images/temporada.jpg') }}" width="120" height="120" style="position:relative; margin-left:20px;">
+					<button type="button" class="btn btn-default btn-lg" style="background:#e8ac20; width:280px;; color:white; font-weight:bold; height:60px; font-size:25px;" id="btn_inicio">COMENZAR</button>
+					</center>
+				</div>
+			</div>
+			<div class="card" id="idPaso2" name="idPaso2">
+				<div class="card-body">
+					<center>
+						<span style="color:grey; font-weight:bold;">NOMBRE DE LA NUEVA TEMPORADA DE LA ACADEMIA</span>
+						<hr>
+						<div class="row">
+							<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+								<span style="color:grey; font-size:14px;">CICLO</span>
+								<br>
+								<select class="form-control" id="ciclo" style="width:200px;">
+									<option value="">INVIERNO</option>
+									<option value="">OTOÑO</option>
+									<option value="">VERANO</option>
+									<option value="">PRIMAVERA</option>
+								</select>
+
+							</div>
+							<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+								<span style="color:grey; font-size:14px;">AÑO</span>
+								<br>
+								<select class="form-control" id="ciclo" style="width:200px;">
+									<option value="">2018</option>
+									<option value="">2019</option>
+									<option value="">2020</option>
+									<option value="">2021</option>
+								</select>
+							</div>
+							
+						</div>
+						<hr>
+						<button type="button" class="btn btn-danger btn-md">INICIAR</button>
+						<button type="button" class="btn btn-default btn-md">CANCELAR</button>
+					</center>
+					
+				</div>
+			</div>
+
+			<div class="card" id="idPaso3" name="idPaso3">
+				<div class="card-body">
+					<center>
+						<span style="color:grey; font-weight:bold;">VALIDAR PERMISOS PARA LA CREACIÓN</span><br>
+						<span style="color:green; font-weight:bold; font-size:20px;">LA ACADEMIA "INVIERNO 2018"</span>
+						<hr>
+						<div class="row">
+							<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+								<span style="color:grey; font-size:14px;">USUARIO</span>
+								<br>
+								<input  class="form-control placeholder" type="text" name=""  style="width:250px;">
+
+							</div>
+							<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+								<span style="color:grey; font-size:12px;">CONTRASEÑA</span>
+								<br>
+								<input  class="form-control placeholder" type="password" name=""  style="width:220px;">
+							</div>
+							
+						</div>
+						<hr>
+						<button type="button" class="btn btn-danger btn-md">CONTINUAR</button>
+						<button type="button" class="btn btn-default btn-md">CANCELAR</button>
+
+					</center>
+				</div>
+			</div>
+
+			<div class="card" id="idPaso4" name="idPaso4">
+				<div class="card-body">
+					<center>
+						<span style="color:green; font-weight:bold; font-size:20px;">LA ACADEMIA "INVIERNO 2018"</span>
+						<hr>
+						<div class="row">
+							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+								<img src="{{ asset('assets/images/alerta.png') }}" width="60" height="60" style="position:relative; margin-left:20px;">
+							</div>
+							<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+								<p style="text-align:left; font-size:18px;">Este cambio es  <span style="color:red; font-weight:bold;">IRREVERSIBLE</span>, Todos las disciplinas, horarios y beneficiarios<span style="color:red; font-weight:bold;"> DESAPARECERÁN.</span></p>
+							</div>
+							
+						</div>
+						<hr>
+						<button type="button" class="btn btn-danger btn-md">CONTINUAR</button>
+						<button type="button" class="btn btn-default btn-md">CANCELAR</button>
+
+					</center>
+				</div>
+			</div>
+
+			<div class="card" id="idPaso5" name="idPaso5">
+				<center>
+					<span style="color:green; font-weight:bold; font-size:20px;">TEMPORADA CONFIRMADA</span><br>
+					<span style="color:#e8ac20; font-weight:bold; font-size:30px;">LA ACADEMIA "INVIERNO 2018"</span><br>
+					<span style="color:grey;">Creada el 20/04/2918</span><br>
+					<span style="color:grey; ">COMIENZA  A CREAR TUS NUEVAS DISCIPLINAS Y HORARIOS EN TODOS LOS COMPLEJOS.</span>
+					
+				</center>
+				<hr>
+
+				<div class="card-body">
+					<center>
+						<div class="row">
+							<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+								<p style="font-size:18px;">Programar lanzamiento de Pre-Inscripciones para el público en general.</p>
+							</div>
+							<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+								<span style="color:grey; font-weight:bold; font-size:20px;">FECHA <br> 20/04/2918</span>
+							</div>
+							
+						</div>
+						<hr>
+						<button type="button" class="btn btn-danger btn-md">CONTINUAR</button>
+						<button type="button" class="btn btn-default btn-md">CANCELAR</button>
+
+					</center>
+				</div>
+			</div>
+
+			<div class="card" id="idPaso6" name="idPaso6">
+				<center>
+					
+					<span style="color:#e8ac20; font-weight:bold; font-size:30px;">LA ACADEMIA "INVIERNO 2018"</span><br>
+					<span style="color:grey;">Creada el 20/04/2918</span><br>
+					<span style="color:grey; ">COMIENZA  A CREAR TUS NUEVAS DISCIPLINAS Y HORARIOS EN TODOS LOS COMPLEJOS.</span>
+					
+				</center>
+				<hr>
+
+				<div class="card-body">
+					<center>
+						<div class="row">
+				
+							<span style="color:grey; font-size:20px;">Pre-Inscripciones desde: <p style="font-weight:bold; color:grey; font-size:24px;">El 02  de marzo del 2018</p>  a las 8:00hrs</span>
+							
+						</div>
+						<hr>
+						<button type="button" class="btn btn-danger btn-md">CONTINUAR</button>
+						<button type="button" class="btn btn-danger btn-md">CANCELAR</button>
+
+					</center>
+				</div>
+			</div>
+
+			<div class="card" id="idPaso7" name="idPaso7">
+			
+				<div class="card-body">
+					<center>			
+						<span style="color:green; font-weight:bold; font-size:20px;">LANZAMIENTO EN CURSO</span><br>
+						<span style="color:#e8ac20; font-weight:bold; font-size:35px;">LA ACADEMIA "INVIERNO 2018"</span><br>
+						<span style="color:grey;">Creada el 20/04/2918</span>
+						<hr>
+						<span style="color:#e8ac20; font-weight:bold; font-size:20px;">Pre-Inscripciones desde el 02 de marzo del 2018</span>
+						
+
+					</center>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</section>
+
+
+<footer class="footer">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center">
+				<br>
+				<br>
+				<br>
+				<img class="align-self-center foot" src="{{ asset('assets/images/ipdfooter.jpg')}}">
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+				<br><br>
+				<h4>La Academia</h4>
+				<p class="footerTex">
+					Dirección:Calle Madre de Dios N° 463
+				</p>
+				<p class="footerTex">
+					Teléfono: 204-8420 /anexo 1302
+				</p>
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+				<br><br>
+				<h4>Enlaces de Interés</h4>
+				<p><a class="footerTex" href="http://www.ipd.gob.pe/">Instituto Peruano del Deporte</a></p>
+				<p><a class="footerTex" href="https://www.facebook.com/recreacion.ipd/">Facebook Recreación</a></p>
+				<p><a class="footerTex" href="http://www.ipd.gob.pe/formacion-deportiva">Formación Deportiva</a></p>
+			</div>
+		</div>
+		<br>
+    	<p class="col-xs-12 col-sm-12 col-md-12 col-lg-12 copyright">&copy; 2018 Todos los derechos reservados</p>
+	</div>
+</footer>
+
+
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
+<script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
+<script type="text/javascript">
+	
+	$(document).ready(function () {
+		//$("#idPaso2").hide();
+	});
+
+	$("#btn_inicio").on('click',function(){
+		//$("#idPaso1").hide();
+		//$("#idPaso2").show();
+	});
+
+	/* MOSTRAR MENSAJE DE ALERTA */
+	function showAlertMessage(alert, mensaje){
+		$(alert).text(mensaje).show('fade');
+		setTimeout(function(){
+			hideAlertMessage(alert);	
+		}, 2000);
+	}
+
+	/* OCULTAR ALERTA*/
+	function hideAlertMessage(alert){
+		$(alert).hide('fade');
+
+	}
+
+</script>
+{% endblock %}

@@ -18,13 +18,32 @@ body{
 
 	display: flex;
 	padding: 12px 4px;
+	flex-wrap: wrap;
 	justify-content: center;
 
 }
 
 .container-button-exportPREINS> button{
 	margin-left: 10px;
+	width: 45%;
+	padding: 9px 7px;
+	background-color: red;
+	font-weight: bold;
+	max-width: 220px;
 }
+
+.container-button-gp{
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+	.container-button-gp > button{
+		background-color: red;
+		padding: 9px 7px;
+		font-weight: bold;
+	}
+
 
 /*FIN*/
 
@@ -419,7 +438,7 @@ label[for="imagen-ficha"] {
 
 .container-select-deporte{
 
-	width: 90%;
+	width: 100%;
 	margin:0 auto;
 	justify-content: space-around; ;
 	margin-top: 5px;
@@ -431,6 +450,11 @@ label[for="imagen-ficha"] {
 
 	margin-left: 14px;
 
+}
+
+
+.container-select-deporte>div label:nth-child(1){
+	margin-left: 5px;
 }
 
 .container-edad-participante{
@@ -477,28 +501,38 @@ label[for="imagen-ficha"] {
 }
 
 .mapa{
-
-	height: 45vh;
-
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
 }
 
 .mapa>iframe{
 
 	height: 45vh;
+	width: 95%;
 
 }
 /*FIN PROCESO DE INSCRIPCION */
 
+
+
 .card{
 
-	padding: 10px 10px 10px 10px;
-	width: 97%;
+	padding: 7px;
+	width: 100%;
 	margin-bottom: 10px;
 	margin-top: 20px;
 	border-radius: 2px;
+	background: #fbfbfb;
 	box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-
 }
+
+	.card-padding{
+		box-sizing: content-box;
+		padding: 7px 18px 7px 18px;
+	}
 
 .title-card{
 
@@ -574,7 +608,14 @@ label[for="imagen-ficha"] {
 	font-size: 0.8em;
 	font-weight: bold;
 
-}				
+}		
+
+	.valores>p >div{
+
+		font-size: 14px;
+		font-weight: bold;
+
+}			
 
 .valores>p::first-letter{
 
@@ -737,17 +778,7 @@ label[for="imagen-ficha"] {
 
 }
 
-.card{
 
-	padding: 10px 10px 10px 10px;
-	width: 97%;
-	margin-bottom: 10px;
-	margin-top: 20px;
-	border-radius: 2px;
-	box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-	background: #fbfbfb;
-
-}
 .btn{
 
 	
@@ -881,7 +912,60 @@ a:hover{
     animation: spin 2s linear infinite;
 }
 
+.container-loader-horario{
+	
+	width: 100%;
+	height: 130px;
+	display: none;
+}
+
+	.container-loader-horario>div{
+		width: 100%;
+		height: 130px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
+.loader-horario {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #f25029; /* Blue */
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: spin 2s linear infinite;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+
+ .table td,th {
+   text-align: center;   
+}
+
+.table-horario{
+}
+
+	.table-horario tr{
+		
+	}
+
+	.table-horario td{
+		font-size:12px !important;
+	}
+
+	.table-horario th{
+		font-size:14px !important;
+	}
+	.table-horario th div{
+		font-size:14px !important;
+	}
+	.table-horario td div{
+		font-size:12px !important;
+	}
+
+

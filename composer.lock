@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0dbac87d80240cc1aaa58185026b7ca0",
+    "content-hash": "857b77b0c93b1fca94f02bc2bc0fdcbc",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1117,6 +1117,44 @@
                 "parameters management"
             ],
             "time": "2018-02-13T18:05:56+00:00"
+        },
+        {
+            "name": "isoft/mssql-bundle",
+            "version": "dev-master",
+            "target-dir": "Realestate/MssqlBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/intellectsoft-uk/MssqlBundle.git",
+                "reference": "207addc733c05bf5fab21c665e4b3d1108904c3d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/intellectsoft-uk/MssqlBundle/zipball/207addc733c05bf5fab21c665e4b3d1108904c3d",
+                "reference": "207addc733c05bf5fab21c665e4b3d1108904c3d",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Realestate\\MssqlBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Realestate"
+                },
+                {
+                    "name": "Vitaly Zhloba",
+                    "email": "vitaly.zhloba@gmail.com"
+                },
+                {
+                    "name": "Emanuele Panzeri - ThePanz",
+                    "email": "thepanz@gmail.com"
+                }
+            ],
+            "description": "Driver for work with MsSQL server",
+            "time": "2015-05-18T21:16:46+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -3475,7 +3513,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "friendsofsymfony/user-bundle": 20
+        "friendsofsymfony/user-bundle": 20,
+        "isoft/mssql-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
