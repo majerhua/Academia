@@ -297,7 +297,7 @@ class ExportacionDataController extends Controller
                                ubiDpto.ubidpto <> '00' AND ".$query2;
 
                               $querySinMes = "SELECT ubiDpto.ubinombre Departamento ,ubiProv.ubinombre Provincia  , ede.ede_nombre as Complejo,
-                              dis.dis_descripcion as Disciplina, grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, 
+                              dis.dis_descripcion as Disciplina, '\"'+RTRIM(grPar.perdni)+'\"' DNI,grPar.perapepaterno ApellidoPaterno, 
                               grPar.perapematerno ApellidoMaterno ,
                               grPar.pernombres Nombres,
                               CONVERT(varchar, grPar.perfecnacimiento, 103) FechaNacimiento,
@@ -448,7 +448,7 @@ class ExportacionDataController extends Controller
         $response->headers->set('Content-Disposition', 'attachment; filename="beneficiarios.csv"');
         return $response;
   }
->>>>>>> desarrollo
+
 
  public function exportDataBeneficiariosComplejoAction(Request $request)
   {
@@ -466,7 +466,7 @@ class ExportacionDataController extends Controller
       fputcsv($handle, ['Departamento','Provincia' ,'Complejo','Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Matricula','Asistencia','Horario','Modalidad','Etapa','TipoSeguro','Telefono','Correo'],",");
   
       $queryConMes = "SELECT ubiDpto.ubinombre Departamento ,ubiProv.ubinombre Provincia  , ede.ede_nombre as Complejo,
-                              dis.dis_descripcion as Disciplina, grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, 
+                              dis.dis_descripcion as Disciplina, '\"'+RTRIM(grPar.perdni)+'\"' DNI,grPar.perapepaterno ApellidoPaterno, 
                               grPar.perapematerno ApellidoMaterno ,
                               grPar.pernombres Nombres,
                               CONVERT(varchar, grPar.perfecnacimiento, 103) FechaNacimiento,
@@ -603,7 +603,7 @@ class ExportacionDataController extends Controller
                                ubiDpto.ubidpto <> '00' AND YEAR(mov.fecha_modificacion)='$ano' AND ede.ede_codigo='$idComplejo' ";
 
                           $querySinMes = "SELECT ubiDpto.ubinombre Departamento ,ubiProv.ubinombre Provincia  , ede.ede_nombre as Complejo,
-                              dis.dis_descripcion as Disciplina, grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, 
+                              dis.dis_descripcion as Disciplina, '\"'+RTRIM(grPar.perdni)+'\"' DNI,grPar.perapepaterno ApellidoPaterno, 
                               grPar.perapematerno ApellidoMaterno ,
                               grPar.pernombres Nombres,
                               CONVERT(varchar, grPar.perfecnacimiento, 103) FechaNacimiento,
