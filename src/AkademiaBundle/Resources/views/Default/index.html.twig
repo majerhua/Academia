@@ -188,7 +188,7 @@
 					<img src="{{asset('imgLanding/disenioRecreacion/autorizacionPadre.png')}}">
 
 					<div class="container__buton-pre-inscribete">
-						<button href="#" class="btn btn-success btn-success-mod" >Pre-inscríbete</button>
+						<button href="#" class="btn btn-success btn-success-mod" id="btnPreInscribete-req" >Pre-inscríbete</button>
 					</div>
 				</div>
 
@@ -264,7 +264,6 @@
 
 							<div class="container__texto">
 								<h2 class="text-left">Descarga nuestra aplicación móvil:</h2>
-								<!--<h2 class="text-left"><i>Academia IPD</i></h2>-->
 							</div>
 
 							<iframe src="https://www.youtube.com/embed/Vdr9X0I29xQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -272,14 +271,11 @@
 							<div class="container-mensaje-iframe" >
 								<p class="text-left">Encuentra a los potenciales talentos deportivos del programa La Academia a nivel nacional.</p>
 							</div>
-								
 						</div>
 
 						<div class="images__app col-xs-12 col-sm-6 col-md-6 ">
-
 							<img src="{{asset('imgLanding/pantallazos.png')}}">
-							<img src="{{asset('imgLanding/img_google_play.png')}}">
-
+							<img src="{{asset('imgLanding/img_google_play.png')}}" id="img-play-store"  style="cursor:pointer;" >
 						</div>
 
 					</div>
@@ -482,6 +478,7 @@
 			$btnVideos = $("#videos");
 			$btnGaleria = $("#galeria");
 			$btnManual = $("#manual");
+			$imgPlayStore = $("#img-play-store");
 
 			$enviarCorreoUsuarioExt = $("#enviar-correo-usuario-ext");
 
@@ -495,6 +492,11 @@
 			$("#intranet").on('click',function(){
 				window.open('login','_blank');
 			});
+
+			$("#btnPreInscribete-req").on('click',function(){
+				window.open('ficha-preinscripcion');
+			});
+
 
 		 	function EnviarEmail(){
 
@@ -525,9 +527,9 @@
 			                	}else{
 			                		alertify.error('No se pudo Enviar el mensaje!');
 			                	}
-			                    $("#name").val("");
-			                    $("#email").val("");
-			                    $("#message").val("");
+			                    $("#nombre-usuario-ext").val("");
+			                    $("#email-usuario-ext").val("");
+			                    $("#message-usuario-ext").val("");
 
 			            }, error: function(error){
 			                console.log(error);
@@ -555,6 +557,11 @@
 	    $btnManual.on('click',function(){
 	    	window.open('http://www.ipd.gob.pe/manual-de-la-academia-ipd','_blank');
 	    });
+
+	    $imgPlayStore.on('click',function(){
+	    	window.open('https://play.google.com/store/apps/details?id=com.laacademiaipd.laacademiaipd&hl=es_PE','_blank');
+	    });
+
 
 	});
 
