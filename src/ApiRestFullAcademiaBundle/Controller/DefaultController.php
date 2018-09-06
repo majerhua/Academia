@@ -351,9 +351,9 @@ class DefaultController extends FOSRestController
     $correo = $request->get('correo');
     $em = $this->getDoctrine()->getManager(); 
     
-    if( !empty($correo)   /*&& !empty($password)*/ ){
+    if( !empty($correo) ){
       
-      $restresult = $em->getRepository('ApiRestFullAcademiaBundle:PersonaApi')->loginUsuarioApp($correo/*,$passwordEncrypt*/);
+      $restresult = $em->getRepository('ApiRestFullAcademiaBundle:PersonaApi')->loginUsuarioApp($correo);
       
     }else{
       

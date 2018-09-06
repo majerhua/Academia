@@ -41,7 +41,7 @@ class DefaultController extends Controller
 
     //PANEL PRINCIPAL 
     public function panelAction(Request $request){
-  
+        
         $idComplejo = $this->getUser()->getIdComplejo();
         $em = $this->getDoctrine()->getManager();
         $Nombre = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->nombreComplejo($idComplejo);

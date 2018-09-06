@@ -291,40 +291,45 @@
 
 		var cambiarDisciplinaDeportiva = (comDis)=>{
 			
-			$("#horario").empty();
-			$("#horario").append("<option value='' >--Seleccionar--</option>");
 
 			let idComplejoDisciplina = comDis.value;
 
-			$("#boton-next-final").attr("disabled", false);
-			$("#rango-hora-horario").empty();
-			$("#rango-edad-horario").empty();
-			$(".horario-otrasEdades").empty();
-			$("#turno").empty();
-			$("#vacantes").empty();
-			$("#mensaje").empty();
 
-			let datos = {
-				'idComplejoDisciplina':idComplejoDisciplina,
-				'flag':0,
-				'flagDiscapacidad':"{{estado}}"
-			};
+			if( idComplejoDisciplina!="" ){
 
-			$.ajax({
+				$("#horario").empty();
+				$("#horario").append("<option value='' >--Seleccionar--</option>");
 
-				type:'POST',
-				url: "{{url('tableHorario')}}",
-				data: datos,
-				beforeSend:function(){
-					$("#container-loader-horario").show();
-					$("#tableHorario").empty();
-					console.log(datos);
-				},
-				success:function(data){
-					$("#container-loader-horario").hide();
-					$("#tableHorario").html(data);
-				}
-			});
+				$("#boton-next-final").attr("disabled", false);
+				$("#rango-hora-horario").empty();
+				$("#rango-edad-horario").empty();
+				$(".horario-otrasEdades").empty();
+				$("#turno").empty();
+				$("#vacantes").empty();
+				$("#mensaje").empty();
+
+				let datos = {
+					'idComplejoDisciplina':idComplejoDisciplina,
+					'flag':0,
+					'flagDiscapacidad':"{{estado}}"
+				};
+
+				$.ajax({
+
+					type:'POST',
+					url: "{{url('tableHorario')}}",
+					data: datos,
+					beforeSend:function(){
+						$("#container-loader-horario").show();
+						$("#tableHorario").empty();
+						console.log(datos);
+					},
+					success:function(data){
+						$("#container-loader-horario").hide();
+						$("#tableHorario").html(data);
+					}
+				});
+			}
 		}
 
 		$("#pre-inscribete").on('click',function(){

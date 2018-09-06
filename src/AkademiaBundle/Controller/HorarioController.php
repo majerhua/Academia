@@ -57,22 +57,22 @@ class HorarioController extends Controller
         $flagUser = '0';
         $em = $this->getDoctrine()->getManager();
 
-        //Visualizar Horarios de Referencia para Preinscripcion, Landing Page
-        if( $flag == 0 ){
+            //Visualizar Horarios de Referencia para Preinscripcion, Landing Page
+            if( $flag == 0 ){
 
-            $mdlScheduleDiscipline = $em->getRepository('AkademiaBundle:Horario')->getScheduleDisciplineLanding($idCompleDis,$flagDiscapacitado);
-        //Visualizar Horarios Para Ficha Pre Inscripcion(Promotores y Publico General)
-        }else if( $flag == 1){
+                $mdlScheduleDiscipline = $em->getRepository('AkademiaBundle:Horario')->getScheduleDisciplineLanding($idCompleDis,$flagDiscapacitado);
+            //Visualizar Horarios Para Ficha Pre Inscripcion(Promotores y Publico General)
+            }else if( $flag == 1){
 
-            if(!empty($role)){
-                $mdlScheduleDiscipline = $em->getRepository('AkademiaBundle:Horario')->getScheduleDisciplinePromotor($idCompleDis,$ageBeneficiario,$flagDiscapacitado);
-                $flagUser='1';
-            }else{
-                $mdlScheduleDiscipline = $em->getRepository('AkademiaBundle:Horario')->getScheduleDisciplinePublicGeneral($idCompleDis,$ageBeneficiario,$flagDiscapacitado);
+                if(!empty($role)){
+                    $mdlScheduleDiscipline = $em->getRepository('AkademiaBundle:Horario')->getScheduleDisciplinePromotor($idCompleDis,$ageBeneficiario,$flagDiscapacitado);
+                    $flagUser='1';
+                }else{
+                    $mdlScheduleDiscipline = $em->getRepository('AkademiaBundle:Horario')->getScheduleDisciplinePublicGeneral($idCompleDis,$ageBeneficiario,$flagDiscapacitado);
+                }
             }
-        }
 
-        $mdlTurnsDiscipline = $em->getRepository('AkademiaBundle:Horario')->getTurnsDiscipline($idCompleDis);
+            $mdlTurnsDiscipline = $em->getRepository('AkademiaBundle:Horario')->getTurnsDiscipline($idCompleDis);
 
         echo $this->renderView('AkademiaBundle:Default:tableHorario.html.twig',array('horarios' => $mdlScheduleDiscipline , "turnos" => $mdlTurnsDiscipline,'flag'=>$flag,'flagUser'=>$flagUser));
         exit;

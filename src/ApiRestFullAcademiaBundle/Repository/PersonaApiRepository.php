@@ -546,9 +546,9 @@ class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
 
     }
 
-    public function loginUsuarioApp($correo/*,$password*/){
+    public function loginUsuarioApp($correo){
 
-        $query = "SELECT * from ACADEMIA.usuario_app  WHERE correo='$correo' /*AND password='$password'*/ AND estado = 1 ;";
+        $query = "SELECT * from ACADEMIA.usuario_app  WHERE correo='$correo' AND estado = 1 ;";
         
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
