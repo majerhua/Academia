@@ -39,7 +39,7 @@ class DepartamentoRepository extends \Doctrine\ORM\EntityRepository
 	
 	}
 
-    public function getDepartmentsPromotorByDisability($disability,$ageBeneficiario){
+    public function getDepartmentsPromotorByDisability($disability,$ageBeneficiario,$idTemporada){
     
         $query = "  SELECT DISTINCT ubiDpto.ubidpto id ,
                                     ubiDpto.ubinombre nombre
@@ -55,6 +55,7 @@ class DepartamentoRepository extends \Doctrine\ORM\EntityRepository
                     ubiDpto.ubidpto <> '00' AND 
                     ubiDpto.ubidistrito ='00' AND
                     ubiDpto.ubiprovincia ='00'  AND
+                    edi.temporada_id = $idTemporada AND
                     '$ageBeneficiario' <= hor.edadMaxima AND 
                     '$ageBeneficiario' >= hor.edadMinima  ";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);

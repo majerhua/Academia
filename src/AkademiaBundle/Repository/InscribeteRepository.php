@@ -11,7 +11,7 @@ namespace AkademiaBundle\Repository;
 class InscribeteRepository extends \Doctrine\ORM\EntityRepository
 {
 
-	public function getFicha($idInscripcion){
+	public function getFicha($idInscripcion,$idTemporada){
       $query = "SELECT 
                 inscribete.id as id, 
                 inscribete.estado as estado, 
@@ -59,7 +59,8 @@ class InscribeteRepository extends \Doctrine\ORM\EntityRepository
                 apoderado.percodigo = personaApoderado.percodigo and
                 personaParticipante.perubigeo = grubigeo.ubicodigo and
                 participante.percodigo = personaParticipante.percodigo and
-                participante.apoderado_id = apoderado.id and inscribete.id = $idInscripcion";
+                participante.apoderado_id = apoderado.id and inscribete.id = $idInscripcion
+                and edificacionDisciplina.temporada_id = $idTemporada";
 
     	$stmt = $this->getEntityManager()->getConnection()->prepare($query);
     	$stmt->execute();

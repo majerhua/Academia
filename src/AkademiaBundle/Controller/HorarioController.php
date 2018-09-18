@@ -24,6 +24,7 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
+use Symfony\Component\HttpFoundation\Session\Session;
 
 
 class HorarioController extends Controller
@@ -79,30 +80,34 @@ class HorarioController extends Controller
     }
 
     // FUNCION PARA RENDERIZAR LA VISTA DE HORARIOS
-  	public function horariosAction(Request $request){
+  	public function horariosAction(Request $request,$idTemporada){
 
         $idComplejo = $this->getUser()->getIdComplejo();
         $em = $this->getDoctrine()->getManager();
-      
-        $ComplejoDisciplinas = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getComplejosDisciplinasHorarios($idComplejo);
+
+        $ComplejoDisciplinas = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getComplejosDisciplinasHorarios($idComplejo,$idTemporada);
+
         $Horarios = $em->getRepository('AkademiaBundle:Horario')->getHorariosComplejos($idComplejo);
         $turnos = $em->getRepository('AkademiaBundle:Horario')->getTurnosComplejos($idComplejo);
 
         $Disciplinas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasDiferentes($idComplejo);
         $Nombre = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->nombreComplejo($idComplejo);
         
+        $idTemporadaActiva = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva()[0]['temporadaId'];
+
         if(!empty($Nombre)){ 
 
-            return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"1", "nombreComplejo"=> $Nombre, 'turnos'=>$turnos )); 
+            return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"1", "nombreComplejo"=> $Nombre, 'turnos'=>$turnos,'idTemporada'=>$idTemporada,'idTemporadaActiva'=>$idTemporadaActiva)); 
         }else{
-            return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"2", 'turnos'=>$turnos )); 
+
+            return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"2", 'turnos'=>$turnos, 'idTemporada'=>$idTemporada )); 
         }
     }
 
     // FUNCION PARA LA CREACION DE HORARIOS
     public function crearHorarioAction(Request $request){
             
-        if($request->isXmlHttpRequest()){
+        if( $request->isXmlHttpRequest() ){
              
             $em = $this->getDoctrine()->getManager();
 
@@ -111,6 +116,7 @@ class HorarioController extends Controller
             $ediCodigo = $em->getRepository('AkademiaBundle:Horario')->getCapturarEdiCodigo($idComplejo, $idDisciplina); 
 
             $codigoEdi = $ediCodigo[0]['edi_codigo'];
+            
             $modalidad = $request->request->get('modalidad-horario');
             $etapa = $request->request->get('etapa-horario');
             $edadMinima = $request->request->get('edadMinima');
@@ -124,8 +130,8 @@ class HorarioController extends Controller
             $dataHorarioRepetido = $em->getRepository('AkademiaBundle:Horario')->getDiferenciarHorarios($modalidad,$etapa,$edadMinima,$edadMaxima,$codigoEdi,$turnosString);
             $dataHorRept = $dataHorarioRepetido[0]['cantHorario'];
             
-
             if(!empty($dataHorRept)){
+
                 $mensaje = 1;
             }else{
 
@@ -136,6 +142,7 @@ class HorarioController extends Controller
                 }
 
                 $horario = new Horario();
+
                 $horario->setDiscapacitados($modalidad);
                 $horario->setEtapa($etapa);
                 $horario->setEdadMinima($edadMinima);
@@ -144,7 +151,7 @@ class HorarioController extends Controller
                 $em = $this->getDoctrine()->getRepository(complejoDisciplina::class);
                 $codigoDisciplina = $em->find($codigoEdi);
                 $horario->setComplejoDisciplina($codigoDisciplina);
-                
+
                 $horario->setUsuarioCrea($usuario);
                 $horario->setVacantes($vacantes);
                 $horario->setPreinscripciones($preinscripciones);

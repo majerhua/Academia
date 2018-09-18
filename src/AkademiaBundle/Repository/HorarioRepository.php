@@ -328,8 +328,10 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
         public function getHorarioBeneficiario($idHorario){
 
                 $query = "SELECT rtrim(dis.dis_descripcion) as nombreDisciplina,
+                        edi.edi_codigo ediCodigo,
                         dis.dis_codigo as idDisciplina,
                         hor.id as idHorario,
+                        hor.discapacitados,
                         CASE hor.discapacitados 
                         WHEN '0' THEN 'Convencional'
                         WHEN '1' THEN 'Persona con Discapacidad' 
@@ -369,6 +371,12 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
                         hor.id as idHorario, 
                         ins.id as idInscribete,
                         ins.estado as estadoInscribete,
+
+                        CASE hor.discapacitados
+                        WHEN 0 THEN 'Convencional'
+                        WHEN 1 THEN 'Persona con Discapacidad'
+                        END AS modalidad,
+
                         mov.categoria_id as idCategoria,
                         mov.asistencia_id as idAsistencia,
                         mov.fecha_modificacion as fechita,

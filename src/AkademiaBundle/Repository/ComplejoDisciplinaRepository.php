@@ -34,15 +34,23 @@ class ComplejoDisciplinaRepository extends \Doctrine\ORM\EntityRepository
         return $complejosDeportivos;
 	}
 
-	public function getComplejosDisciplinasHorarios($idComplejo){
+	public function getComplejosDisciplinasHorarios($idComplejo , $idTemporada){
 
-		$query = "SELECT a.edi_codigo as idDistrito,c.ede_nombre as nombreComplejo, a.ede_codigo as idComplejoDeportivo, 
-				rtrim(b.dis_descripcion) as nombreDisciplina,b.dis_codigo as idDisciplina ,c.ede_discapacitado as discapacidad 
-				FROM CATASTRO.edificacionDisciplina as a 
-				inner join CATASTRO.disciplina as b on a.dis_codigo = b.dis_codigo 
-				inner join CATASTRO.edificacionesdeportivas as c on a.ede_codigo=c.ede_codigo 
-				WHERE a.ede_codigo = $idComplejo and a.edi_estado = 1 and b.dis_estado=1
-				ORDER BY b.dis_descripcion ASC";
+		$query = "	SELECT	edi.edi_codigo as idDistrito,
+					ede.ede_nombre as nombreComplejo,
+					edi.ede_codigo as idComplejoDeportivo, 
+					rtrim(dis.dis_descripcion) as nombreDisciplina,
+					dis.dis_codigo as idDisciplina ,
+					ede.ede_discapacitado as discapacidad 
+					FROM CATASTRO.edificacionDisciplina as edi 
+					INNER JOIN CATASTRO.disciplina as dis on edi.dis_codigo = dis.dis_codigo 
+					INNER JOIN CATASTRO.edificacionesdeportivas as ede on edi.ede_codigo=ede.ede_codigo 
+					WHERE 
+					edi.ede_codigo = $idComplejo AND 
+					edi.edi_estado = 1 AND 
+					dis.dis_estado = 1 AND
+					edi.temporada_id = $idTemporada 
+					ORDER BY dis.dis_descripcion ASC";
 
 		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
@@ -53,6 +61,7 @@ class ComplejoDisciplinaRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function getCompararEstado($idComplejo, $idDisciplina){
+		
 		$query = "SELECT edi_estado as estado from catastro.edificacionDisciplina where ede_codigo = $idComplejo and dis_codigo = $idDisciplina";
 		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();

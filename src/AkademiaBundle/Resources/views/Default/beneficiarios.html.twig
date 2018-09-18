@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 {% block title %}La Academia{% endblock %}
 {% block body  %}
-
+{% set numMesActual = ("now"|date("m"))|number_format %}
 <header>
 	 <nav class="navbar navbar-inverse" role="navigation">
         <div class="container">
@@ -18,7 +18,7 @@
                 <br>
                 <ul class="nav navbar-nav navbar-right">
                     
-                    <li title="Horarios"><a href="{{url('akademia_horarios')}}"><i class="icon-arrow-left" style="font-size:1.5em; color:white"></i></a></li>
+                    <li title="Horarios"><a href="{{url('akademia_horarios',{'idTemporada':idTemporadaHabilitada})}}"><i class="icon-arrow-left" style="font-size:1.5em; color:white"></i></a></li>
                     <li title="Inicio"><a href="{{url('akademia_panel')}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
                     <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
                 </ul>
@@ -26,6 +26,8 @@
         </div>
     </nav>
 </header>
+
+{% set mesesAnio = {'1': 'Ene', '2':'Feb', '3':'Mar','4':'Abr','5':'May','6':'Jun','7':'Jul','8':'Ago','9':'Sep','10':'Oct','11':'Nov','12':'Dic'} %}
 
 <section class="proceso-inscripcion">
 		<div id="proceso1" class="proceso" style="margin-bottom: 60px;">
@@ -165,18 +167,20 @@
 								<br>
 									
 								<div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:80vh;">
-									<table class="table"> 
+
+									<table class="table beneficiario-table"> 
 										<thead style="background:#F2F2F2; color:#585858"> 
 											<tr> 
-												<th class="text-center">Inscripción</th>
+												<th class="text-center">Cod</th>
 												<th class="text-center">Nombre</th> 
 												<th class="text-center">DNI</th>
 												<th class="text-center">Edad</th> 
 												<th class="text-center">Sexo</th> 
 												<th class="text-center">Categoría</th>
-												<th class="text-center">Asistencia</th>
-												<th></th>
-					
+												{% for mes in mesesTemporada %}
+												    <th class="text-center" style="background-color:rgba(0,0,0,0.2);" >{{mesesAnio[mes]}}</th>
+												{% endfor %}
+												<th class="text-center"></th>
 											</tr>
 
 										</thead> 
@@ -196,9 +200,9 @@
 													<td class="text-center">{{beneficiario['edad']}}</td> 
 													
 													{% if beneficiario['sexo'] == 2 %}
-														<td class="text-center"> Femenino </td> 
+														<td class="text-center">F</td> 
 													{% else %}
-														<td class="text-center"> Masculino </td>
+														<td class="text-center">M</td>
 													{% endif %}
 
 													{% if beneficiario['idCategoria'] == 1 %}
@@ -211,13 +215,53 @@
 														<td class="text-center">Talento</td>
 													{% endif %} 
 
-													{% if beneficiario['idAsistencia'] == 1 %}
-														<td class="text-center">Inscrito</td>
-													{% elseif beneficiario['idAsistencia'] == 2 %}
-														<td class="text-center">Asistente</td>
-													{% elseif beneficiario['idAsistencia'] == 3 %}
-														<td class="text-center">Retirado</td>
-													{% endif %}
+													{% for mes in mesesTemporada %}
+
+														{% set flagAsis = false %}
+														{% set movId = null %}
+
+														{% for asisMen in asistenciaMensual %}
+														    
+															{% if asisMen['inscribete_id'] ==  beneficiario['idInscribete'] and asisMen['mes'] == mes %}
+
+																{% if  asisMen['asistencia_id'] == 2 %}
+
+																	{% set flagAsis = true %}
+																	{% set movId =  asisMen['idMovimiento']  %}
+
+																{% else  %}
+
+																	{% set movId =  asisMen['idMovimiento']  %}
+
+																{% endif %}
+
+															{% endif %}
+
+														{% endfor %}
+
+														{%  if flagAsis == true %}
+
+															{% if numMesActual == mes %}
+																<td ><input type="checkbox" class="mes-actual" checked value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"></td>
+
+															{% else %}
+																<td style="background-color:rgba(0,0,0,0.3);"><input type="checkbox"   disabled checked value="{{beneficiario['idInscribete']}}"></td>
+
+															{% endif %}
+
+														{%  else %}
+
+															{% if numMesActual == mes %}
+																<td ><input type="checkbox" class="mes-actual" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"></td>
+
+															{% else %}
+																<td style="background-color:rgba(0,0,0,0.3);"><input  type="checkbox"  disabled value="{{beneficiario['idInscribete']}}" ></td>
+
+															{% endif %}
+
+														{% endif %}
+
+													{% endfor %}
 
 													<td><button type="button" title="Editar datos" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar" onclick="editarParticipante({{beneficiario['idParticipante']}})"><i class="icon-pencil-square-o" style="font-size:1em; margin-top:5px; color:white" ></button></td>
 												</tr> 
@@ -230,7 +274,7 @@
 
 							</div>
 
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 col-md-offset-1">
 								<br>
 								<div class="input-group">
 									<span class="input-group-addon alert-info">Inscritos:</span>
@@ -238,29 +282,39 @@
 								</div>
 							</div>
 
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
 								<br>
 								<div class="input-group">
 									<span class="input-group-addon alert-success">Asistentes:</span>
 									<p id="asistentes-horario" class="form-control">{{asistentes[0]['asistencias']}}</p>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
 								<br>
 								<div class="input-group">
 									<span class="input-group-addon alert-danger">Retirados:</span>
 									<p id="retirados-horario" class="form-control">{{retirados[0]['retirados']}}</p>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
 								<br>
 								<div class="input-group">
 									<span class="input-group-addon alert-warning">Seleccionados:</span>
 									<p id="talentos-horario" class="form-control">{{seleccionados[0]['seleccionados']}}</p>
 								</div>
 							</div>
+
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 col-md-offset-1">
+								<br>
+								<button class="btn btn-danger"  id="guardar-asistencia" onclick="guardarAsistencia()" >Guardar Asistencia</button>
+							</div>
+
 						</div>
 					</div>
+
+
+
 				</div>
 			</div>
 		</div>
@@ -315,52 +369,71 @@
 						</div>
 						<div id="alerta-error" class="alert alert-danger collapse text-center"></div>
 						<ul class="list-group">
-							<li class="list-group-item">
+							<li class="list-group-item" style="padding:2px 2px 2px 10px;">
 								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Cod-inscripción</strong></p>
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-3">
+										<p><strong>Código</strong></p>
 									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-2">
 										<p id="idFicha"></p>
 									</div>
-								</div>
-							</li>
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-2">
 										<p><strong>DNI</strong></p>
 									</div>
 
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-4">
 										<p id="dniParticipante"></p>
 									</div>
+
 								</div>
 							</li>
 
-							<li class="list-group-item">
+							<li class="list-group-item" style="padding:2px 2px 2px 10px;">
 								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-3">
 										<p><strong>Edad</strong></p>
 									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-2">
 										<p id="edadParticipante"></p>
 									</div>
-								</div>
-							</li>
 
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-2">
 										<p><strong>Sexo</strong></p>
 									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-4">
 										<p id="sexoParticipante"></p>
 									</div>
+
 								</div>
 							</li>
 
-{# cbasistencia #}
-							<li class="list-group-item">
+							<li class="list-group-item" style="padding:2px 2px 2px 10px;">
+								<div class="row">
+
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-3">
+										<p><strong>Deporte</strong></p>
+									</div>
+
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-2">
+										<p id="deporteParticipante">{{horarios[0]['nombreDisciplina']}}</p>
+									</div>
+
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-2">
+										<p><strong>Modalidad</strong></p>
+									</div>
+
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-4">
+										<p id="modalidadParticipante"></p>
+									</div>
+
+								</div>
+							</li>
+
+							<li class="list-group-item" style="padding:2px 2px 2px 10px;">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 										<p><strong>Asistencia</strong></p>
@@ -378,7 +451,7 @@
 								</div>
 							</li>
 
-							<li class="list-group-item" id="cbx-categoria">
+							<li class="list-group-item" id="cbx-categoria" style="padding:2px 2px 2px 10px;">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 										<p><strong>Categoría</strong></p>
@@ -398,15 +471,43 @@
 										</select>
 									</div>
 								</div>
-							</li>	
-							<br>
-							<li class="list-group-item">
+							</li>
+
+
+							<li class="list-group-item" style="padding:5px 2px 2px 10px;">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Etapa: </strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<select class="form-control" id="cambiarHorariosMigracion" >
+											<option value="" >--Seleccionar--</option>
+											<option value="1" >Masificación</option>
+											<option value="0" >Formación</option>
+										</select>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item" style="padding:5px 2px 2px 10px;">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-12">
+										<p>Horarios Migracion</p>
+										<div id="container-horario-migracion" >
+								        	<table class="table table-horario table-hover" id="tableHorario" style="width: 100%" >
+			        						</table>
+										</div>
+									</div>
+								</div>
+							</li>
+							
+							<li class="list-group-item" style="padding:5px 2px 2px 10px;">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 										<p><strong>Última modificación: </strong></p>
 									</div>
 									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-										<p id="fecha-modificacion" style="color:grey"></p>
+										<p id="fecha-modificacion" ></p>
 									</div>
 								</div>
 							</li>
@@ -433,22 +534,100 @@
 
 <script type="text/javascript">
 	
+
+
+		$("#cambiarHorariosMigracion").on('change',function(){
+
+			var datosMigracionHorario = {
+											'ediCodigo':"{{ediCodigo}}",
+            								'modalidad':"{{modalidad}}",
+								            'etapa':$("#cambiarHorariosMigracion").val(),
+								            'edad': parseInt( $("#edad-beneficiario-horario").text() ),
+								            'horario-actual':"{{horarios[0]['idHorario']}}"
+										};
+			$.ajax({
+				type:'POST',
+				url: "{{url('akademia_getTableHorarioMigracion')}}",
+				data: datosMigracionHorario,
+				beforeSend: function(){	
+					console.log(datosMigracionHorario);			
+				},
+				success: function(data){
+					$("#tableHorario").html(data);
+				},
+				error: function(data){
+					alertify.error('<p style="color:white">Error </p>');	
+					console.log(data);
+				},
+			});
+
+		});
+
 		$(document).ready(function(){
 
 			$('#btn-close-alert-info').click(function(){
 				hideAlertMessage('#alert-info')
 			});
-
 			$('#btn-close-alert-editar-participante').click(function(){
 				hideAlertMessage('#alert-editar-participante')
 			});	
-
 			$("#optiones").attr('hidden',true);
 			$("#optiones2").attr('hidden',true);		
 
 		});
 
-		/*FILTROS */
+
+		var asistenciaMes =  new Array();
+
+		var checkMesActual = document.querySelectorAll('.mes-actual');
+
+		for (let i =0; i < checkMesActual.length; i++) {
+
+			if( $(checkMesActual[i]).prop('checked') ){
+				asistenciaMes.push( $(checkMesActual[i]).val() );
+			}
+		}
+
+		function asistenciaMensual(element){
+
+		  	if (element.checked) {
+		    	asistenciaMes.push(element.value);
+
+		  	}else{
+		    	asistenciaMes.splice( asistenciaMes.indexOf(element.value), 1);
+		  	}
+		}
+
+		const guardarAsistencia = ()=>{
+
+
+			var datosAsistencia = {
+							'idHorario':"{{id}}",
+							'asistencia-mensual': asistenciaMes
+						}
+			$.ajax({
+
+				type:'POST',
+				dataType: 'json',
+				url: "{{url('akademia_guardarAsistenciaBeneficiarios')}}",
+				data: datosAsistencia,
+				beforeSend: function(){	
+					$("#guardar-asistencia").attr('disabled',true);
+				},
+				success: function(data){
+
+					if(data == 1){
+						alertify.success('<p style="color:white">Se guardo Asistencia Correctamente!.</p>');
+					}
+					location.reload(true);
+				},
+				error: function(data){
+					alertify.error('<p style="color:white">Error </p>');	
+					console.log(data);
+				},
+			});
+		}
+
 		$(document).ready(function () {
             (function ($) {
 
@@ -487,9 +666,9 @@
 					
 					$("#nombreParticipante").append("<p>{{beneficiario['nombre']}}</p>");
 					$("#dniParticipante").append("<p>{{beneficiario['dni']}}</p>");
-					$("#edadParticipante").append("<p>{{beneficiario['edad']}} años</p>");
-					$("#idFicha").append("<p>{{beneficiario['idInscribete']}}</p>")
-
+					$("#edadParticipante").append("<p><em id='edad-beneficiario-horario' >{{beneficiario['edad']}}</em> años</p>");
+					$("#idFicha").append("<p>{{beneficiario['idInscribete']}}</p>");
+					$("#modalidadParticipante").append("<p>{{beneficiario['modalidad']}}</p>");
 					
 					if ("{{beneficiario['sexo']}}" == 2){
 					 	$("#sexoParticipante").append("<p>Femenino</p>");	
@@ -497,8 +676,8 @@
 					 	$("#sexoParticipante").append("<p>Masculino</p>");
 					}	
 
-					var idCat = {{beneficiario['idCategoria']}};
-					var idAsis = {{beneficiario['idAsistencia']}};
+					var idCat = "{{beneficiario['idCategoria']}}";
+					var idAsis = "{{beneficiario['idAsistencia']}}";
 
 					let categoria = parseInt(idCat);
 
@@ -579,6 +758,7 @@
 			$("#sexoParticipante").empty();
 			$("#idFicha").empty();
 			$("#fecha-modificacion").empty();
+			$("#modalidadParticipante").empty();
 
 
 		
@@ -610,11 +790,15 @@
 				}
 			//if(asistencia != 0 && categoria != 0){
 
-				console.log(asistencia, categoria, idFicha);
+				console.log(asistencia, categoria, idFicha,$('input:radio[name=codHorario]:checked').val());
+
 				var dataBeneficiario = {
+
 					"idFicha" : idFicha,
 					"idAsistencia": asistencia,
-					"idCategoria": categoria
+					"idCategoria": categoria,
+					"horarioActual":"{{horarios[0]['idHorario']}}",
+					"horarioAMigrar": $('input:radio[name=codHorario]:checked').val()
 				};
 
 	
@@ -633,7 +817,6 @@
 
 							alertify.success('<p style="color:white">Beneficiario Actualizado</p>');
 							location.reload(true);
-							//window.location.href = "{{url('akademia_beneficiarios',{idHorario:id})}}";
 								
 						}
 						if(data == 2){

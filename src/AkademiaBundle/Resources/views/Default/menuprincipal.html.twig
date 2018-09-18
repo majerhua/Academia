@@ -25,9 +25,44 @@
 </header>
 
 <section  id="inscribete"  class="proceso-inscripcion">
-	<div style="width:93%">
-		<p class="text-right" style="color:grey" >Sesión iniciada: {{ app.user.username}} </p>
+
+	<div class="row" > 
+		<div style="width:100%">
+
+
+			
+			<div class="col-lg-3 col-lg-offset-1">
+
+				{% if valor != 2 %}
+
+					<div>
+						<label>Temporada</label>
+						<select  class="form-control" id="temporada">
+							{% for temp in temporadasHabilitadas %}
+
+								{%  if idTemporadaHabilidatada == temp.temporadaId %}
+								    <option value="{{temp.temporadaId}}" selected >{{temp.anio}}-{{temp.ciclo}}</option>
+								{% else %}
+							    	<option value="{{temp.temporadaId}}">{{temp.anio}}-{{temp.ciclo}}</option>
+								{% endif %}
+
+							{% endfor %}
+						</select>
+					</div>
+					
+				{% endif %}
+
+			</div>
+
+			<div class="col-lg-3 col-lg-offset-4">
+				<p class="text-right" style="color:grey" >Sesión iniciada: {{ app.user.username}} </p>
+			</div>
+		
+		</div>
 	</div>
+
+	
+
 	<div class="container text-center" style="margin-top: 10px; margin-bottom: 30px;">
 		
 		{% if  is_granted('ROLE_ANALISTA') %}	
@@ -60,7 +95,7 @@
 		<div class="row text-center">	
 			{% if is_granted('ROLE_ADMIN') %}	
 			<div id="option-beneficiarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
-				<a href="{{url('akademia_fichaPreInscripcion')}}">
+				<a href="{{url('akademia_fichaPreInscripcion',{'idTemporada':idTemporadaHabilidatada})}}">
 					<div class="card">
 						
 						<img src="{{ asset('assets/images/preinscripcion-directa.png') }}" width="130" height="140">
@@ -70,7 +105,7 @@
 			</div>
 
 			<div id="option-validacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
-				<a href="{{url('akademia_inscritos')}}">
+				<a href="{{url('akademia_inscritos',{'idTemporada':idTemporadaHabilidatada})}}">
 					<div class="card">
 
 						<img src="{{ asset('assets/images/icon_confirmar.png') }}" width="130" height="140">
@@ -80,10 +115,10 @@
 			</div>
 
 			<div id="option-horarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
-				<a href="{{url('akademia_horarios')}}">
+				<a href="{{url('akademia_horarios',{'idTemporada':idTemporadaHabilidatada})}}">
 					<div class="card">
 						<img src="{{ asset('assets/images/icon_horarios.png') }}" width="130" height="140">
-						<p class="title-card"   >Disciplinas / Horarios / Beneficiarios</p>
+						<p class="title-card">Disciplinas / Horarios / Beneficiarios</p>
 					</div>
 				</a>
 			</div>
@@ -97,6 +132,8 @@
 				</a>
 			</div>	
 			
+
+
 			{% elseif is_granted('ROLE_ANALISTA') %}
 
 				<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
@@ -135,6 +172,14 @@
 					</a>
 				</div>
 
+			<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
+				<a href="{{url('akademia_temporadasPrincipal')}}">
+					<div class="card">
+						<img src="{{ asset('assets/images/temporada.png') }}" width="120" height="120">
+						<p class="title-card">Temporada</p>
+					</div>
+				</a>
+			</div>	
 			{% elseif is_granted('ROLE_DOCENTE') %}
 				
 				<div id="option-horarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
@@ -215,6 +260,14 @@
 	function hideAlertMessage(alert){
 		$(alert).hide('fade');		
 	}
+
+	$("#temporada").on('change',function(){
+
+		let url = "{{url('akademia_panel',{'idTemporada':123})}}";
+		url = url.replace('123', $("#temporada").val() );
+		location.href = url;
+
+	});
 
 </script>
 

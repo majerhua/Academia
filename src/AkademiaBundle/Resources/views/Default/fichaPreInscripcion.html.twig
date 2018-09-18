@@ -21,7 +21,7 @@
                 	
                 	{% if flagUser == "1" %}
                 	
-                    	<li title="Regresar"><a href="panel"><i class="icon-back" style="font-size:1.9em; color:white" ></i></a></li>
+                    	<li title="Regresar"><a href="{{url('akademia_panel',{'idTemporada':idTemporada})}}"><i class="icon-back" style="font-size:1.9em; color:white" ></i></a></li>
                     {%  else %}
                     	<li title="Regresar"><a href="{{url('akademia_homepage')}}"><i class="icon-back" style="font-size:1.9em; color:white" ></i></a></li>
                     {% endif %}
@@ -473,7 +473,7 @@
 		$.ajax({
 			type:'POST',
 			url:urlRegFinal,
-			data:{'edadBeneficiario':sessionStorage.getItem("edad")},
+			data:{'edadBeneficiario':sessionStorage.getItem("edad"),'idTemporada':"{{idTemporada}}"},
 			beforeSend:function(){
 				$('#loader').show();
 			},
@@ -730,7 +730,7 @@ $("#boton3").on('click',function(){
 		if( sessionStorage.getItem("edad") != null || sessionStorage.getItem("edad")!=undefined ){
 			if(sessionStorage.getItem('flagDiscapacitado') == '1' ){
 
-				if(sessionStorage.getItem("edad") <= 59 && sessionStorage.getItem("edad") >= 4){
+				if( sessionStorage.getItem("edad") <= parseInt("{{rankAgesPreRegistration['edadMaximaDiscapacitado']}}") && sessionStorage.getItem("edad") >= parseInt("{{rankAgesPreRegistration['edadMinimaDiscapacitado']}}") ){
 
 					$("#proceso3").hide();
 					console.log("Val flagDiscapacitado ==>",sessionStorage.getItem('flagDiscapacitado'));
@@ -740,11 +740,11 @@ $("#boton3").on('click',function(){
 					$(".bar-inscripcion__4").addClass('active');	
 			    
 			    }else{
-			    	alertify.error('<p style="color:white">Sólo de 6 a 59 años. </p>'); 
+			    	alertify.error("<p style='color:white'>Sólo de {{rankAgesPreRegistration['edadMinimaDiscapacitado']}} a {{rankAgesPreRegistration['edadMaximaDiscapacitado']}} años.</p>"); 
 			    }
 
 			}else if(sessionStorage.getItem('flagDiscapacitado') == '0' ){
-				if(sessionStorage.getItem("edad") < 18 && sessionStorage.getItem("edad") >= 4){
+				if(sessionStorage.getItem("edad") <= parseInt("{{rankAgesPreRegistration['edadMaximaConvencional']}}") && sessionStorage.getItem("edad") >= parseInt("{{rankAgesPreRegistration['edadMinimaConvencional']}}") ){
 					
 					$("#proceso3").hide();
 					
@@ -756,7 +756,7 @@ $("#boton3").on('click',function(){
 
 				}else{
 
-					alertify.error('<p style="color:white">Sólo de 6 a 17 años. </p>'); 
+					alertify.error("<p style='color:white'>Sólo de {{rankAgesPreRegistration['edadMinimaConvencional']}} a {{rankAgesPreRegistration['edadMaximaConvencional']}} años.</p>"); 
 			    }
 			}
 			

@@ -19,4 +19,52 @@ class AsistenciaRepository extends \Doctrine\ORM\EntityRepository
 
             return $asistencia;
     }
+
+    public function insertAsistenciaBeneficiarios($asistenciaBeneMen,$idHorario,$usuario){
+
+
+        $query = "SELECT ins.id inscribeteId,hor.id horarioId FROM ACADEMIA.inscribete ins
+					INNER JOIN ACADEMIA.horario hor ON hor.id = ins.horario_id
+					WHERE hor.id=$idHorario and ins.estado=2";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $beneficiarios = $stmt->fetchAll();
+
+        
+        $asistenciaId = 4;
+           
+		foreach ($beneficiarios as $key => $value) {
+
+			$flagAsis = false;
+			
+			for ($i = 0; $i < count($asistenciaBeneMen) ; $i++) {
+            	if($asistenciaBeneMen[$i] == $value['inscribeteId']){
+            		$flagAsis=true;
+            	}
+            }
+
+
+            if($flagAsis == true){
+            	$asistenciaId=2;
+            }else{
+            	$asistenciaId=4;
+            }
+
+            $idFicha = $value['inscribeteId'];
+
+    		$query = "SELECT categoria_id from ACADEMIA.movimientos
+						WHERE inscribete_id = $idFicha
+						ORDER BY id DESC; ";
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+            $movimientos = $stmt->fetchAll();
+
+            $categoriaId = $movimientos[0]['categoria_id'];
+
+    		$query = "INSERT into academia.movimientos(categoria_id, asistencia_id, inscribete_id, usuario_valida,horario_id) values ($categoriaId ,$asistenciaId,$idFicha ,$usuario ,$idHorario)";
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+        }
+
+    }
 }

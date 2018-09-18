@@ -264,6 +264,7 @@
 			var id = $('#input-codigo-inscripcion').val();
 			var dataFicha = {
 				"id" : id,
+				"idTemporada":"{{idTemporadaHabilidatada}}"
 			}
 
 			$.ajax({
@@ -279,7 +280,6 @@
 					
 					console.log(JSON.parse(data));						
 					clearFicha();
-					console.log("majerhua");
 					if(data != 1){
 
 						var valor =JSON.parse(data)[0];

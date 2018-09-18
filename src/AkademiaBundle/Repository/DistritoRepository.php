@@ -46,7 +46,7 @@ class DistritoRepository extends \Doctrine\ORM\EntityRepository
         return $distritos;
     }    
 
-    public function getDistrictsPromotorByDisability($disability,$ageBeneficiario){
+    public function getDistrictsPromotorByDisability($disability,$ageBeneficiario,$idTemporada){
 
         $query = "
                 SELECT DISTINCT ubi.ubidpto idDepartamento, 
@@ -68,6 +68,8 @@ class DistritoRepository extends \Doctrine\ORM\EntityRepository
                 ubi.ubidistrito <> '00' AND 
                 ubi.ubiprovincia <> '00' AND 
                 ubi.ubiprovincia <> '00' AND
+
+                edi.temporada_id =  $idTemporada AND
                 
                 '$ageBeneficiario' <= hor.edadMaxima AND 
                 '$ageBeneficiario' >= hor.edadMinima 

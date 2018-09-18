@@ -21,9 +21,9 @@ class ComplejoDeportivoRepository extends \Doctrine\ORM\EntityRepository
 		return $complejosDeportivos;
 	}
 
-	public function getComplexesPromotorByDisability($disability,$ageBeneficiario)
+	public function getComplexesPromotorByDisability($disability,$ageBeneficiario, $idTemporada)
 	{
-		$query = "SELECT distinct edde.ede_codigo AS id, edde.ede_nombre as nombre ,edde.ubicodigo ,edde.ede_direccion as direccion, edde.ede_estado as estado,edde.ede_discapacitado as discapacitado from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis, CATASTRO.edificacionesdeportivas AS edde where hor.discapacitados='$disability' and hor.estado=1 and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and hor.vacantes<>0 and '$ageBeneficiario'<=hor.edadMaxima and '$ageBeneficiario'>=hor.edadMinima;";
+		$query = "SELECT distinct edde.ede_codigo AS id, edde.ede_nombre as nombre ,edde.ubicodigo ,edde.ede_direccion as direccion, edde.ede_estado as estado,edde.ede_discapacitado as discapacitado from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis, CATASTRO.edificacionesdeportivas AS edde where hor.discapacitados='$disability' and hor.estado=1 and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and hor.vacantes<>0 and '$ageBeneficiario'<=hor.edadMaxima and '$ageBeneficiario'>=hor.edadMinima and eddis.temporada_id = $idTemporada;";
 
 		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
 		$stmt->execute();

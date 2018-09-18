@@ -54,7 +54,7 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 	    return $provincias;
 	}
 
-	public function getProvincesPromotorByDisability($disability,$ageBeneficiario){
+	public function getProvincesPromotorByDisability($disability,$ageBeneficiario,$idTemporada){
 
 	    $query = "SELECT DISTINCT ubiDpto.ubidpto idDepartamento, 
 					ubiProv.ubiprovincia idProvincia,
@@ -69,7 +69,6 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 	                WHERE
 
 	                hor.estado = 1 AND
-	                hor.convocatoria = 1 AND 
 	                hor.discapacitados = '$disability' AND
 	                hor.vacantes <> 0 AND
 
@@ -85,6 +84,8 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 	                ubi.ubidistrito <> '00' AND 
 	                ubi.ubiprovincia <> '00' AND 
 	                ubi.ubiprovincia <> '00' AND
+
+	                edi.temporada_id = $idTemporada AND
 
 	                '$ageBeneficiario' <= hor.edadMaxima AND 
                     '$ageBeneficiario' >= hor.edadMinima ";

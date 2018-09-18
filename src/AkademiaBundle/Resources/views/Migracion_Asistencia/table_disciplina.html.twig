@@ -37,11 +37,33 @@
 
 <script>
 
-	if( parseInt("{{estadoUpdDis}}") === 1 ){
-		alertify.success("Se modifico Correctamente");
-	}else if( parseInt("{{estadoUpdDis}}") === 0){
-		alertify.warning("<p style='color:black;font-weight:bold;'>No se pudo actualizar la Disciplina</p>");
-	}
+	$(document).ready(function () {
+
+		if( parseInt("{{estadoUpdDis}}") === 1 ){
+			alertify.success("Se modifico Correctamente");
+		}else if( parseInt("{{estadoUpdDis}}") === 0){
+			alertify.warning("<p style='color:gray;font-weight:bold;'>No se pudo actualizar la Disciplina</p>");
+		}else if( parseInt("{{estadoUpdDis}}") === -1 ){
+			alertify.warning("<p style='color:gray;font-weight:bold;'>No se pudo actualizar la disciplina porque existen Beneficiarios Inscritos.</p>");
+		}
+			
+		(function ($) {
+			var jsFiltrar = document.querySelectorAll('.filtrar');
+			var jsBuscar = document.querySelectorAll('.buscar');
+
+			for (var i = 0; i < jsFiltrar.length; i++) {
+
+				$(jsFiltrar[i]).keyup(function () {
+
+		            var rex = new RegExp($(this).val(),'i');
+		            $(jsBuscar).children('tr').hide();
+		            $(jsBuscar).children('tr').filter(function () {
+		                return rex.test($(this).text());
+		            }).show();
+		    	})
+			}  
+		}(jQuery));
+	 });
 </script>
 
 {% endblock %}

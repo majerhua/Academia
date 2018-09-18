@@ -4,10 +4,11 @@
 	$convencionalEdadMaxima = $("#convencional-edad-maxima");
 	$discapacitadoEdadMinima = $("#discapacitado-edad-minima");
 	$discapacitadoEdadMaxima = $("#discapacitado-edad-maxima");
+
 	$btnActualizarDisciplina = $("#btn-actualizarDisciplina");
+	$btnOcultarDisciplina = $("#btn-ocultar-disciplina");
 
 	$containerTableDisciplina = $("#container-table-disciplina");
-
 	$estadoDisciplina = $("#estado-disciplina");
 
 	const getDisciplinaConfiguracionById = (idDisciplina)=> {
@@ -54,30 +55,68 @@
 
 	const actualizarDisciplina = ()=>{
 
-		var datos = {
+
+		if( $estadoDisciplina.val() == 0 ){
+			$('#confirmarOcultarDisciplina').modal('show');
+
+		}else if( $estadoDisciplina.val() == 1 ) {
+
+			var datos = {
 						'idDisciplina': $codigoDisciplina.text(),
 						'convencional-edad-minima':$convencionalEdadMinima.val(),
 						'convencional-edad-maxima': $convencionalEdadMaxima.val(),
 						'discapacitado-edad-minima': $discapacitadoEdadMinima.val(),
 						'discapacitado-edad-maxima': $discapacitadoEdadMaxima.val(),
 						'estado-disciplina': $estadoDisciplina.val()
-					};
+			};
 
+			$.ajax({
+
+				url: 'update/disciplina',
+				data: datos,
+				beforeSend:function(){
+					console.log(datos);
+				},
+				success:function(data){
+					$containerTableDisciplina.html(data);
+				},
+				error:function(error){
+					alertify.error('<p style="color:white">Se produjo un error.</p>');
+				}
+
+			});
+
+		}
+
+	}
+
+
+	const ocultarDisciplina = ()=>{
+
+		var datos = {
+					'idDisciplina': $codigoDisciplina.text(),
+					'convencional-edad-minima':$convencionalEdadMinima.val(),
+					'convencional-edad-maxima': $convencionalEdadMaxima.val(),
+					'discapacitado-edad-minima': $discapacitadoEdadMinima.val(),
+					'discapacitado-edad-maxima': $discapacitadoEdadMaxima.val(),
+					'estado-disciplina': $estadoDisciplina.val()
+		};
+		
 		$.ajax({
 
-			url: 'update/disciplina',
-			data: datos,
-			beforeSend:function(){
-				console.log(datos);
-			},
-			success:function(data){
-				$containerTableDisciplina.html(data);
-			},
-			error:function(error){
-				alertify.error('<p style="color:white">Se produjo un error.</p>');
-			}
+				url: 'update/disciplina',
+				data: datos,
+				beforeSend:function(){
+					console.log(datos);
+				},
+				success:function(data){
+					$containerTableDisciplina.html(data);
+				},
+				error:function(error){
+					alertify.error('<p style="color:white">Se produjo un error.</p>');
+				}
 
-		});
+			});
 	}
 
 	const change_select_estado_modal_editar = ()=>{
@@ -93,3 +132,4 @@
 
 	$btnActualizarDisciplina.on('click',actualizarDisciplina);
 	$estadoDisciplina.on('change',change_select_estado_modal_editar);
+	$btnOcultarDisciplina.on('click',ocultarDisciplina);

@@ -23,10 +23,33 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 class DisciplinaController extends Controller
 {
-	// CREAR NUEVA DISCIPLINA 
 
+    public function getRankAgesDisciplineAction(Request $request){
+
+        if($request->isXmlHttpRequest()){
+
+            $idDisciplina = $request->request->get('idDisciplina');  
+
+            if(!empty($idDisciplina)){
+
+                $em = $this->getDoctrine()->getManager();
+                $rankAgeDiscipline = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getRankAgeDisciplineById($idDisciplina);
+
+                if( !empty($rankAgeDiscipline[0]['edad_min_convencional']) )
+                    return new JsonResponse($rankAgeDiscipline);
+                else
+                    return new JsonResponse(0);
+
+            }else
+                return new JsonResponse(0);
+            
+        }
+    }
+
+	// CREAR NUEVA DISCIPLINA 
     public function crearDisciplinaAction(Request $request){    
         if($request->isXmlHttpRequest()){
 
@@ -61,13 +84,11 @@ class DisciplinaController extends Controller
                 $mensaje = 2;
                 return new JsonResponse($mensaje);           
             }
-          
         }
     }
 
 
     // ELIMINAR DISCIPLINA
-    
     public function eliminarDisciplinaAction(Request $request){
 
         if($request->isXmlHttpRequest()){
@@ -80,9 +101,6 @@ class DisciplinaController extends Controller
             $codigoEdi = $ediCodigo[0]['edi_codigo'];
 
             $cantidad = $em->getRepository('AkademiaBundle:Horario')->cantHorarioDisciplina($codigoEdi);
-
-            //echo $cantidad['cantHorarios'];
-            //exit;
 
             if(!empty($cantidad['cantHorarios'])){
                 $mensaje = 1;

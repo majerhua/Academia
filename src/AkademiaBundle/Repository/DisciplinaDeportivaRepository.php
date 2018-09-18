@@ -14,6 +14,44 @@ class DisciplinaDeportivaRepository extends \Doctrine\ORM\EntityRepository
 {
 
 
+    public function getRankAgeDisciplineById($idDisciplina){
+
+        $query = " SELECT   edad_min_convencional,
+                            edad_max_convencional,
+                            edad_min_discapacitado,
+                            edad_max_discapacitado
+                    FROM ACADEMIA.ConfiguracionEdadesDisciplina
+                    WHERE disciplina_id = $idDisciplina";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $getRankAgeDiscipline = $stmt->fetchAll();
+        return $getRankAgeDiscipline;
+    }
+
+    public function getRankAgePreRegistration(){
+
+        $query = "  EXEC ACADEMIA.getEdadesDisciplina";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $getAgeRangePreRegistration = $stmt->fetchAll();
+        return $getAgeRangePreRegistration;
+    }
+
+    public function checkQuantityBeneficiaryDiscipline($idDisciplina){
+
+        $query = "  SELECT ISNULL(COUNT(*),0) cantidadBeneficiarios
+                    FROM ACADEMIA.inscribete ins
+                    INNER JOIN ACADEMIA.horario hor ON hor.id = ins.horario_id
+                    INNER JOIN CATASTRO.edificacionDisciplina  edi ON edi.edi_codigo = hor.edi_codigo 
+                    INNER JOIN CATASTRO.disciplina dis on dis.dis_codigo = edi.dis_codigo
+                    WHERE dis.dis_codigo = $idDisciplina AND ins.estado = 2 ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $quantityBeneficiary = $stmt->fetchAll();
+        return $quantityBeneficiary;
+    }
+
     public function updateDisciplina($idDisciplina,$convencionalEdadMinima,$convencionalEdadMaxima,$discapacitadoEdadMinima,$discapacitadoEdadMaxima,$estado)
     {
         try {
@@ -101,7 +139,7 @@ public function getDisciplinasTotales()
         return $disciplinasDeporivas;
     }
 
-    public function getDisciplinesPromotorByDisability($disability,$ageBeneficiario)
+    public function getDisciplinesPromotorByDisability($disability,$ageBeneficiario,$idTemporada)
     {
         $query = "  SELECT  distinct 
                             eddis.edi_codigo AS id, 
@@ -118,7 +156,7 @@ public function getDisciplinasTotales()
                             dis.dis_codigo=eddis.dis_codigo AND 
                             hor.estado=1 AND 
                             hor.vacantes<> 0 AND
-                            
+                            eddis.temporada_id = $idTemporada AND
                             '$ageBeneficiario' <= hor.edadMaxima and 
                             '$ageBeneficiario' >= hor.edadMinima
 
