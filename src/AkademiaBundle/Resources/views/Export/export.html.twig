@@ -18,7 +18,7 @@
                 <br>
                 <ul class="nav navbar-nav navbar-right">
                     
-                    <li title="Inicio"><a href="{{url('akademia_panel')}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
+                    <li title="Inicio"><a href="{{url('akademia_panel',{'idTemporada':idTemporadaHabilitada})}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
                     <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
                 </ul>
             </div>
@@ -295,7 +295,7 @@
 	</div>
 </footer>
 
-
+<h1></h1>
 
 {% endblock %}
 
@@ -330,26 +330,26 @@
 	
 	$exportBeneficiariosAnalista.on('click',function(){
 
-			location.href='exportDataBeneficiariosAnalista?ano='+$selectAno.val()+'&mes='+$selectMes.val()+'&departamento='+$selectDepartamento.val();
+			location.href='exportDataBeneficiariosAnalista?ano='+$selectAno.val()+'&mes='+$selectMes.val()+'&departamento='+$selectDepartamento.val()+'&idTemporada={{idTemporadaHabilitada}}';
 	});
 
 	$exportBeneficiariosComplejo.on('click',function(){
 
-			location.href='exportDataBeneficiariosComplejo?ano='+$selectAno.val()+'&mes='+$selectMes.val();
+			location.href='exportDataBeneficiariosComplejo?ano='+$selectAno.val()+'&mes='+$selectMes.val()+'&idTemporada={{idTemporadaHabilitada}}';
 	});
 
 	$exportInforme.on('click',function(){
 	
 		if ($selectInforme.val() == 1)
-			location.href='exportInscripcionesRegiones?ano='+$selectAnoInforme.val()+'&mes='+$selectMesInforme.val();
+			location.href='exportInscripcionesRegiones?ano='+$selectAnoInforme.val()+'&mes='+$selectMesInforme.val()+'&idTemporada={{idTemporadaHabilitada}}';
 		else if($selectInforme.val() == 2)
-			location.href='exportInscripcionesLimaCallaos?ano='+$selectAnoInforme.val()+'&mes='+$selectMesInforme.val();
+			location.href='exportInscripcionesLimaCallaos?ano='+$selectAnoInforme.val()+'&mes='+$selectMesInforme.val()+'&idTemporada={{idTemporadaHabilitada}}';
 	});
 
 
 	$exportHorarioCreados.on('click',function(){
 		console.log("majerhua");
-		location.href='exportCantidadHorariosCreadosRegion?idComplejo='+'{{app.user.idComplejo}}';
+		location.href='exportCantidadHorariosCreadosRegion?idComplejo='+'{{app.user.idComplejo}}'+'&idTemporada={{idTemporadaHabilitada}}';
 	});
 
 	$exportUsuariosPasswordComplejos.on('click',function(){

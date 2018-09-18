@@ -10,12 +10,17 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use AkademiaBundle\Entity\Usuarios;
 
 class LoginController extends Controller
 {
 
 	public function loginAction(Request $request){
         
+        if( !empty( $this->getUser()) ){
+            return $this->redirectToRoute('akademia_panel');
+        }
+
         $authenticationUtils = $this->get('security.authentication_utils');
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();

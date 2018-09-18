@@ -39,7 +39,7 @@ class TemporadaRepository extends \Doctrine\ORM\EntityRepository
 							FROM ACADEMIA.temporada temp
 							INNER JOIN ACADEMIA.ciclo cic ON cic.id = temp.ciclo_id
 							WHERE
-							GETDATE() BETWEEN apertura AND fecha_subsanacion";
+							GETDATE() BETWEEN apertura AND fecha_subsanacion ORDER BY temp.id DESC";
 
 			    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
 			    $stmt->execute();
@@ -53,17 +53,28 @@ class TemporadaRepository extends \Doctrine\ORM\EntityRepository
         return $message;
 	}
 
+
+	public function crearTemporada($crearAnio,$crearCiclo,$crearApertura,$crearPreInscripcion,$crearInicioClases,$crearCierreClases,$crearFechaSubsanacion){
+
+            try {
+					$query = "	EXEC ACADEMIA.crearTemporada $crearAnio,$crearCiclo,'$crearApertura','$crearPreInscripcion','$crearInicioClases','$crearCierreClases','$crearFechaSubsanacion' ";
+				    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+				    $stmt->execute();
+               		$temporadas = $stmt->fetchAll();
+               		return $temporadas[0]['estadoCrear'];
+
+            }catch (DBALException $e) {
+              $message = $e->getCode();
+            }
+
+            return $message;
+	}
+
+
 	public function updateTemporada($editarAnio,$editarCiclo,$editarApertura,$editarPreInscripcion,$editarInicioClases,$editarCierreClases,$editarFechaSubsanacion,$idTemporada){
 
             try {
-					$query = "	UPDATE ACADEMIA.temporada SET
-								anio = $editarAnio,
-								ciclo_id = $editarCiclo ,
-								apertura = '$editarApertura' ,
-								pre_inscripciones='$editarPreInscripcion',  
-								inicio_clases='$editarInicioClases',
-								cierre_clases='$editarCierreClases',
-								fecha_subsanacion='$editarFechaSubsanacion' WHERE id = $idTemporada";
+					$query = "	EXEC ACADEMIA.updateTemporada $editarAnio,$editarCiclo,'$editarApertura','$editarPreInscripcion','$editarInicioClases','$editarCierreClases','$editarFechaSubsanacion',$idTemporada ";
 				    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
 				    $stmt->execute();
 
@@ -87,7 +98,7 @@ class TemporadaRepository extends \Doctrine\ORM\EntityRepository
 							CONVERT(varchar,temp.inicio_clases,105) inicio_clases,
 							CONVERT(varchar,temp.cierre_clases,105) cierre_clases,
 							CONVERT(varchar,temp.fecha_subsanacion,105) subsanacion,
-							CONVERT( VARCHAR,DATEDIFF(month,temp.apertura,temp.cierre_clases) )+' meses' duracion,
+							CONVERT(VARCHAR,CONVERT(int,CONVERT( VARCHAR,DATEDIFF(month,temp.apertura,temp.cierre_clases) ))+1)+' meses' duracion,
 							temp.estado
 					FROM ACADEMIA.temporada temp
 					INNER JOIN ACADEMIA.ciclo cic ON cic.id = temp.ciclo_id ORDER BY temp.id DESC";

@@ -105,7 +105,7 @@ public function getDisciplinasTotales()
         return $disciplinasActivas;
     }
 
-    public function getDisciplinesPublicGeneralByDisability($disability,$ageBeneficiario)
+    public function getDisciplinesPublicGeneralByDisability($disability,$ageBeneficiario,$idTemporada)
     {
         $query = "SELECT  distinct 
                             eddis.edi_codigo AS id, 
@@ -123,6 +123,7 @@ public function getDisciplinasTotales()
 
                             hor.estado=1 AND 
                             hor.vacantes<> 0 AND
+                            eddis.temporada_id = $idTemporada AND
                             hor.convocatoria = 1 AND
                             hor.discapacitados='$disability'  AND 
                             dis_estado = 1 AND 

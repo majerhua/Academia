@@ -10,6 +10,37 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class TemporadaController extends Controller
 {
 
+   public function temporadaCrearAction(Request $request){
+    
+        if($request->isXmlHttpRequest()){
+
+            $crearAnio = $request->get('crear-anio');
+            $crearCiclo = $request->get('crear-ciclo');
+            $crearApertura  = $request->get('crear-apertura');
+            $crearPreInscripcion = $request->get('crear-pre-inscripcion');
+            $crearInicioClases = $request->get('crear-inicio-clases');
+            $crearCierreClases = $request->get('crear-cierre-clases');
+            $crearFechaSubsanacion = $request->get('crear-fecha-subsanacion');
+
+            $em = $this->getDoctrine()->getManager();
+            $estadoUpdTemp = NULL;
+            
+            $codeCrearTemporada = $em->getRepository('AkademiaBundle:Temporada')->crearTemporada($crearAnio,$crearCiclo,$crearApertura,$crearPreInscripcion,$crearInicioClases,$crearCierreClases,$crearFechaSubsanacion);
+
+            $temporadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadas();
+
+
+            if( $codeCrearTemporada == 1 ){
+
+                echo $this->renderView('AkademiaBundle:Migracion_Asistencia:table_temporada.html.twig',array('estadoUpdTemp'=>$codeCrearTemporada,'temporadas'=>$temporadas));
+                exit;
+
+            }else
+                return new JsonResponse($codeCrearTemporada);
+            
+        }
+    }
+
    public function temporadaModificarAction(Request $request){
     
         if($request->isXmlHttpRequest()){

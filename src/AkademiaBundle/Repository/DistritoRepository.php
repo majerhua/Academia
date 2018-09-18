@@ -11,7 +11,7 @@ namespace AkademiaBundle\Repository;
 class DistritoRepository extends \Doctrine\ORM\EntityRepository
 {
 
-    public function getDistrictsPublicGeneralByDisability($disability,$ageBeneficiario){
+    public function getDistrictsPublicGeneralByDisability($disability,$ageBeneficiario,$idTemporada){
 
         $query = "SELECT DISTINCT ubi.ubidpto idDepartamento, 
                 ubi.ubiprovincia idProvincia,
@@ -31,6 +31,7 @@ class DistritoRepository extends \Doctrine\ORM\EntityRepository
                 hor.vacantes <> 0 AND
                 hor.convocatoria = 1 AND
                 hor.etapa = 1 AND
+                edi.temporada_id =  $idTemporada AND
                 
                 ubi.ubidistrito <> '00' AND 
                 ubi.ubiprovincia <> '00' AND 

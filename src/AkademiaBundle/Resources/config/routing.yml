@@ -16,6 +16,11 @@ akademia_temporadaModificar:
   defaults: { _controller: AkademiaBundle:Temporada:temporadaModificar}
   methods: [GET,POST]
 
+akademia_temporadaCrear:
+  path: /crear-temporada
+  defaults: { _controller: AkademiaBundle:Temporada:temporadaCrear}
+  methods: [GET,POST]
+
 ##END
 
 ##PAGINA MOSTRAR DISCIPLINAS
@@ -138,7 +143,7 @@ akademia_mostrarcomplejos:
 
 akademia_inscritos:
     path:    /inscritos/temporada/{idTemporada}
-    defaults: {_controller: AkademiaBundle:Default:inscritos}
+    defaults: {_controller: AkademiaBundle:Default:inscritos,idTemporada:0}
     methods: [GET,POST]
   
 ## MOD DISCIPLINAS

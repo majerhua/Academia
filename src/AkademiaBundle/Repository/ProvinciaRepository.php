@@ -11,7 +11,7 @@ namespace AkademiaBundle\Repository;
 class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 {
 
-	public function getprovincesPublicGeneralByDisability($disability,$ageBeneficiario){
+	public function getprovincesPublicGeneralByDisability($disability,$ageBeneficiario,$idTemporada){
 
 	    $query = "SELECT DISTINCT ubiDpto.ubidpto idDepartamento, 
 					ubiProv.ubiprovincia idProvincia,
@@ -29,6 +29,7 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 	                hor.discapacitados = '$disability' AND
 	                hor.vacantes <> 0 AND
 	                hor.convocatoria = 1 AND
+	                edi.temporada_id = $idTemporada AND
 	                hor.etapa = 1 AND
 
 	                ubiDpto.ubidpto <> '00' AND 

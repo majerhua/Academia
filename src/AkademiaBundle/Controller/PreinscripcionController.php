@@ -71,9 +71,21 @@ class PreinscripcionController extends Controller
         }
 
         //Si la temporada es cero entonces se pasa como parametro la temporada actual
-        if($idTemporada == 0){
-           $idTemporada = $refAp->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva()[0]['temporadaId'] ;   
+        if( $idTemporada == 0 ){
+
+            $arrayTemporada = $refAp->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
+            
+            if(!empty( $arrayTemporada)){
+                $idTemporada =  $arrayTemporada[0]['temporadaId'];
+            }else{
+
+                if( !empty( $this->getUser() ) ){
+                    $temporadasHabilitadas = $refAp->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
+                    $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
+                }
+            }
         }
+
 
         $em = $this->getDoctrine()->getManager();
         $mdlDitritoCD = $em->getRepository('AkademiaBundle:Distrito')->getDitritosCD( );
@@ -120,15 +132,15 @@ class PreinscripcionController extends Controller
             
             $flagUser = '0';
 
-            $mdDepartmentsByDisability = $em->getRepository('AkademiaBundle:Departamento')->getDepartmentsPublicGeneralByDisability($disability,$ageBeneficiario);
+            $mdDepartmentsByDisability = $em->getRepository('AkademiaBundle:Departamento')->getDepartmentsPublicGeneralByDisability($disability,$ageBeneficiario,$idTemporada);
 
-            $mdProvincesByDisability = $em->getRepository('AkademiaBundle:Provincia')->getProvincesPublicGeneralByDisability($disability,$ageBeneficiario);
+            $mdProvincesByDisability = $em->getRepository('AkademiaBundle:Provincia')->getProvincesPublicGeneralByDisability($disability,$ageBeneficiario,$idTemporada);
 
-            $mdDistrictsByDisability = $em->getRepository('AkademiaBundle:Distrito')->getDistrictsPublicGeneralByDisability($disability,$ageBeneficiario);
+            $mdDistrictsByDisability = $em->getRepository('AkademiaBundle:Distrito')->getDistrictsPublicGeneralByDisability($disability,$ageBeneficiario,$idTemporada);
 
-            $mdComplexesByDisability = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplexesPublicGeneralByDisability($disability,$ageBeneficiario);
+            $mdComplexesByDisability = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplexesPublicGeneralByDisability($disability,$ageBeneficiario,$idTemporada);
             
-            $mdlDisciplinesByDisability = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinesPublicGeneralByDisability($disability,$ageBeneficiario);
+            $mdlDisciplinesByDisability = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinesPublicGeneralByDisability($disability,$ageBeneficiario,$idTemporada);
             //$mdlhorariosFlag = $em->getRepository('AkademiaBundle:Horario')->horariosFlagAll($disability,$edadBeneficiario);
         }
 

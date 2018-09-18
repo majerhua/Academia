@@ -47,11 +47,19 @@ class DefaultController extends Controller
         $idComplejo = $this->getUser()->getIdComplejo();
         $em = $this->getDoctrine()->getManager();
 
+        $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
+
         if($idTemporada == 0){
-           $idTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva()[0]['temporadaId'];   
+           $temporadaArray = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva(); 
+
+            if(!empty($temporadaArray)){
+                $idTemporada = $temporadaArray[0]['temporadaId'];
+            }else{
+                $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
+            }  
         }
 
-        $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
+        
         $Nombre = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->nombreComplejo($idComplejo);
 
         if(!empty($Nombre)){ 

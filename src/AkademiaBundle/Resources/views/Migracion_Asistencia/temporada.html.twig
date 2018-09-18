@@ -123,6 +123,23 @@
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<ul>
+
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Año</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<select class="form-control" id="modal-crear-anio">
+										<option value="">--Seleccionar--</option>
+										<option value="2018">2018</option>
+										<option value="2019">2019</option>
+									</select>
+								</div>
+							</div>
+						</li>
+
 						<li class="list-group-item">
 							<div class="row">
 								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
@@ -184,6 +201,17 @@
 								</div>
 							</div>
 							<br>
+						</li>
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Fecha Subsanación</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<input  type="date" class="form-control" id="modal-crear-fecha-subsanacion"/>		
+								</div>
+							</div>
 						</li>
 
 						</ul>
@@ -348,7 +376,18 @@
 	$modalEditarInicioClases = $("#modal-editar-inicio-clases");
 	$modalEditarCierreClases = $("#modal-editar-cierre-clases");
 	$modalEditarFechaSubsanacion = $("#modal-editar-fecha-subsanacion");
+
+	$modalCrearCiclo = $("#modal-crear-ciclo");
+	$modalCrearAnio = $("#modal-crear-anio");
+	$modalCrearEstado = $("#modal-crear-estado");
+	$modalCrearApertura = $("#modal-crear-apertura");
+	$modalCrearPreInscripciones = $("#modal-crear-pre-inscripciones");
+	$modalCrearInicioClases = $("#modal-crear-inicio-clases");
+	$modalCrearCierreClases = $("#modal-crear-cierre-clases");
+	$modalCrearFechaSubsanacion = $("#modal-crear-fecha-subsanacion");
+
 	$btnEditarTemporada = $("#btn-editar-temporada");
+	$btnCrearHorario = $("#btn-crear-horario");
 
 	function formatYYYYMMDDdate(fecha){
 
@@ -356,6 +395,50 @@
 		let newFormatFecha = arrayFecha[2]+'-'+arrayFecha[1]+'-'+arrayFecha[0];
 		return newFormatFecha;
 	}
+
+
+	$btnCrearHorario.on('click',function(){
+
+		let datosCrearTemporada = {
+
+					'crear-anio': $modalCrearAnio.val(),
+					'crear-ciclo': $modalCrearCiclo.val(),
+					'crear-apertura':$modalCrearApertura.val(),
+					'crear-pre-inscripcion':$modalCrearPreInscripciones.val(),
+					'crear-inicio-clases': $modalCrearInicioClases.val(),
+					'crear-cierre-clases': $modalCrearCierreClases.val(),
+					'crear-fecha-subsanacion': $modalCrearFechaSubsanacion.val()
+		}
+
+		$.ajax({
+
+				url: "{{url('akademia_temporadaCrear')}}",
+				data: datosCrearTemporada,
+
+				beforeSend: function(){				
+					console.log("Enviando => ",datosCrearTemporada);
+				},
+				success : function(data){
+					console.log(data);
+					if(data == 0){
+						alertify.warning('No se pudo crear una nueva disciplina, intentelo de nuevo porfavor!.');
+					}
+					else if(data==2){
+						alertify.warning('Ya existen 2 temporadas en un mismo año!');
+					}else if(data==3){
+						alertify.warning('Ya existe una temporada en Curso, cambie las fechas de Inicio y Fin!');
+					}else {
+						$("#container-table-temporada").html(data);
+						alertify.success('Temporada Creada correctamente!');
+					}
+				},
+				error : function(data){
+					console.log(data);
+					alertify.error('Error del Sistema, porfavor comunicar al Area de Informática del IPD');
+				},
+		});
+	});
+
 
 	$btnEditarTemporada.on('click',function(){
 
@@ -392,8 +475,8 @@
 				error : function(data){
 					console.log(data);
 				},
+		});
 
-			})
 	});
 
 	// Get the button that opens the modal

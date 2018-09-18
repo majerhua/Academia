@@ -455,11 +455,13 @@ class ExportacionDataController extends Controller
 
     $ano = $request->query->get('ano');
     $numMes = $request->query->get('mes');
+    $idTemporada = $request->query->get('idTemporada');
+
     $idComplejo = $this->getUser()->getIdComplejo();
 
     $conn = $this->get('database_connection');
 
-    $response = new StreamedResponse(function() use($conn,$ano,$numMes,$idComplejo) {
+    $response = new StreamedResponse(function() use($conn,$ano,$numMes,$idComplejo,$idTemporada) {
        
       $handle = fopen('php://output','w+');
 
@@ -584,7 +586,8 @@ class ExportacionDataController extends Controller
                                 ubiProv.ubiprovincia <> '00' AND 
                                 ubiProv.ubidpto <> '00' AND
                                 ubiDpto.ubidistrito = '00' AND 
-                                ubiDpto.ubiprovincia = '00' AND 
+                                ubiDpto.ubiprovincia = '00' AND
+                                edi.temporada_id = $idTemporada AND  
                                 mov.id in (
                                 SELECT movi.id as id
                                 FROM ACADEMIA.participante parti
@@ -719,7 +722,8 @@ class ExportacionDataController extends Controller
                                 ubiProv.ubiprovincia <> '00' AND 
                                 ubiProv.ubidpto <> '00' AND
                                 ubiDpto.ubidistrito = '00' AND 
-                                ubiDpto.ubiprovincia = '00' AND 
+                                ubiDpto.ubiprovincia = '00' AND
+                                edi.temporada_id = $idTemporada AND   
                                 mov.id in (
                                 SELECT movi.id as id
                                   FROM ACADEMIA.participante parti
@@ -748,6 +752,7 @@ class ExportacionDataController extends Controller
           }
           fclose($handle);
         });
+    
         $response->setStatusCode(200);
         $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
         $response->headers->set('Content-Disposition', 'attachment; filename="beneficiarios.csv"');
@@ -759,7 +764,8 @@ class ExportacionDataController extends Controller
     
     $perfil = $this->getUser()->getIdPerfil();
     $idComplejo = $this->getUser()->getIdComplejo();
-    
+    $idTemporada = $request->query->get('idTemporada');
+
     $em = $this->getDoctrine()->getManager();
 
     if($perfil == 2){
@@ -777,58 +783,12 @@ class ExportacionDataController extends Controller
 
     $mdlDisciplinasDeportivasExport = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->disciplinaDeportivaExport();
     
-    return $this->render('AkademiaBundle:Export:export.html.twig',array('departamentosExport' => $mdlDepartamentosExport,'departamentosAll' => $mdlDepartamentos,'ComplejoDeportivoExport' => $mdlComplejoDeportivoExport,'DisciplinaDeportivaExport' => $mdlDisciplinasDeportivasExport)); 
+    return $this->render('AkademiaBundle:Export:export.html.twig',array('departamentosExport' => $mdlDepartamentosExport,'departamentosAll' => $mdlDepartamentos,'ComplejoDeportivoExport' => $mdlComplejoDeportivoExport,'DisciplinaDeportivaExport' => $mdlDisciplinasDeportivasExport,'idTemporadaHabilitada'=>$idTemporada)); 
   
   }
 
-/*
-  public function exportCantidadInscritosAction(Request $request){
-    
-    $idComplejo = $request->query->get('idComplejo');
-    $conn = $this->get('database_connection');
-    $response = new StreamedResponse(function() use($conn,$idComplejo) {
-
-      $handle = fopen('php://output','w+');
-              fputcsv($handle, ['Departamento', 'Provincia', 'Complejo','Disciplina','Discapacidad','CodigoHorario','Horario','NroInscritos'],",");
-
-      $results = $conn->query("exec ACADEMIA.cantidadInscritos '$idComplejo'");
-
-      while($row = $results->fetch()) {
-        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['Discapacidad'],$row['CodigoHorario'],$row['Horario'],$row['NroInscritos']), ",");
-      }
-      fclose($handle);
-    });
-    $response->setStatusCode(200);
-    $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
-    $response->headers->set('Content-Disposition', 'attachment; filename="cantidadInscritos.csv"');
-    return $response;
-  }
-*/
 
 
-/*
-  public function exportCantidadPreInscritosAction(Request $request){
-
-    $idComplejo = $request->query->get('idComplejo');
-    $conn = $this->get('database_connection');
-    
-    $response = new StreamedResponse(function() use($conn,$idComplejo) {
-      $handle = fopen('php://output','w+');
-              fputcsv($handle, ['Departamento', 'Provincia', 'Complejo','Disciplina','Discapacidad','CodigoHorario','Horario','NroPre-Inscritos'],",");
-
-      $results = $conn->query("exec ACADEMIA.cantidadPreInscritos '$idComplejo' ");
-
-      while($row = $results->fetch()) {
-        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['Discapacidad'],$row['CodigoHorario'],$row['Horario'],$row['NroPre-Inscritos']), ",");
-      }
-      fclose($handle);
-    });
-    $response->setStatusCode(200);
-    $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
-    $response->headers->set('Content-Disposition', 'attachment; filename="cantidadPreInscritos.csv"');
-    return $response;
-  }
-*/
 
 }
 

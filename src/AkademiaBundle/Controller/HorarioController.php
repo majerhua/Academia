@@ -92,8 +92,13 @@ class HorarioController extends Controller
 
         $Disciplinas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasDiferentes($idComplejo);
         $Nombre = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->nombreComplejo($idComplejo);
-        
-        $idTemporadaActiva = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva()[0]['temporadaId'];
+            
+        $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
+
+        if(!empty($arrayTemporada))
+            $idTemporadaActiva = [0]['temporadaId'];
+        else
+            $idTemporadaActiva = null;
 
         if(!empty($Nombre)){ 
 
