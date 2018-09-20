@@ -465,7 +465,8 @@ function registrar(){
 		"sexoParticipante" : sessionStorage.getItem('sexo-partcipante'),
 		"parentesco" : sessionStorage.getItem('parentesco-partcipante'),
 		"tipoSeguro" : sessionStorage.getItem('tipoSeguro-partcipante'),
-		"discapacidad" :sessionStorage.getItem('flagDiscapacitado')
+		"discapacidad" :sessionStorage.getItem('flagDiscapacitado'),
+		"idTemporada" :"{{idTemporada}}"
 	};
 
 
@@ -523,8 +524,8 @@ function registrar(){
 					$("#process5").show();
 					sessionStorage.removeItem("idInscripcion");
 					sessionStorage.setItem("idInscripcion",valor.id);
-					$("#ancla-imprimir-fichaInscripcion").attr('href',"ajax/pdf/inscripcion/"+sessionStorage.getItem("idInscripcion"));
-					$("#ancla-imprimir-declaracion-jurada").attr('href',"ajax/pdf/declaracion-jurada/"+sessionStorage.getItem("idInscripcion"));
+					$("#ancla-imprimir-fichaInscripcion").attr( 'href',"ajax/pdf/inscripcion/"+sessionStorage.getItem("idInscripcion")+"/temporada/"+"{{idTemporada}}" );
+					$("#ancla-imprimir-declaracion-jurada").attr( 'href',"ajax/pdf/declaracion-jurada/"+sessionStorage.getItem("idInscripcion")+"/temporada/"+"{{idTemporada}}" );
 					$("#codigo-inscripcionRef").append(valor.id);
 					$("#nombre-ficha").append(valor.pernombres);
 					$("#apellidoPaterni-ficha").append(valor.perapepaterno);

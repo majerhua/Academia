@@ -376,7 +376,7 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
                         WHEN 0 THEN 'Convencional'
                         WHEN 1 THEN 'Persona con Discapacidad'
                         END AS modalidad,
-
+                        
                         mov.categoria_id as idCategoria,
                         mov.asistencia_id as idAsistencia,
                         mov.fecha_modificacion as fechita,

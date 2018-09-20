@@ -99,12 +99,12 @@ akademia_registroFinal:
     methods:  [GET,POST]
 
 akademia_generarPdfInscripcion:
-    path:     /ajax/pdf/inscripcion/{id}
+    path:     /ajax/pdf/inscripcion/{id}/temporada/{idTemporada}
     defaults: { _controller: AkademiaBundle:Preinscripcion:generarPdfInscripcion}
     methods:  [GET,POST]
 
 akademia_generarPdfDeclaracionJurada:
-    path:     /ajax/pdf/declaracion-jurada/{id}
+    path:     /ajax/pdf/declaracion-jurada/{id}/temporada/{idTemporada}
     defaults: { _controller: AkademiaBundle:Preinscripcion:generarPdfDeclaracionJurada}
     methods:  [GET,POST]
 

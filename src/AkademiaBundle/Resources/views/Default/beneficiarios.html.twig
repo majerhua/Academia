@@ -150,7 +150,7 @@
 				<p>Puedes actualizar el estado de los participantes de este horario, verificar su asistencia, darlos de baja y recomendarlos como talentos</p>
 			</div>
 
-			<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-10 col-lg-10">
+			<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-11 col-lg-11">
 				<div class="card">
 					<div class="card-header text-center" role="tab">
 						<h3>Lista de Inscritos</h3>
@@ -218,20 +218,16 @@
 													{% for mes in mesesTemporada %}
 
 														{% set flagAsis = false %}
-														{% set movId = null %}
+														{% set asistenciaId = null %}
 
 														{% for asisMen in asistenciaMensual %}
 														    
 															{% if asisMen['inscribete_id'] ==  beneficiario['idInscribete'] and asisMen['mes'] == mes %}
 
-																{% if  asisMen['asistencia_id'] == 2 %}
+																{% if asisMen['asistencia_id'] == 2 or asisMen['asistencia_id'] == 4  %}
 
 																	{% set flagAsis = true %}
-																	{% set movId =  asisMen['idMovimiento']  %}
-
-																{% else  %}
-
-																	{% set movId =  asisMen['idMovimiento']  %}
+																	{% set asistenciaId = asisMen['asistencia_id'] %}
 
 																{% endif %}
 
@@ -242,20 +238,88 @@
 														{%  if flagAsis == true %}
 
 															{% if numMesActual == mes %}
-																<td ><input type="checkbox" class="mes-actual" checked value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"></td>
+
+																<td>
+																	<div class="options-bene">
+														    			<label  class="label-checkbox" >
+														        			<input type="checkbox" 
+
+															        			{% if  asistenciaId == 2 %}  
+															        				class="mes-actual" checked
+															        			{% elseif asistenciaId == 4 %}
+															        				class="mes-actual"
+															        			{% endif %} 
+
+														        				name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"/>
+														        			<img  	
+																        			{% if asistenciaId == 4 %}
+																        				class="img-x img-checkbox"
+																        			{% else %}
+																        				class="img-checkbox"
+																        			{% endif %} 
+
+														        			style="cursor:pointer;"  />   
+														   				</label>
+														   			</div>
+
+																</td>
 
 															{% else %}
-																<td style="background-color:rgba(0,0,0,0.3);"><input type="checkbox"   disabled checked value="{{beneficiario['idInscribete']}}"></td>
+
+																<td style="background-color:rgba(0,0,0,0.3);">
+
+																	<div class="options-bene">
+														    			<label  class="label-checkbox" >
+
+														        			<input type="checkbox" 
+																				{% if  asistenciaId == 2 %}  
+															        				 checked
+															        			{% endif %} 
+
+														        			 disabled  name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"
+
+														        			 />
+														        			<img  
+																				{% if asistenciaId == 4 %}
+															        				class="img-checkbox img-x"
+																        		{% else  %}
+																        			class="img-checkbox"
+															        			{% endif %}
+
+														        			style="cursor:no-drop;" 
+														        			/>   
+														   				</label>
+														   			</div>
+
+																</td>
 
 															{% endif %}
 
 														{%  else %}
 
 															{% if numMesActual == mes %}
-																<td ><input type="checkbox" class="mes-actual" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"></td>
+																<td >
+
+																	<div class="options-bene">
+														    			<label  class="label-checkbox" >
+														        			<input type="checkbox" class="mes-actual"   name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"/>
+														        			<img  style="cursor:pointer;"  class="img-checkbox"/>   
+														   				</label>
+														   			</div>
+
+																</td>
 
 															{% else %}
-																<td style="background-color:rgba(0,0,0,0.3);"><input  type="checkbox"  disabled value="{{beneficiario['idInscribete']}}" ></td>
+																<td style="background-color:rgba(0,0,0,0.3);">
+
+																	<div class="options-bene">
+														    			<label  class="label-checkbox" >
+														        			<input type="checkbox"  disabled  name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"/>
+														        			<img  style="cursor:no-drop;"  class="img-checkbox"/>   
+														   				</label>
+														   			</div>
+
+																</td>
 
 															{% endif %}
 
@@ -313,8 +377,6 @@
 						</div>
 					</div>
 
-
-
 				</div>
 			</div>
 		</div>
@@ -352,7 +414,7 @@
 	</div>
 </footer>
 
-<div id="modal-editar" class="modal fade" role="dialog">
+<div id="modal-editar" class="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabelLarge" aria-hidden="true">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
@@ -517,7 +579,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="button" id="cerrar-modal-editar" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 				<button type="button" class="btn btn-danger" id="btn-actualizarEstado" data-dismiss="modal">Actualizar</button>
 			</div>
 		</div>
@@ -534,7 +596,19 @@
 
 <script type="text/javascript">
 	
+		$("#cerrar-modal-editar").on('click',function(){
 
+			$("body").css('padding-right','0px');
+			setTimeout(function(){
+				if( !$('#modal-editar').hasClass('in') ){
+					$("body").css('padding-right','0px');
+				}else{
+					console.log("Se abrio modal");
+					$("body").css('padding-right','0px');
+				}
+			},1000);
+			
+		});
 
 		$("#cambiarHorariosMigracion").on('change',function(){
 
@@ -584,48 +658,82 @@
 		for (let i =0; i < checkMesActual.length; i++) {
 
 			if( $(checkMesActual[i]).prop('checked') ){
+
+				$(checkMesActual[i]).siblings('img').addClass('img-check');
 				asistenciaMes.push( $(checkMesActual[i]).val() );
 			}
 		}
 
 		function asistenciaMensual(element){
 
+
 		  	if (element.checked) {
+
+		  		$(element).siblings('img').removeClass('img-x');
+		  		$(element).siblings('img').addClass('img-check');
 		    	asistenciaMes.push(element.value);
+		    	console.log("Asistencia Element Checked => ",element.value);
 
 		  	}else{
+		  		$(element).siblings('img').removeClass('img-check');
+		    	$(element).siblings('img').addClass('img-x');		  		
 		    	asistenciaMes.splice( asistenciaMes.indexOf(element.value), 1);
+		    	
+		    	
+		    	console.log("Asistencia Element checked => ",element.value);
 		  	}
+
+		  	console.log("Array Asistencia Mensual => ",asistenciaMes);
 		}
 
 		const guardarAsistencia = ()=>{
 
+			var checkMen = document.querySelectorAll('.mes-actual');
+			var flag = true;
 
-			var datosAsistencia = {
+			for (let i =0; i < checkMen.length; i++) {
+
+				if( !$(checkMen[i]).siblings('img').hasClass('img-check') && !$(checkMen[i]).siblings('img').hasClass('img-x')  )
+					flag = false;
+			}
+
+			if(flag){
+			
+				var datosAsistencia = {
 							'idHorario':"{{id}}",
 							'asistencia-mensual': asistenciaMes
+				}
+
+				$.ajax({
+
+					type:'POST',
+					dataType: 'json',
+					url: "{{url('akademia_guardarAsistenciaBeneficiarios')}}",
+					data: datosAsistencia,
+					beforeSend: function(){	
+						console.log(datosAsistencia);
+						$("#guardar-asistencia").attr('disabled',true);
+					},
+					success: function(data){
+
+						if(data == 1){
+							alertify.success('<p style="color:white">Se guardo Asistencia Correctamente!.</p>');
 						}
-			$.ajax({
+						location.reload(true);
+					},
+					error: function(data){
+						alertify.error('<p style="color:white">Error </p>');	
+						console.log(data);
+					},
+				});
+			}
+				
+			else
+				alertify.warning('<p style="font-weight:bold;" >Porfavor Marque asistencia a todos los beneficiarios!.</p>');
+/*
 
-				type:'POST',
-				dataType: 'json',
-				url: "{{url('akademia_guardarAsistenciaBeneficiarios')}}",
-				data: datosAsistencia,
-				beforeSend: function(){	
-					$("#guardar-asistencia").attr('disabled',true);
-				},
-				success: function(data){
-
-					if(data == 1){
-						alertify.success('<p style="color:white">Se guardo Asistencia Correctamente!.</p>');
-					}
-					location.reload(true);
-				},
-				error: function(data){
-					alertify.error('<p style="color:white">Error </p>');	
-					console.log(data);
-				},
-			});
+			
+	*/
 		}
 
 		$(document).ready(function () {

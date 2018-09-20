@@ -47,7 +47,7 @@ class AsistenciaRepository extends \Doctrine\ORM\EntityRepository
             if($flagAsis == true){
             	$asistenciaId=2;
             }else{
-            	$asistenciaId=4;
+            	$asistenciaId=3;
             }
 
             $idFicha = $value['inscribeteId'];
@@ -64,6 +64,14 @@ class AsistenciaRepository extends \Doctrine\ORM\EntityRepository
     		$query = "INSERT into academia.movimientos(categoria_id, asistencia_id, inscribete_id, usuario_valida,horario_id) values ($categoriaId ,$asistenciaId,$idFicha ,$usuario ,$idHorario)";
             $stmt = $this->getEntityManager()->getConnection()->prepare($query);
             $stmt->execute();
+
+            if($asistenciaId==3){
+                $query = "UPDATE academia.inscribete SET  estado = 1 WHERE id=$idFicha";
+                $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+                $stmt->execute();
+            }
+
+
         }
 
     }

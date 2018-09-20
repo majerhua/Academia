@@ -96,7 +96,7 @@ class HorarioController extends Controller
         $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
 
         if(!empty($arrayTemporada))
-            $idTemporadaActiva = [0]['temporadaId'];
+            $idTemporadaActiva = $arrayTemporada[0]['temporadaId'];
         else
             $idTemporadaActiva = null;
 
