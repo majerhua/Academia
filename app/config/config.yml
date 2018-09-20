@@ -74,8 +74,8 @@ doctrine:
         port: '%database_port%'
         dbname: '%database_name%'
         
-        #user:   '%database_user%'
-        #password: '%database_password%'
+        # user:   '%database_user%'
+        # password: '%database_password%'
 
         user: "%database.user_ipdsrv%"
         password: "%database.password_ipdsrv%"
