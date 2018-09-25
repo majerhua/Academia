@@ -159,10 +159,15 @@ class ExportacionDataController extends Controller
       
       $handle = fopen('php://output','w+');
 
-      fputcsv($handle, ['Departamento','Provincia' ,'Complejo','Disciplina',"DNI",'ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','Direccion','FechaMovimiento','Mes','Categoria','Matricula','Asistencia','Horario','Modalidad','Etapa','TipoSeguro','Telefono','Correo'],",");
+      fputcsv($handle, ['Departamento','Provincia','Distrito','Complejo','Disciplina',"DNI",'ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','Direccion','FechaMovimiento','Mes','Categoria','Matricula','Asistencia','Horario','Modalidad','Etapa','TipoSeguro','Telefono','Correo'],",");
   
-      $queryConMes = "SELECT ubiDpto.ubinombre Departamento ,ubiProv.ubinombre Provincia  , ede.ede_nombre as Complejo,
-                              dis.dis_descripcion as Disciplina, '\"'+RTRIM(grPar.perdni)+'\"' DNI, grPar.perapepaterno ApellidoPaterno, 
+      $queryConMes = "SELECT  ubiDpto.ubinombre Departamento,
+                              ubiProv.ubinombre Provincia,
+                              ubi.ubinombre Distrito,
+                              ede.ede_nombre as Complejo,
+                              dis.dis_descripcion as Disciplina,
+                              '\"'+RTRIM(grPar.perdni)+'\"' DNI, 
+                              grPar.perapepaterno ApellidoPaterno, 
                               grPar.perapematerno ApellidoMaterno ,
                               grPar.pernombres Nombres,
                               CONVERT(varchar, grPar.perfecnacimiento, 103) FechaNacimiento,
@@ -297,17 +302,23 @@ class ExportacionDataController extends Controller
                                 ) AND
                                ubiDpto.ubidpto <> '00' AND ".$query2;
 
-                              $querySinMes = "SELECT ubiDpto.ubinombre Departamento ,ubiProv.ubinombre Provincia  , ede.ede_nombre as Complejo,
-                              dis.dis_descripcion as Disciplina, '\"'+RTRIM(grPar.perdni)+'\"' DNI,grPar.perapepaterno ApellidoPaterno, 
-                              grPar.perapematerno ApellidoMaterno ,
-                              grPar.pernombres Nombres,
-                              CONVERT(varchar, grPar.perfecnacimiento, 103) FechaNacimiento,
-                              (cast(datediff(dd,grPar.perfecnacimiento,GETDATE()) / 365.25 as int)) as Edad,
-                              CASE grPar.persexo
-                              WHEN 2 THEN 'Femenino'
-                              WHEN 1 THEN 'Masculino'
-                              ELSE 'Otro' END
-                              AS Sexo,
+                              $querySinMes = "SELECT 
+                                                    ubiDpto.ubinombre Departamento ,
+                                                    ubiProv.ubinombre Provincia ,
+                                                    ubi.ubinombre Distrito,
+                                                    ede.ede_nombre as Complejo,
+                                                    dis.dis_descripcion as Disciplina,
+                                                    '\"'+RTRIM(grPar.perdni)+'\"' DNI,
+                                                    grPar.perapepaterno ApellidoPaterno, 
+                                                    grPar.perapematerno ApellidoMaterno ,
+                                                    grPar.pernombres Nombres,
+                                                    CONVERT(varchar, grPar.perfecnacimiento, 103) FechaNacimiento,
+                                                    (cast(datediff(dd,grPar.perfecnacimiento,GETDATE()) / 365.25 as int)) as Edad,
+                                                    CASE grPar.persexo
+                                                    WHEN 2 THEN 'Femenino'
+                                                    WHEN 1 THEN 'Masculino'
+                                                    ELSE 'Otro' END
+                                                    AS Sexo,
                               grApod.perdomdireccion Direccion,
                               mov.fecha_modificacion FechaMovimiento,
                                 CASE MONTH(mov.fecha_modificacion) 
@@ -441,7 +452,7 @@ class ExportacionDataController extends Controller
                
           while($row = $results->fetch()) {
 
-            fputcsv($handle, array( $row['Departamento'],$row['Provincia'], $row['Complejo'], $row['Disciplina'],$row["DNI"],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['Nombres'],$row['FechaNacimiento'],$row['Edad'],$row['Sexo'],$row['Direccion'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Matricula'],$row['Asistencia'],$row['Horario'],$row['Modalidad'],$row['Etapa'],$row['TipoSeguro'],$row['Telefono'],$row['Correo']  ), ",");
+            fputcsv($handle, array( $row['Departamento'],$row['Provincia'],$row['Distrito'],$row['Complejo'], $row['Disciplina'],$row["DNI"],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['Nombres'],$row['FechaNacimiento'],$row['Edad'],$row['Sexo'],$row['Direccion'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Matricula'],$row['Asistencia'],$row['Horario'],$row['Modalidad'],$row['Etapa'],$row['TipoSeguro'],$row['Telefono'],$row['Correo']  ), ",");
           }
           fclose($handle);
         });
