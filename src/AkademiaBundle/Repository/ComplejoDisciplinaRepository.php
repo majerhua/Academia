@@ -48,7 +48,6 @@ class ComplejoDisciplinaRepository extends \Doctrine\ORM\EntityRepository
 					WHERE 
 					edi.ede_codigo = $idComplejo AND 
 					edi.edi_estado = 1 AND 
-					dis.dis_estado = 1 AND
 					edi.temporada_id = $idTemporada 
 					ORDER BY dis.dis_descripcion ASC";
 

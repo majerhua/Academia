@@ -90,7 +90,7 @@ class HorarioController extends Controller
         $Horarios = $em->getRepository('AkademiaBundle:Horario')->getHorariosComplejos($idComplejo);
         $turnos = $em->getRepository('AkademiaBundle:Horario')->getTurnosComplejos($idComplejo);
 
-        $Disciplinas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasDiferentes($idComplejo);
+        $Disciplinas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasDiferentes($idComplejo,$idTemporada);
         $Nombre = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->nombreComplejo($idComplejo);
             
         $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
@@ -102,7 +102,9 @@ class HorarioController extends Controller
 
         if(!empty($Nombre)){ 
 
-            return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"1", "nombreComplejo"=> $Nombre, 'turnos'=>$turnos,'idTemporada'=>$idTemporada,'idTemporadaActiva'=>$idTemporadaActiva)); 
+            return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"1", "nombreComplejo"=> $Nombre, 'turnos'=>$turnos,'idTemporada'=>$idTemporada,'idTemporadaActiva'=>$idTemporadaActiva));
+
+            //MODULO ANALISTA
         }else{
 
             return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"2", 'turnos'=>$turnos, 'idTemporada'=>$idTemporada )); 

@@ -29,7 +29,22 @@ class PreinscripcionController extends Controller
 
     public function indexAction(Request $request){
 
-        return $this->render('AkademiaBundle:Default:index.html.twig'); 
+        //Si la temporada es cero entonces se pasa como parametro la temporada actual
+        $em = $this->getDoctrine()->getManager();
+
+        $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
+        
+        if(!empty( $arrayTemporada)){
+            $idTemporada =  $arrayTemporada[0]['temporadaId'];
+            $arrayFaseTemporada = $em->getRepository('AkademiaBundle:Temporada')->faseTemporadaActiva($idTemporada);
+            $faseTemporada = $arrayFaseTemporada[0]['fase'];
+        }else{
+
+           $faseTemporada = 40; //Cierre Temporada
+        }
+        
+
+        return $this->render('AkademiaBundle:Default:index.html.twig',array('faseTemporadaActiva'=>$faseTemporada)); 
     }
 
     public function fichaPreInscripcionAction(Request $request,$idTemporada){
@@ -98,7 +113,7 @@ class PreinscripcionController extends Controller
 
         $rankAgesPreRegistration = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getRankAgePreRegistration();
         
-        return $this->render( 'AkademiaBundle:Default:fichaPreInscripcion.html.twig' , array("complejosDeportivo" => $mdlComplejoDeportivo , "complejosDisciplinas" => $mdlComplejoDisciplina , "departamentos" => $mdlDepartamento,"provincias" => $mdlProvincia ,"distritos" => $mdlDistrito ,'ditritosCD' => $mdlDitritoCD , "departamentosCD" => $mdlDepartamentosCD ,'provinciasCD' => $mdlProvinciasCD, 'flagUser' => $flagUser, 'rankAgesPreRegistration' => $rankAgesPreRegistration[0] , 'idTemporada'=> $idTemporada));     
+        return $this->render( 'AkademiaBundle:Default:fichaPreInscripcion.html.twig' , array( "complejosDeportivo" => $mdlComplejoDeportivo , "complejosDisciplinas" => $mdlComplejoDisciplina , "departamentos" => $mdlDepartamento,"provincias" => $mdlProvincia ,"distritos" => $mdlDistrito ,'ditritosCD' => $mdlDitritoCD , "departamentosCD" => $mdlDepartamentosCD ,'provinciasCD' => $mdlProvinciasCD, 'flagUser' => $flagUser, 'rankAgesPreRegistration' => $rankAgesPreRegistration[0] , 'idTemporada'=> $idTemporada ));     
     }
 
     //FUNCION PARA CARGAR LOS DATOS DE LAS DISCIPLINAS Y HORARIOS SELECCIONADOS

@@ -73,12 +73,12 @@ class ExportacionDataController extends Controller
     $response = new StreamedResponse(function() use($conn,$anio,$mes) {
 
     $handle = fopen('php://output','w+');
-              fputcsv($handle, ['Departamento','Provincia','Complejo','Disciplina','Modalidad','InscritosTotales','CantidadInscritosVigentes','CantidadRetirados'],",");
+              fputcsv($handle, ['Provincia','Complejo','Disciplina','Modalidad','InscritosTotales','CantidadInscritosVigentes','CantidadRetirados'],",");
 
       $results = $conn->query("exec ACADEMIA.inscripcionesLimaCallao $anio,$mes ");
 
       while($row = $results->fetch()) {
-        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['Modalidad'],$row['InscritosTotales'],$row['CantidadInscritosVigentes'],$row['CantidadRetirados']), ",");
+        fputcsv($handle, array( $row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['Modalidad'],$row['InscritosTotales'],$row['CantidadInscritosVigentes'],$row['CantidadRetirados']), ",");
       }
       fclose($handle);
     });
@@ -140,9 +140,11 @@ class ExportacionDataController extends Controller
     $ano = $request->query->get('ano');
     $numMes = $request->query->get('mes');
     $departamento = $request->query->get('departamento');
+    $idTemporada = $request->query->get('idTemporada');
+
     $conn = $this->get('database_connection');
 
-    $response = new StreamedResponse(function() use($conn,$ano,$numMes,$departamento) {
+    $response = new StreamedResponse(function() use($conn,$ano,$numMes,$departamento,$idTemporada) {
       
       $query2='';
       
@@ -278,7 +280,8 @@ class ExportacionDataController extends Controller
                                 ubiProv.ubiprovincia <> '00' AND 
                                 ubiProv.ubidpto <> '00' AND
                                 ubiDpto.ubidistrito = '00' AND 
-                                ubiDpto.ubiprovincia = '00' AND 
+                                ubiDpto.ubiprovincia = '00' AND
+                                edi.temporada_id = '$idTemporada' AND  
                                 mov.id in (
                                 SELECT movi.id as id
                                 FROM ACADEMIA.participante parti
@@ -415,7 +418,8 @@ class ExportacionDataController extends Controller
                                 ubiProv.ubiprovincia <> '00' AND 
                                 ubiProv.ubidpto <> '00' AND
                                 ubiDpto.ubidistrito = '00' AND 
-                                ubiDpto.ubiprovincia = '00' AND 
+                                ubiDpto.ubiprovincia = '00' AND
+                                edi.temporada_id = '$idTemporada' AND  
                                 mov.id in (
                                 SELECT movi.id as id
                                   FROM ACADEMIA.participante parti

@@ -13,6 +13,30 @@ class TemporadaRepository extends \Doctrine\ORM\EntityRepository
 {
 
 
+	public function faseTemporadaActiva($id){
+
+        try {
+				$query = "	SELECT 
+								CASE 
+							    WHEN  GETDATE() >= apertura  AND GETDATE() < pre_inscripciones THEN 10
+							    WHEN  GETDATE()  >= pre_inscripciones  AND GETDATE() < inicio_clases THEN 20
+							    WHEN  GETDATE()  >= inicio_clases AND GETDATE() < cierre_clases THEN 30
+							    ELSE
+							    40
+								END AS fase 
+								FROM ACADEMIA.temporada WHERE id = '$id' AND estado=1;";
+
+			    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+			    $stmt->execute();
+			    $faseTemporadaActiva = $stmt->fetchAll();
+           		return $faseTemporadaActiva;
+
+        }catch (DBALException $e) {
+          $message = $e->getCode();
+        }
+
+        return $message;
+	}
 
 	public function getTemporadaActiva(){
 

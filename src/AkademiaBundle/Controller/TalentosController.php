@@ -23,12 +23,25 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class TalentosController extends controller
 {
 
-  public function evaluadosAction(Request $request){
+  public function evaluadosAction(Request $request,$idTemporada){
 
-        $fc = $this->getDoctrine()->getManager();
-        $Seleccionados = $fc->getRepository('AkademiaBundle:Participante')->getMostrarSeleccionados();
+        $em = $this->getDoctrine()->getManager();
+        $Seleccionados = $em->getRepository('AkademiaBundle:Participante')->getMostrarSeleccionados($idTemporada);
 
-      return $this->render('AkademiaBundle:Default:evaluados.html.twig', array("seleccionados" => $Seleccionados ));
+        $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
+
+        if($idTemporada == 0){
+           $temporadaArray = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva(); 
+
+            if(!empty($temporadaArray)){
+                $idTemporada = $temporadaArray[0]['temporadaId'];
+            }else{
+                $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
+            }  
+        }
+
+
+      return $this->render('AkademiaBundle:Default:evaluados.html.twig', array("seleccionados" => $Seleccionados,'idTemporada' => $idTemporada ));
    
     }
 

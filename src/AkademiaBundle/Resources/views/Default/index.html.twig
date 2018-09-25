@@ -106,9 +106,12 @@
 				</div>
 				<div class="containe__button">
 
-					<button class="btn-verHorario" data-toggle="modal" data-target="#modal-escoger-tipo-horario">Horarios</button>
-
-					<button class="btn-preInscribete" id="pre-inscribete" >Pre Inscríbete</button>
+					{% if faseTemporadaActiva != 10 and faseTemporadaActiva != 40  %}
+						<button class="btn-verHorario" data-toggle="modal" data-target="#modal-escoger-tipo-horario">Horarios</button>
+						<button class="btn-preInscribete" id="pre-inscribete" >Pre Inscríbete</button>
+					{% else %}
+						<p style="color:white !important; font-weight:bold; z-index:2000; ">MENSAJE SUBLIMINAL</p>
+					{% endif %}
 				</div>
 			</div>
 		</div>
@@ -188,7 +191,14 @@
 					<img src="{{asset('imgLanding/disenioRecreacion/autorizacionPadre.png')}}">
 
 					<div class="container__buton-pre-inscribete">
+
+					{% if faseTemporadaActiva != 10 and faseTemporadaActiva != 40  %}
 						<button href="#" class="btn btn-success btn-success-mod" >Pre-inscríbete</button>
+					{% else %}
+
+						<button href="#" class="btn btn-success btn-success-mod">Próximamente</button>
+					{% endif %}
+							
 					</div>
 				</div>
 
@@ -246,7 +256,8 @@
 			</div>
 
 			<div class="container__hero__button">
-				<button href="#" class="btn btn-success btn-success-mod" ><i class="icon-pencil-square-o"></i>Pre-inscríbete</button>
+				
+					<button href="#" class="btn btn-success btn-success-mod" ><i class="icon-pencil-square-o"></i>Pre-inscríbete</button>
 			</div>
 
 		</div>
@@ -466,7 +477,23 @@
   	</div>
 </div>
 
+<!-- <div id="modal-nueva-temporada" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+					<h4 class="title-card" style="color:#d9534f">Información Inicio Temporada</h4>
+			</div>
+			<div class="modal-body">
+				<p>Pronto comenzara la nueva Temporada</p>
+			</div>
 
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button>
+			</div>
+		</div>
+	</div>
+</div> -->
 
 </body>
 
@@ -479,6 +506,13 @@
 
 	<script >
 		$(document).ready(function(){
+
+			{#
+			{%  if faseTemporadaActiva == 10 %}
+				$("#modal-nueva-temporada").modal('show');
+			{% endif %}
+			#}
+
 
 			$enviarCorreoUsuarioExt = $("#enviar-correo-usuario-ext");
 

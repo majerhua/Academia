@@ -51,30 +51,9 @@ class MigracionAsistenciaController extends Controller
     	$convencionalEdadMaxima = $request->get('convencional-edad-maxima');
     	$discapacitadoEdadMinima = $request->get('discapacitado-edad-minima');
     	$discapacitadoEdadMaxima = $request->get('discapacitado-edad-maxima');
-        $estadoDisciplina = $request->get('estado-disciplina'); 
-        $update = false;
-
-        $em = $this->getDoctrine()->getManager(); 
-
-        if( $estadoDisciplina == 0 ){
-
-            $quantityBeneficiary = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->checkQuantityBeneficiaryDiscipline($idDisciplina);
-            $cantidadBeneficiarios = $quantityBeneficiary[0]['cantidadBeneficiarios'];
-
-            if( empty($cantidadBeneficiarios) )
-                $update = true;
-            
-        }else if( $estadoDisciplina == 1 ){
-            $update = true;
-        }
-
-        if( $update ){
-
-            $estadoUpdDis = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->updateDisciplina($idDisciplina,$convencionalEdadMinima,$convencionalEdadMaxima,$discapacitadoEdadMinima,$discapacitadoEdadMaxima,$estadoDisciplina);
-
-        }else
-            $estadoUpdDis = -1;
         
+        $em = $this->getDoctrine()->getManager(); 
+        $estadoUpdDis = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->updateDisciplina($idDisciplina,$convencionalEdadMinima,$convencionalEdadMaxima,$discapacitadoEdadMinima,$discapacitadoEdadMaxima);
 
         $disciplinasTotalesActivas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasTotales();
 

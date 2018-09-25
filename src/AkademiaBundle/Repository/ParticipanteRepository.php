@@ -81,7 +81,7 @@ class ParticipanteRepository extends \Doctrine\ORM\EntityRepository
         $stmt->execute();
     }
 
-    public function getMostrarSeleccionados(){
+    public function getMostrarSeleccionados($idTemporada){
         
         $query = "SELECT 
                 (per.perapepaterno+' '+per.perapematerno+' '+per.pernombres) as nombre,
@@ -117,6 +117,7 @@ class ParticipanteRepository extends \Doctrine\ORM\EntityRepository
                 ubiDpto.ubiprovincia = '00' AND 
                 ubiDpto.ubidpto <> '00' AND
                 ins.estado = 2 AND
+                edi.temporada_id= $idTemporada AND
                 mov.asistencia_id = 2  AND (  mov.categoria_id = 2 OR mov.categoria_id= 3 )";
   
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);

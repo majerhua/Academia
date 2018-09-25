@@ -52,11 +52,11 @@ class DisciplinaDeportivaRepository extends \Doctrine\ORM\EntityRepository
         return $quantityBeneficiary;
     }
 
-    public function updateDisciplina($idDisciplina,$convencionalEdadMinima,$convencionalEdadMaxima,$discapacitadoEdadMinima,$discapacitadoEdadMaxima,$estado)
+    public function updateDisciplina($idDisciplina,$convencionalEdadMinima,$convencionalEdadMaxima,$discapacitadoEdadMinima,$discapacitadoEdadMaxima)
     {
         try {
 
-            $query = " exec ACADEMIA.actualizarConfiguracionDisciplina $convencionalEdadMinima ,$convencionalEdadMaxima ,$discapacitadoEdadMinima ,$discapacitadoEdadMaxima,$idDisciplina,$estado";
+            $query = " exec ACADEMIA.actualizarConfiguracionDisciplina $convencionalEdadMinima ,$convencionalEdadMaxima ,$discapacitadoEdadMinima ,$discapacitadoEdadMaxima,$idDisciplina";
         
             $stmt = $this->getEntityManager()->getConnection()->prepare($query);
             $stmt->execute();
@@ -183,7 +183,6 @@ public function getDisciplinasTotales()
                             hor.edi_codigo = eddis.edi_codigo AND 
                             edde.ede_codigo=eddis.ede_codigo AND 
                             dis.dis_codigo=eddis.dis_codigo AND 
-
                             hor.estado=1 AND 
                             hor.vacantes<> 0 AND
                             hor.convocatoria = 1 AND
@@ -198,19 +197,22 @@ public function getDisciplinasTotales()
         return $disciplinasDeporivas;
     }
 
-   public function getDisciplinasDiferentes($idComplejo){
+   public function getDisciplinasDiferentes($idComplejo,$idTemporada){
             
-        $query = "  SELECT  dis.dis_codigo,
+        $query = "   SELECT dis.dis_codigo,
                             dis.dis_descripcion 
-                    FROM catastro.disciplina dis left join 
-                    (SELECT d.dis_codigo, d.dis_descripcion, edi.edi_estado 
-                    from catastro.edificacionDisciplina edi 
-                    inner join catastro.disciplina d on edi.dis_codigo = d.dis_codigo 
-                    inner join catastro.edificacionesdeportivas ede on edi.ede_codigo = ede.ede_codigo
-                    where ede.ede_codigo = $idComplejo and edi.edi_estado=1) t2
-                    on dis.dis_codigo = t2.dis_codigo 
-                    where t2.dis_codigo IS NULL and dis.dis_estado = 1
-                    ORDER BY dis.dis_descripcion ASC";
+                        FROM catastro.disciplina dis LEFT JOIN
+                        (
+                            SELECT d.dis_codigo, d.dis_descripcion, edi.edi_estado 
+                            FROM catastro.edificacionDisciplina edi 
+                            inner join catastro.disciplina d ON edi.dis_codigo = d.dis_codigo 
+                            inner join catastro.edificacionesdeportivas ede ON
+                             edi.ede_codigo = ede.ede_codigo
+                            WHERE ede.ede_codigo = '$idComplejo' AND edi.temporada_id='$idTemporada'
+                        ) t2
+                        ON dis.dis_codigo = t2.dis_codigo 
+                        WHERE t2.dis_codigo IS NULL 
+                        ORDER BY dis.dis_descripcion ASC";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
