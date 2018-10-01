@@ -278,7 +278,7 @@ class ParticipanteRepository extends \Doctrine\ORM\EntityRepository
     }
 
 
-    public function listarTalentos(){
+    public function listarTalentos($idTemporada){
 
         $query ="SELECT 
                 (per.perapepaterno+' '+per.perapematerno+' '+per.pernombres) as nombre,
@@ -316,8 +316,9 @@ class ParticipanteRepository extends \Doctrine\ORM\EntityRepository
                 ubiDpto.ubidistrito = '00' AND 
                 ubiDpto.ubiprovincia = '00' AND 
                 ubiDpto.ubidpto <> '00' AND
-                ins.estado = 2 and 
-                mov.categoria_id = 4 and 
+                ins.estado = 2 AND 
+                edi.temporada_id = '$idTemporada' AND
+                mov.categoria_id = 4 AND 
                 mov.asistencia_id = 2";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);

@@ -26,7 +26,6 @@ class TalentosController extends controller
   public function evaluadosAction(Request $request,$idTemporada){
 
         $em = $this->getDoctrine()->getManager();
-        $Seleccionados = $em->getRepository('AkademiaBundle:Participante')->getMostrarSeleccionados($idTemporada);
 
         $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
 
@@ -40,11 +39,33 @@ class TalentosController extends controller
             }  
         }
 
+       $Seleccionados = $em->getRepository('AkademiaBundle:Participante')->getMostrarSeleccionados($idTemporada);
 
       return $this->render('AkademiaBundle:Default:evaluados.html.twig', array("seleccionados" => $Seleccionados,'idTemporada' => $idTemporada ));
    
     }
 
+    public function mostrarTalentosAction(Request $request,$idTemporada){
+
+        $em = $this->getDoctrine()->getManager();
+
+        $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
+
+        if($idTemporada == 0){
+           $temporadaArray = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva(); 
+
+            if(!empty($temporadaArray)){
+                $idTemporada = $temporadaArray[0]['temporadaId'];
+            }else{
+                $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
+            }  
+        }
+
+        $talentos = $em->getRepository('AkademiaBundle:Participante')->listarTalentos($idTemporada);
+
+        return $this->render('AkademiaBundle:Default:mostrarTalentos.html.twig', array("talentos" => $talentos,'idTemporada' => $idTemporada));
+    }
+    
     public function talentosAction(Request $request, $idParticipante){
 
       $fc = $this->getDoctrine()->getManager();
@@ -53,17 +74,6 @@ class TalentosController extends controller
       $numControl = $fc->getRepository('AkademiaBundle:Participante')->getNumeroControl($idParticipante);
       return $this->render('AkademiaBundle:Default:talento.html.twig',array('talento' => $talento, 'controles' => $controles, 'numeros' =>$numControl));
     }
-
-
-    public function mostrarTalentosAction(Request $request){
-
-        $fc = $this->getDoctrine()->getManager();
-        $talentos = $fc->getRepository('AkademiaBundle:Participante')->listarTalentos();
-
-        return $this->render('AkademiaBundle:Default:mostrarTalentos.html.twig', array("talentos" => $talentos));
-    }
-
-
 
     public function nuevoControlAction(Request $request){
       if($request->isXmlHttpRequest()){

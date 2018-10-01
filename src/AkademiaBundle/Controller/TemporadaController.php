@@ -59,7 +59,8 @@ class TemporadaController extends Controller
         	
             $codeUpdateTemporada = $em->getRepository('AkademiaBundle:Temporada')->updateTemporada($editarAnio,$editarCiclo,$editarApertura,$editarPreInscripcion,$editarInicioClases,$editarCierreClases,$editarFechaSubsanacion,$idTemporada);
             $temporadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadas();
-            if( $codeUpdateTemporada != 0 ){
+
+            if( $codeUpdateTemporada == 1 ){
 
             	echo $this->renderView('AkademiaBundle:Migracion_Asistencia:table_temporada.html.twig',array('estadoUpdTemp'=>$estadoUpdTemp,'temporadas'=>$temporadas));
 	        	exit;

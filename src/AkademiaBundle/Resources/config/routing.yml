@@ -254,8 +254,8 @@ akademia_actualizarIndicador:
     methods:  [GET,POST]
 
 akademia_mostrarTalentos:
-    path:     /ajax/mostrarTalentos
-    defaults: { _controller: AkademiaBundle:Talentos:mostrarTalentos}
+    path:     /ajax/mostrarTalentos/temporada/{idTemporada}
+    defaults: { _controller: AkademiaBundle:Talentos:mostrarTalentos , idTemporada:0 }
     methods:  [GET,POST]
 
 akademia_mostrarDetalleTalento:

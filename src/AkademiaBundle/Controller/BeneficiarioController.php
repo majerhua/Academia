@@ -30,36 +30,44 @@ class BeneficiarioController extends Controller
 
     public function getTableHorarioMigracionAction(Request $request){
 
-        
-            $ediCodigo = $request->request->get('ediCodigo');
-            $modalidad = $request->request->get('modalidad');
-            $etapa = $request->request->get('etapa');
-            $edad = $request->request->get('edad');
-            $horarioActual = $request->request->get('horario-actual');
+        $ediCodigo = $request->request->get('ediCodigo');
+        $modalidad = $request->request->get('modalidad');
+        $etapa = $request->request->get('etapa');
+        $edad = $request->request->get('edad');
+        $horarioActual = $request->request->get('horario-actual');
 
-            $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
-            $horariosDisponiblesMigracion = $em->getRepository('AkademiaBundle:Migracion')->getHorariosDisponibleMigracion($ediCodigo,$modalidad,$etapa,$edad,$horarioActual);
+        $horariosDisponiblesMigracion = $em->getRepository('AkademiaBundle:Migracion')->getHorariosDisponibleMigracion($ediCodigo,$modalidad,$etapa,$edad,$horarioActual);
 
-            $turnsDiscipline = $em->getRepository('AkademiaBundle:Horario')->getTurnsDiscipline($ediCodigo);
+        $turnsDiscipline = $em->getRepository('AkademiaBundle:Horario')->getTurnsDiscipline($ediCodigo);
 
         echo $this->renderView('AkademiaBundle:Migracion_Asistencia:table_horario_migracion.html.twig',array('horarios' => $horariosDisponiblesMigracion , "turnos" => $turnsDiscipline ));
         exit;
-            
-        
     }
 
     public function guardarAsistenciaBeneficiariosAction(Request $request){
 
         if($request->isXmlHttpRequest()){
+
+            $estadoRespuesta = null;
+
             $asistenciaBeneMen = $request->request->get('asistencia-mensual');
             $idHorario = $request->request->get('idHorario');
             $usuario = $this->getUser()->getId();
 
             $em = $this->getDoctrine()->getManager();
-            $em->getRepository('AkademiaBundle:Asistencia')->insertAsistenciaBeneficiarios($asistenciaBeneMen,$idHorario,$usuario);
 
-            return new JsonResponse(1);
+            $cantidadRegistroAsistencia = $em->getRepository('AkademiaBundle:Asistencia')->getCantidadRegistrosMesActual($idHorario);
+
+            if( count($cantidadRegistroAsistencia) <= 1 && count($cantidadRegistroAsistencia) > -1 ){
+                 $em->getRepository('AkademiaBundle:Asistencia')->insertAsistenciaBeneficiarios($asistenciaBeneMen,$idHorario,$usuario);
+                 $estadoRespuesta = 1;
+            }else{
+                 $estadoRespuesta = 2;
+            }
+
+            return new JsonResponse($estadoRespuesta);
         }
     }
 
@@ -95,7 +103,15 @@ class BeneficiarioController extends Controller
 
         $asistenciaMensualInscribete = $em->getRepository('AkademiaBundle:Migracion')->getAsistenciaMensualInscribete($idHorario);
 
-        return $this->render('AkademiaBundle:Default:beneficiarios.html.twig', array("horarios" => $Horarios, "beneficiarios" => $Beneficiarios, "asistencias" => $Asistencias, "categorias" => $Categorias, "asistentes" => $movAsis, "retirados" => $movRet, "seleccionados" => $movSel , "inscritos"=>$horInscritos , "id" =>$idHorario, 'mesesTemporada' => $meses,'asistenciaMensual' => $asistenciaMensualInscribete,'ediCodigo'=>$Horarios[0]['ediCodigo'],'modalidad'=>$Horarios[0]['discapacitados'],'idTemporadaHabilitada' => $idTemporada ));
+
+        $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
+
+        if( !empty($arrayTemporada) )
+            $idTemporadaActiva = $arrayTemporada[0]['temporadaId'];
+        else
+            $idTemporadaActiva = null;
+
+        return $this->render('AkademiaBundle:Default:beneficiarios.html.twig', array("horarios" => $Horarios, "beneficiarios" => $Beneficiarios, "asistencias" => $Asistencias, "categorias" => $Categorias, "asistentes" => $movAsis, "retirados" => $movRet, "seleccionados" => $movSel , "inscritos"=>$horInscritos , "id" =>$idHorario, 'mesesTemporada' => $meses,'asistenciaMensual' => $asistenciaMensualInscribete,'ediCodigo'=>$Horarios[0]['ediCodigo'],'modalidad'=>$Horarios[0]['discapacitados'],'idTemporada' => $idTemporada, 'idTemporadaActiva'=>$idTemporadaActiva ));
     }
     
     // GENERAR NUEVO MOVIMIENTO

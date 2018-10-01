@@ -13,6 +13,29 @@ class TemporadaRepository extends \Doctrine\ORM\EntityRepository
 {
 
 
+	public function temporadaProxima(){
+		try {
+				$query = "	SELECT  TOP 1 CONVERT(VARCHAR,pre_inscripciones,103) fecha_preinscripcion,
+										anio,
+										cic.descripcion ciclo
+							FROM ACADEMIA.temporada temp
+							INNER JOIN ACADEMIA.ciclo cic ON cic.id = temp.ciclo_id
+							WHERE GETDATE() < pre_inscripciones
+							ORDER BY pre_inscripciones ASC
+						";
+
+			    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+			    $stmt->execute();
+			    $temporadaProxima = $stmt->fetchAll();
+           		return $temporadaProxima;
+
+        }catch (DBALException $e) {
+          $message = $e->getCode();
+        }
+
+        return $message;
+	}
+
 	public function faseTemporadaActiva($id){
 
         try {
@@ -30,6 +53,28 @@ class TemporadaRepository extends \Doctrine\ORM\EntityRepository
 			    $stmt->execute();
 			    $faseTemporadaActiva = $stmt->fetchAll();
            		return $faseTemporadaActiva;
+
+        }catch (DBALException $e) {
+          $message = $e->getCode();
+        }
+
+        return $message;
+	}
+
+	public function getFechaPreInscripcion($idTemproada){
+
+		try {
+				$query = "	SELECT 
+							CONVERT(VARCHAR,pre_inscripciones,103) fecha_preinscripcion,
+							anio,
+							cic.descripcion ciclo
+							FROM ACADEMIA.temporada temp
+							INNER JOIN ACADEMIA.ciclo cic ON cic.id = temp.ciclo_id
+							WHERE temp.id = '$idTemproada' AND temp.estado = 1";
+			    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+			    $stmt->execute();
+			    $fechaPreInscripcion = $stmt->fetchAll();
+           		return $fechaPreInscripcion;
 
         }catch (DBALException $e) {
           $message = $e->getCode();
@@ -101,8 +146,8 @@ class TemporadaRepository extends \Doctrine\ORM\EntityRepository
 					$query = "	EXEC ACADEMIA.updateTemporada $editarAnio,$editarCiclo,'$editarApertura','$editarPreInscripcion','$editarInicioClases','$editarCierreClases','$editarFechaSubsanacion',$idTemporada ";
 				    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
 				    $stmt->execute();
-
-               		$message = 2;
+				    $temporadas = $stmt->fetchAll();
+               		return $temporadas[0]['estadoModificar'];
 
             }catch (DBALException $e) {
               $message = $e->getCode();

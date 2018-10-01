@@ -78,10 +78,15 @@
 										</div>
 										
 										<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+
+											{% if idTemporadaActiva == idTemporada %}
+													
 											<div style="float:right; margin-right:20px">
 												<span style="color:grey">Eliminar disciplina </span>
 												<button title="Eliminar disciplina" type="button" id="{{complejosDisciplina['idDisciplina']}}"  class="btn btn-default btn-xs" data-toggle="modal" data-target="#confirmarEliminarDisciplina" onclick="xDisciplina({{complejosDisciplina['idDisciplina']}})"><i class="icon-trash" style="font-size:1.6em; margin-top:5px; color:#B45F04" ></i></button>
 											</div>
+
+											{% endif %}
 										</div>
 
 									</div>
@@ -996,7 +1001,8 @@
 											success: function(data){
 												if(data == 1){
 													console.log(data);
-													window.location.href = "horarios/{{idTemporada}}";
+													//window.location.href = "horarios/{{idTemporada}}";
+													location.reload();
 												}
 											},
 											error: function(error){
@@ -1321,7 +1327,7 @@
 					alertify.error('<p style="color:white">Esta disciplina no puede eliminarse.</p>');					
 				}else if(data == 2){
 					alertify.success('<p style="color:white">La disciplina se eliminó correctamente.</p>');	
-					window.location.href = "{horarios/{{idTemporada}}";
+					location.reload();
 				}
 			},
 			

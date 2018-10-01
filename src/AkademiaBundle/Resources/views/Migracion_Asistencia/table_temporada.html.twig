@@ -4,7 +4,8 @@
 
 <table class="table table-hover" width="100%;"> 
 	<thead style="color:#fff; background-color:#CB3F1D;"> 
-		<tr  > 
+		<tr> 
+
 			<th class="text-center " style=" background-color:#CB3F1D; font-size:0.8em;" >Cod</th>
 			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;" >Año</th> 
 			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;">Ciclo</th>
@@ -15,24 +16,23 @@
 			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;">Subsanación</th>
 			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;">Duración</th>
 			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;">Estado</th>
-			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;" class="">Editar</th>
-			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;" class="col-xs-1">Acceder</th> 
+			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;">Editar</th>
 		</tr>
 
 	</thead> 
 
-	<tbody  class="buscar" id="bodyHorario" >
+	<tbody  class="buscar" id="bodyHorario">
 		{% for temporada in temporadas %}
 		 	<tr>
 		 		<td class="text-center" style="font-size:0.8em;" >{{temporada['id']}}</td>
 		 		<td class="text-center" style="font-size:0.8em;" >{{temporada['anio']}}</td>
 		 		<td class="text-center" style="font-size:0.8em;" >{{temporada['ciclo']}} </td>
 		 		{% set arrayApertura = temporada['apertura']|split('-') %}
-		 		<td class="text-center" style="font-size:0.8em;" >{{arrayApertura[0]}} {{mesesAnio[arrayApertura[1]]}} {{arrayApertura[2]}}  </td>
+		 		<td class="text-center" style="font-size:0.8em;" ><b style="font-size:1.1em;" > {{arrayApertura[0]}} {{mesesAnio[arrayApertura[1]]}} {{arrayApertura[2]}}  </b></td>
 
 		 		{% set arrayApertura = temporada['pre_inscripciones']|split('-') %}
 
-		 		<td class="text-center col-xs-2" style="font-size:0.8em;" >{{arrayApertura[0]}} {{mesesAnio[arrayApertura[1]]}} {{arrayApertura[2]}}</td>
+		 		<td class="text-center col-xs-2" style="font-size:0.8em;" > {{arrayApertura[0]}} {{mesesAnio[arrayApertura[1]]}} {{arrayApertura[2]}}</td>
 
 		 		{% set arrayApertura = temporada['inicio_clases']|split('-') %}
 
@@ -40,16 +40,19 @@
 
 		 		{% set arrayApertura = temporada['cierre_clases']|split('-') %}
 
-		 		<td class="text-center" style="font-size:0.8em;" >{{arrayApertura[0]}} {{mesesAnio[arrayApertura[1]]}} {{arrayApertura[2]}}</td>
+		 		<td class="text-center" style="font-size:0.8em;" ><b  style="font-size:1.1em;"> {{arrayApertura[0]}} {{mesesAnio[arrayApertura[1]]}} {{arrayApertura[2]}} </b> </td>
 
 		 		{% set arraySubsanacion = temporada['subsanacion']|split('-') %}
 
 		 		<td class="text-center" style="font-size:0.8em;" >{{arraySubsanacion[0]}} {{mesesAnio[arraySubsanacion[1]]}} {{arraySubsanacion[2]}}</td>
 
 		 		<td class="text-center" style="font-size:0.8em;" >{{temporada['duracion']}}</td>
+
 		 		<td class="text-center" style="" >{% if temporada['estado'] == 0 %}<b class="estado-oculto-td" style="font-size:0.8em;">Cerrado</b>{% else %}<b class="estado-visible-td" style="font-size:0.8em;" >En Curso</b>{% endif %}</td>
-		 		<td class="text-center" style="font-size:0.8em;"  ><button class="btn btn-success"data-toggle="modal" data-target="#modal-editar" onclick="editarTemporada({{temporada['id']}})" ><i class="icon-pencil-square-o" style="font-size:0.9em; margin-top:5px; color:white" ></i></button></td>
-		 		<td class="text-center col-xs-1" style="ffont-size:0.8em;"  ><button class="btn btn-default"><i class="icon-checklist" style="font-size: 1.2em;"></i></button></td>
+
+		 		<td class="text-center" style="font-size:0.8em;">
+		 			<button class="btn btn-success"data-toggle="modal" data-target="#modal-editar" onclick="editarTemporada({{temporada['id']}})" ><i class="icon-pencil-square-o" style="font-size:0.9em; margin-top:5px; color:white" ></i></button>
+		 		</td>
 		 		
 		 	</tr>	    
 		 {% endfor %} 							
@@ -99,7 +102,6 @@
 
 	function limpiarCamposTemporada(){
 
-		$modalEditarAnio.val("");
 		$modalEditarCiclo.val("");
 		$modalEditarApertura.val("");
 		$modalEditarPreInscripciones.val("");
@@ -119,7 +121,6 @@
 
 				$modalEditarIdTemporada.val(idTemporada);
 				$titleCardEditar.text('TEMPORADA '+"{{temporada['anio']}}"+' '+"{{temporada['ciclo']}}");
-	 			$modalEditarAnio.val("{{temporada['anio']}}");
 				$modalEditarCiclo.val("{{temporada['cicloId']}}");
 				$modalEditarApertura.val( formatYYYYMMDDdate("{{temporada['apertura']}}") );
 	 			$modalEditarPreInscripciones.val(  formatYYYYMMDDdate("{{temporada['pre_inscripciones']}}") );

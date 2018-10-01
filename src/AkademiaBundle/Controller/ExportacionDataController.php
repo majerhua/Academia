@@ -35,6 +35,7 @@ class ExportacionDataController extends Controller
 
     $anio = $request->query->get('ano');
     $mes = $request->query->get('mes');
+    $idTemporada = $request->query->get('idTemporada');
 
     if(empty($mes)){
       $mes=-1;
@@ -42,11 +43,11 @@ class ExportacionDataController extends Controller
 
     $conn = $this->get('database_connection');
     
-    $response = new StreamedResponse(function() use($conn,$anio,$mes) {
+    $response = new StreamedResponse(function() use($conn,$anio,$mes,$idTemporada) {
       $handle = fopen('php://output','w+');
               fputcsv($handle, ['Departamento','Provincia', 'Disciplina', 'Modalidad','InscritosTotales','CantidadInscritosVigentes','CantidadRetirados'],",");
 
-      $results = $conn->query("exec ACADEMIA.inscripcionesRegiones $anio,$mes");
+      $results = $conn->query("exec ACADEMIA.inscripcionesRegiones $anio,$mes,$idTemporada");
 
       while($row = $results->fetch()) {
         fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Disciplina'],$row['Modalidad'],$row['InscritosTotales'],$row['CantidadInscritosVigentes'],$row['CantidadRetirados']), ",");
@@ -63,6 +64,7 @@ class ExportacionDataController extends Controller
 
     $anio = $request->query->get('ano');
     $mes = $request->query->get('mes');
+    $idTemporada = $request->query->get('idTemporada');
 
     if(empty($mes)){
       $mes=-1;
@@ -70,12 +72,12 @@ class ExportacionDataController extends Controller
 
     $conn = $this->get('database_connection');
     
-    $response = new StreamedResponse(function() use($conn,$anio,$mes) {
+    $response = new StreamedResponse(function() use($conn,$anio,$mes,$idTemporada) {
 
     $handle = fopen('php://output','w+');
               fputcsv($handle, ['Provincia','Complejo','Disciplina','Modalidad','InscritosTotales','CantidadInscritosVigentes','CantidadRetirados'],",");
 
-      $results = $conn->query("exec ACADEMIA.inscripcionesLimaCallao $anio,$mes ");
+      $results = $conn->query("exec ACADEMIA.inscripcionesLimaCallao $anio,$mes,$idTemporada ");
 
       while($row = $results->fetch()) {
         fputcsv($handle, array( $row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['Modalidad'],$row['InscritosTotales'],$row['CantidadInscritosVigentes'],$row['CantidadRetirados']), ",");
@@ -90,15 +92,18 @@ class ExportacionDataController extends Controller
 
   public function exportCantidadHorariosCreadosRegionAction(Request $request){
 
+    
     $idComplejo = $request->query->get('idComplejo');
+    $idTemporada = $request->query->get('idTemporada');
+
     $conn = $this->get('database_connection');
 
-    $response = new StreamedResponse(function() use($conn,$idComplejo) {
+    $response = new StreamedResponse(function() use($conn,$idComplejo,$idTemporada) {
 
       $handle = fopen('php://output','w+');
               fputcsv($handle,['Departamento','Provincia','Complejo','Disciplina','Modalidad','CodigoHorario','Horario','Etapa','Convocatoria','Estado'],",");
 
-      $results = $conn->query("exec ACADEMIA.cantidadHorariosCreadosRegion '$idComplejo' ");
+      $results = $conn->query("exec ACADEMIA.cantidadHorariosCreadosRegion '$idComplejo','$idTemporada' ");
 
       while($row = $results->fetch()){
         fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['Modalidad'],$row['CodigoHorario'],$row['Horario'],$row['Etapa'],$row['Convocatoria'],$row['Estado']), ",");

@@ -10,6 +10,28 @@ namespace AkademiaBundle\Repository;
  */
 class AsistenciaRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function getCantidadRegistrosMesActual($idHorario){
+
+        $query = "  SELECT MONTH(mov.fecha_modificacion) mes FROM ACADEMIA.horario hor
+                    INNER JOIN ACADEMIA.inscribete ins ON ins.horario_id = hor.id
+                    INNER JOIN ACADEMIA.movimientos mov ON mov.inscribete_id = ins.id
+                    WHERE 
+                    hor.id = '$idHorario' AND 
+                    ins.estado= 2 AND
+                    ins.id = ( SELECT top 1 ins2.id FROM ACADEMIA.horario hor2 
+                              INNER JOIN ACADEMIA.inscribete ins2 ON ins2.horario_id = hor2.id
+                              WHERE hor2.id=  '$idHorario' AND ins2.estado=2 ) AND
+                    MONTH( mov.fecha_modificacion) = MONTH(GETDATE() ) ";
+                    
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $cantidadRegistroAsistencia = $stmt->fetchAll();
+
+        return $cantidadRegistroAsistencia;  
+
+    }
+
 	public function getMostrarAsistencia(){
 
             $query = "select * from academia.asistencia";

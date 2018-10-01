@@ -45,6 +45,7 @@
     </head>
 <body>
 
+{% set mesesAnio = {'01': 'Ene', '02':'Feb', '03':'Mar','04':'Abr','05':'May','06':'Jun','07':'Jul','08':'Ago','09':'Sep','10':'Oct','11':'Nov','12':'Dic'} %}
 
 <section class="header">
 
@@ -106,12 +107,33 @@
 				</div>
 				<div class="containe__button">
 
-					{% if faseTemporadaActiva != 10 and faseTemporadaActiva != 40  %}
+					{% if faseTemporada == 20 or faseTemporada == 30  %}
 						<button class="btn-verHorario" data-toggle="modal" data-target="#modal-escoger-tipo-horario">Horarios</button>
-						<button class="btn-preInscribete" id="pre-inscribete" >Pre Inscríbete</button>
+						<button class="btn-preInscribete pre-inscribete" >Pre Inscríbete</button>
+
 					{% else %}
-						<p style="color:white !important; font-weight:bold; z-index:2000; ">MENSAJE SUBLIMINAL</p>
+
+						<div class="container-mensaje-temporada"  style="z-index:1000;">
+
+							{% if faseTemporada == 40 or faseTemporada == 10 %}
+
+								<p class="text-center"  style="font-weight:bold;font-size:1.3em;color:rgba(255, 255, 45, 1);padding:0;margin:0;">Próximamente</p>
+								<p class="text-center" style="font-weight:bold;font-size:1.5em;color:rgba(255, 255, 45, 1);padding:0;margin:0;" > Temporada {{ ciclo|lower|capitalize }} {{anio}} </p>
+
+								{% set arrayFechaPreInscripcion = fechaPreInscripcion|split('/') %}
+
+								<p class="text-center" style="font-weight:bold;font-size:1.3em;color:rgba(255, 255, 45, 1);padding:0;margin:0;">Inicio de Pre-Inscripción: {{arrayFechaPreInscripcion[0]}} de {{mesesAnio[arrayFechaPreInscripcion[1]]}} {{arrayFechaPreInscripcion[2]}}</p>
+
+							{%  elseif faseTemporada == 50 %}
+
+								<p class="text-center"  style="font-weight:bold;font-size:1.3em;color:rgba(255, 255, 45, 1);padding:0;margin:0;">Próximamente</p>
+								<p class="text-center"  style="font-weight:bold;font-size:1.4em;color:rgba(255, 255, 45, 1);padding:0;margin:0;">Inicio Nueva Temporada</p>
+							{% endif %}
+
+						</div>
+
 					{% endif %}
+
 				</div>
 			</div>
 		</div>
@@ -192,11 +214,12 @@
 
 					<div class="container__buton-pre-inscribete">
 
-					{% if faseTemporadaActiva != 10 and faseTemporadaActiva != 40  %}
-						<button href="#" class="btn btn-success btn-success-mod" >Pre-inscríbete</button>
+					{% if faseTemporada == 20 or faseTemporada == 30   %}
+
+						<button href="#" class="btn btn-success btn-success-mod pre-inscribete" >Pre-inscríbete</button>
 					{% else %}
 
-						<button href="#" class="btn btn-success btn-success-mod">Próximamente</button>
+						<button href="#" class="btn btn-success btn-success-mod ">Próximamente</button>
 					{% endif %}
 							
 					</div>
@@ -519,7 +542,7 @@
 			TweenLite.to($("#mensaje-principal,#logo-principal"),3,{alpha:1});
 
 
-			$("#pre-inscribete").on('click',function(){
+			$(".pre-inscribete").on('click',function(){
 				window.open('ficha-preinscripcion');
 			});
 
