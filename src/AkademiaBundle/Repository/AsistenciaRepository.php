@@ -52,7 +52,6 @@ class AsistenciaRepository extends \Doctrine\ORM\EntityRepository
         $stmt->execute();
         $beneficiarios = $stmt->fetchAll();
 
-        
         $asistenciaId = 4;
            
 		foreach ($beneficiarios as $key => $value) {
@@ -64,7 +63,6 @@ class AsistenciaRepository extends \Doctrine\ORM\EntityRepository
             		$flagAsis=true;
             	}
             }
-
 
             if($flagAsis == true){
             	$asistenciaId=2;

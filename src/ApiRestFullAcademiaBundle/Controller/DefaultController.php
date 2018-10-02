@@ -332,7 +332,7 @@ class DefaultController extends FOSRestController
 
       $result = $em->getRepository('ApiRestFullAcademiaBundle:PersonaApi')->registrarUsuario($nombre ,$paterno,$materno,$numeroDoc,$telefono,$correo,$organizacion,$estado,$passwordEncrypt,$token,$fechaNacimiento,$sexo,$tipoDoc);
 
-      $restresult = intval($result[0]['id']);
+      $restresult = strval($result['result']);
 
     }else{
       
@@ -351,9 +351,9 @@ class DefaultController extends FOSRestController
     $correo = $request->get('correo');
     $em = $this->getDoctrine()->getManager(); 
     
-    if( !empty($correo)   /*&& !empty($password)*/ ){
+    if( !empty($correo) ){
       
-      $restresult = $em->getRepository('ApiRestFullAcademiaBundle:PersonaApi')->loginUsuarioApp($correo/*,$passwordEncrypt*/);
+      $restresult = $em->getRepository('ApiRestFullAcademiaBundle:PersonaApi')->loginUsuarioApp($correo);
       
     }else{
       

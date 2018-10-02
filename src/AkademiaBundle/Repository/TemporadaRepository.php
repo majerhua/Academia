@@ -47,7 +47,7 @@ class TemporadaRepository extends \Doctrine\ORM\EntityRepository
 							    ELSE
 							    40
 								END AS fase 
-								FROM ACADEMIA.temporada WHERE id = '$id' AND estado=1;";
+								FROM ACADEMIA.temporada WHERE id = '$id';";
 
 			    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
 			    $stmt->execute();

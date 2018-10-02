@@ -440,13 +440,19 @@
 
 							if(data == 0){
 								alertify.warning("<p style='color:black; font-weight:bold; ' >No se pudo crear una nueva disciplina, intentelo de nuevo porfavor!.</p>");
+
 							}
 							else if(data==2){
 								alertify.warning("<p style='color:black; font-weight:bold;' >Ya existen 2 temporadas en un mismo año!.</p>");
+
 							}else if(data==3){
 								alertify.warning("<p style='color:black; font-weight:bold;' >Ya existe una temporada en Curso, cambie las fechas de Inicio y Fin!.</p>");
+
 							}else if(data==4){
 								alertify.warning("<p style='color:black; font-weight:bold;' >La fecha de apertura debe ser mayor a la fecha de cierre de la primera temporada del año en la que está creando la nueva temporada!.</p>");
+
+							}else if(data == 5){
+								alertify.warning("<p style='color:black; font-weight:bold;' >El año de apertura debe ser mayor o igual que el año actual!.</p>");
 							}
 							else {
 								$("#container-table-temporada").html(data);
@@ -471,7 +477,6 @@
 
 
 	$btnEditarTemporada.on('click',function(){
-
 
 		if( $modalEditarCiclo.val() !="" && $modalEditarApertura.val() != "" && $modalEditarPreInscripciones.val() != "" &&  $modalEditarInicioClases.val() != "" &&  $modalEditarCierreClases.val() != "" && $modalEditarFechaSubsanacion.val() != "" ){
 

@@ -26,8 +26,6 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class BeneficiarioController extends Controller
 {
 
-
-
     public function getTableHorarioMigracionAction(Request $request){
 
         $ediCodigo = $request->request->get('ediCodigo');
@@ -60,7 +58,7 @@ class BeneficiarioController extends Controller
 
             $cantidadRegistroAsistencia = $em->getRepository('AkademiaBundle:Asistencia')->getCantidadRegistrosMesActual($idHorario);
 
-            if( count($cantidadRegistroAsistencia) <= 1 && count($cantidadRegistroAsistencia) > -1 ){
+            if( count($cantidadRegistroAsistencia) <= 9 && count($cantidadRegistroAsistencia) > -1 ){
                  $em->getRepository('AkademiaBundle:Asistencia')->insertAsistenciaBeneficiarios($asistenciaBeneMen,$idHorario,$usuario);
                  $estadoRespuesta = 1;
             }else{

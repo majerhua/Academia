@@ -122,10 +122,26 @@
 				$modalEditarIdTemporada.val(idTemporada);
 				$titleCardEditar.text('TEMPORADA '+"{{temporada['anio']}}"+' '+"{{temporada['ciclo']}}");
 				$modalEditarCiclo.val("{{temporada['cicloId']}}");
+
 				$modalEditarApertura.val( formatYYYYMMDDdate("{{temporada['apertura']}}") );
 	 			$modalEditarPreInscripciones.val(  formatYYYYMMDDdate("{{temporada['pre_inscripciones']}}") );
 	 			$modalEditarInicioClases.val( formatYYYYMMDDdate("{{temporada['inicio_clases']}}") );
 	 			$modalEditarCierreClases.val( formatYYYYMMDDdate("{{temporada['cierre_clases']}}") );
+
+				if( new Date() > new Date("{{temporada['cierre_clases']}}") ){
+
+					$modalEditarApertura.attr('disabled','disabled');
+					$modalEditarPreInscripciones.attr('disabled','disabled');
+	 				$modalEditarInicioClases.attr('disabled','disabled');
+	 				$modalEditarCierreClases.attr('disabled','disabled');
+
+				}else{
+					$modalEditarApertura.removeAttr('disabled');
+					$modalEditarPreInscripciones.removeAttr('disabled');
+	 				$modalEditarInicioClases.removeAttr('disabled');
+	 				$modalEditarCierreClases.removeAttr('disabled');
+				}
+
 	 			$modalEditarFechaSubsanacion.val( formatYYYYMMDDdate("{{temporada['subsanacion']}}") );
 
 	 			if ( "{{temporada['estado']}}" == 0 ) 

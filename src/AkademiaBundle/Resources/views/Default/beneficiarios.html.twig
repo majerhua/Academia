@@ -272,7 +272,7 @@
 														        				name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"/>
 														        			<img  	
 																        			{% if asistenciaId == 4 %}
-																        				class="img-x img-checkbox"
+																        				class=" img-checkbox"
 																        			{% else %}
 																        				class="img-checkbox"
 																        			{% endif %} 
@@ -300,7 +300,7 @@
 														        			 />
 														        			<img  
 																				{% if asistenciaId == 4 %}
-															        				class="img-checkbox img-x"
+															        				class="img-checkbox "
 																        		{% else  %}
 																        			class="img-checkbox"
 															        			{% endif %}
@@ -706,14 +706,9 @@
 
 				}			
 			}
-
-
-			console.log("Asistencia Mensual =>",asistenciaMes)
-
 		});
 
 		function asistenciaMensual(element){
-
 
 		  	if (element.checked) {
 
@@ -726,12 +721,7 @@
 		  		$(element).siblings('img').removeClass('img-check');
 		    	$(element).siblings('img').addClass('img-x');		  		
 		    	asistenciaMes.splice( asistenciaMes.indexOf(element.value), 1);
-		    	
-		    	
-		    	console.log("Asistencia Element checked => ",element.value);
 		  	}
-
-		  	console.log("Array Asistencia Mensual => ",asistenciaMes);
 		}
 
 		const guardarAsistencia = ()=>{
@@ -759,7 +749,6 @@
 					url: "{{url('akademia_guardarAsistenciaBeneficiarios')}}",
 					data: datosAsistencia,
 					beforeSend: function(){	
-						console.log(datosAsistencia);
 						$("#guardar-asistencia").attr('disabled',true);
 					},
 					success: function(data){
@@ -775,17 +764,13 @@
 					},
 					error: function(data){
 						alertify.error('<p style="color:white">Error </p>');	
-						console.log(data);
 					},
 				});
 			}
 				
 			else
 				alertify.warning('<p style="font-weight:bold;" >Porfavor Marque asistencia a todos los beneficiarios!.</p>');
-/*
 
-			
-	*/
 		}
 
 		$(document).ready(function () {
@@ -818,6 +803,7 @@
 
 			if (categoria == 2){
 
+				$("#etapa-optiones2").attr('hidden',false);
 				$("#etapa-optiones").attr('hidden',true);
 
 				$("#cambiarHorariosMigracion").val("");
@@ -826,6 +812,7 @@
 			}else{
 
 				$("#etapa-optiones").attr('hidden',false);
+				$("#etapa-optiones2").attr('hidden',true);
 
 				$("#cambiarHorariosMigracion").val("");
 				$("#tableHorario").html("");
@@ -863,6 +850,9 @@
 
 					$("#etapa-optiones").attr('hidden',false);
 
+					$("#categoriaParticipante").attr('readonly',false);
+					$("#categoriaParticipante").attr('disabled',false);
+
 					if(idAsis == 1){
 						
 						$("#asistenciaParticipante").val(idAsis);
@@ -899,15 +889,23 @@
 							
 					
 						}else if(categoria == 2){
+
+
 							$("#etapa-optiones").attr('hidden',true);
 							$("#categoriaParticipante").val('2');
-						}else{
+
+						}else if(categoria == 1) {
 
 							$("#optiones").attr('hidden',true);
 							$("#optiones2").attr('hidden',true);
-							$("#categoriaParticipante").attr('readonly',false);
-							$("#categoriaParticipante").attr('disabled',false);
+
 							$("#categoriaParticipante").val(idCat);
+
+							$("#categoriaParticipante").attr('readonly',true);
+							$("#categoriaParticipante").attr('disabled',true);
+							
+
+
 							
 						}
 						
@@ -978,49 +976,61 @@
 					var categoria = $("#categoriaParticipante").val();
 					var idFicha = $("#idFicha").text();
 				}
-			//if(asistencia != 0 && categoria != 0){
 
-				console.log(asistencia, categoria, idFicha,$('input:radio[name=codHorario]:checked').val());
+				if(categoria == 1 && $("#cambiarHorariosMigracion").val() === 0  ){
+					categoria = 2;
+				}
 
-				var dataBeneficiario = {
 
-					"idFicha" : idFicha,
-					"idAsistencia": asistencia,
-					"idCategoria": categoria,
-					"horarioActual":"{{horarios[0]['idHorario']}}",
-					"horarioAMigrar": $('input:radio[name=codHorario]:checked').val()
-				};
+				if( "{{horarios[0]['etapa']}}" == "Formación" && categoria == 1 &&  $('input:radio[name=codHorario]:checked').val() == undefined )
+				{
 
-	
-				$.ajax({
-					type:'POST',
-					dataType: 'json',
-					url: "{{url('akademia_estadoBeneficiario')}}",
-					data: dataBeneficiario,
-					beforeSend: function(){				
+					alertify.warning("No puede Cambiar a Categoria No Seleccionado porque este horario pertenece a Formación",3000);
+				}else{
+
 					
-					},
+					var dataBeneficiario = {
 
-					success: function(data){
+						"idFicha" : idFicha,
+						"idAsistencia": asistencia,
+						"idCategoria": categoria,
+						"horarioActual":"{{horarios[0]['idHorario']}}",
+						"horarioAMigrar": $('input:radio[name=codHorario]:checked').val()
+					};
 
-						if(data == 1){
-
-							alertify.success('<p style="color:white">Beneficiario Actualizado</p>');
-							location.reload(true);
-								
-						}
-						if(data == 2){
-
-							alertify.error('<p style="color:white">Se produjo un error.</p>');	
-						}
+		
+					$.ajax({
+						type:'POST',
+						dataType: 'json',
+						url: "{{url('akademia_estadoBeneficiario')}}",
+						data: dataBeneficiario,
+						beforeSend: function(){				
 						
-					},
+						},
 
-					error: function(data){
-						alertify.error('<p style="color:white">Error </p>');	
-						console.log(data);
-					},
-				});
+						success: function(data){
+
+							if(data == 1){
+
+								alertify.success('<p style="color:white">Beneficiario Actualizado</p>');
+								location.reload(true);
+									
+							}
+							if(data == 2){
+
+								alertify.error('<p style="color:white">Se produjo un error.</p>');	
+							}
+							
+						},
+
+						error: function(data){
+							alertify.error('<p style="color:white">Error </p>');	
+							console.log(data);
+						},
+					});
+				}
+
+					
 
 			}else{
 
