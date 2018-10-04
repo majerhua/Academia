@@ -31,16 +31,22 @@ class HorarioController extends Controller
 {
 
     //PAGINA PARA MOSTRAR HORARIOS LANDING
-    public function mostrarHorariosLandingAction(Request $request,$estado){
+    public function mostrarHorariosLandingAction(Request $request,$estado,$idTemporada){
 
         $em = $this->getDoctrine()->getManager();
 
-        $mdDepartamentsByDisability = $em->getRepository('AkademiaBundle:Departamento')->getDepartmentsLandingByDisability($estado);
-        $mdProvinceByDisability = $em->getRepository('AkademiaBundle:Provincia')->getProvincesLandingByDisability($estado);
-        $mdDistrictsByDisability = $em->getRepository('AkademiaBundle:Distrito')->getDistrictsLandingByDisability($estado);
-        $mdComplexesByDisability = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplexesLandingByDisability($estado);
-        $mdDisciplinesByDisability = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinesLandingByDisability($estado);
-        return $this->render('AkademiaBundle:Default:mostrarHorariosLanding.html.twig', array('departamentosFlag' => $mdDepartamentsByDisability , "provinciasFlag" => $mdProvinceByDisability ,'distritosFlag' => $mdDistrictsByDisability,'complejosDeportivos' => $mdComplexesByDisability, 'disciplinasDeportivas' => $mdDisciplinesByDisability,'estado'=>$estado) );
+
+
+        $mdDepartamentsByDisability = $em->getRepository('AkademiaBundle:Departamento')->getDepartmentsLandingByDisability($estado,$idTemporada);
+        $mdProvinceByDisability = $em->getRepository('AkademiaBundle:Provincia')->getProvincesLandingByDisability($estado,$idTemporada);
+        $mdDistrictsByDisability = $em->getRepository('AkademiaBundle:Distrito')->getDistrictsLandingByDisability($estado,$idTemporada);
+        $mdComplexesByDisability = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplexesLandingByDisability($estado,$idTemporada);
+        $mdDisciplinesByDisability = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinesLandingByDisability($estado,$idTemporada);
+
+        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+
+
+        return $this->render('AkademiaBundle:Default:mostrarHorariosLanding.html.twig', array('departamentosFlag' => $mdDepartamentsByDisability , "provinciasFlag" => $mdProvinceByDisability ,'distritosFlag' => $mdDistrictsByDisability,'complejosDeportivos' => $mdComplexesByDisability, 'disciplinasDeportivas' => $mdDisciplinesByDisability,'estado'=>$estado,'descripcionTemporada'=>$descripcionTemporada ) );
     }
 
     //MUESTRA TABLA  HORARIOS Y TURNOS
@@ -93,6 +99,9 @@ class HorarioController extends Controller
         $Disciplinas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasDiferentes($idComplejo,$idTemporada);
         $Nombre = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->nombreComplejo($idComplejo);
             
+        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+        
+        //OBTENEMOS LA TEMPORADA COMPARAR CON LA TEMPORADA QUE RECIBIMOS COMO PARAMETRO
         $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
 
         if(!empty($arrayTemporada))
@@ -102,12 +111,12 @@ class HorarioController extends Controller
 
         if(!empty($Nombre)){ 
 
-            return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"1", "nombreComplejo"=> $Nombre, 'turnos'=>$turnos,'idTemporada'=>$idTemporada,'idTemporadaActiva'=>$idTemporadaActiva));
+            return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"1", "nombreComplejo"=> $Nombre, 'turnos'=>$turnos,'idTemporada'=>$idTemporada,'idTemporadaActiva'=>$idTemporadaActiva, 'descripcionTemporada'=>$descripcionTemporada ));
 
             //MODULO ANALISTA
         }else{
 
-            return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"2", 'turnos'=>$turnos, 'idTemporada'=>$idTemporada )); 
+            return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"2", 'turnos'=>$turnos, 'idTemporada'=>$idTemporada,'descripcionTemporada'=>$descripcionTemporada )); 
         }
     }
 

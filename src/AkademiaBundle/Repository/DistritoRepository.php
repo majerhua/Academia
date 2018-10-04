@@ -82,7 +82,7 @@ class DistritoRepository extends \Doctrine\ORM\EntityRepository
         return $distritos;
     } 
 
-    public function getDistrictsLandingByDisability($disability){
+    public function getDistrictsLandingByDisability($disability,$idTemporada){
 
         $query = "SELECT DISTINCT ubi.ubidpto idDepartamento, 
                 ubi.ubiprovincia idProvincia,
@@ -101,6 +101,9 @@ class DistritoRepository extends \Doctrine\ORM\EntityRepository
                 hor.discapacitados = '$disability' AND
                 hor.vacantes <> 0 AND
                 hor.convocatoria = 1 AND
+                hor.etapa = 1 AND
+                
+                edi.temporada_id = '$idTemporada' AND
                 
                 ubi.ubidistrito <> '00' AND 
                 ubi.ubiprovincia <> '00' AND 

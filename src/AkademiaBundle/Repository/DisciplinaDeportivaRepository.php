@@ -169,7 +169,7 @@ public function getDisciplinasTotales()
         return $disciplinasDeporivas;
     }
 
-    public function getDisciplinesLandingByDisability($disability)
+    public function getDisciplinesLandingByDisability($disability,$idTemporada)
     {
         $query = "SELECT  distinct 
                             eddis.edi_codigo AS id, 
@@ -183,9 +183,13 @@ public function getDisciplinasTotales()
                             hor.edi_codigo = eddis.edi_codigo AND 
                             edde.ede_codigo=eddis.ede_codigo AND 
                             dis.dis_codigo=eddis.dis_codigo AND 
+
+                            eddis.temporada_id = '$idTemporada' AND
+
                             hor.estado=1 AND 
                             hor.vacantes<> 0 AND
                             hor.convocatoria = 1 AND
+                            hor.etapa = 1 AND
                             hor.discapacitados='$disability'  AND 
                             dis_estado = 1 
 

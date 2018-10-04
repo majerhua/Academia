@@ -61,21 +61,27 @@ class DefaultController extends Controller
 
         $Nombre = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->nombreComplejo($idComplejo);
 
+        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+
         if(!empty($Nombre)){ 
 
             $arrayFaseTemporada = $em->getRepository('AkademiaBundle:Temporada')->faseTemporadaActiva($idTemporada);
             $faseTemporada = $arrayFaseTemporada[0]['fase'];
 
-          return $this->render('AkademiaBundle:Default:menuprincipal.html.twig', array("valor"=>"1", "nombreComplejo"=> $Nombre,'temporadasHabilitadas'=>$temporadasHabilitadas,'idTemporadaHabilidatada' => $idTemporada , 'faseTemporada'=> $faseTemporada ));
+          return $this->render('AkademiaBundle:Default:menuprincipal.html.twig', array("valor"=>"1", "nombreComplejo"=> $Nombre,'temporadasHabilitadas'=>$temporadasHabilitadas,'idTemporadaHabilidatada' => $idTemporada , 'faseTemporada'=> $faseTemporada,'descripcionTemporada' => $descripcionTemporada ));
           
         }else{
-          return $this->render('AkademiaBundle:Default:menuprincipal.html.twig', array("valor"=>"2",'temporadasHabilitadas'=>$temporadasHabilitadas,'idTemporadaHabilidatada'=>$idTemporada));
+          return $this->render('AkademiaBundle:Default:menuprincipal.html.twig', array("valor"=>"2",'temporadasHabilitadas'=>$temporadasHabilitadas,'idTemporadaHabilidatada'=>$idTemporada,'descripcionTemporada' => $descripcionTemporada  ));
         }
     }
 
     //VISTA INSCRIPCION DIRECTA
     public function inscritosAction(Request $request,$idTemporada){
-        return $this->render('AkademiaBundle:Default:inscritos.html.twig',array("idTemporadaHabilidatada"=>$idTemporada));
+
+        $em = $this->getDoctrine()->getManager();
+        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+
+        return $this->render('AkademiaBundle:Default:inscritos.html.twig',array("idTemporadaHabilidatada"=>$idTemporada, "descripcionTemporada" => $descripcionTemporada));
     }
 
 

@@ -115,7 +115,7 @@
 			<div class="container-card col-xs-12 col-sm12 col-md-5 col-ld-5">
 				<div class="card">
 						<p class="title-card text-center">FICHA DE INSCRIPCIÓN</p>
-						<p class="title-card text-center">ACADEMIA IPD INVIERNO 2018</p>
+						<p class="title-card text-center">ACADEMIA IPD {{descripcionTemporada[0]['ciclo']}} {{descripcionTemporada[0]['anio']}}</p>
 						<hr>
 						<div id="alerta-confirmacionFicha" class="alert alert-success collapse"></div>
 						<div id="alerta-errorFicha" class="alert alert-danger collapse"></div>
@@ -214,7 +214,8 @@
 					<div id="alerta-error" class="alert alert-danger collapse"></div>
 					
 					<div class="pdf_inscripcion__ficha row">
-						<div class="campos col-xs-4 col-sm-4 col-md-4 col-lg-4"> 	
+						<div class="campos col-xs-4 col-sm-4 col-md-4 col-lg-4">
+							<p>Código de ficha</p> 	
 							<p>Nombre</p>
 							<p>Ape. Paterno</p>
 							<p>Ape. Materno</p>
@@ -230,7 +231,8 @@
 							<p>Complejo</p>
 							<p>Horario</p>
 						</div>
-						<div class="valores col-xs-8 col-sm-8 col-md-8 col-lg-8"> 
+						<div class="valores col-xs-8 col-sm-8 col-md-8 col-lg-8">
+							<p id="codigo-inscripcionRef"></p>
 							<p id="nombre-ficha"></p>
 							<p id="apellidoPaterni-ficha"></p>
 							<p id="apellidoMaterno-ficha"></p>
@@ -492,7 +494,6 @@ function registrar(){
 			console.log(valor);
 
 			if(Object.keys(valor).length == 4){
-				console.log("Alerta");
 				//showAlertMessage('#alerta-error', "El participante se encuentro inscrito con el Código de Inscripción "+valor.id+" en la disciplina"+valor.Displina+"con la modalidad"+valor.Modalidad+"del Complejo Deportivo"+valor.ComplejoDeportivo);
 				$('#modalInscripcionUnica').modal('show');
 				$('#ins-unique-idInscripcion').append(valor.id);
@@ -524,8 +525,8 @@ function registrar(){
 					$("#process5").show();
 					sessionStorage.removeItem("idInscripcion");
 					sessionStorage.setItem("idInscripcion",valor.id);
-					$("#ancla-imprimir-fichaInscripcion").attr( 'href',"ajax/pdf/inscripcion/"+sessionStorage.getItem("idInscripcion")+"/temporada/"+"{{idTemporada}}" );
-					$("#ancla-imprimir-declaracion-jurada").attr( 'href',"ajax/pdf/declaracion-jurada/"+sessionStorage.getItem("idInscripcion")+"/temporada/"+"{{idTemporada}}" );
+					$("#ancla-imprimir-fichaInscripcion").attr( 'href',"/academia/web/ajax/pdf/inscripcion/"+sessionStorage.getItem("idInscripcion")+"/temporada/"+"{{idTemporada}}" );
+					$("#ancla-imprimir-declaracion-jurada").attr( 'href',"/academia/web/ajax/pdf/declaracion-jurada/"+sessionStorage.getItem("idInscripcion")+"/temporada/"+"{{idTemporada}}" );
 					$("#codigo-inscripcionRef").append(valor.id);
 					$("#nombre-ficha").append(valor.pernombres);
 					$("#apellidoPaterni-ficha").append(valor.perapepaterno);

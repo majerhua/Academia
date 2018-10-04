@@ -13,7 +13,16 @@
                     <span class="icon-bar"></span>
                     
                 </button>                       
-                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="logoAcademia" />                                      
+                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="logoAcademia" {% if flagUser == "1" %} style="float:left;" {% endif %} /> 
+
+                {% if flagUser == "1" %}
+
+	                <div class="container-title-header">
+	                	<p  class="text-bold title-header">TEMPORADA {{descripcionTemporada[0]['ciclo']}}-{{descripcionTemporada[0]['anio']}}</p>
+	                </div>
+
+                {% endif %}
+                                                     
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <br>
@@ -47,19 +56,21 @@
 		</div>
 	</div>	
 
-			<div class="progreso_container">
-				<div class="progreso__barraInscripcion">
-					<div class="bar-inscripcion__1 active" >1</div>
-					<div class="bar-inscripcion__2 ">2</div>
-					<div class="bar-inscripcion__3">3</div>
-					<div class="bar-inscripcion__4">4</div>
-					<div class="bar-inscripcion__5">5</div>
-				</div>		
-			</div>
+		<div class="progreso_container">
+			<div class="progreso__barraInscripcion">
+				<div class="bar-inscripcion__1 active" >1</div>
+				<div class="bar-inscripcion__2 ">2</div>
+				<div class="bar-inscripcion__3">3</div>
+				<div class="bar-inscripcion__4">4</div>
+				<div class="bar-inscripcion__5">5</div>
+			</div>		
+		</div>
+
 		{% else %}
+		
 			<div class="container-titulo">		
-				<p>PRE - INSCRIPCIÓN 2018 II</p>
-				<h4>Ciclo: Marzo - Diciembre</h4>
+				<p>PRE - INSCRIPCIÓN {{descripcionTemporada[0]['anio']}} {{descripcionTemporada[0]['ciclo_romanos']}}</p>
+				<h4>Ciclo: {{descripcionTemporada[0]['mesInicio']}} - {{descripcionTemporada[0]['mesFin']}}</h4>
 			</div>
 			<br>
 			<div class="progreso_container">

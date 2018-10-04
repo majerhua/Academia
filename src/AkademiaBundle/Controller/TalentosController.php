@@ -39,9 +39,11 @@ class TalentosController extends controller
             }  
         }
 
-       $Seleccionados = $em->getRepository('AkademiaBundle:Participante')->getMostrarSeleccionados($idTemporada);
+      $Seleccionados = $em->getRepository('AkademiaBundle:Participante')->getMostrarSeleccionados($idTemporada);
 
-      return $this->render('AkademiaBundle:Default:evaluados.html.twig', array("seleccionados" => $Seleccionados,'idTemporada' => $idTemporada ));
+      $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+
+      return $this->render('AkademiaBundle:Default:evaluados.html.twig', array("seleccionados" => $Seleccionados,'idTemporada' => $idTemporada, 'descripcionTemporada' => $descripcionTemporada ));
    
     }
 
@@ -63,7 +65,9 @@ class TalentosController extends controller
 
         $talentos = $em->getRepository('AkademiaBundle:Participante')->listarTalentos($idTemporada);
 
-        return $this->render('AkademiaBundle:Default:mostrarTalentos.html.twig', array("talentos" => $talentos,'idTemporada' => $idTemporada));
+        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+
+        return $this->render('AkademiaBundle:Default:mostrarTalentos.html.twig', array("talentos" => $talentos,'idTemporada' => $idTemporada, 'descripcionTemporada' => $descripcionTemporada));
     }
     
     public function talentosAction(Request $request, $idParticipante){

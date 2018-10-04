@@ -23,6 +23,7 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
                     convocatoria= 1  AND
                     vacantes <> 0 AND
                     estado = 1 AND
+                    etapa = 1 AND
                     discapacitados = $flagDiscapacitado AND
                     edi_codigo = $idCompleDis ORDER BY hor.edadMinima ASC
                     ";

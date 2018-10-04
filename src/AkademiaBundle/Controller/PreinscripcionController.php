@@ -29,7 +29,7 @@ class PreinscripcionController extends Controller
 
     public function indexAction(Request $request){
 
-        //Si la temporada es cero entonces se pasa como parametro la temporada actual
+        
         $em = $this->getDoctrine()->getManager();
 
         $arrayTemporadaActiva = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
@@ -74,12 +74,26 @@ class PreinscripcionController extends Controller
                 $faseTemporada = 50; //NO EXISTE TEMPORADA PROXIMA
         }
 
-        return $this->render('AkademiaBundle:Default:index.html.twig',array('faseTemporada'=>$faseTemporada, 'fechaPreInscripcion'=>$fechaPreInscripcion, 'anio'=>$anio, 'ciclo'=>$ciclo )); 
+        $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
+        $idTemporada =0;
+        
+        if( !empty( $arrayTemporada) )
+            $idTemporada =  $arrayTemporada[0]['temporadaId'];
+
+        else{
+
+            if( !empty( $this->getUser() ) ){
+                $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
+                $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
+            }
+        }
+
+        return $this->render('AkademiaBundle:Default:index.html.twig',array('faseTemporada'=>$faseTemporada, 'fechaPreInscripcion'=>$fechaPreInscripcion, 'anio'=>$anio, 'ciclo'=>$ciclo,'idTemporada'=>$idTemporada )); 
     }
 
     public function fichaPreInscripcionAction(Request $request,$idTemporada){
 
-         $refAp = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
         if($request->isXmlHttpRequest()){
             
@@ -88,7 +102,7 @@ class PreinscripcionController extends Controller
             if($parentesco == "apoderado" || $parentesco == "hijo"){
                 $dni = $request->request->get('dni');
                
-                $datos = $refAp->getRepository('AkademiaBundle:Apoderado')->busquedaDni($dni);
+                $datos = $em->getRepository('AkademiaBundle:Apoderado')->busquedaDni($dni);
                 if(!empty($datos)){
                     $encoders = array(new JsonEncoder());
                     $normalizer = new ObjectNormalizer();
@@ -107,31 +121,32 @@ class PreinscripcionController extends Controller
             }
         }  
 
-        $role = $this->getUser();
+        $usuario = $this->getUser();
 
-        if(!empty($role)){
+        if( !empty( $usuario ) )
             $flagUser = 1;
-        } else{
+        else
             $flagUser = 0;
-        }
+        
 
-        //Si la temporada es cero entonces se pasa como parametro la temporada actual
+        //Si la temporada es cero entonces se pasa como parametro la temporada actual sino la ultima temporada
         if( $idTemporada == 0 ){
 
-            $arrayTemporada = $refAp->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
+            $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
             
-            if(!empty( $arrayTemporada)){
+            if(!empty( $arrayTemporada))
                 $idTemporada =  $arrayTemporada[0]['temporadaId'];
-            }else{
+            else{
 
                 if( !empty( $this->getUser() ) ){
-                    $temporadasHabilitadas = $refAp->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
+                    $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
                     $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
                 }
             }
         }
 
-        $em = $this->getDoctrine()->getManager();
+        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+
         $mdlDitritoCD = $em->getRepository('AkademiaBundle:Distrito')->getDitritosCD( );
         $mdlProvinciasCD = $em->getRepository('AkademiaBundle:Distrito')->getProvinciasCD( );
         $mdlDepartamentosCD = $em->getRepository('AkademiaBundle:Distrito')->getDepartamentosCD( );
@@ -143,7 +158,7 @@ class PreinscripcionController extends Controller
 
         $rankAgesPreRegistration = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getRankAgePreRegistration();
         
-        return $this->render( 'AkademiaBundle:Default:fichaPreInscripcion.html.twig' , array( "complejosDeportivo" => $mdlComplejoDeportivo , "complejosDisciplinas" => $mdlComplejoDisciplina , "departamentos" => $mdlDepartamento,"provincias" => $mdlProvincia ,"distritos" => $mdlDistrito ,'ditritosCD' => $mdlDitritoCD , "departamentosCD" => $mdlDepartamentosCD ,'provinciasCD' => $mdlProvinciasCD, 'flagUser' => $flagUser, 'rankAgesPreRegistration' => $rankAgesPreRegistration[0] , 'idTemporada'=> $idTemporada ));     
+        return $this->render( 'AkademiaBundle:Default:fichaPreInscripcion.html.twig' , array( "complejosDeportivo" => $mdlComplejoDeportivo , "complejosDisciplinas" => $mdlComplejoDisciplina , "departamentos" => $mdlDepartamento,"provincias" => $mdlProvincia ,"distritos" => $mdlDistrito ,'ditritosCD' => $mdlDitritoCD , "departamentosCD" => $mdlDepartamentosCD ,'provinciasCD' => $mdlProvinciasCD, 'flagUser' => $flagUser, 'rankAgesPreRegistration' => $rankAgesPreRegistration[0] , 'idTemporada'=> $idTemporada, 'descripcionTemporada' => $descripcionTemporada ));     
     }
 
     //FUNCION PARA CARGAR LOS DATOS DE LAS DISCIPLINAS Y HORARIOS SELECCIONADOS
@@ -198,7 +213,9 @@ class PreinscripcionController extends Controller
             $mensaje = '';
         }
 
-        return $this->render('AkademiaBundle:Default:registroFinal.html.twig' , array('departamentosFlag' => $mdDepartmentsByDisability , "provinciasFlag" => $mdProvincesByDisability ,'distritosFlag' => $mdDistrictsByDisability,'complejosDeportivos' => $mdComplexesByDisability, 'disciplinasDeportivas' => $mdlDisciplinesByDisability ,'mensaje' => $mensaje,'idTemporada'=>$idTemporada ));     
+        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+
+        return $this->render('AkademiaBundle:Default:registroFinal.html.twig' , array('departamentosFlag' => $mdDepartmentsByDisability , "provinciasFlag" => $mdProvincesByDisability ,'distritosFlag' => $mdDistrictsByDisability,'complejosDeportivos' => $mdComplexesByDisability, 'disciplinasDeportivas' => $mdlDisciplinesByDisability ,'mensaje' => $mensaje,'idTemporada'=>$idTemporada , 'descripcionTemporada' => $descripcionTemporada ));     
     }
 
     //FUNCION PARA REGISTRAR A LOS PREINSCRITOS 
@@ -489,11 +506,18 @@ class PreinscripcionController extends Controller
 	public function generarPdfInscripcionAction(Request $request,$id,$idTemporada){   
  	     
         $em = $this->getDoctrine()->getManager();
-        $mdlFicha = $em->getRepository('AkademiaBundle:Inscribete')->getFicha($id,$idTemporada);
-        $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($mdlFicha[0]['horario_id']);
-        $mdlFicha[0]['turnos']=$fichaTurnoHorario;
 
-        //return $this->render('AkademiaBundle:Pdf:inscripcionPdf.html.twig', ["inscripcion" => $mdlFicha]);
+        $mdlFicha = $em->getRepository('AkademiaBundle:Inscribete')->getFicha($id,$idTemporada);
+
+        
+        $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($mdlFicha[0]['horario_id']);
+        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaByFicha($id);
+
+        $mdlFicha[0]['turnos'] = $fichaTurnoHorario;
+        $mdlFicha[0]['temporada'] = $descripcionTemporada; 
+
+
+
         $html = $this->renderView('AkademiaBundle:Pdf:inscripcionPdf.html.twig', ["inscripcion" => $mdlFicha]);
 
         $pdf = $this->container->get("white_october.tcpdf")->create(

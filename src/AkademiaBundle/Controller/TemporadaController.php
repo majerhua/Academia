@@ -71,12 +71,14 @@ class TemporadaController extends Controller
         }
     }
 
-	public function temporadaPrincipalAction(Request $request){
+	public function temporadaPrincipalAction(Request $request,$idTemporada){
     
         $em = $this->getDoctrine()->getManager(); 
         $estadoUpdTemp = NULL;
 
+        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
         $temporadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadas();
-        return $this->render('AkademiaBundle:Migracion_Asistencia:temporada.html.twig', array( 'estadoUpdTemp'=>$estadoUpdTemp , 'temporadas' => $temporadas));
+
+        return $this->render('AkademiaBundle:Migracion_Asistencia:temporada.html.twig', array( 'estadoUpdTemp'=>$estadoUpdTemp , 'temporadas' => $temporadas, 'descripcionTemporada' => $descripcionTemporada ));
     }
 }

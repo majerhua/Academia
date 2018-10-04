@@ -14,13 +14,16 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class MigracionAsistenciaController extends Controller
 {
-	public function disciplinaPrincipalAction(Request $request)
+	public function disciplinaPrincipalAction(Request $request, $idTemporada)
     {
-        $em = $this->getDoctrine()->getManager(); 
+        $em = $this->getDoctrine()->getManager();
+         
         $estadoUpdDis = NULL;
 
         $disciplinasTotalesActivas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasTotales();
-        return $this->render('AkademiaBundle:Migracion_Asistencia:disciplinas.html.twig', array('estadoUpdDis'=>$estadoUpdDis,'disciplinas' => $disciplinasTotalesActivas));
+        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+
+        return $this->render('AkademiaBundle:Migracion_Asistencia:disciplinas.html.twig', array('estadoUpdDis'=>$estadoUpdDis,'disciplinas' => $disciplinasTotalesActivas, 'descripcionTemporada' => $descripcionTemporada ));
     }
 
 	public function disciplinaConfiguracionByIdAction(Request $request)

@@ -23,6 +23,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 class BeneficiarioController extends Controller
 {
 
@@ -34,14 +35,19 @@ class BeneficiarioController extends Controller
         $edad = $request->request->get('edad');
         $horarioActual = $request->request->get('horario-actual');
 
+        $flagHorariosDisponiblesMigracion = 0;
+        $turnsDiscipline = NULL;
+
         $em = $this->getDoctrine()->getManager();
 
         $horariosDisponiblesMigracion = $em->getRepository('AkademiaBundle:Migracion')->getHorariosDisponibleMigracion($ediCodigo,$modalidad,$etapa,$edad,$horarioActual);
 
-        $turnsDiscipline = $em->getRepository('AkademiaBundle:Horario')->getTurnsDiscipline($ediCodigo);
+        if( !empty($horariosDisponiblesMigracion) ){
+            $flagHorariosDisponiblesMigracion = 1;
+            $turnsDiscipline = $em->getRepository('AkademiaBundle:Horario')->getTurnsDiscipline($ediCodigo);
+        }
 
-        echo $this->renderView('AkademiaBundle:Migracion_Asistencia:table_horario_migracion.html.twig',array('horarios' => $horariosDisponiblesMigracion , "turnos" => $turnsDiscipline ));
-        exit;
+        return new Response( $this->renderView('AkademiaBundle:Migracion_Asistencia:table_horario_migracion.html.twig',array('horarios' => $horariosDisponiblesMigracion , "turnos" => $turnsDiscipline,"flagHorariosDisponiblesMigracion" => $flagHorariosDisponiblesMigracion ) ) );
     }
 
     public function guardarAsistenciaBeneficiariosAction(Request $request){
@@ -101,7 +107,6 @@ class BeneficiarioController extends Controller
 
         $asistenciaMensualInscribete = $em->getRepository('AkademiaBundle:Migracion')->getAsistenciaMensualInscribete($idHorario);
 
-
         $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
 
         if( !empty($arrayTemporada) )
@@ -109,7 +114,9 @@ class BeneficiarioController extends Controller
         else
             $idTemporadaActiva = null;
 
-        return $this->render('AkademiaBundle:Default:beneficiarios.html.twig', array("horarios" => $Horarios, "beneficiarios" => $Beneficiarios, "asistencias" => $Asistencias, "categorias" => $Categorias, "asistentes" => $movAsis, "retirados" => $movRet, "seleccionados" => $movSel , "inscritos"=>$horInscritos , "id" =>$idHorario, 'mesesTemporada' => $meses,'asistenciaMensual' => $asistenciaMensualInscribete,'ediCodigo'=>$Horarios[0]['ediCodigo'],'modalidad'=>$Horarios[0]['discapacitados'],'idTemporada' => $idTemporada, 'idTemporadaActiva'=>$idTemporadaActiva ));
+        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+
+        return $this->render('AkademiaBundle:Default:beneficiarios.html.twig', array("horarios" => $Horarios, "beneficiarios" => $Beneficiarios, "asistencias" => $Asistencias, "categorias" => $Categorias, "asistentes" => $movAsis, "retirados" => $movRet, "seleccionados" => $movSel , "inscritos"=>$horInscritos , "id" =>$idHorario, 'mesesTemporada' => $meses,'asistenciaMensual' => $asistenciaMensualInscribete,'ediCodigo'=>$Horarios[0]['ediCodigo'],'modalidad'=>$Horarios[0]['discapacitados'],'idTemporada' => $idTemporada, 'idTemporadaActiva'=>$idTemporadaActiva,'descripcionTemporada'=>$descripcionTemporada ));
     }
     
     // GENERAR NUEVO MOVIMIENTO

@@ -65,7 +65,7 @@ class DepartamentoRepository extends \Doctrine\ORM\EntityRepository
         return $departamentos;
     }
 
-    public function getDepartmentsLandingByDisability($disability){
+    public function getDepartmentsLandingByDisability($disability,$idTemporada){
     
         $query = "  SELECT DISTINCT ubiDpto.ubidpto id ,
                                     ubiDpto.ubinombre nombre
@@ -75,10 +75,15 @@ class DepartamentoRepository extends \Doctrine\ORM\EntityRepository
                     INNER JOIN grubigeo AS ubi ON ubi.ubicodigo = ede.ubicodigo
                     INNER JOIN grubigeo AS ubiDpto ON ubiDpto.ubidpto = ubi.ubidpto
                     WHERE
-                    hor.estado = 1 AND 
+
                     hor.discapacitados = '$disability' AND
                     hor.vacantes <> 0 AND
+                    hor.estado = 1 AND
+                    hor.etapa = 1 AND  
                     hor.convocatoria = 1 AND
+                    
+                    edi.temporada_id = '$idTemporada' AND
+
                     ubiDpto.ubidpto <> '00' AND 
                     ubiDpto.ubidistrito ='00' AND
                     ubiDpto.ubiprovincia ='00' ";

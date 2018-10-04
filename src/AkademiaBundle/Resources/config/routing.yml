@@ -7,8 +7,8 @@
 
 ##PAGINA MOSTRAR TEMPORADA
 akademia_temporadasPrincipal:
-  path: /temporadas
-  defaults: { _controller: AkademiaBundle:Temporada:temporadaPrincipal}
+  path: /temporadas/{idTemporada}
+  defaults: { _controller: AkademiaBundle:Temporada:temporadaPrincipal,idTemporada:0 }
   methods: [GET,POST]
   
 akademia_temporadaModificar:
@@ -25,8 +25,8 @@ akademia_temporadaCrear:
 
 ##PAGINA MOSTRAR DISCIPLINAS
 akademia_disciplinasPrincipal:
-  path: /disciplinas
-  defaults: { _controller: AkademiaBundle:MigracionAsistencia:disciplinaPrincipal}
+  path: /disciplinas/temporada/{idTemporada}
+  defaults: { _controller: AkademiaBundle:MigracionAsistencia:disciplinaPrincipal,idTemporada:0}
 
 akademia_disciplinaConfiguracionById:
   path: /get/disciplina
@@ -43,8 +43,8 @@ akademia_updateDisciplina:
 ## MOD HORARIOS
 
 akademia_paginaHorariosDisponibles:
-    path: /horarios-disponibles/{estado}
-    defaults: { _controller: AkademiaBundle:Horario:mostrarHorariosLanding}
+    path: /horarios-disponibles/{estado}/temporada/{idTemporada}
+    defaults: { _controller: AkademiaBundle:Horario:mostrarHorariosLanding,idTemporada:0}
 
 tableHorario:
     path: /ajax/tableHorario

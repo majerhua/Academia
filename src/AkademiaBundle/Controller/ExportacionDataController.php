@@ -101,18 +101,20 @@ class ExportacionDataController extends Controller
     $response = new StreamedResponse(function() use($conn,$idComplejo,$idTemporada) {
 
       $handle = fopen('php://output','w+');
-              fputcsv($handle,['Departamento','Provincia','Complejo','Disciplina','Modalidad','CodigoHorario','Horario','Etapa','Convocatoria','Estado'],",");
+              fputcsv($handle,['Departamento','Provincia','Complejo','Disciplina','Modalidad','CodigoHorario','Horario','Etapa','RangoEdad','Convocatoria','Estado'],",");
 
       $results = $conn->query("exec ACADEMIA.cantidadHorariosCreadosRegion '$idComplejo','$idTemporada' ");
-
+      
       while($row = $results->fetch()){
-        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['Modalidad'],$row['CodigoHorario'],$row['Horario'],$row['Etapa'],$row['Convocatoria'],$row['Estado']), ",");
+
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['Modalidad'],$row['CodigoHorario'],$row['Horario'],$row['Etapa'],$row['RangoEdad'],$row['Convocatoria'],$row['Estado']), ",");
       }
       fclose($handle);
     });
     $response->setStatusCode(200);
     $response->headers->set('Content-Type', 'text/csv; charset=UTF-16LE');
     $response->headers->set('Content-Disposition', 'attachment; filename="cantidadHorariosCreadosRegion.csv"');
+
     return $response;
   }
 
@@ -792,7 +794,9 @@ class ExportacionDataController extends Controller
 
     $mdlDisciplinasDeportivasExport = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->disciplinaDeportivaExport();
     
-    return $this->render('AkademiaBundle:Export:export.html.twig',array('departamentosExport' => $mdlDepartamentosExport,'departamentosAll' => $mdlDepartamentos,'ComplejoDeportivoExport' => $mdlComplejoDeportivoExport,'DisciplinaDeportivaExport' => $mdlDisciplinasDeportivasExport,'idTemporadaHabilitada'=>$idTemporada)); 
+    $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+    
+    return $this->render('AkademiaBundle:Export:export.html.twig',array('departamentosExport' => $mdlDepartamentosExport,'departamentosAll' => $mdlDepartamentos,'ComplejoDeportivoExport' => $mdlComplejoDeportivoExport,'DisciplinaDeportivaExport' => $mdlDisciplinasDeportivasExport,'idTemporadaHabilitada'=>$idTemporada,'descripcionTemporada'=>$descripcionTemporada)); 
   
   }
 

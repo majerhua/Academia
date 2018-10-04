@@ -11,6 +11,65 @@ namespace AkademiaBundle\Repository;
 class InscribeteRepository extends \Doctrine\ORM\EntityRepository
 {
 
+
+    public function validarExistenciaFicha($idInscripcion){
+
+      $query = "SELECT 
+                inscribete.id as id, 
+                inscribete.estado as estado, 
+                inscribete.fecha_registro as fechaModif,
+                personaApoderado.perapematerno as apellidoMaternoApoderado,
+                apoderado.dni as dniApoderado,
+                personaApoderado.perapepaterno as apellidoPaternoApoderado,
+                (cast(datediff(dd,personaParticipante.perfecnacimiento,GETDATE()) / 365.25 as int)) as edad,
+                personaApoderado.pernombres as nombrePadre,
+                personaParticipante.pernombres, 
+                personaParticipante.perapepaterno, 
+                personaParticipante.perapematerno, 
+                participante.dni, 
+                personaApoderado.perdomdireccion,
+                personaApoderado.percorreo,
+                personaApoderado.pertelefono,
+                grubigeo.ubinombre as distrito,
+                horario.id horario_id,
+                personaParticipante.perfecnacimiento,
+                disciplina.dis_descripcion as nombreDisciplina, 
+                edificacionDeportiva.ede_nombre as nombreComplejo,
+                CASE horario.discapacitados
+                WHEN '0' THEN 'Convencional'
+                WHEN '1' THEN 'Personas con Discapacidad'
+                END AS modalidad
+
+                FROM
+                ACADEMIA.inscribete as inscribete, 
+                ACADEMIA.horario as horario,
+                ACADEMIA.participante as participante,
+                ACADEMIA.apoderado as apoderado,
+                CATASTRO.edificacionesdeportivas as edificacionDeportiva,
+                CATASTRO.edificacionDisciplina as edificacionDisciplina,
+                CATASTRO.disciplina as disciplina,
+                grpersona as personaParticipante,
+                grpersona as personaApoderado,
+                grubigeo as grubigeo
+                WHERE 
+                participante.apoderado_id = apoderado.id and
+                inscribete.participante_id = participante.id and
+                inscribete.horario_id = horario.id and
+                edificacionDisciplina.edi_codigo = horario.edi_codigo and
+                edificacionDisciplina.ede_codigo = edificacionDeportiva.ede_codigo and
+                edificacionDisciplina.dis_codigo = disciplina.dis_codigo and
+                apoderado.percodigo = personaApoderado.percodigo and
+                personaParticipante.perubigeo = grubigeo.ubicodigo and
+                participante.percodigo = personaParticipante.percodigo and
+                participante.apoderado_id = apoderado.id and 
+                inscribete.id = $idInscripcion";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $ficha = $stmt->fetchAll();
+        return $ficha;
+    }
+
 	public function getFicha($idInscripcion,$idTemporada){
       $query = "SELECT 
                 inscribete.id as id, 

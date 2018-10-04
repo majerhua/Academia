@@ -21,7 +21,7 @@ class MigracionRepository extends \Doctrine\ORM\EntityRepository
 						INNER JOIN CATASTRO.edificacionDisciplina edi ON edi.edi_codigo = hor.edi_codigo
 						WHERE
 						 $edad >= hor.edadMinima AND $edad <= hor.edadMaxima 
-						AND etapa = 1 AND edi.edi_codigo = $ediCodigo AND hor.estado = 1 AND hor.convocatoria=1
+						AND etapa = 1 AND edi.edi_codigo = $ediCodigo AND hor.estado = 1
 						AND hor.discapacitados = $modalidad AND hor.id != $horarioActual
 						";
 
@@ -34,7 +34,7 @@ class MigracionRepository extends \Doctrine\ORM\EntityRepository
 						WHERE
 						$edad >= hor.edadMinima AND $edad <= hor.edadMaxima 
 						AND etapa = 0 AND edi.edi_codigo = $ediCodigo AND hor.estado = 1 
-						AND hor.discapacitados = $modalidad  AND hor.vacantes<>0 AND hor.id != $horarioActual";
+						AND hor.discapacitados = $modalidad  AND hor.id != $horarioActual";
 		}
 
 

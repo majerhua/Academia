@@ -12,8 +12,114 @@ use Doctrine\DBAL\DBALException;
 class TemporadaRepository extends \Doctrine\ORM\EntityRepository
 {
 
+	public function validarFichaToTemporada($idFicha,$idTemporada){
+
+		try {
+			
+			$query = "	SELECT  CASE temp.id 
+						WHEN '$idTemporada' THEN 1
+						ELSE
+						0
+						END as flagPertenece
+						FROM ACADEMIA.inscribete ins
+						INNER JOIN ACADEMIA.horario hor ON hor.id = ins.horario_id
+						INNER JOIN CATASTRO.edificacionDisciplina edi ON edi.edi_codigo = hor.edi_codigo
+						INNER JOIN ACADEMIA.temporada temp ON temp.id = edi.temporada_id
+						WHERE ins.id = '$idFicha' ";
+					
+		    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+		    $stmt->execute();
+		    $descripcionTemporada = $stmt->fetchAll();
+       		return $descripcionTemporada;
+
+        }catch (DBALException $e) {
+          $message = $e->getCode();
+        }
+
+        return $message;
+	}
+
+	public function getDescripcionTemporadaById($idTemporada){
+
+		try {
+			
+			$query = "SELECT	temp.anio anio,
+								cic.descripcion ciclo,
+								CASE MONTH(temp.apertura)
+								WHEN 1 THEN 'Enero'
+								WHEN 2 THEN 'Febrero'
+								WHEN 3 THEN 'Marzo'
+								WHEN 4 THEN 'Abril'
+								WHEN 5 THEN 'Mayo'
+								WHEN 6 THEN 'Junio'
+								WHEN 7 THEN 'Julio'
+								WHEN 8 THEN 'Agosto'
+								WHEN 9 THEN 'Septiembre'
+								WHEN 10 THEN 'Octubre'
+								WHEN 11 THEN 'Noviembre'
+								WHEN 12 THEN 'Diciembre'
+								END AS mesInicio,
+								CASE MONTH(temp.cierre_clases)
+								WHEN 1 THEN 'Enero'
+								WHEN 2 THEN 'Febrero'
+								WHEN 3 THEN 'Marzo'
+								WHEN 4 THEN 'Abril'
+								WHEN 5 THEN 'Mayo'
+								WHEN 6 THEN 'Junio'
+								WHEN 7 THEN 'Julio'
+								WHEN 8 THEN 'Agosto'
+								WHEN 9 THEN 'Septiembre'
+								WHEN 10 THEN 'Octubre'
+								WHEN 11 THEN 'Noviembre'
+								WHEN 12 THEN 'Diciembre'
+								END AS mesFin,
+								CASE temp.ciclo_id
+								WHEN 1 THEN 'I'
+								WHEN 2 THEN 'II'
+								END AS ciclo_romanos
+						 FROM ACADEMIA.temporada temp
+						INNER JOIN ACADEMIA.ciclo cic ON cic.id = temp.ciclo_id
+						WHERE temp.id = '$idTemporada'; ";
+					
+		    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+		    $stmt->execute();
+		    $descripcionTemporada = $stmt->fetchAll();
+       		return $descripcionTemporada;
+
+        }catch (DBALException $e) {
+          $message = $e->getCode();
+        }
+
+        return $message;
+	}
+
+	public function getDescripcionTemporadaByFicha($idFicha){
+
+		try {
+			
+			$query = "	SELECT 	temp.anio anio,
+								cic.descripcion ciclo 
+								FROM ACADEMIA.inscribete ins
+						INNER JOIN ACADEMIA.horario hor ON hor.id = ins.horario_id
+						INNER JOIN CATASTRO.edificacionDisciplina edi ON edi.edi_codigo = hor.edi_codigo
+						INNER JOIN ACADEMIA.temporada temp ON temp.id = edi.temporada_id
+						INNER JOIN ACADEMIA.ciclo cic ON cic.id = temp.ciclo_id
+						WHERE ins.id='$idFicha' ";
+					
+		    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+		    $stmt->execute();
+		    $descripcionTemporada = $stmt->fetchAll();
+       		return $descripcionTemporada;
+
+        }catch (DBALException $e) {
+          $message = $e->getCode();
+        }
+
+        return $message;
+	}
 
 	public function temporadaProxima(){
+
 		try {
 				$query = "	SELECT  TOP 1 CONVERT(VARCHAR,pre_inscripciones,103) fecha_preinscripcion,
 										anio,

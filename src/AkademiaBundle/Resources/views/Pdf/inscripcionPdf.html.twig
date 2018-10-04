@@ -12,7 +12,10 @@
                 <img  height="80"  width="120" src="{{ asset('assets/images/ipd-logo.jpg') }}">
             </div>
             <p style="font-weight: bold;font-size:1.1em; text-align: center; padding-bottom:-15px;" >DIRECCIÓN NACIONAL DE RECREACIÓN Y PROMOCIÓN DEL DEPORTE</p>
-            <p style="text-align:center">ACADEMIA IPD - INVIERNO 2018 </p>         
+
+            {% set temporada = inscripcion[0]['temporada'] %}
+
+            <p style="text-align:center">ACADEMIA IPD - {{temporada[0]['ciclo']}} {{temporada[0]['anio']}} </p>         
             <p style="text-align: center;font-size:1.1em;font-weight: bold;"> FICHA DE PRE INSCRIPCIÓN </p>
 
         </div>

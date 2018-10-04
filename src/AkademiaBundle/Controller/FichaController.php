@@ -34,40 +34,50 @@ class FichaController extends Controller
             $idFicha = $request->request->get('id');
             $idTemporada = $request->request->get('idTemporada');
 
+
             $em = $this->getDoctrine()->getManager();
 
-            $ficha = $em->getRepository('AkademiaBundle:Inscribete')->getFicha($idFicha,$idTemporada);
-            
-            
-            if( !empty($ficha) ){
+            $validarExistenciaFicha = $em->getRepository('AkademiaBundle:Inscribete')->validarExistenciaFicha($idFicha);
 
-                $idHorario = $ficha[0]['horario_id'];
-                $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($idHorario);
+            if( !empty( $validarExistenciaFicha ) ){
 
-                if( !empty($fichaTurnoHorario) ){
+                //VALIDAMOS SI LA FICHA PERTENECE A LA TEMPORADA ACTUAL
+                $validarFichaToTemporada = $em->getRepository('AkademiaBundle:Temporada')->validarFichaToTemporada($idFicha,$idTemporada);
+
+                //RETORNAMOS LA FICHA QUE PERTENECE A LA TEMPORADA ACTUAL
+                if( $validarFichaToTemporada[0]['flagPertenece'] == 1 ){
+
+                    $ficha = $em->getRepository('AkademiaBundle:Inscribete')->getFicha($idFicha,$idTemporada);
+
+                    $idHorario = $ficha[0]['horario_id'];
+
+                    $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($idHorario);
 
                     $ficha[0]['turnos'] = $fichaTurnoHorario;
 
-                }else{
-                    $mensaje = 1;
-                    return new JsonResponse($mensaje);
-                }
+                    $encoders = array(new JsonEncoder());
+                    $normalizer = new ObjectNormalizer();
+                    $normalizer->setCircularReferenceLimit(1);
+                       
+                    $normalizer->setCircularReferenceHandler(function ($object) {
+                        return $object->getId();
+                    });
+                    $normalizers = array($normalizer);
+                    $serializer = new Serializer($normalizers, $encoders);
+                    $jsonContent = $serializer->serialize($ficha,'json');
 
-                $encoders = array(new JsonEncoder());
-                $normalizer = new ObjectNormalizer();
-                $normalizer->setCircularReferenceLimit(1);
-                   
-                $normalizer->setCircularReferenceHandler(function ($object) {
-                    return $object->getId();
-                });
-                $normalizers = array($normalizer);
-                $serializer = new Serializer($normalizers, $encoders);
-                $jsonContent = $serializer->serialize($ficha,'json');
-                return new JsonResponse($jsonContent);
-            }else{
-                $mensaje = 1;
-                return new JsonResponse($mensaje);
-            }
+                    return new JsonResponse($jsonContent);
+
+                }else
+                    $mensaje=2; // SI LA FICHA PERTENECE A OTRA TEMPORADA
+                
+
+
+            }else
+                $mensaje = 1;  //SI NO EXISTE LA FICHA
+            
+
+            return new JsonResponse($mensaje);
         }
     }
     

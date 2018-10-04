@@ -1,0 +1,1000 @@
+*{
+	margin: 0;
+	padding: 0;
+	font-size: 16px;
+
+}
+
+
+body{
+
+	width: 100%;
+
+}
+
+/*ESTILOS EXPORT*/
+
+.container-button-exportPREINS{
+
+	display: flex;
+	padding: 12px 4px;
+	flex-wrap: wrap;
+	justify-content: center;
+
+}
+
+.container-button-exportPREINS> button{
+	margin-left: 10px;
+	width: 45%;
+	padding: 9px 7px;
+	background-color: red;
+	font-weight: bold;
+	max-width: 220px;
+}
+
+.container-button-gp{
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+	.container-button-gp > button{
+		background-color: red;
+		padding: 9px 7px;
+		font-weight: bold;
+	}
+
+
+/*FIN*/
+
+
+
+
+/*PAGINA DE ACTIVACION*/
+
+.section{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+background-color: #757575;
+}
+  .section>div:nth-child(3){
+    display: flex;
+    flex-direction: row;
+    width: 243px;
+    justify-content: space-between;
+  }
+
+    .section>div:nth-child(3) > span{
+      color:#95C11E;
+    }
+  
+.tituloAct{
+  color:white;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+
+.parrafoAct{
+  color:white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1em;
+}
+
+
+@media only screen and (min-width: 550px) {
+
+  .section>div:nth-child(3){
+    width: 263px;
+  }
+
+  .tituloAct{
+    font-size: 2em;
+  }
+
+
+  .parrafoAct{
+    font-size: 1.1em;
+  }
+}
+
+
+@media only screen and (min-width: 920px) {
+
+  .section>div:nth-child(3){
+    width: 288px;
+  }
+
+  .tituloAct{
+    font-size: 2.1em;
+  }
+
+
+  .parrafoAct{
+    font-size: 1.2em;
+  }
+}
+
+/*ESTILO DE INPUT PARA LA FOTO DE PERFIL*/
+
+input[type="file"]#imagen-foto {
+ width: 0.1px;
+ height: 0.1px;
+ opacity: 0;
+ overflow: hidden;
+ position: absolute;
+ z-index: -1;
+ }
+
+label[for="imagen-foto"] {
+ font-size: 10px;
+ font-weight: normal;
+ color: #fff;
+ background-color: #106BA0;
+ display: inline-block;
+ transition: all .5s;
+ cursor: pointer;
+ padding: 10px 30px !important;
+ width: fit-content;
+ text-align: center;
+ }
+
+
+/*ESTILO DE INPUT PARA LA FOTO DE LA FICHA*/
+
+input[type="file"]#imagen-ficha {
+ width: 0.1px;
+ height: 0.1px;
+ opacity: 0;
+ overflow: hidden;
+ position: absolute;
+ z-index: -1;
+ }
+
+label[for="imagen-ficha"] {
+ font-size: 10px;
+ font-weight: normal;
+ color: #fff;
+ background-color: #106BA0;
+ display: inline-block;
+ transition: all .5s;
+ cursor: pointer;
+ padding: 10px 30px !important;
+ width: fit-content;
+ text-align: center;
+ }
+
+.dimension{
+	color:#3A3C85; 
+	font-size:14px;
+}
+.undmedida{
+	color:grey;
+	font-size: 14px;
+}
+/*ELIMINAR HORARIO*/
+
+#accordion input {
+	display: none;
+}
+#accordion label {
+	/*background: #eee;*/
+	border-radius: .25em;
+	cursor: pointer;
+	display: block;
+	margin-bottom: .125em;
+	padding: .25em 1em;
+	z-index: 20;
+}
+
+#accordion article {
+	/*background: #f7f7f7;*/
+	height:0px;
+	overflow:hidden;
+	z-index:10;
+}
+#accordion article p {
+	padding: 2em;
+}
+#accordion input:checked article {
+}
+#accordion input:checked ~ article {
+	border-bottom-left-radius: .25em;
+	border-bottom-right-radius: .25em;
+	height: auto;
+	margin-bottom: .125em;
+}
+
+.placeholder::placeholder { color: #D8D8D8; }
+
+.colorBg{
+	/*background: #cb2f1d;*/
+	background: #FFFFFF;
+}
+.fondo{
+
+	background-image: url("../../images/slider4.png");
+	background-size: cover; 
+	width: 100%;
+	height: 70%;
+}
+
+.bg {
+
+    background-image: url("../../images/slider4.png");
+    background-repeat:no-repeat;
+    -webkit-background-size:cover;
+    -moz-background-size:cover;
+    -o-background-size:cover;
+    background-size:cover;
+    background-position: center center;
+    background-attachment: fixed;
+}
+
+.contador{
+	background-color: rgba(0,0,0,0.8); 
+	height: 100%;
+	width: 100%; 
+	margin: 0; 
+	padding-bottom: 60px;
+}
+
+.header{ 
+
+	background-color:orange; 
+	background-size:cover; 
+	background-position:center center; 
+	background-attachment: fixed;
+
+}
+
+.proceso-inscripcion{
+
+	padding-top: 5vh;
+
+}
+
+.progreso{
+
+	margin-bottom: 20px;
+
+}
+
+.progreso_container{
+
+	display:flex; 
+	flex-wrap:wrap; 
+	justify-content:center; 
+	margin:4px 5px 3px 4px;
+
+}
+
+/* INICIO PROCESO 1*/
+
+.proceso{
+
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	align-items: center;
+
+}
+
+.container-card{
+
+	background-color: white;
+	width: all;
+
+}
+/*FIN*/
+
+.container-titulo{
+
+	width: 100%;
+	line-height: 50px;
+	color:#4A4A4D;
+	/*font-family: 'Marcellus SC', serif;*/
+	text-align: center;
+	font-weight: bold;
+
+}
+
+.container-titulo >p {
+
+	font-size: 1.8em;
+	padding-left: 10px;
+	padding-right: 10px 
+
+}
+
+.progreso__barraInscripcion{
+
+	width:15em;
+	height:10px;
+	border-radius:30px;
+	background-color:#e7edef;
+	display:flex; 
+	flex-wrap:wrap; 
+	justify-content: 
+	space-between; 
+
+}
+
+
+
+
+.bar-inscripcion__1{
+
+	background-color: rgba(255, 24, 23, 0.4); 
+	width:20px;
+	height:20px;
+	border-radius:50%;
+	text-align:center;
+	color:white; 
+	font-weight:bold;
+
+}
+
+.bar-inscripcion__2{
+
+	background-color: rgba(255, 24, 23, 0.4); 
+	width:20px; 
+	height:20px; 
+	border-radius:50%; 
+	text-align:center; 
+	color:white; 
+	font-weight:bold;
+
+}
+
+.bar-inscripcion__3{
+
+	background-color:rgba(255, 24, 23, 0.4);
+	width:20px;
+	height:20px;
+	border-radius:50%; 
+	text-align:center; 
+	color:white; 
+	font-weight:bold; 
+
+}
+
+.bar-inscripcion__4{
+
+	background-color:rgba(255, 24, 23, 0.4);
+	width:20px;
+	height:20px;
+	border-radius:50%; 
+	text-align:center; 
+	color:white; 
+	font-weight:bold; 
+
+}
+
+.bar-inscripcion__5{
+
+	background-color:rgba(255, 24, 23, 0.4);
+	width:20px;
+	height:20px;
+	border-radius:50%; 
+	text-align:center; 
+	color:white; 
+	font-weight:bold; 
+
+}
+
+.active{
+
+	background-color: rgba(255, 24, 23, 1);
+
+}
+
+.horario-otrasEdades>div{
+
+	display: flex;
+	flex-wrap: wrap;
+
+}
+
+.container-boton{
+
+	padding-right: 125px;
+
+}
+
+.container-boton-1{
+
+	margin-top: 2vh;
+
+}
+
+/*PROCESO 2 DE INSCRIPCION */
+
+.proceso-inscripcion__horarios{
+
+	width: 100%;
+	margin-bottom: 20px;
+
+}
+
+.proceso-usuario{
+	
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.complejo{
+
+	padding:7px; 
+	width:100%;			
+
+}
+
+.container-select-deporte{
+
+	width: 100%;
+	margin:0 auto;
+	justify-content: space-around; ;
+	margin-top: 5px;
+	display: flex;
+
+}
+
+.container-select-deporte>select{
+
+	margin-left: 14px;
+
+}
+
+
+.container-select-deporte>div label:nth-child(1){
+	margin-left: 5px;
+}
+
+.container-edad-participante{
+
+	padding-top: 10px;
+	width: 70%;
+	margin:0 auto;
+	justify-content: space-around; ;
+	display: flex;
+
+}
+
+.container-horario-participante{
+
+	padding-top: 10px;
+	width: 70%;
+	margin:0 auto;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	flex-direction: column;
+
+}
+
+.container-horario-participante>div{
+
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+
+}
+
+#rango-edad-horario,#vacantes{
+
+	font-size: 20px;
+	color: #363D80;
+
+}
+
+#turno,#rango-hora-horario{
+
+	font-size: 14px;
+
+}
+
+.mapa{
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.mapa>iframe{
+
+	height: 45vh;
+	width: 95%;
+
+}
+/*FIN PROCESO DE INSCRIPCION */
+
+
+
+.card{
+
+	padding: 7px;
+	width: 100%;
+	margin-bottom: 10px;
+	margin-top: 20px;
+	border-radius: 2px;
+	background: #fbfbfb;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+	.card-padding{
+		box-sizing: content-box;
+		padding: 7px 18px 7px 18px;
+	}
+
+.title-card{
+
+	font-size: 1.2em;
+	/*color: #C1482E;
+	font-weight: bold;*/
+	color: #4A4A4D;
+	margin-top: 2vh;
+
+}
+
+.inscripcion{
+
+	width: 100%;
+
+}
+
+.pdf_inscripcion{
+
+	width: 100%;
+
+}
+
+.tituloFicha{
+
+	width: 100%
+	background-color:white;
+	color:#596080;
+	font-weight: bold;
+
+}	
+
+.tituloFicha>p:first-child{
+
+	font-size: 1.3em;
+	font-weight:bold;
+
+}
+
+.tituloFicha>p{
+
+	color:#596080;
+
+}
+
+.pdf_inscripcion__1{
+
+	width: 50%;
+	display: flex;
+	padding-top: 1em;
+	flex-direction: column;
+	flex-wrap: wrap;
+	float: center;
+
+}
+
+.pdf_inscripcion__ficha{	
+
+	width: 100%;
+	margin-left: 30px;
+
+}
+
+.campos>p{
+
+	font-size: 0.8em;	
+	font-weight: bold;
+
+}
+
+.valores>p{
+
+	font-size: 0.8em;
+	font-weight: bold;
+
+}		
+
+	.valores>p >div{
+
+		font-size: 14px;
+		font-weight: bold;
+
+}			
+
+.valores>p::first-letter{
+
+	text-transform: uppercase;
+
+}
+
+
+.pdf_inscripcion__2{
+
+	width: 50%;
+	padding-top: 1em;
+	margin-left: 50px;
+
+}
+
+.pdf_inscripcion__declaracion-jurada{
+
+	width: 70%;
+
+}
+
+.pdfInscripcion2__container-titulo{
+
+	text-transform: uppercase;
+
+}
+
+.pdfInscripcion2__container-titulo>p{
+
+	color:#5e5d94;
+	font-size: 1.5em;
+	text-align: center;
+	font-weight: bold;
+
+}
+
+.pdfInscripcion2__container-mensaje-lugar{
+
+	text-align: center;
+	margin:0 auto;				
+
+}
+
+.pdfInscripcion2__container-mensaje-lugar>p{
+
+	font-size: 1em;				
+
+}
+
+.lista-requisitos{
+
+	width: 100%;
+	padding-left: 3em;
+	padding-right: 3em;
+
+}
+
+.lista-requisitos>ol>li {
+
+	font-size: 0.9em;
+
+}
+
+.btn-center{
+
+	float: center;
+
+}
+
+.table-cuerpo  p, li{
+
+	font-size: 0.6em;
+	font-family: 'Open Sans', sans-serif;
+
+}
+
+.importante{
+
+	font-family: 'Open Sans', sans-serif;
+	font-size: 10px;
+
+}
+
+.preguntas-frecuentes{
+
+	margin-top: 5vh;
+
+}
+
+.sugerencias{
+	margin-top: 10vh;
+}
+
+.sugerencias{
+
+	margin-top: 20px;
+	margin-bottom: 30px;
+
+}
+
+.card-sugerencias{
+
+	margin-top: 20px;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-bottom: 20px;
+
+}
+
+.btn-sugerencias{
+
+	margin-top: 20px;
+
+}
+
+.footer{
+
+	background: #000000;
+	color: #FFFFFF;
+
+}
+
+.footer a {
+	color: #FFFFFF;
+}
+
+.foot{
+	width: 70%;
+	margin-top: -50px;
+}
+.footerTex{
+	font-size: 14px;
+}
+
+.formEmail{
+
+	padding: 5px;
+	width: 100%; 
+	height: 30px; 
+	border:0px; 
+	border-radius:7px
+
+}
+
+.textEmail{
+
+	width: 100%; 
+	height: 100px; 
+	padding: 5px;
+	border:0px; 
+	border-radius:7px
+
+}
+
+.enviar{
+	
+	margin-right: 30px;
+
+}
+
+
+.btn{
+
+	
+}
+
+.cardFicha{
+
+	padding: 20px;
+	width: 40%;
+	margin-bottom: 10px;
+	margin-top: 20px;
+	border-radius: 2px;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+
+}
+
+.cardColor{
+
+	padding-top: 30px;
+	background: #E0E0E3;
+	padding: 30px;
+
+}
+.card-body{
+
+	padding: 10px;
+
+}
+.preguntas {
+
+	margin-top: 3vh;
+
+}
+
+.title-card{
+
+	font-size: 1.2em;
+	font-weight: bold;
+	color: #4A4A4D;
+
+}
+
+.copyright{
+
+	text-align: center;
+	font-size: 12px;
+
+}
+
+.copyright p {
+
+	color: #FFFFFF;
+	margin: 0;
+	padding-top: 5px;	
+	padding-bottom: 5px;
+
+}
+
+.mensajeEdad{
+	font-size: 12px;
+	color: green;
+}
+
+.mensajeEdadError{
+	color:red;
+	font-size: 12px;
+}
+
+.mensajeEdadParticipante{
+
+	font-size: 12px;
+	color: green;	
+
+}
+
+.cargarDatosApoderado{
+
+	font-size: 12px;
+	color: green;	
+
+}
+
+.cargarDatosParticipante{
+
+	font-size: 12px;
+	color: green;	
+
+}
+
+.text-left{
+
+	text-align: left;
+	font-size: 15px;
+
+}
+
+.text-dark{
+
+	color: #53535D;
+
+}
+
+a:hover{
+
+	text-decoration: none;
+
+}
+
+.preg{
+
+	font-size: 24px;
+	font-weight: bold;
+
+}
+
+.text-center{
+
+	margin-bottom: 10px;
+
+}
+
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #f25029; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+.container-loader-horario{
+	
+	width: 100%;
+	height: 130px;
+	display: none;
+}
+
+	.container-loader-horario>div{
+		width: 100%;
+		height: 130px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
+.loader-horario {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #f25029; /* Blue */
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+ .table td,th {
+   text-align: center;   
+}
+
+.table-horario{
+}
+
+	.table-horario tr{
+		
+	}
+
+	.table-horario td{
+		font-size:12px !important;
+	}
+
+	.table-horario th{
+		font-size:14px !important;
+	}
+	.table-horario th div{
+		font-size:14px !important;
+	}
+	.table-horario td div{
+		font-size:12px !important;
+	}
+
+.text-bold{
+	font-weight: bold;
+}
+
+
+.beneficiario-table{
+	
+}
+
+	.beneficiario-table>thead th{
+		font-size: 0.9em;
+	}
+
+	.beneficiario-table>tbody td{
+		font-size: 0.9em;
+	}
+
+
+.container-title-header{
+
+	margin-top: 10px;
+	width:280px; 
+	line-height:80px;
+	float:left;
+	margin-left:50px;
+}
+
+.container-title-header .title-header{
+	font-size:1.1em;
+	color:white;
+}

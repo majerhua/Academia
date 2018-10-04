@@ -11,18 +11,23 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     
-                </button>                       
-                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="" />                              
+                </button> 
+                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="" style="float:left;"/>                              
+
+               	<div class="container-title-header">
+                	<p  class="text-bold title-header">TEMPORADA {{descripcionTemporada[0]['ciclo']}}-{{descripcionTemporada[0]['anio']}}</p>
+                </div>
+
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <br>
                 <ul class="nav navbar-nav navbar-right">
                     
-                    <li title="Horarios"><a href="{{url('akademia_horarios',{'idTemporada':idTemporada})}}"><i class="icon-arrow-left" style="font-size:1.5em; color:white"></i></a></li>
+                    <li title="Horarios"><a href="{{url('akademia_horarios',{'idTemporada':idTemporada})}}"><i class="icon-arrow-left font-color-li"></i></a></li>
 
-                    <li title="Inicio"><a href="{{url('akademia_panel',{'idTemporada':idTemporada})}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
+                    <li title="Inicio"><a href="{{url('akademia_panel',{'idTemporada':idTemporada})}}"><i class="icon-home font-color-li"></i></a></li>
 
-                    <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
+                    <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout font-color-li"></i></a></li>
                 </ul>
             </div>
         </div>
@@ -163,10 +168,10 @@
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-								<div class="row">
+								<div class="row container-find-assistance">
 
 									<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-										<div class="input-group" style="padding-left:10px;" >
+										<div class="input-group" >
 									 		<span class="input-group-addon">Buscar</span>
 									  		<input class="filtrar form-control" type="text" ident-buscar="{{cont}}"  placeholder=" ingresa los campos a buscar">
 										</div>
@@ -454,7 +459,7 @@
 						</div>
 						<div id="alerta-error" class="alert alert-danger collapse text-center"></div>
 						<ul class="list-group">
-							<li class="list-group-item" style="padding:7px 2px 6px 10px;">
+							<li class="list-group-item list-padding">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-3">
 										<p><strong>Código</strong></p>
@@ -474,7 +479,7 @@
 								</div>
 							</li>
 
-							<li class="list-group-item" style="padding:7px 2px 6px 10px;">
+							<li class="list-group-item list-padding">
 								<div class="row">
 
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-3">
@@ -496,7 +501,7 @@
 								</div>
 							</li>
 
-							<li class="list-group-item" style="padding:7px 2px 6px 10px;">
+							<li class="list-group-item list-padding">
 								<div class="row">
 
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-3">
@@ -520,9 +525,7 @@
 
 							<input type="hidden" id="asistenciaParticipante">
 
-
-
-							<li class="list-group-item" id="cbx-categoria" style="padding:7px 2px 6px 10px;">
+							<li class="list-group-item list-padding" id="container-select-categoria">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 										<p><strong>Categoría</strong></p>
@@ -530,8 +533,8 @@
 									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
 										<select class="form-control" id="categoriaParticipante"  name="categoriaParticipante">
 
-											<option value="3" id="optiones">Evaluado</option>
-											<option value="4" id="optiones2">Talento</option>
+											<option value="3" id="categoria-evaluado">Evaluado</option>
+											<option value="4" id="categoria-talento">Talento</option>
 										
 											{% for categoria in categorias %}
 												{% if categoria['id'] != 3 and categoria['id'] != 4 %}
@@ -544,8 +547,26 @@
 								</div>
 							</li>
 
+							<li class="list-group-item list-padding">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-8 ">
+										<p><strong>Desea <b>MIGRAR</b> al participante a otro horario?</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-3">
 
-							<li class="list-group-item" style="padding:5px 2px 6px 10px;">
+										<div class="input-group">
+			  								<span class="input-group-addon">
+			    								<input type="checkbox" name="check-confirmar-migracion" id="check-confirmar-migracion" value="1">
+			  								</span>
+		  									<p type="text" class="form-control">Si</p>
+										</div>
+
+									</div>
+								</div>
+							</li>
+
+
+							<li class="list-group-item list-padding" id="container-select-etapa">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 										<p><strong>Etapa: </strong></p>
@@ -553,14 +574,14 @@
 									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
 										<select class="form-control" id="cambiarHorariosMigracion" >
 											<option value="" >--Seleccionar--</option>
-											<option value="1" id="etapa-optiones" >Masificación</option>
-											<option value="0" id="etapa-optiones2" >Formación</option>
+											<option value="1" id="etapa-masificacion" >Masificación</option>
+											<option value="0" id="etapa-formacion" >Formación</option>
 										</select>
 									</div>
 								</div>
 							</li>
 
-							<li class="list-group-item" style="padding:5px 2px 2px 10px;">
+							<li class="list-group-item list-padding" id="container-select-migracion">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-12">
 										<p><b>Horarios Migracion</b></p>
@@ -578,18 +599,7 @@
 									</div>
 								</div>
 							</li>
-							
-							<li class="list-group-item" style="padding:5px 2px 2px 10px;">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Última modificación: </strong></p>
-									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-										<p id="fecha-modificacion" ></p>
-									</div>
-								</div>
-							</li>
-
+						
 						</ul>
 					</div>
 				</div>
@@ -640,7 +650,7 @@
 								            'etapa':$("#cambiarHorariosMigracion").val(),
 								            'edad': parseInt( $("#edad-beneficiario-horario").text() ),
 								            'horario-actual':"{{horarios[0]['idHorario']}}"
-										};
+											};
 				$.ajax({
 					type:'POST',
 					url: "{{url('akademia_getTableHorarioMigracion')}}",
@@ -649,10 +659,12 @@
 						$("#container-loader-horario").show();
 						$("#tableHorario").empty();			
 					},
-					success: function(data){
+					success: function(data,status, xhr){
 
 						$("#container-loader-horario").hide();
 						$("#tableHorario").html(data);
+						console.log("Status =>",status);
+
 					},
 					error: function(data){
 						alertify.error('<p style="color:white">Error </p>');	
@@ -801,141 +813,132 @@
 
 			let categoria = $("#categoriaParticipante").val();
 
-			if (categoria == 2){
+			if (categoria == 1){ //No Seleccionado
 
-				$("#etapa-optiones2").attr('hidden',false);
-				$("#etapa-optiones").attr('hidden',true);
-
-				$("#cambiarHorariosMigracion").val("");
-				$("#tableHorario").html("");
+				$("#etapa-masificacion").attr('hidden',false);
+				$("#etapa-formacion").attr('hidden',false);
 
 			}else{
 
-				$("#etapa-optiones").attr('hidden',false);
-				$("#etapa-optiones2").attr('hidden',true);
-
-				$("#cambiarHorariosMigracion").val("");
-				$("#tableHorario").html("");
+				$("#etapa-masificacion").attr('hidden',true);
+				$("#etapa-formacion").attr('hidden',false);
 			}
 
+			$("#cambiarHorariosMigracion").val("");
+			$("#tableHorario").html("");
 		});
-		// EDITAR PARTICIPANTE
-		function editarParticipante(idParticipante){
 
-			var idParticipante = idParticipante;
-			clearData();
-			
-			$("#cbx-categoria").hide();
+		// EDITAR PARTICIPANTE
+		$containerSelectCategoria = $("#container-select-categoria");
+		$containerSelectEtapa = $("#container-select-etapa");
+		$containerSelectMigracion = $("#container-select-migracion");
+
+		var nombre = null,
+			dni = null,
+			edad = null,
+			idInscribete = null,
+			modalidad = null,
+			sexo = null,
+			idCategoria = null,
+			idAsistencia = null,
+			etapa = null;
+
+		const  editarParticipante = (idParticipante) => {
+
+			clearData();//Limpiar los Campos
+
+			$("#check-confirmar-migracion").prop('checked',false); // Inicializar CheckBox ConfirmarMigracion False
+
+			$("#categoria-evaluado").attr('hidden',true);
+			$("#categoria-talento").attr('hidden',true);
+
+			$containerSelectCategoria.hide(); 
+			$containerSelectEtapa.hide(); 
+			$containerSelectMigracion.hide();
+
 
           	{% for beneficiario in beneficiarios %}
 
 				if( "{{beneficiario['idParticipante']}}" == idParticipante ){
 					
-					$("#nombreParticipante").append("<p>{{beneficiario['nombre']}}</p>");
-					$("#dniParticipante").append("<p>{{beneficiario['dni']}}</p>");
-					$("#edadParticipante").append("<p><span id='edad-beneficiario-horario' >{{beneficiario['edad']}}</span> años</p>");
-					$("#idFicha").append("<p>{{beneficiario['idInscribete']}}</p>");
-					$("#modalidadParticipante").append("<p>{{beneficiario['modalidad']}}</p>");
+					nombre = "{{beneficiario['nombre']}}";
+					dni = "{{beneficiario['dni']}}";
+					edad = "{{beneficiario['edad']}}";
+					idInscribete = "{{beneficiario['idInscribete']}}";
+					modalidad = "{{beneficiario['modalidad']}}";
+
+					$("#nombreParticipante").append(`<p>${nombre}</p>`);
+					$("#dniParticipante").append(`<p>${dni}</p>`);
+					$("#edadParticipante").append(`<p><span id='edad-beneficiario-horario' >${edad}</span> años</p>`);
+					$("#idFicha").append(`<p>${idInscribete}</p>`);
+					$("#modalidadParticipante").append(`<p>${modalidad}</p>`);
 					
-					if ("{{beneficiario['sexo']}}" == 2){
+					if ( sexo == 2 )
 					 	$("#sexoParticipante").append("<p>Femenino</p>");	
-					}else{
+					else
 					 	$("#sexoParticipante").append("<p>Masculino</p>");
-					}	
-
-					var idCat = "{{beneficiario['idCategoria']}}";
-					var idAsis = "{{beneficiario['idAsistencia']}}";
-
-					let categoria = parseInt(idCat);
+					
+					idCategoria = parseInt("{{beneficiario['idCategoria']}}");
+					idAsistencia = parseInt("{{beneficiario['idAsistencia']}}");
 
 					$("#etapa-optiones").attr('hidden',false);
-
 					$("#categoriaParticipante").attr('readonly',false);
 					$("#categoriaParticipante").attr('disabled',false);
-
-					if(idAsis == 1){
-						
-						$("#asistenciaParticipante").val(idAsis);
-						$("#optiones").attr('hidden',true);
-						$("#optiones2").attr('hidden',true);
-						$("#categoriaParticipante").attr('readonly',false);
-						$("#categoriaParticipante").attr('disabled',false);
-						//$("#categoriaParticipante").val(0);
-
-					}else{
-
-						$("#cbx-categoria").show();
-						$("#asistenciaParticipante").val(idAsis);
-
-						if(categoria == 3 || categoria == 4 ){
-
-							$("#optiones").attr('hidden',false);
-							$("#optiones2").attr('hidden',false);
-
-							if(categoria == 3){
-
-								$("#etapa-optiones").attr('hidden',true);
-								$("#categoriaParticipante").val('3');
-
-							}else if (categoria == 4){
-
-								$("#etapa-optiones").attr('hidden',true);
-								$("#categoriaParticipante").val('4');
-							}
-							
-							$("#categoriaParticipante").attr('readonly',true);
-							$("#categoriaParticipante").attr('disabled',true);
-							
-							
-					
-						}else if(categoria == 2){
-
-
-							$("#etapa-optiones").attr('hidden',true);
-							$("#categoriaParticipante").val('2');
-
-						}else if(categoria == 1) {
-
-							$("#optiones").attr('hidden',true);
-							$("#optiones2").attr('hidden',true);
-
-							$("#categoriaParticipante").val(idCat);
-
-							$("#categoriaParticipante").attr('readonly',true);
-							$("#categoriaParticipante").attr('disabled',true);
-							
-
-
-							
-						}
-						
-					}
-
-					$("#fecha-modificacion").append("<p>{{beneficiario['fechita']}}</p>")
-					
 				}
 
 			{% endfor %}
 
+			etapa = "{{horarios[0]['etapa']}}";
+
+			if( etapa == 'Formación' )
+				$("#container-select-categoria").show();
+			else
+				$("#container-select-categoria").hide();
+			
+			if( idCategoria == 1 ){ //Si la Categoria es igual a No Seleccionado Entonces Ocultamos Select Categoria, Etapa y Migracion
+				$("#etapa-masificacion").attr('hidden',false);
+				$("#etapa-formacion").attr('hidden',false);
+			}
+			else if(idCategoria == 2){ // Si la categoria es Seleccionado
+				$("#etapa-masificacion").attr('hidden',true);
+				$("#etapa-formacion").attr('hidden',false);
+			}
+			else if( idCategoria == 3 || idCategoria == 4 ){ //Si la Categoria es Evaluado o Talento
+
+				$("#categoria-evaluado").attr('hidden',false);
+				$("#categoria-talento").attr('hidden',false);
+
+				if( idCategoria == 3) //Categoria Evaluado
+					$("#etapa-formacion").attr('hidden',true);
+
+				else if ( idCategoria == 4) //Categoria Talento
+					$("#etapa-formacion").attr('hidden',true);
+				
+				$("#categoriaParticipante").attr('readonly',true);
+				$("#categoriaParticipante").attr('disabled',true);
+			}
+
+			$("#categoriaParticipante").val(idCategoria);	
+			$("#asistenciaParticipante").val(idAsistencia);
 		}
 
-		$('#asistenciaParticipante').on('click', function(){
+		$("#check-confirmar-migracion").on('click',function(){
 
-			var cbx_asist = document.getElementById("asistenciaParticipante").value;
+			if( $("#check-confirmar-migracion").prop('checked') ){
 
-			if(cbx_asist == 2){
+				$("#container-select-etapa").show('slow');
+				$("#container-select-migracion").show('slow');
 
-				$("#cbx-categoria").show();
-
-			}else if (cbx_asist == 3){
-				
-				$("#cbx-categoria").hide();
 			}else{
 
-				$("#cbx-categoria").hide();
+				$("#container-select-etapa").hide('slow');
+				$("#container-select-migracion").hide('slow');
+				$("#cambiarHorariosMigracion").val("");
+				$("#tableHorario").html("");
 			}
 
 		});
+
 
 		function clearData(){
 
@@ -953,91 +956,57 @@
 
 		/*ACTUALIZAR Beneficiario */
 
+		const $asistenciaParticipante = $("#asistenciaParticipante"),
+			  $categoriaParticipante = $("#categoriaParticipante"),
+			  $idFicha = $("#idFicha");
 
 		$("#btn-actualizarEstado").on("click", function(){
 
-			
-			var asistencia = $("#asistenciaParticipante").val();
-			var categoria = $("#categoriaParticipante").val();
+			$("#btn-actualizarEstado").attr("data-dismiss", "modal");
 
-			if((asistencia != 0 && categoria != 0 ) || (asistencia == 3 && categoria == 0)){
+			var idAsistencia = $asistenciaParticipante.val();
+			var idCategoria = $categoriaParticipante.val();
+			var idFicha = $idFicha.text();
+			var idHorario = "{{horarios[0]['idHorario']}}";
 
-				$("#btn-actualizarEstado").attr("data-dismiss", "modal");
+			const dataBeneficiario = {
 
-				if(asistencia == 3){
-
-					var asistencia = 3;
-					var categoria = 1;
-					var idFicha = $("#idFicha").text();
-
-				}else{
-
-					var asistencia = $("#asistenciaParticipante").val();
-					var categoria = $("#categoriaParticipante").val();
-					var idFicha = $("#idFicha").text();
-				}
-
-				if(categoria == 1 && $("#cambiarHorariosMigracion").val() === 0  ){
-					categoria = 2;
-				}
+				"idFicha" : idFicha,
+				"idAsistencia": idAsistencia,
+				"idCategoria": idCategoria,
+				"horarioActual": idHorario,
+				"horarioAMigrar": $('input:radio[name=codHorario]:checked').val()
+			};
 
 
-				if( "{{horarios[0]['etapa']}}" == "Formación" && categoria == 1 &&  $('input:radio[name=codHorario]:checked').val() == undefined )
-				{
+			console.log(dataBeneficiario);
+			 $.ajax({
+			 	type:'POST',
+			 	dataType: 'json',
+			 	url: "{{url('akademia_estadoBeneficiario')}}",
+			 	data: dataBeneficiario,
+			 	beforeSend: function(){
 
-					alertify.warning("No puede Cambiar a Categoria No Seleccionado porque este horario pertenece a Formación",3000);
-				}else{
+			 	},
 
-					
-					var dataBeneficiario = {
+			 	success: function(data){
 
-						"idFicha" : idFicha,
-						"idAsistencia": asistencia,
-						"idCategoria": categoria,
-						"horarioActual":"{{horarios[0]['idHorario']}}",
-						"horarioAMigrar": $('input:radio[name=codHorario]:checked').val()
-					};
+			 		if(data == 1){
 
-		
-					$.ajax({
-						type:'POST',
-						dataType: 'json',
-						url: "{{url('akademia_estadoBeneficiario')}}",
-						data: dataBeneficiario,
-						beforeSend: function(){				
-						
-						},
+			 			alertify.success('<p style="color:white">Beneficiario Actualizado</p>');
+			 			location.reload(true);
+			 		}
+			 		if(data == 2){
 
-						success: function(data){
+			 			alertify.error('<p style="color:white">Se produjo un error.</p>');	
+			 		}
+			 	},
 
-							if(data == 1){
-
-								alertify.success('<p style="color:white">Beneficiario Actualizado</p>');
-								location.reload(true);
-									
-							}
-							if(data == 2){
-
-								alertify.error('<p style="color:white">Se produjo un error.</p>');	
-							}
-							
-						},
-
-						error: function(data){
-							alertify.error('<p style="color:white">Error </p>');	
-							console.log(data);
-						},
-					});
-				}
-
-					
-
-			}else{
-
-				$("#btn-actualizarEstado").attr("data-dismiss", "");
-				showAlertMessage('#alerta-error', "Verifique que no existan campos vacíos.");
-			}
-
+			 	error: function(data){
+			 		alertify.error('<p style="color:white">Error </p>');	
+			 		console.log(data);
+			 	},
+			 });
 		});
 
 		/*Desplaza sutilmente la ventana hacía una sección*/
@@ -1046,7 +1015,6 @@
 				scrollTop: $(destino).offset().top
 			}, 800);			
 		}
-
 
 		/*Muestra mensaje de alerta*/
 		function showAlertMessage(alert, mensaje){
