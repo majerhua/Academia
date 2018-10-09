@@ -36,7 +36,6 @@ class HorarioController extends Controller
         $em = $this->getDoctrine()->getManager();
 
 
-
         $mdDepartamentsByDisability = $em->getRepository('AkademiaBundle:Departamento')->getDepartmentsLandingByDisability($estado,$idTemporada);
         $mdProvinceByDisability = $em->getRepository('AkademiaBundle:Provincia')->getProvincesLandingByDisability($estado,$idTemporada);
         $mdDistrictsByDisability = $em->getRepository('AkademiaBundle:Distrito')->getDistrictsLandingByDisability($estado,$idTemporada);
@@ -93,7 +92,7 @@ class HorarioController extends Controller
 
         $ComplejoDisciplinas = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getComplejosDisciplinasHorarios($idComplejo,$idTemporada);
 
-        $Horarios = $em->getRepository('AkademiaBundle:Horario')->getHorariosComplejos($idComplejo);
+        $Horarios = $em->getRepository('AkademiaBundle:Horario')->getHorariosComplejos($idComplejo,$idTemporada);
         $turnos = $em->getRepository('AkademiaBundle:Horario')->getTurnosComplejos($idComplejo);
 
         $Disciplinas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasDiferentes($idComplejo,$idTemporada);
@@ -128,8 +127,11 @@ class HorarioController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             $idComplejo = $this->getUser()->getIdComplejo();
-            $idDisciplina = $request->request->get('idDisciplina');  
-            $ediCodigo = $em->getRepository('AkademiaBundle:Horario')->getCapturarEdiCodigo($idComplejo, $idDisciplina); 
+
+            $idDisciplina = $request->request->get('idDisciplina');
+            $idTemporada = $request->request->get('idTemporada'); 
+
+            $ediCodigo = $em->getRepository('AkademiaBundle:Horario')->getCapturarEdiCodigo($idComplejo, $idDisciplina,$idTemporada); 
 
             $codigoEdi = $ediCodigo[0]['edi_codigo'];
             

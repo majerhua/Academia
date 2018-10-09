@@ -81,7 +81,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
 
-        return $this->render('AkademiaBundle:Default:inscritos.html.twig',array("idTemporadaHabilidatada"=>$idTemporada, "descripcionTemporada" => $descripcionTemporada));
+        return $this->render('AkademiaBundle:Default:inscritos.html.twig',array("idTemporada"=>$idTemporada, "descripcionTemporada" => $descripcionTemporada));
     }
 
 

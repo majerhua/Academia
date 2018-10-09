@@ -45,7 +45,7 @@ class TemporadaRepository extends \Doctrine\ORM\EntityRepository
 			
 			$query = "SELECT	temp.anio anio,
 								cic.descripcion ciclo,
-								CASE MONTH(temp.apertura)
+								CASE MONTH(temp.inicio_clases)
 								WHEN 1 THEN 'Enero'
 								WHEN 2 THEN 'Febrero'
 								WHEN 3 THEN 'Marzo'

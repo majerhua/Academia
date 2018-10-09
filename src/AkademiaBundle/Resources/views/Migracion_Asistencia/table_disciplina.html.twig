@@ -19,7 +19,7 @@
 		 		<td class="text-center col-xs-3" style="float:left; display:block;font-size:14px;" >{{disciplina['disciplina']}}</td>
 		 		<td class="text-center col-xs-3" style="float:left; display:block;font-size:14px;" >{{disciplina['rango_edad_convencional']}} </td>
 		 		<td class="text-center col-xs-3" style="float:left; display:block;font-size:14px;" >{{disciplina['rango_edad_discapacitado']}}</td>
-		 		<td class="text-center col-xs-1" style="float:left; display:block;font-size:14px;"><button class="btn btn-success" onclick="getDisciplinaConfiguracionById({{disciplina['codigo']}})" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1em; margin-top:5px; color:white" ></i></button></td>
+		 		<td class="text-center col-xs-1" style="float:left; display:block;font-size:14px;"><button class="btn btn-success" onclick="getDisciplinaConfiguracionById({{disciplina['codigo']}},{{idTemporada}})" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1em; margin-top:5px; color:white" ></i></button></td>
 		 	</tr>	    
 		 {% endfor %} 							
 	</tbody> 

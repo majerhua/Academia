@@ -10,17 +10,18 @@
 
 	$containerTableDisciplina = $("#container-table-disciplina");
 
-	const getDisciplinaConfiguracionById = (idDisciplina)=> {
+	const getDisciplinaConfiguracionById = (idDisciplina,idTemporada)=> {
 
 		
 
 		var datos = {
-					'idDisciplina': idDisciplina
+					'idDisciplina': idDisciplina,
+					'idTemporada': idTemporada
 					};
 
 		$.ajax({
 
-			url: 'get/disciplina',
+			url: '/academia/web/get/disciplina',
 			data: datos,
 			beforeSend:function(){
 				console.log(datos);
@@ -51,19 +52,21 @@
 		});
 	}
 
-	const actualizarDisciplina = ()=>{
+	const actualizarDisciplina = (idTemporada)=>{
+
 
 		var datos = {
 						'idDisciplina': $codigoDisciplina.text(),
 						'convencional-edad-minima':$convencionalEdadMinima.val(),
 						'convencional-edad-maxima': $convencionalEdadMaxima.val(),
 						'discapacitado-edad-minima': $discapacitadoEdadMinima.val(),
-						'discapacitado-edad-maxima': $discapacitadoEdadMaxima.val()
+						'discapacitado-edad-maxima': $discapacitadoEdadMaxima.val(),
+						'idTemporada': idTemporada
 			};
 
 			$.ajax({
 
-				url: 'update/disciplina',
+				url: '/academia/web/update/disciplina',
 				data: datos,
 				beforeSend:function(){
 					console.log(datos);
@@ -128,6 +131,6 @@
 */
 	/*change_select_estado_modal_editar();*/
 
-	$btnActualizarDisciplina.on('click',actualizarDisciplina);
+	//$btnActualizarDisciplina.on('click',actualizarDisciplina);
 	/*$estadoDisciplina.on('change',change_select_estado_modal_editar);*/
 	/*$btnOcultarDisciplina.on('click',ocultarDisciplina);*/

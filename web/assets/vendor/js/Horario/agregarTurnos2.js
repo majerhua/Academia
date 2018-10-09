@@ -267,7 +267,8 @@ var crearHorario = ()=>{
 				'preinscripciones':$preinscripciones.val(),
 				'turnos-seleccionados':arrayTurnoOrdenado,
 				'turnos-seleccionados-string':convertArrayToString(arrayTurnoOrdenado),
-				'idDisciplina':$("#idDisciplinaNewHorario").val()
+				'idDisciplina': $("#idDisciplinaNewHorario").val(),
+				'idTemporada': $("#inputHiddenIdTemporada").val()
 			}
 
 			$.ajax({

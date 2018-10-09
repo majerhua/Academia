@@ -25,7 +25,7 @@
                 <br>
                 <ul class="nav navbar-nav navbar-right">
   
-                	<li title="Inicio"><a href="{{url('akademia_panel')}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
+                	<li title="Inicio"><a href="{{url('akademia_panel',{'idTemporada':idTemporada})}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
                     <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
                     
                 </ul>
@@ -272,7 +272,7 @@
 			var id = $('#input-codigo-inscripcion').val();
 			var dataFicha = {
 				"id" : id,
-				"idTemporada":"{{idTemporadaHabilidatada}}"
+				"idTemporada":"{{idTemporada}}"
 			}
 
 			$.ajax({

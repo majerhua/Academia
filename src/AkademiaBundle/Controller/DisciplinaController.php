@@ -31,12 +31,13 @@ class DisciplinaController extends Controller
 
         if($request->isXmlHttpRequest()){
 
-            $idDisciplina = $request->request->get('idDisciplina');  
+            $idDisciplina = $request->request->get('idDisciplina');
+            $idTemporada = $request->request->get('idTemporada');  
 
             if(!empty($idDisciplina)){
 
                 $em = $this->getDoctrine()->getManager();
-                $rankAgeDiscipline = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getRankAgeDisciplineById($idDisciplina);
+                $rankAgeDiscipline = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getRankAgeDisciplineById($idDisciplina,$idTemporada);
 
                 if( !empty($rankAgeDiscipline[0]['edad_min_convencional']) )
                     return new JsonResponse($rankAgeDiscipline);
@@ -50,40 +51,36 @@ class DisciplinaController extends Controller
     }
 
 	// CREAR NUEVA DISCIPLINA 
-    public function crearDisciplinaAction(Request $request){    
-        if($request->isXmlHttpRequest()){
+    public function crearDisciplinaAction(Request $request){ 
 
-            $idDisciplina = $request->request->get('idDisciplina');           
+        if( $request->isXmlHttpRequest() ){
+
+             $mensaje = NULL;
+
+            $idDisciplina = $request->request->get('idDisciplina'); 
+            $idTemporada = $request->request->get('idTemporada');  
+
             $idComplejo = $this->getUser()->getIdComplejo();
             $usuario = $this->getUser()->getId();
-            
+
             $em = $this->getDoctrine()->getManager();
-            $estado = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getCompararEstado($idComplejo, $idDisciplina);
+            $estado = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getCompararEstado($idComplejo, $idDisciplina,$idTemporada);
         
             if(!empty($estado)){
+
                 $em = $this->getDoctrine()->getManager();
                 $estadoActual = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getCambiarEstado($idComplejo, $idDisciplina);
-                $mensaje = 1;
-                return new JsonResponse($mensaje);    
+
+                $mensaje = 1;  
             
             }else{
-                $disciplina = new ComplejoDisciplina();
-                $em = $this->getDoctrine()->getRepository(DisciplinaDeportiva::class);
-                $codigoDisciplina = $em->find($idDisciplina);
-                $disciplina->setDisciplinaDeportiva($codigoDisciplina);
-               
-                $em = $this->getDoctrine()->getRepository(ComplejoDeportivo::class);
-                $codigoComplejo = $em->find($idComplejo);
-                $disciplina->setComplejoDeportivo($codigoComplejo);
-                $disciplina->setEstado(1);
-                $disciplina->setUsuario($usuario);
-         
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($disciplina);
-                $em->flush();  
-                $mensaje = 2;
-                return new JsonResponse($mensaje);           
+
+                $estado = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->crearComplejoDisciplina($idComplejo, $idDisciplina,$usuario,$idTemporada);
+ 
+                $mensaje = $estado;            
             }
+
+            return new JsonResponse($mensaje); 
         }
     }
 

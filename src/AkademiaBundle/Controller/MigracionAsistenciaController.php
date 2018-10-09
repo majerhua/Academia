@@ -19,20 +19,25 @@ class MigracionAsistenciaController extends Controller
         $em = $this->getDoctrine()->getManager();
          
         $estadoUpdDis = NULL;
+        $usuario = $this->getUser()->getId();
 
-        $disciplinasTotalesActivas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasTotales();
+        $estado = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->crearConfiguracionDisciplinaIsNullTemp($idTemporada,$usuario);
+
+        $disciplinasTotalesActivas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasTotales($idTemporada);
         $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
 
-        return $this->render('AkademiaBundle:Migracion_Asistencia:disciplinas.html.twig', array('estadoUpdDis'=>$estadoUpdDis,'disciplinas' => $disciplinasTotalesActivas, 'descripcionTemporada' => $descripcionTemporada ));
+        return $this->render('AkademiaBundle:Migracion_Asistencia:disciplinas.html.twig', array('estadoUpdDis'=>$estadoUpdDis,'disciplinas' => $disciplinasTotalesActivas, 'descripcionTemporada' => $descripcionTemporada , 'idTemporada'=>$idTemporada ));
     }
 
 	public function disciplinaConfiguracionByIdAction(Request $request)
     {
 
     	$idDisciplina = $request->get('idDisciplina');
+        $idTemporada = $request->get('idTemporada');
+
         $em = $this->getDoctrine()->getManager(); 
 
-       	$disciplina = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinaConfiguracionById($idDisciplina);
+       	$disciplina = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinaConfiguracionById($idDisciplina,$idTemporada);
 
         $encoders = array(new JsonEncoder());
         $normalizer = new ObjectNormalizer();
@@ -54,13 +59,16 @@ class MigracionAsistenciaController extends Controller
     	$convencionalEdadMaxima = $request->get('convencional-edad-maxima');
     	$discapacitadoEdadMinima = $request->get('discapacitado-edad-minima');
     	$discapacitadoEdadMaxima = $request->get('discapacitado-edad-maxima');
+        $idTemporada = $request->get('idTemporada');
         
+        $usuario = $this->getUser()->getId();
+
         $em = $this->getDoctrine()->getManager(); 
-        $estadoUpdDis = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->updateDisciplina($idDisciplina,$convencionalEdadMinima,$convencionalEdadMaxima,$discapacitadoEdadMinima,$discapacitadoEdadMaxima);
+        $estadoUpdDis = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->updateDisciplina($idDisciplina,$convencionalEdadMinima,$convencionalEdadMaxima,$discapacitadoEdadMinima,$discapacitadoEdadMaxima,$idTemporada,$usuario);
 
-        $disciplinasTotalesActivas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasTotales();
+        $disciplinasTotalesActivas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasTotales($idTemporada);
 
-        echo $this->renderView('AkademiaBundle:Migracion_Asistencia:table_disciplina.html.twig',array('estadoUpdDis'=>$estadoUpdDis,'disciplinas' => $disciplinasTotalesActivas));
+        echo $this->renderView('AkademiaBundle:Migracion_Asistencia:table_disciplina.html.twig',array('estadoUpdDis'=>$estadoUpdDis,'disciplinas' => $disciplinasTotalesActivas,'idTemporada'=>$idTemporada));
         exit;
     }
 

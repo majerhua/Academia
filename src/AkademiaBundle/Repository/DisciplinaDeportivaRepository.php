@@ -13,15 +13,45 @@ use Doctrine\DBAL\DBALException;
 class DisciplinaDeportivaRepository extends \Doctrine\ORM\EntityRepository
 {
 
+    public function crearConfiguracionDisciplinaIsNullTemp($idTemporada,$usuario){
 
-    public function getRankAgeDisciplineById($idDisciplina){
+        try {
+            $query = " EXEC ACADEMIA.crearConfDisIsNullTemp $idTemporada,$usuario";
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+            $message = 1;
+        }catch (DBALException $e) {
+            $message = $e->getCode();
+        }
+
+        return $message;
+    }
+
+    public function getDisciplinasTotales( $idTemporada )
+    {
+        $query = "  SELECT dis.dis_codigo codigo,
+                    dis.dis_descripcion disciplina,
+                    CONVERT(VARCHAR(10),ced.edad_min_discapacitado)+' a '+CONVERT(VARCHAR(10),ced.edad_max_discapacitado)+' años' AS rango_edad_discapacitado,
+                    CONVERT(VARCHAR(10),ced.edad_min_convencional)+' a '+CONVERT(VARCHAR(10),ced.edad_max_convencional)+' años' AS rango_edad_convencional,
+                    dis.dis_estado estado
+                    FROM CATASTRO.disciplina dis
+                    INNER JOIN ACADEMIA.ConfiguracionEdadesDisciplina ced ON ced.disciplina_id=dis.dis_codigo
+                    WHERE ced.idTemporada = '$idTemporada';";
+        
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $disciplinasActivas = $stmt->fetchAll();
+        return $disciplinasActivas;
+    }
+
+    public function getRankAgeDisciplineById($idDisciplina,$idTemporada){
 
         $query = " SELECT   edad_min_convencional,
                             edad_max_convencional,
                             edad_min_discapacitado,
                             edad_max_discapacitado
                     FROM ACADEMIA.ConfiguracionEdadesDisciplina
-                    WHERE disciplina_id = $idDisciplina";
+                    WHERE disciplina_id = $idDisciplina AND idTemporada = $idTemporada;";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $getRankAgeDiscipline = $stmt->fetchAll();
@@ -52,16 +82,15 @@ class DisciplinaDeportivaRepository extends \Doctrine\ORM\EntityRepository
         return $quantityBeneficiary;
     }
 
-    public function updateDisciplina($idDisciplina,$convencionalEdadMinima,$convencionalEdadMaxima,$discapacitadoEdadMinima,$discapacitadoEdadMaxima)
+    public function updateDisciplina($idDisciplina,$convencionalEdadMinima,$convencionalEdadMaxima,$discapacitadoEdadMinima,$discapacitadoEdadMaxima,$idTemporada,$usuario)
     {
         try {
 
-            $query = " exec ACADEMIA.actualizarConfiguracionDisciplina $convencionalEdadMinima ,$convencionalEdadMaxima ,$discapacitadoEdadMinima ,$discapacitadoEdadMaxima,$idDisciplina";
+            $query = " exec ACADEMIA.actualizarConfiguracionDisciplina $convencionalEdadMinima ,$convencionalEdadMaxima ,$discapacitadoEdadMinima ,$discapacitadoEdadMaxima,$idDisciplina,$idTemporada,$usuario";
         
             $stmt = $this->getEntityManager()->getConnection()->prepare($query);
             $stmt->execute();
-
-            $message = 1;
+            return 1;
 
         }catch (DBALException $e) {
             $message = $e->getCode();
@@ -70,23 +99,7 @@ class DisciplinaDeportivaRepository extends \Doctrine\ORM\EntityRepository
         return $message;
     }
 
-public function getDisciplinasTotales()
-    {
-        $query = "  SELECT dis.dis_codigo codigo,
-                    dis.dis_descripcion disciplina,
-                    CONVERT(VARCHAR(10),ced.edad_min_discapacitado)+' a '+CONVERT(VARCHAR(10),ced.edad_max_discapacitado)+' años' AS rango_edad_discapacitado,
-                    CONVERT(VARCHAR(10),ced.edad_min_convencional)+' a '+CONVERT(VARCHAR(10),ced.edad_max_convencional)+' años' AS rango_edad_convencional,
-                    dis.dis_estado estado
-                    FROM CATASTRO.disciplina dis
-                    INNER JOIN ACADEMIA.ConfiguracionEdadesDisciplina ced ON ced.disciplina_id=dis.dis_codigo";
-        
-        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
-        $stmt->execute();
-        $disciplinasActivas = $stmt->fetchAll();
-        return $disciplinasActivas;
-    }
-
-    public function getDisciplinaConfiguracionById($idDisciplina)
+    public function getDisciplinaConfiguracionById($idDisciplina,$idTemporada)
     {
         $query = "  SELECT dis.dis_codigo codigo,
                     dis.dis_descripcion disciplina,
@@ -97,7 +110,7 @@ public function getDisciplinasTotales()
                     dis.dis_estado estado
                     FROM CATASTRO.disciplina dis
                     INNER JOIN ACADEMIA.ConfiguracionEdadesDisciplina ced ON ced.disciplina_id=dis.dis_codigo
-                    WHERE  dis.dis_codigo = '$idDisciplina' ";
+                    WHERE  dis.dis_codigo = '$idDisciplina' AND ced.idTemporada = '$idTemporada' ";
         
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();

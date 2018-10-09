@@ -454,12 +454,13 @@
 								alertify.warning("<p style='color:black; font-weight:bold;' >Ya existe una temporada en Curso, cambie las fechas de Inicio y Fin!.</p>");
 
 							}else if(data==4){
-								alertify.warning("<p style='color:black; font-weight:bold;' >La fecha de apertura debe ser mayor a la fecha de cierre de la primera temporada del año en la que está creando la nueva temporada!.</p>");
+								alertify.warning("<p style='color:black; font-weight:bold;' >Se deberá crear una nueva temporada con una fecha de apertura mayor a la fecha de cierre de la temporada cerrada recientemente</p>");
 
 							}else if(data == 5){
 								alertify.warning("<p style='color:black; font-weight:bold;' >El año de apertura debe ser mayor o igual que el año actual!.</p>");
 							}
 							else {
+								
 								$("#container-table-temporada").html(data);
 								alertify.success('Temporada Creada correctamente!');
 								limpiarCamposModalCrear();
@@ -534,6 +535,8 @@
 							}else if(data == 2){
 								alertify.warning('Ya existe una temporada en curso, modificar fecha de apertura e inicio!.');
 
+							}else if(data == 3){
+								alertify.warning('Solo puede existir 2 temporadas por año.!.');
 							}else{
 
 								$("#container-table-temporada").html(data);
