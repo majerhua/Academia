@@ -998,3 +998,25 @@ a:hover{
 	font-size:1.1em;
 	color:white;
 }
+
+/* ESTILOS BRYAM */
+
+.img-container {
+	margin: 10px;
+	position: relative;
+	width: 240px;
+	height: 200px;
+	overflow: hidden;
+  }
+  
+  .img-container img {
+	position: absolute;
+	left: 50%;
+	display: block;
+	top: 50%;
+	height: auto;
+	width: 100%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+  }

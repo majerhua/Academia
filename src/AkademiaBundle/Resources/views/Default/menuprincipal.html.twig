@@ -1,73 +1,53 @@
 {% extends '::base.html.twig' %}
 {% block title %}La Academia{% endblock %}
 {% block body  %}
-<header>
-	 <nav class="navbar navbar-inverse" role="navigation">
-        <div class="container">
 
-            <div class="navbar-header" style="width:450px; " >
-
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>    
-
-                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="logoAcademia" style="float:left;"  />
-
-                <div class="container-title-header">
-                	<p  class="text-bold title-header">TEMPORADA {{descripcionTemporada[0]['ciclo']}}-{{descripcionTemporada[0]['anio']}}</p>
+    <header>
+        <nav class="navbar navbar-inverse" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="" />
                 </div>
-
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <span class="navbar-text">
+                        <h3>TEMPORADA {{descripcionTemporada[0]['ciclo']}}-{{descripcionTemporada[0]['anio']}}</h3>
+                    </span>
+                    <br>
+                    <ul class="nav navbar-nav navbar-right">
+						<li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
+					</ul>
+                    <span class="navbar-text navbar-right" style="margin-right:30px;">
+                        Usuario: <b>{{app.user.username}}</b>
+                    </span>
+                </div>
             </div>
-
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <br>				
-                <ul class="nav navbar-nav navbar-right">
-                
-                    <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="btn icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
-                </ul>
-            </div>
-
-        </div>
-    </nav>
-</header>
-
+        </nav>
+    </header>
+	
 <section  id="inscribete"  class="proceso-inscripcion">
 
-	<div class="row" > 
-		<div style="width:100%">
+	<div class="container text-center" style="margin-top: 10px; margin-bottom: 130px;">
 
-			<div class="col-lg-3 col-lg-offset-1">
-				
-					<div>
-						<label>Temporada</label>
-						<select  class="form-control" id="temporada">
-							{% for temp in temporadasHabilitadas %}
-
-								{%  if idTemporadaHabilidatada == temp.temporadaId %}
-								    <option value="{{temp.temporadaId}}" selected >{{temp.anio}}-{{temp.ciclo}}</option>
-								{% else %}
-							    	<option value="{{temp.temporadaId}}">{{temp.anio}}-{{temp.ciclo}}</option>
-								{% endif %}
-
-							{% endfor %}
-						</select>
-					</div>
-				
-			</div>
-
-			<div class="col-lg-3 col-lg-offset-4">
-				<p class="text-right" style="color:grey" >Sesión iniciada: {{ app.user.username}} </p>
-			</div>
-		
+		<div class="row" style="margin-bottom: 30px;"> 
+			<div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+				<label>Temporada</label>
+				<select  class="form-control" id="temporada">
+					{% for temp in temporadasHabilitadas %}
+						{%  if idTemporadaHabilidatada == temp.temporadaId %}
+							<option value="{{temp.temporadaId}}" selected >{{temp.anio}}-{{temp.ciclo}}</option>
+						{% else %}
+							<option value="{{temp.temporadaId}}">{{temp.anio}}-{{temp.ciclo}}</option>
+						{% endif %}
+					{% endfor %}
+				</select>	
+			</div>	
 		</div>
-	</div>
 
-	
-
-	<div class="container text-center" style="margin-top: 10px; margin-bottom: 30px;">
-		
 		{% if  is_granted('ROLE_ANALISTA') %}	
 			<h1>ANALISTA DEPORTIVO </h1>
 		{% else %}
@@ -81,14 +61,14 @@
 		<h4 style="color:grey">PANEL DE ADMINISTRACIÓN</h4>
 		<hr>
 		{% if  is_granted('ROLE_ANALISTA') %}	
-			<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px; margin-bottom: 20px;">
+		<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px; margin-bottom: 20px;">
 			<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
 			<p>Detección, gestión de potenciales talentos deportivos y beneficiarios.</p>
 		</div>
 
 
 		{% else %}
-			<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px; margin-bottom: 20px;">
+		<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px; margin-bottom: 20px;">
 			<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
 			<p> Utilizar las siguiente herramientas para administrar su complejo deportivo, horarios, beneficiarios, pre- inscripción directa, etc.</p>
 		</div>
@@ -227,7 +207,7 @@
 				<br>
 				<br>
 				<br>
-				<img class="align-self-center foot" src="{{ asset('assets/images/ipdfooter.jpg')}}">
+				<img class="align-self-center foot" src="{{ asset('assets/images/ipdfooter.png')}}">
 			</div>
 			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 				<br><br>
