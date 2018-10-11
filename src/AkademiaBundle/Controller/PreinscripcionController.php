@@ -233,7 +233,7 @@ class PreinscripcionController extends Controller
 
                 $dniParticipante = $request->request->get('dniParticipante');
 
-                $idInscribeteOrDataParticipante = $em->getRepository('AkademiaBundle:Participante')->getPreInscripcionUnica($dniParticipante);
+                $idInscribeteOrDataParticipante = $em->getRepository('AkademiaBundle:Participante')->getPreInscripcionUnica($dniParticipante,$idTemporada);
                 
                 if( !empty($idInscribeteOrDataParticipante[0]['id']) ){
 

@@ -224,7 +224,7 @@ akademia_evaluados:
     methods:  [GET,POST]
 
 akademia_talentos:
-    path:     /ajax/talentos/{idParticipante}
+    path:     /ajax/talentos/{idParticipante}/temporada/{idTemporada}
     defaults: { _controller: AkademiaBundle:Talentos:talentos}
     methods:  [GET,POST]
 
@@ -259,7 +259,7 @@ akademia_mostrarTalentos:
     methods:  [GET,POST]
 
 akademia_mostrarDetalleTalento:
-    path:     /ajax/detalle/{idParticipante}
+    path:     /ajax/detalle/{idParticipante}/temporada/{idTemporada}
     defaults: { _controller: AkademiaBundle:Talentos:mostrarDetalleTalento}
     methods:  [GET,POST]
 

@@ -90,11 +90,13 @@ class DisciplinaController extends Controller
 
         if($request->isXmlHttpRequest()){
 
-            $idDisciplina = $request->request->get('codigoDisciplina');  
+            $idDisciplina = $request->request->get('codigoDisciplina'); 
+            $idTemporada =  $request->request->get('idTemporada');
+
             $idComplejo = $this->getUser()->getIdComplejo();
 
             $em = $this->getDoctrine()->getManager();
-            $ediCodigo = $em->getRepository('AkademiaBundle:Horario')->getCapturarEdiCodigo($idComplejo, $idDisciplina);   
+            $ediCodigo = $em->getRepository('AkademiaBundle:Horario')->getCapturarEdiCodigo($idComplejo, $idDisciplina,$idTemporada);   
             $codigoEdi = $ediCodigo[0]['edi_codigo'];
 
             $cantidad = $em->getRepository('AkademiaBundle:Horario')->cantHorarioDisciplina($codigoEdi);
@@ -104,8 +106,8 @@ class DisciplinaController extends Controller
                 return new JsonResponse($mensaje);
             
             }else{
-                
-                $em->getRepository('AkademiaBundle:Horario')->eliminarDisciplina($codigoEdi);
+                $usuario = $this->getUser()->getId();
+                $em->getRepository('AkademiaBundle:Horario')->eliminarDisciplina($codigoEdi,$usuario);
                 $mensaje = 2;
                 return new JsonResponse($mensaje);
             

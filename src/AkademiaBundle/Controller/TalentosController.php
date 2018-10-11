@@ -70,13 +70,16 @@ class TalentosController extends controller
         return $this->render('AkademiaBundle:Default:mostrarTalentos.html.twig', array("talentos" => $talentos,'idTemporada' => $idTemporada, 'descripcionTemporada' => $descripcionTemporada));
     }
     
-    public function talentosAction(Request $request, $idParticipante){
+    public function talentosAction( Request $request, $idParticipante , $idTemporada ){
 
-      $fc = $this->getDoctrine()->getManager();
-      $talento = $fc->getRepository('AkademiaBundle:Participante')->getMostrarTalento($idParticipante);
-      $controles = $fc->getRepository('AkademiaBundle:Participante')->getMostrarControles($idParticipante);
-      $numControl = $fc->getRepository('AkademiaBundle:Participante')->getNumeroControl($idParticipante);
-      return $this->render('AkademiaBundle:Default:talento.html.twig',array('talento' => $talento, 'controles' => $controles, 'numeros' =>$numControl));
+      $em = $this->getDoctrine()->getManager();
+      $talento = $em->getRepository('AkademiaBundle:Participante')->getMostrarTalento($idParticipante);
+      $controles = $em->getRepository('AkademiaBundle:Participante')->getMostrarControles($idParticipante);
+      $numControl = $em->getRepository('AkademiaBundle:Participante')->getNumeroControl($idParticipante);
+
+      $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+
+      return $this->render('AkademiaBundle:Default:talento.html.twig',array('talento' => $talento, 'controles' => $controles, 'numeros' =>$numControl, 'idTemporada' => $idTemporada,'descripcionTemporada' => $descripcionTemporada ));
     }
 
     public function nuevoControlAction(Request $request){
@@ -301,14 +304,16 @@ class TalentosController extends controller
 
   }
 
-  public function mostrarDetalleTalentoAction (Request $request, $idParticipante){
+  public function mostrarDetalleTalentoAction (Request $request, $idParticipante,$idTemporada){
 
-      $fc = $this->getDoctrine()->getManager();
-      $talento = $fc->getRepository('AkademiaBundle:Participante')->getMostrarTalento($idParticipante);
-      $controles = $fc->getRepository('AkademiaBundle:Participante')->getMostrarControles($idParticipante);
-      $numControl = $fc->getRepository('AkademiaBundle:Participante')->getNumeroControl($idParticipante);
+      $em = $this->getDoctrine()->getManager();
+      $talento = $em->getRepository('AkademiaBundle:Participante')->getMostrarTalento($idParticipante);
+      $controles = $em->getRepository('AkademiaBundle:Participante')->getMostrarControles($idParticipante);
+      $numControl = $em->getRepository('AkademiaBundle:Participante')->getNumeroControl($idParticipante);
 
-      return $this->render('AkademiaBundle:Default:mostrarDetalleTalento.html.twig',array('talento' => $talento, 'controles' => $controles, 'numeros' =>$numControl));
+      $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+
+      return $this->render('AkademiaBundle:Default:mostrarDetalleTalento.html.twig',array('talento' => $talento, 'controles' => $controles, 'numeros' =>$numControl, 'idTemporada'=>$idTemporada,'descripcionTemporada'=>$descripcionTemporada));
 
   }
 

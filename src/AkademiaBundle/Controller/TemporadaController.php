@@ -24,8 +24,10 @@ class TemporadaController extends Controller
 
             $em = $this->getDoctrine()->getManager();
             $estadoUpdTemp = NULL;
+
+            $usuario = $this->getUser()->getId();
             
-            $codeCrearTemporada = $em->getRepository('AkademiaBundle:Temporada')->crearTemporada($crearAnio,$crearCiclo,$crearApertura,$crearPreInscripcion,$crearInicioClases,$crearCierreClases,$crearFechaSubsanacion);
+            $codeCrearTemporada = $em->getRepository('AkademiaBundle:Temporada')->crearTemporada($crearAnio,$crearCiclo,$crearApertura,$crearPreInscripcion,$crearInicioClases,$crearCierreClases,$crearFechaSubsanacion,$usuario);
 
             $temporadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadas();
 
@@ -56,8 +58,10 @@ class TemporadaController extends Controller
 
             $em = $this->getDoctrine()->getManager();
         	$estadoUpdTemp = NULL;
+
+            $usuario = $this->getUser()->getId();
         	
-            $codeUpdateTemporada = $em->getRepository('AkademiaBundle:Temporada')->updateTemporada($editarAnio,$editarCiclo,$editarApertura,$editarPreInscripcion,$editarInicioClases,$editarCierreClases,$editarFechaSubsanacion,$idTemporada);
+            $codeUpdateTemporada = $em->getRepository('AkademiaBundle:Temporada')->updateTemporada($editarAnio,$editarCiclo,$editarApertura,$editarPreInscripcion,$editarInicioClases,$editarCierreClases,$editarFechaSubsanacion,$idTemporada,$usuario);
             $temporadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadas();
 
             if( $codeUpdateTemporada == 1 ){
@@ -79,6 +83,6 @@ class TemporadaController extends Controller
         $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
         $temporadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadas();
 
-        return $this->render('AkademiaBundle:Migracion_Asistencia:temporada.html.twig', array( 'estadoUpdTemp'=>$estadoUpdTemp , 'temporadas' => $temporadas, 'descripcionTemporada' => $descripcionTemporada ));
+        return $this->render('AkademiaBundle:Migracion_Asistencia:temporada.html.twig', array( 'estadoUpdTemp'=>$estadoUpdTemp , 'temporadas' => $temporadas, 'descripcionTemporada' => $descripcionTemporada,'idTemporada'=>$idTemporada ));
     }
 }

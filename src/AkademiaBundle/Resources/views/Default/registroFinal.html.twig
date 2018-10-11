@@ -140,6 +140,7 @@
 									<p>Email</p>
 									<p>Deporte</p>
 									<P>Modalidad</P>
+									<p>Etapa</p>
 									<p>Complejo</p>
 									<p>Horario</p>
 								</div>
@@ -158,6 +159,7 @@
 									<p id="email-ficha"></p>
 									<p id="deporte-ficha"></p>
 									<p id="deporte-modalidad"></p>
+									<p id="deporte-etapa"></p>
 									<p id="complejo-ficha"></p>
 									<p id="horario-ficha"></p>
 									<input type="hidden" name="codigo-inscripcion" id="codigo-inscripcion">
@@ -228,6 +230,7 @@
 							<p>Email</p>
 							<p>Deporte</p>
 							<p>Modalidad</p>
+							<p>Etapa</p>
 							<p>Complejo</p>
 							<p>Horario</p>
 						</div>
@@ -245,6 +248,7 @@
 							<p id="email-ficha"></p>
 							<p id="deporte-ficha"></p>
 							<p id="deporte-modalidad"></p>
+							<p id="deporte-etapa"></p>
 							<p id="complejo-ficha"></p>
 							<p id="horario-ficha">
 
@@ -540,6 +544,7 @@ function registrar(){
 					$("#email-ficha").append(valor.percorreo);
 					$("#deporte-ficha").append(valor.nombreDisciplina);
 					$("#deporte-modalidad").append(valor.modalidad);
+					$("#deporte-etapa").append(valor.etapa);
 					$("#complejo-ficha").append(valor.nombreComplejo);
 
 					valor.turnos.forEach(function(value,index){
@@ -597,7 +602,8 @@ $("#inscribirPreinscrito").on('click',function(){
 	var id = $('#codigo-inscripcion').val();
 	console.log(id);
 	var dataFicha = {
-		"id" : id,
+		'id' : id,
+		'idTemporada': "{{idTemporada}}"
 	}
 	$.ajax({
 		type:'POST',

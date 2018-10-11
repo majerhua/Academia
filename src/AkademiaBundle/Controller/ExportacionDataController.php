@@ -75,12 +75,12 @@ class ExportacionDataController extends Controller
     $response = new StreamedResponse(function() use($conn,$anio,$mes,$idTemporada) {
 
     $handle = fopen('php://output','w+');
-              fputcsv($handle, ['Provincia','Complejo','Disciplina','Modalidad','InscritosTotales','CantidadInscritosVigentes','CantidadRetirados'],",");
+              fputcsv($handle, ['Provincia','Complejo','Disciplina','Modalidad','InscritosTotales','CantidadInscritosVigentes','CantidadRetirados','Temporada'],",");
 
       $results = $conn->query("exec ACADEMIA.inscripcionesLimaCallao $anio,$mes,$idTemporada ");
 
       while($row = $results->fetch()) {
-        fputcsv($handle, array( $row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['Modalidad'],$row['InscritosTotales'],$row['CantidadInscritosVigentes'],$row['CantidadRetirados']), ",");
+        fputcsv($handle, array( $row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['Modalidad'],$row['InscritosTotales'],$row['CantidadInscritosVigentes'],$row['CantidadRetirados'],$row['Temporada']), ",");
       }
       fclose($handle);
     });
@@ -166,7 +166,7 @@ class ExportacionDataController extends Controller
       
       $handle = fopen('php://output','w+');
 
-      fputcsv($handle, ['Departamento','Provincia','Distrito','Complejo','Disciplina',"DNI",'ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','Direccion','FechaMovimiento','Mes','Categoria','Matricula','Asistencia','Horario','Modalidad','Etapa','TipoSeguro','Telefono','Correo'],",");
+      fputcsv($handle, ['Departamento','Provincia','Distrito','Complejo','Disciplina',"DNI",'ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','Direccion','FechaMovimiento','Mes','Categoria','Matricula','Asistencia','Horario','Modalidad','Etapa','TipoSeguro','Telefono','Correo','Temporada'],",");
   
       $queryConMes = "SELECT  ubiDpto.ubinombre Departamento,
                               ubiProv.ubinombre Provincia,
@@ -249,7 +249,8 @@ class ExportacionDataController extends Controller
                                 as 'Etapa',
                                 par.tipoDeSeguro TipoSeguro,
                                 grApod.pertelefono Telefono,
-                                grApod.percorreo Correo
+                                grApod.percorreo Correo,
+                                CONVERT(VARCHAR,temp.anio)+'-'+CONVERT(VARCHAR,cic.descripcion) Temporada
                                 FROM ACADEMIA.inscribete AS ins 
                                 INNER JOIN 
                                 (
@@ -276,6 +277,8 @@ class ExportacionDataController extends Controller
                                 inner join ACADEMIA.asistencia asis on asis.id = mov.asistencia_id
                                 inner join CATASTRO.edificacionDisciplina edi on edi.edi_codigo = hor.edi_codigo
                                 inner join CATASTRO.edificacionesdeportivas ede on ede.ede_codigo = edi.ede_codigo
+                                inner join ACADEMIA.temporada temp on temp.id = edi.temporada_id
+                                inner join ACADEMIA.ciclo cic on cic.id = temp.ciclo_id
                                 inner join CATASTRO.disciplina dis on dis.dis_codigo = edi.dis_codigo
                                 inner join ACADEMIA.apoderado apod on apod.id = par.apoderado_id
                                 inner join grpersona grApod on grApod.percodigo = apod.percodigo
@@ -391,7 +394,8 @@ class ExportacionDataController extends Controller
                                 as 'Etapa',
                                 par.tipoDeSeguro TipoSeguro,
                                 grApod.pertelefono Telefono,
-                                grApod.percorreo Correo
+                                grApod.percorreo Correo,
+                                CONVERT(VARCHAR,temp.anio)+'-'+CONVERT(VARCHAR,cic.descripcion) Temporada
                                 
                                 FROM ACADEMIA.inscribete AS ins 
                                 INNER JOIN 
@@ -418,6 +422,8 @@ class ExportacionDataController extends Controller
                                 inner join ACADEMIA.categoria cat on cat.id=mov.categoria_id
                                 inner join ACADEMIA.asistencia asis on asis.id = mov.asistencia_id
                                 inner join CATASTRO.edificacionDisciplina edi on edi.edi_codigo = hor.edi_codigo
+                                inner join ACADEMIA.temporada temp on temp.id = edi.temporada_id
+                                inner join ACADEMIA.ciclo cic on cic.id = temp.ciclo_id
                                 inner join CATASTRO.edificacionesdeportivas ede on ede.ede_codigo = edi.ede_codigo
                                 inner join CATASTRO.disciplina dis on dis.dis_codigo = edi.dis_codigo
                                 inner join ACADEMIA.apoderado apod on apod.id = par.apoderado_id
@@ -459,7 +465,7 @@ class ExportacionDataController extends Controller
                
           while($row = $results->fetch()) {
 
-            fputcsv($handle, array( $row['Departamento'],$row['Provincia'],$row['Distrito'],$row['Complejo'], $row['Disciplina'],$row["DNI"],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['Nombres'],$row['FechaNacimiento'],$row['Edad'],$row['Sexo'],$row['Direccion'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Matricula'],$row['Asistencia'],$row['Horario'],$row['Modalidad'],$row['Etapa'],$row['TipoSeguro'],$row['Telefono'],$row['Correo']  ), ",");
+            fputcsv($handle, array( $row['Departamento'],$row['Provincia'],$row['Distrito'],$row['Complejo'], $row['Disciplina'],$row["DNI"],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['Nombres'],$row['FechaNacimiento'],$row['Edad'],$row['Sexo'],$row['Direccion'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Matricula'],$row['Asistencia'],$row['Horario'],$row['Modalidad'],$row['Etapa'],$row['TipoSeguro'],$row['Telefono'],$row['Correo'],$row['Temporada']  ), ",");
           }
           fclose($handle);
         });
@@ -484,7 +490,7 @@ class ExportacionDataController extends Controller
        
       $handle = fopen('php://output','w+');
 
-      fputcsv($handle, ['Departamento','Provincia','Distrito','Complejo','Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Matricula','Asistencia','Horario','Modalidad','Etapa','TipoSeguro','Telefono','Correo'],",");
+      fputcsv($handle, ['Departamento','Provincia','Distrito','Complejo','Disciplina','DNI','ApellidoPaterno','ApellidoMaterno','Nombres','F.Nacimiento','Edad','Sexo','FechaMovimiento','Mes','Categoria','Matricula','Asistencia','Horario','Modalidad','Etapa','TipoSeguro','Telefono','Correo','Temporada'],",");
   
       $queryConMes = "SELECT  ubiDpto.ubinombre Departamento ,
                               ubiProv.ubinombre Provincia  ,
@@ -566,7 +572,8 @@ class ExportacionDataController extends Controller
                                 as 'Etapa',
                                 par.tipoDeSeguro TipoSeguro,
                                 grApod.pertelefono Telefono,
-                                grApod.percorreo Correo
+                                grApod.percorreo Correo,
+                                CONVERT(VARCHAR,temp.anio)+'-'+CONVERT(VARCHAR,cic.descripcion) Temporada
                                 FROM ACADEMIA.inscribete AS ins 
                                 INNER JOIN 
                                 (
@@ -592,6 +599,8 @@ class ExportacionDataController extends Controller
                                 inner join ACADEMIA.categoria cat on cat.id=mov.categoria_id
                                 inner join ACADEMIA.asistencia asis on asis.id = mov.asistencia_id
                                 inner join CATASTRO.edificacionDisciplina edi on edi.edi_codigo = hor.edi_codigo
+                                inner join ACADEMIA.temporada temp on temp.id = edi.temporada_id
+                                inner join ACADEMIA.ciclo cic on cic.id = temp.ciclo_id
                                 inner join CATASTRO.edificacionesdeportivas ede on ede.ede_codigo = edi.ede_codigo
                                 inner join CATASTRO.disciplina dis on dis.dis_codigo = edi.dis_codigo
                                 inner join ACADEMIA.apoderado apod on apod.id = par.apoderado_id
@@ -704,7 +713,8 @@ class ExportacionDataController extends Controller
                                 as 'Etapa',
                                 par.tipoDeSeguro TipoSeguro,
                                 grApod.pertelefono Telefono,
-                                grApod.percorreo Correo
+                                grApod.percorreo Correo,
+                                CONVERT(VARCHAR,temp.anio)+'-'+CONVERT(VARCHAR,cic.descripcion) Temporada
                                 
                                 FROM ACADEMIA.inscribete AS ins 
                                 INNER JOIN 
@@ -732,6 +742,8 @@ class ExportacionDataController extends Controller
                                 inner join ACADEMIA.asistencia asis on asis.id = mov.asistencia_id
                                 inner join CATASTRO.edificacionDisciplina edi on edi.edi_codigo = hor.edi_codigo
                                 inner join CATASTRO.edificacionesdeportivas ede on ede.ede_codigo = edi.ede_codigo
+                                inner join ACADEMIA.temporada temp on temp.id = edi.temporada_id
+                                inner join ACADEMIA.ciclo cic on cic.id = temp.ciclo_id
                                 inner join CATASTRO.disciplina dis on dis.dis_codigo = edi.dis_codigo
                                 inner join ACADEMIA.apoderado apod on apod.id = par.apoderado_id
                                 inner join grpersona grApod on grApod.percodigo = apod.percodigo
@@ -773,7 +785,7 @@ class ExportacionDataController extends Controller
                
           while($row = $results->fetch()) {
 
-            fputcsv($handle, array( $row['Departamento'],$row['Provincia'],$row['Distrito'],$row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['Nombres'],$row['FechaNacimiento'],$row['Edad'],$row['Sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Matricula'],$row['Asistencia'],$row['Horario'],$row['Modalidad'],$row['Etapa'],$row['TipoSeguro'],$row['Telefono'],$row['Correo']  ), ",");
+            fputcsv($handle, array( $row['Departamento'],$row['Provincia'],$row['Distrito'],$row['Complejo'], $row['Disciplina'],$row['DNI'],$row['ApellidoPaterno'],$row['ApellidoMaterno'],$row['Nombres'],$row['FechaNacimiento'],$row['Edad'],$row['Sexo'],$row['FechaMovimiento'],$row['Mes'],$row['Categoria'],$row['Matricula'],$row['Asistencia'],$row['Horario'],$row['Modalidad'],$row['Etapa'],$row['TipoSeguro'],$row['Telefono'],$row['Correo'],$row['Temporada']  ), ",");
           }
           fclose($handle);
         });

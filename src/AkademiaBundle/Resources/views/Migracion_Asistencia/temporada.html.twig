@@ -24,7 +24,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     
                     <!-- <li title="Horarios"><a href="{{url('akademia_horarios')}}"><i class="icon-arrow-left" style="font-size:1.5em; color:white"></i></a></li> -->
-                    <li title="Inicio"><a href="{{url('akademia_panel')}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
+                    <li title="Inicio"><a href="{{url('akademia_panel',{'idTemporada':idTemporada})}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
                     <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
                 </ul>
             </div>
@@ -529,6 +529,8 @@
 						},
 						success : function(data){
 							
+
+
 							if(data == 0){
 								alertify.error('No se pudo actulizar la temporada, vuelva a actulizar por favor!.');
 
@@ -537,6 +539,12 @@
 
 							}else if(data == 3){
 								alertify.warning('Solo puede existir 2 temporadas por año.!.');
+
+							}else if(data == 4){
+								alertify.warning("La <b>fecha de apertura</b> no puede ser menor a la <b>fecha de cierre de la temporada anterior</b>",6);
+
+							}else if(data == 5){
+								alertify.warning("La <b>fecha de cierre</b> no puede ser mayor a la <b>fecha de apertura de la temporada posterior</b>.",6);
 							}else{
 
 								$("#container-table-temporada").html(data);

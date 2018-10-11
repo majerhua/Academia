@@ -229,10 +229,10 @@ class TemporadaRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 
-	public function crearTemporada($crearAnio,$crearCiclo,$crearApertura,$crearPreInscripcion,$crearInicioClases,$crearCierreClases,$crearFechaSubsanacion){
+	public function crearTemporada($crearAnio,$crearCiclo,$crearApertura,$crearPreInscripcion,$crearInicioClases,$crearCierreClases,$crearFechaSubsanacion,$usuario){
 
             try {
-					$query = "	EXEC ACADEMIA.crearTemporada $crearAnio,$crearCiclo,'$crearApertura','$crearPreInscripcion','$crearInicioClases','$crearCierreClases','$crearFechaSubsanacion' ";
+					$query = "	EXEC ACADEMIA.crearTemporada $crearAnio,$crearCiclo,'$crearApertura','$crearPreInscripcion','$crearInicioClases','$crearCierreClases','$crearFechaSubsanacion','$usuario' ";
 				    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
 				    $stmt->execute();
                		$temporadas = $stmt->fetchAll();
@@ -246,13 +246,14 @@ class TemporadaRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 
-	public function updateTemporada($editarAnio,$editarCiclo,$editarApertura,$editarPreInscripcion,$editarInicioClases,$editarCierreClases,$editarFechaSubsanacion,$idTemporada){
+	public function updateTemporada($editarAnio,$editarCiclo,$editarApertura,$editarPreInscripcion,$editarInicioClases,$editarCierreClases,$editarFechaSubsanacion,$idTemporada,$usuario){
 
             try {
-					$query = "	EXEC ACADEMIA.updateTemporada $editarAnio,$editarCiclo,'$editarApertura','$editarPreInscripcion','$editarInicioClases','$editarCierreClases','$editarFechaSubsanacion',$idTemporada ";
+					$query = "	EXEC ACADEMIA.updateTemporada $editarAnio,$editarCiclo,'$editarApertura','$editarPreInscripcion','$editarInicioClases','$editarCierreClases','$editarFechaSubsanacion',$idTemporada, $usuario ";
 				    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
 				    $stmt->execute();
 				    $temporadas = $stmt->fetchAll();
+				    
                		return $temporadas[0]['estadoModificar'];
 
             }catch (DBALException $e) {

@@ -510,13 +510,14 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
 
         }
 
-        public function eliminarDisciplina($ediCodigo){
+        public function eliminarDisciplina($ediCodigo,$usuario){
            
-            $query = " UPDATE  catastro.edificacionDisciplina SET edi_estado=0 where edi_codigo = $ediCodigo";
+            $query = "  UPDATE  catastro.edificacionDisciplina SET 
+                                edi_estado = 0,
+                                edi_usumodi = $usuario,
+                                edi_fechamodi = getDate() 
+                        WHERE edi_codigo = $ediCodigo";
             $stmt = $this->getEntityManager()->getConnection()->prepare($query);
             $stmt->execute();
-            
         }
-
-
 }

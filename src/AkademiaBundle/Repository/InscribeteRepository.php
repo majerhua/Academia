@@ -95,8 +95,11 @@ class InscribeteRepository extends \Doctrine\ORM\EntityRepository
                 CASE horario.discapacitados
                 WHEN '0' THEN 'Convencional'
                 WHEN '1' THEN 'Personas con Discapacidad'
-                END AS modalidad
-
+                END AS modalidad,
+                CASE horario.etapa
+                WHEN '0' THEN 'Formación'
+                WHEN '1' THEN 'Masificación'
+                END AS etapa
                 FROM
                 ACADEMIA.inscribete as inscribete, 
                 ACADEMIA.horario as horario,
@@ -128,25 +131,34 @@ class InscribeteRepository extends \Doctrine\ORM\EntityRepository
 	
 	}
 
-  public function cargaDatos($idInscripcion){
-      $query = "SELECT a.id as idFicha, a.horario_id as idHorario, a.estado as estadoFicha, a.participante_id as idParticipante, 
+
+    public function cargaDatos($idInscripcion){
+        $query = "SELECT a.id as idFicha, a.horario_id as idHorario, a.estado as estadoFicha, a.participante_id as idParticipante, 
                 b.dni as dniParticipante, c.dni as dniApoderado, c.id as idApoderado 
                 from 
                 academia.inscribete a inner join academia.participante b on a.participante_id = b.id 
                 inner join academia.apoderado c on b.apoderado_id = c.id where
                 a.id = $idInscripcion";
     
-      $stmt = $this->getEntityManager()->getConnection()->prepare($query);
-      $stmt->execute();
-      $datos = $stmt->fetchAll();
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $datos = $stmt->fetchAll();
 
-      return $datos;
-
+        return $datos;
   }
 
-  public function getDobleInscripcion($idHorario, $idParticipante){
+  public function getDobleInscripcion($idHorario, $idParticipante,$idTemporada){
     
-    $query = "SELECT * from academia.inscribete where participante_id = $idParticipante and horario_id = $idHorario and estado = 2";
+    $query = "
+                SELECT * from academia.inscribete ins
+                INNER JOIN ACADEMIA.horario hor ON hor.id=ins.horario_id
+                INNER JOIN CATASTRO.edificacionDisciplina edi ON edi.edi_codigo = hor.edi_codigo
+                WHERE 
+                 participante_id = $idParticipante AND
+                 horario_id = $idHorario AND 
+                 ins.estado = 2 AND 
+                 edi.temporada_id = $idTemporada ";
+            
     $stmt = $this->getEntityManager()->getConnection()->prepare($query);
     $stmt->execute();
     $datos = $stmt->fetchAll();
@@ -155,9 +167,17 @@ class InscribeteRepository extends \Doctrine\ORM\EntityRepository
 
   }
 
-  public function getCantInscripciones($idParticipante){
+  public function getCantInscripciones($idParticipante,$idTemporada){
 
-    $query = "SELECT count(*) cantidadRegistros from academia.inscribete where participante_id = $idParticipante and estado = 2";
+    $query = "
+            SELECT COUNT(*) cantidadRegistros FROM academia.inscribete ins
+            INNER JOIN ACADEMIA.horario hor ON hor.id=ins.horario_id
+            INNER JOIN CATASTRO.edificacionDisciplina edi ON edi.edi_codigo = hor.edi_codigo
+            WHERE 
+            participante_id = $idParticipante AND 
+            ins.estado = 2 AND
+            edi.temporada_id = $idTemporada
+            ";
     $stmt = $this->getEntityManager()->getConnection()->prepare($query);
     $stmt->execute();
     $datos = $stmt->fetchAll();

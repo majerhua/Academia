@@ -86,7 +86,10 @@ class FichaController extends Controller
     public function cambiarestadoAction(Request $request){
         
         if($request-> isXmlHttpRequest()){
+
             $idFicha = $request->request->get('id');
+            $idTemporada = $request->request->get('idTemporada');
+
             $usuario = $this->getUser()->getId();
            
             $em = $this->getDoctrine()->getManager();
@@ -108,14 +111,14 @@ class FichaController extends Controller
             }else{
                 
                 //Verficar si el alumno tiene una inscripcion previa
-                $data = $em->getRepository('AkademiaBundle:Inscribete')->getDobleInscripcion($idHorario,$idParticipante);
+                $data = $em->getRepository('AkademiaBundle:Inscribete')->getDobleInscripcion($idHorario,$idParticipante,$idTemporada);
                 if(!empty($data)){
                     $mensaje = 3;
                     return new JsonResponse($mensaje);
                 }else {
                     
                     $em = $this->getDoctrine()->getManager();
-                    $data = $em->getRepository('AkademiaBundle:Inscribete')->getCantInscripciones($idParticipante);
+                    $data = $em->getRepository('AkademiaBundle:Inscribete')->getCantInscripciones($idParticipante,$idTemporada);
                     $cantRegistros = $data[0]['cantidadRegistros'];
 
                     // CANTIDAD DE PRE - INSCRIPCIONES
@@ -156,7 +159,7 @@ class FichaController extends Controller
                                 $em->getRepository('AkademiaBundle:Horario')->getAcumularInscritos($idHorario);
                                 $em->flush();
                                 $em3= $this->getDoctrine()->getManager();
-                                $em3->getRepository('AkademiaBundle:Movimientos')->RegistrarMovInicial($idFicha, $usuario);
+                                $em3->getRepository('AkademiaBundle:Movimientos')->RegistrarMovInicial($idFicha, $usuario,$idHorario);
                                 $em3->flush();
                                 $mensaje = 1;
                                 return new JsonResponse($mensaje);

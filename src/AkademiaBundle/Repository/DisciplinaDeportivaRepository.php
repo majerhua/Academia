@@ -225,7 +225,7 @@ class DisciplinaDeportivaRepository extends \Doctrine\ORM\EntityRepository
                             inner join catastro.disciplina d ON edi.dis_codigo = d.dis_codigo 
                             inner join catastro.edificacionesdeportivas ede ON
                              edi.ede_codigo = ede.ede_codigo
-                            WHERE ede.ede_codigo = '$idComplejo' AND edi.temporada_id='$idTemporada'
+                            WHERE ede.ede_codigo = '$idComplejo' AND edi.temporada_id='$idTemporada' AND edi.edi_estado=1
                         ) t2
                         ON dis.dis_codigo = t2.dis_codigo 
                         WHERE t2.dis_codigo IS NULL 
@@ -286,7 +286,7 @@ class DisciplinaDeportivaRepository extends \Doctrine\ORM\EntityRepository
             inner join grubigeo ubiDpto on ubiDpto.ubidpto = ubi.ubidpto
 
             inner join CATASTRO.disciplina dis on dis.dis_codigo = edi.dis_codigo
-            WHERE ubiDpto.ubidistrito=0 AND ubiDpto.ubiprovincia=0 AND ubiDpto.ubidpto!=0
+            WHERE ubiDpto.ubidistrito=0 AND ubiDpto.ubiprovincia=0 AND ubiDpto.ubidpto != 0
             ORDER BY nombreDisciplina  ASC, idComplejoDeportivo, idDisciplina ;";
             
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
@@ -297,7 +297,10 @@ class DisciplinaDeportivaRepository extends \Doctrine\ORM\EntityRepository
 
     public function getEditarDiscapacitado($idDisciplina, $usuario){
 
-        $query = "UPDATE catastro.disciplina set dis_discapacitado = 1, dis_usumodi = $usuario, dis_fechamodi = getDate() where dis_codigo= $idDisciplina";
+        $query = "UPDATE catastro.disciplina set dis_discapacitado = 1, 
+                                            dis_usumodi = $usuario, 
+                                            dis_fechamodi = getDate() where
+                                             dis_codigo= $idDisciplina";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
     }
