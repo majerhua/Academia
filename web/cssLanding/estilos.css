@@ -101,3 +101,28 @@
 
 /***FIN*****/
 
+
+/***FIN*****/
+
+
+
+/* ESTILOS BRYAM */
+
+.img-container {
+  margin: 10px;
+  position: relative;
+  width: 200;
+  height: 160px;
+  overflow: hidden;
+}
+
+.img-container img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: auto;
+  width: 100%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}

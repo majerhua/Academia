@@ -72,43 +72,43 @@ class MigracionAsistenciaController extends Controller
         exit;
     }
 
-public function insertAsistenciaBeneficiarios($arrayAsistenciaMensual,$idHorario,$usuario){
+// public function insertAsistenciaBeneficiarios($arrayAsistenciaMensual,$idHorario,$usuario){
 
-        $query = "  SELECT DISTINCT ins.id inscribeteId,mov.categoria_id,mov.asistencia_id
-                    FROM ACADEMIA.horario hor 
-                    INNER JOIN ACADEMIA.inscribete ins ON ins.horario_id = hor.id
-                    INNER JOIN (SELECT MAX(movMax.id) idMov, movMax.inscribete_id insMov 
-                                FROM ACADEMIA.movimientos movMax
-                                GROUP BY movMax.inscribete_id
-                                ) maxMov  ON  maxMov.insMov = ins.id
-                    INNER JOIN ACADEMIA.movimientos mov ON mov.id = maxMov.idMov
-                    WHERE ins.estado = 2 AND hor.id = $idHorario";
+//         $query = "  SELECT DISTINCT ins.id inscribeteId,mov.categoria_id,mov.asistencia_id
+//                     FROM ACADEMIA.horario hor 
+//                     INNER JOIN ACADEMIA.inscribete ins ON ins.horario_id = hor.id
+//                     INNER JOIN (SELECT MAX(movMax.id) idMov, movMax.inscribete_id insMov 
+//                                 FROM ACADEMIA.movimientos movMax
+//                                 GROUP BY movMax.inscribete_id
+//                                 ) maxMov  ON  maxMov.insMov = ins.id
+//                     INNER JOIN ACADEMIA.movimientos mov ON mov.id = maxMov.idMov
+//                     WHERE ins.estado = 2 AND hor.id = $idHorario";
         
-        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
-        $stmt->execute();
-        $inscribeteHorario = $stmt->fetchAll();
+//         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+//         $stmt->execute();
+//         $inscribeteHorario = $stmt->fetchAll();
 
-        foreach ( $inscribeteHorario as $insHor ) {
+//         foreach ( $inscribeteHorario as $insHor ) {
 
-            $codAsis = 4;
+//             $codAsis = 4;
 
-            for ( $i=0 ; $i < count($arrayAsistenciaMensual) ; $i++) { 
+//             for ( $i=0 ; $i < count($arrayAsistenciaMensual) ; $i++) { 
 
-                if ( $insHor['inscribeteId'] == $arrayAsistenciaMensual[$i])
-                    $codAsis = 2;
+//                 if ( $insHor['inscribeteId'] == $arrayAsistenciaMensual[$i])
+//                     $codAsis = 2;
                 
-            }
+//             }
 
-            $categoriaId = $insHor['categoria_id'];
-            $inscribeteId = $insHor['inscribeteId'];
+//             $categoriaId = $insHor['categoria_id'];
+//             $inscribeteId = $insHor['inscribeteId'];
 
-            $queryInsertMovAsis = "INSERT INTO ACADEMIA.movimientos(categoria_id,asistencia_id,
-                inscribete_id,usuario_valida)
-                VALUES( $categoriaId , $codAsis , $inscribeteId , $usuario )";
+//             $queryInsertMovAsis = "INSERT INTO ACADEMIA.movimientos(categoria_id,asistencia_id,
+//                 inscribete_id,usuario_valida)
+//                 VALUES( $categoriaId , $codAsis , $inscribeteId , $usuario )";
         
-            $stmt = $this->getEntityManager()->getConnection()->prepare($queryInsertMovAsis);
-            $stmt->execute();
-        }
-    }
+//             $stmt = $this->getEntityManager()->getConnection()->prepare($queryInsertMovAsis);
+//             $stmt->execute();
+//         }
+//     }
     
 }

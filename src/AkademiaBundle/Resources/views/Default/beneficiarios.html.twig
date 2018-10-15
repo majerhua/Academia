@@ -2,36 +2,34 @@
 {% block title %}La Academia{% endblock %}
 {% block body  %}
 {% set numMesActual = ("now"|date("m"))|number_format %}
+
 <header>
-	 <nav class="navbar navbar-inverse" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    
-                </button> 
-                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="" style="float:left;"/>                              
-
-               	<div class="container-title-header">
-                	<p  class="text-bold title-header">TEMPORADA {{descripcionTemporada[0]['ciclo']}}-{{descripcionTemporada[0]['anio']}}</p>
-                </div>
-
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <br>
-                <ul class="nav navbar-nav navbar-right">
-                    
-                    <li title="Horarios"><a href="{{url('akademia_horarios',{'idTemporada':idTemporada})}}"><i class="icon-arrow-left font-color-li"></i></a></li>
-
+	<nav class="navbar navbar-inverse" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="" />
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<span class="navbar-text">
+					<h3>TEMPORADA {{descripcionTemporada[0]['ciclo']}}-{{descripcionTemporada[0]['anio']}}</h3>
+				</span>
+				<br>
+				<ul class="nav navbar-nav navbar-right">
+				    <li title="Horarios"><a href="{{url('akademia_horarios',{'idTemporada':idTemporada})}}"><i class="icon-arrow-left font-color-li"></i></a></li>
                     <li title="Inicio"><a href="{{url('akademia_panel',{'idTemporada':idTemporada})}}"><i class="icon-home font-color-li"></i></a></li>
-
                     <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout font-color-li"></i></a></li>
                 </ul>
-            </div>
-        </div>
-    </nav>
+				<span class="navbar-text navbar-right" style="margin-right:30px;">
+					Usuario: <b>{{app.user.username}}</b>
+				</span>
+			</div>
+		</div>
+	</nav>
 </header>
 
 {% set mesesAnio = {'1': 'Ene', '2':'Feb', '3':'Mar','4':'Abr','5':'May','6':'Jun','7':'Jul','8':'Ago','9':'Sep','10':'Oct','11':'Nov','12':'Dic'} %}
@@ -419,7 +417,7 @@
 				<br>
 				<br>
 				<br>
-				<img class="align-self-center foot" src="{{ asset('assets/images/ipdfooter.jpg')}}">
+				<img class="align-self-center foot" src="{{ asset('assets/images/ipdfooter.png')}}">
 			</div>
 			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 				<br><br>
