@@ -1,0 +1,158 @@
+
+
+{% set mesesAnio = {'01': 'Ene', '02':'Feb', '03':'Mar','04':'Abr','05':'May','06':'Jun','07':'Jul','08':'Ago','09':'Sep','10':'Oct','11':'Nov','12':'Dic'} %}
+
+<table class="table table-hover" width="100%;"> 
+	<thead style="color:#fff; background-color:#CB3F1D;"> 
+		<tr> 
+
+			<th class="text-center " style=" background-color:#CB3F1D; font-size:0.8em;" >Cod</th>
+			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;" >Año</th> 
+			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;">Ciclo</th>
+			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;" >Apertura</th> 
+			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;">Pre-Inscripciones</th>
+			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;">Ini-Clases</th>
+			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;">Fin-Clases</th>
+			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;">Subsanación</th>
+			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;">Duración</th>
+			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;">Estado</th>
+			<th class="text-center " style=" background-color:#CB3F1D;font-size:0.8em;">Editar</th>
+		</tr>
+
+	</thead> 
+
+	<tbody  class="buscar" id="bodyHorario">
+		{% for temporada in temporadas %}
+		 	<tr>
+		 		<td class="text-center" style="font-size:0.8em;" >{{temporada['id']}}</td>
+		 		<td class="text-center" style="font-size:0.8em;" >{{temporada['anio']}}</td>
+		 		<td class="text-center" style="font-size:0.8em;" >{{temporada['ciclo']}} </td>
+		 		{% set arrayApertura = temporada['apertura']|split('-') %}
+		 		<td class="text-center" style="font-size:0.8em;" ><b style="font-size:1.1em;" > {{arrayApertura[0]}} {{mesesAnio[arrayApertura[1]]}} {{arrayApertura[2]}}  </b></td>
+
+		 		{% set arrayApertura = temporada['pre_inscripciones']|split('-') %}
+
+		 		<td class="text-center col-xs-2" style="font-size:0.8em;" > {{arrayApertura[0]}} {{mesesAnio[arrayApertura[1]]}} {{arrayApertura[2]}}</td>
+
+		 		{% set arrayApertura = temporada['inicio_clases']|split('-') %}
+
+		 		<td class="text-center" style="font-size:0.8em;" >{{arrayApertura[0]}} {{mesesAnio[arrayApertura[1]]}} {{arrayApertura[2]}}</td>
+
+		 		{% set arrayApertura = temporada['cierre_clases']|split('-') %}
+
+		 		<td class="text-center" style="font-size:0.8em;" ><b  style="font-size:1.1em;"> {{arrayApertura[0]}} {{mesesAnio[arrayApertura[1]]}} {{arrayApertura[2]}} </b> </td>
+
+		 		{% set arraySubsanacion = temporada['subsanacion']|split('-') %}
+
+		 		<td class="text-center" style="font-size:0.8em;" >{{arraySubsanacion[0]}} {{mesesAnio[arraySubsanacion[1]]}} {{arraySubsanacion[2]}}</td>
+
+		 		<td class="text-center" style="font-size:0.8em;" >{{temporada['duracion']}}</td>
+
+		 		<td class="text-center" style="" >{% if temporada['estado'] == 0 %}<b class="estado-oculto-td" style="font-size:0.8em;">Cerrado</b>{% else %}<b class="estado-visible-td" style="font-size:0.8em;" >En Curso</b>{% endif %}</td>
+
+		 		<td class="text-center" style="font-size:0.8em;">
+		 			<button class="btn btn-success"data-toggle="modal" data-target="#modal-editar" onclick="editarTemporada({{temporada['id']}})" ><i class="icon-pencil-square-o" style="font-size:0.9em; margin-top:5px; color:white" ></i></button>
+		 		</td>
+		 		
+		 	</tr>	    
+		 {% endfor %} 							
+	</tbody> 
+
+</table>
+
+
+{% block javascripts %}
+
+<script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
+<script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
+
+<script>
+
+
+
+	$(document).ready(function () {
+
+		// if( parseInt("{{estadoUpdTemp}}") === 1 ){
+		// 	alertify.success("Se modifico Correctamente");
+		// }else if( parseInt("{{estadoUpdTemp}}") === 0){
+		// 	alertify.warning("<p style='color:gray;font-weight:bold;'>No se pudo actualizar la Temporada</p>");
+		// }else if( parseInt("{{estadoUpdTemp}}") === -1 ){
+		// 	alertify.warning("<p style='color:gray;font-weight:bold;'>No se pudo actualizar la temporada.</p>");
+		// }
+			
+		(function ($) {
+			var jsFiltrar = document.querySelectorAll('.filtrar');
+			var jsBuscar = document.querySelectorAll('.buscar');
+
+			for (var i = 0; i < jsFiltrar.length; i++) {
+
+				$(jsFiltrar[i]).keyup(function () {
+
+		            var rex = new RegExp($(this).val(),'i');
+		            $(jsBuscar).children('tr').hide();
+		            $(jsBuscar).children('tr').filter(function () {
+		                return rex.test($(this).text());
+		            }).show();
+		    	})
+			}
+
+		}(jQuery));
+ 	});
+
+	function limpiarCamposTemporada(){
+
+		$modalEditarCiclo.val("");
+		$modalEditarApertura.val("");
+		$modalEditarPreInscripciones.val("");
+		$modalEditarInicioClases.val("");
+		$modalEditarCierreClases.val("");
+		$modalEditarFechaSubsanacion.val("");
+		
+	}
+
+	function editarTemporada(idTemporada){
+
+		limpiarCamposTemporada();
+
+		{% for temporada in temporadas  %}
+
+			if (idTemporada == {{temporada['id']}} ) {
+
+				$modalEditarIdTemporada.val(idTemporada);
+				$titleCardEditar.text('TEMPORADA '+"{{temporada['anio']}}"+' '+"{{temporada['ciclo']}}");
+				$modalEditarCiclo.val("{{temporada['cicloId']}}");
+
+				$modalEditarApertura.val( formatYYYYMMDDdate("{{temporada['apertura']}}") );
+	 			$modalEditarPreInscripciones.val(  formatYYYYMMDDdate("{{temporada['pre_inscripciones']}}") );
+	 			$modalEditarInicioClases.val( formatYYYYMMDDdate("{{temporada['inicio_clases']}}") );
+	 			$modalEditarCierreClases.val( formatYYYYMMDDdate("{{temporada['cierre_clases']}}") );
+
+				if( new Date() > new Date("{{temporada['cierre_clases']}}") ){
+
+					$modalEditarApertura.attr('disabled','disabled');
+					$modalEditarPreInscripciones.attr('disabled','disabled');
+	 				$modalEditarInicioClases.attr('disabled','disabled');
+	 				$modalEditarCierreClases.attr('disabled','disabled');
+
+				}else{
+					$modalEditarApertura.removeAttr('disabled');
+					$modalEditarPreInscripciones.removeAttr('disabled');
+	 				$modalEditarInicioClases.removeAttr('disabled');
+	 				$modalEditarCierreClases.removeAttr('disabled');
+				}
+
+	 			$modalEditarFechaSubsanacion.val( formatYYYYMMDDdate("{{temporada['subsanacion']}}") );
+
+	 			if ( "{{temporada['estado']}}" == 0 ) 
+	 				$modalEditarEstado.html("<b class='estado-oculto-td' style='font-size:1.1em;'>Cerrado</b>");
+	 			else
+	 				$modalEditarEstado.html("<b class='estado-visible-td' style='font-size:1.1em;'>En Curso</b>")
+ 			}
+
+		{% endfor %}
+	}
+</script>
+
+{% endblock %}
+

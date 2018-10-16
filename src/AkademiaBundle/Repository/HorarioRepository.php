@@ -23,6 +23,7 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
                     convocatoria= 1  AND
                     vacantes <> 0 AND
                     estado = 1 AND
+                    etapa = 1 AND
                     discapacitados = $flagDiscapacitado AND
                     edi_codigo = $idCompleDis ORDER BY hor.edadMinima ASC
                     ";
@@ -137,7 +138,7 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
         return $horarios;
     }
 
-    public function getHorariosComplejos($idcomplejo){
+    public function getHorariosComplejos($idcomplejo,$idTemporada){
     
             $query ="SELECT rtrim(dis.dis_descripcion) as nombreDisciplina,
                     dis.dis_codigo as idDisciplina,
@@ -159,7 +160,7 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
                     ACADEMIA.horario as hor inner join CATASTRO.edificacionDisciplina as edi on hor.edi_codigo = edi.edi_codigo
                     inner join CATASTRO.disciplina as dis on edi.dis_codigo = dis.dis_codigo
                     inner join CATASTRO.edificacionesdeportivas as ede on edi.ede_codigo = ede.ede_codigo
-                    where ede.ede_codigo =$idcomplejo and dis.dis_estado = 1 and hor.estado = 1
+                    where ede.ede_codigo =$idcomplejo and hor.estado = 1 and edi.temporada_id = $idTemporada
                     ORDER BY  hor.id DESC; ";
 
             $stmt = $this->getEntityManager()->getConnection()->prepare($query);
@@ -260,9 +261,13 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
         return $turnos;
     }
 
-    public function getCapturarEdiCodigo($idComplejo, $idDisciplina){
+    public function getCapturarEdiCodigo($idComplejo, $idDisciplina,$idTemporada){
 
-        $query="SELECT edi_codigo from catastro.edificacionDisciplina where ede_codigo = $idComplejo and dis_codigo = $idDisciplina";
+        $query="SELECT edi_codigo FROM 
+                        catastro.edificacionDisciplina WHERE 
+                        ede_codigo = $idComplejo AND 
+                        dis_codigo = $idDisciplina AND 
+                        temporada_id = $idTemporada";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $horarios = $stmt->fetchAll();
@@ -328,8 +333,10 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
         public function getHorarioBeneficiario($idHorario){
 
                 $query = "SELECT rtrim(dis.dis_descripcion) as nombreDisciplina,
+                        edi.edi_codigo ediCodigo,
                         dis.dis_codigo as idDisciplina,
                         hor.id as idHorario,
+                        hor.discapacitados,
                         CASE hor.discapacitados 
                         WHEN '0' THEN 'Convencional'
                         WHEN '1' THEN 'Persona con Discapacidad' 
@@ -369,6 +376,12 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
                         hor.id as idHorario, 
                         ins.id as idInscribete,
                         ins.estado as estadoInscribete,
+
+                        CASE hor.discapacitados
+                        WHEN 0 THEN 'Convencional'
+                        WHEN 1 THEN 'Persona con Discapacidad'
+                        END AS modalidad,
+                        
                         mov.categoria_id as idCategoria,
                         mov.asistencia_id as idAsistencia,
                         mov.fecha_modificacion as fechita,
@@ -497,13 +510,14 @@ class HorarioRepository extends \Doctrine\ORM\EntityRepository
 
         }
 
-        public function eliminarDisciplina($ediCodigo){
+        public function eliminarDisciplina($ediCodigo,$usuario){
            
-            $query = " UPDATE  catastro.edificacionDisciplina SET edi_estado=0 where edi_codigo = $ediCodigo";
+            $query = "  UPDATE  catastro.edificacionDisciplina SET 
+                                edi_estado = 0,
+                                edi_usumodi = $usuario,
+                                edi_fechamodi = getDate() 
+                        WHERE edi_codigo = $ediCodigo";
             $stmt = $this->getEntityManager()->getConnection()->prepare($query);
             $stmt->execute();
-            
         }
-
-
 }

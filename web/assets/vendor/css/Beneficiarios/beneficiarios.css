@@ -1,0 +1,13 @@
+.font-color-li{
+	font-size:1.5em; 
+	color:white
+}
+
+
+.container-find-assistance > div:nth-child(1) > div{
+	padding-left:10px;
+}
+
+.list-padding{
+	padding:7px 2px 6px 10px;
+}

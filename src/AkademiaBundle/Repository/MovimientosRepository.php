@@ -11,16 +11,29 @@ namespace AkademiaBundle\Repository;
 class MovimientosRepository extends \Doctrine\ORM\EntityRepository
 {
 
-  	public function nuevoMovimiento($idCategoria, $idAsistencia, $idFicha, $usuario){
+  	public function nuevoMovimiento($idCategoria, $idAsistencia, $idFicha, $usuario, $horarioActual,$horarioAMigrar){
 
-        $query = "INSERT into academia.movimientos(categoria_id, asistencia_id, inscribete_id, usuario_valida) values ($idCategoria,$idAsistencia,$idFicha,$usuario)";
-        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
-        $stmt->execute();
+        if(!empty($horarioAMigrar)){
+
+            $query = "INSERT into academia.movimientos(categoria_id, asistencia_id, inscribete_id, usuario_valida,horario_id) values ($idCategoria,$idAsistencia,$idFicha,$usuario,$horarioAMigrar)";
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+
+            $query = "UPDATE ACADEMIA.inscribete SET horario_id=$horarioAMigrar WHERE id=$idFicha";
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+
+        }else{
+            $query = "INSERT into academia.movimientos(categoria_id, asistencia_id, inscribete_id, usuario_valida,horario_id) values ($idCategoria,$idAsistencia,$idFicha,$usuario,$horarioActual)";
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+
+        }
     }
 
-    public function RegistrarMovInicial($idFicha, $usuario){
+    public function RegistrarMovInicial($idFicha, $usuario,$idHorario){
     	
-    	$query = "INSERT into academia.movimientos(categoria_id, asistencia_id, inscribete_id, usuario_valida) values (1,1,$idFicha,$usuario)";
+    	$query = "INSERT into academia.movimientos(categoria_id, asistencia_id, inscribete_id, usuario_valida,horario_id) values (1,1,$idFicha,$usuario , $idHorario )";
     	$stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
     }

@@ -11,9 +11,9 @@ namespace AkademiaBundle\Repository;
 class ComplejoDeportivoRepository extends \Doctrine\ORM\EntityRepository
 {
 
-	public function getComplexesPublicGeneralByDisability($disability,$ageBeneficiario)
+	public function getComplexesPublicGeneralByDisability($disability,$ageBeneficiario,$idTemporada)
 	{
-		$query = "SELECT distinct edde.ede_codigo as id, edde.ede_nombre as nombre ,edde.ubicodigo ,edde.ede_direccion as direccion, edde.ede_estado as estado,edde.ede_discapacitado as discapacitado from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis, CATASTRO.edificacionesdeportivas AS edde where hor.discapacitados='$disability' and hor.estado=1 and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and hor.vacantes <> 0 and hor.convocatoria=1 and hor.etapa = 1 and '$ageBeneficiario'<=hor.edadMaxima and '$ageBeneficiario'>=hor.edadMinima;";
+		$query = "SELECT distinct edde.ede_codigo as id, edde.ede_nombre as nombre ,edde.ubicodigo ,edde.ede_direccion as direccion, edde.ede_estado as estado,edde.ede_discapacitado as discapacitado from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis, CATASTRO.edificacionesdeportivas AS edde where hor.discapacitados='$disability' and hor.estado=1 and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and hor.vacantes <> 0 and hor.convocatoria=1 and hor.etapa = 1 and '$ageBeneficiario'<=hor.edadMaxima and '$ageBeneficiario'>=hor.edadMinima and eddis.temporada_id = $idTemporada;";
 
 		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
 		$stmt->execute();
@@ -21,9 +21,9 @@ class ComplejoDeportivoRepository extends \Doctrine\ORM\EntityRepository
 		return $complejosDeportivos;
 	}
 
-	public function getComplexesPromotorByDisability($disability,$ageBeneficiario)
+	public function getComplexesPromotorByDisability($disability,$ageBeneficiario, $idTemporada)
 	{
-		$query = "SELECT distinct edde.ede_codigo AS id, edde.ede_nombre as nombre ,edde.ubicodigo ,edde.ede_direccion as direccion, edde.ede_estado as estado,edde.ede_discapacitado as discapacitado from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis, CATASTRO.edificacionesdeportivas AS edde where hor.discapacitados='$disability' and hor.estado=1 and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and hor.vacantes<>0 and '$ageBeneficiario'<=hor.edadMaxima and '$ageBeneficiario'>=hor.edadMinima;";
+		$query = "SELECT distinct edde.ede_codigo AS id, edde.ede_nombre as nombre ,edde.ubicodigo ,edde.ede_direccion as direccion, edde.ede_estado as estado,edde.ede_discapacitado as discapacitado from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis, CATASTRO.edificacionesdeportivas AS edde where hor.discapacitados='$disability' and hor.estado=1 and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and hor.vacantes<>0 and '$ageBeneficiario'<=hor.edadMaxima and '$ageBeneficiario'>=hor.edadMinima and eddis.temporada_id = $idTemporada;";
 
 		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
 		$stmt->execute();
@@ -55,9 +55,31 @@ class ComplejoDeportivoRepository extends \Doctrine\ORM\EntityRepository
            return $complejosDeportivos;		
 	}
 
-	public function getComplexesLandingByDisability($disability)
+	public function getComplexesLandingByDisability($disability,$idTemporada)
 	{
-		$query = "SELECT distinct edde.ede_codigo as id, edde.ede_nombre as nombre ,edde.ubicodigo ,edde.ede_direccion as direccion, edde.ede_estado as estado,edde.ede_discapacitado as discapacitado from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis, CATASTRO.edificacionesdeportivas AS edde where hor.discapacitados='$disability' and hor.estado=1 and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and hor.vacantes <> 0 and hor.convocatoria=1;";
+		$query = "  SELECT distinct 
+							edde.ede_codigo AS id, 
+							edde.ede_nombre AS nombre ,
+							edde.ubicodigo ,
+							edde.ede_direccion AS direccion, 
+							edde.ede_estado AS estado,
+							edde.ede_discapacitado AS discapacitado 
+
+							FROM ACADEMIA.horario AS hor , 
+								CATASTRO.edificacionDisciplina AS eddis,
+								CATASTRO.edificacionesdeportivas AS edde
+
+							WHERE 	hor.discapacitados = '$disability' AND 
+									hor.estado = 1 AND 
+									hor.vacantes <> 0 AND
+									hor.convocatoria=1 AND
+									hor.etapa = 1 AND
+									hor.edi_codigo = eddis.edi_codigo AND 
+
+									eddis.temporada_id = '$idTemporada' AND
+									
+									edde.ede_codigo=eddis.ede_codigo ;";
+									
 
 		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
 		$stmt->execute();

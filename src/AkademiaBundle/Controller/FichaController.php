@@ -32,28 +32,52 @@ class FichaController extends Controller
         if($request->isXmlHttpRequest()){
            
             $idFicha = $request->request->get('id');
-            $em = $this->getDoctrine()->getManager();
-            $ficha = $em->getRepository('AkademiaBundle:Inscribete')->getFicha($idFicha);
-            $idHorario = $ficha[0]['horario_id'];
-            $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($idHorario);
-            $ficha[0]['turnos'] = $fichaTurnoHorario;
+            $idTemporada = $request->request->get('idTemporada');
 
-            if( !empty($ficha) && !empty($fichaTurnoHorario) ){
-                $encoders = array(new JsonEncoder());
-                $normalizer = new ObjectNormalizer();
-                $normalizer->setCircularReferenceLimit(1);
-                   
-                $normalizer->setCircularReferenceHandler(function ($object) {
-                    return $object->getId();
-                });
-                $normalizers = array($normalizer);
-                $serializer = new Serializer($normalizers, $encoders);
-                $jsonContent = $serializer->serialize($ficha,'json');
-                return new JsonResponse($jsonContent);
-            }else{
-                $mensaje = 1;
-                return new JsonResponse($mensaje);
-            }
+
+            $em = $this->getDoctrine()->getManager();
+
+            $validarExistenciaFicha = $em->getRepository('AkademiaBundle:Inscribete')->validarExistenciaFicha($idFicha);
+
+            if( !empty( $validarExistenciaFicha ) ){
+
+                //VALIDAMOS SI LA FICHA PERTENECE A LA TEMPORADA ACTUAL
+                $validarFichaToTemporada = $em->getRepository('AkademiaBundle:Temporada')->validarFichaToTemporada($idFicha,$idTemporada);
+
+                //RETORNAMOS LA FICHA QUE PERTENECE A LA TEMPORADA ACTUAL
+                if( $validarFichaToTemporada[0]['flagPertenece'] == 1 ){
+
+                    $ficha = $em->getRepository('AkademiaBundle:Inscribete')->getFicha($idFicha,$idTemporada);
+
+                    $idHorario = $ficha[0]['horario_id'];
+
+                    $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($idHorario);
+
+                    $ficha[0]['turnos'] = $fichaTurnoHorario;
+
+                    $encoders = array(new JsonEncoder());
+                    $normalizer = new ObjectNormalizer();
+                    $normalizer->setCircularReferenceLimit(1);
+                       
+                    $normalizer->setCircularReferenceHandler(function ($object) {
+                        return $object->getId();
+                    });
+                    $normalizers = array($normalizer);
+                    $serializer = new Serializer($normalizers, $encoders);
+                    $jsonContent = $serializer->serialize($ficha,'json');
+
+                    return new JsonResponse($jsonContent);
+
+                }else
+                    $mensaje=2; // SI LA FICHA PERTENECE A OTRA TEMPORADA
+                
+
+
+            }else
+                $mensaje = 1;  //SI NO EXISTE LA FICHA
+            
+
+            return new JsonResponse($mensaje);
         }
     }
     
@@ -62,7 +86,10 @@ class FichaController extends Controller
     public function cambiarestadoAction(Request $request){
         
         if($request-> isXmlHttpRequest()){
+
             $idFicha = $request->request->get('id');
+            $idTemporada = $request->request->get('idTemporada');
+
             $usuario = $this->getUser()->getId();
            
             $em = $this->getDoctrine()->getManager();
@@ -84,14 +111,14 @@ class FichaController extends Controller
             }else{
                 
                 //Verficar si el alumno tiene una inscripcion previa
-                $data = $em->getRepository('AkademiaBundle:Inscribete')->getDobleInscripcion($idHorario,$idParticipante);
+                $data = $em->getRepository('AkademiaBundle:Inscribete')->getDobleInscripcion($idHorario,$idParticipante,$idTemporada);
                 if(!empty($data)){
                     $mensaje = 3;
                     return new JsonResponse($mensaje);
                 }else {
                     
                     $em = $this->getDoctrine()->getManager();
-                    $data = $em->getRepository('AkademiaBundle:Inscribete')->getCantInscripciones($idParticipante);
+                    $data = $em->getRepository('AkademiaBundle:Inscribete')->getCantInscripciones($idParticipante,$idTemporada);
                     $cantRegistros = $data[0]['cantidadRegistros'];
 
                     // CANTIDAD DE PRE - INSCRIPCIONES
@@ -132,7 +159,7 @@ class FichaController extends Controller
                                 $em->getRepository('AkademiaBundle:Horario')->getAcumularInscritos($idHorario);
                                 $em->flush();
                                 $em3= $this->getDoctrine()->getManager();
-                                $em3->getRepository('AkademiaBundle:Movimientos')->RegistrarMovInicial($idFicha, $usuario);
+                                $em3->getRepository('AkademiaBundle:Movimientos')->RegistrarMovInicial($idFicha, $usuario,$idHorario);
                                 $em3->flush();
                                 $mensaje = 1;
                                 return new JsonResponse($mensaje);

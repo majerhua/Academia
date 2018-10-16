@@ -1,8 +1,11 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="es">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta name="author" content="IPD">
+        <meta name="description" content="Es un programa que promueve la masificación y captación de talentos deportivos a través de talleres gratuitos que se desarrollan en los Complejos Deportivos del IPD a nivel nacional." >
 
      	<link rel="icon" type="image/x-icon" href="{{asset('assets/images/favicon.png')}}"/>
 		<title>La Academia IPD</title>
@@ -33,18 +36,19 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/logofavicon.png') }}" />
 
         <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120386328-1"></script>
+        {#<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120386328-1"></script>
         <script>
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
 
           gtag('config', 'UA-120386328-1');
-        </script>
+        </script>#}
          
     </head>
 <body>
 
+{% set mesesAnio = {'01': 'Ene', '02':'Feb', '03':'Mar','04':'Abr','05':'May','06':'Jun','07':'Jul','08':'Ago','09':'Sep','10':'Oct','11':'Nov','12':'Dic'} %}
 
 <section class="header">
 
@@ -106,9 +110,33 @@
 				</div>
 				<div class="containe__button">
 
-					<button class="btn-verHorario" data-toggle="modal" data-target="#modal-escoger-tipo-horario">Horarios</button>
+					{% if faseTemporada == 20 or faseTemporada == 30  %}
+						<button class="btn-verHorario" data-toggle="modal" data-target="#modal-escoger-tipo-horario">Horarios</button>
+						<button class="btn-preInscribete pre-inscribete" >Pre Inscríbete</button>
 
-					<button class="btn-preInscribete" id="pre-inscribete" >Pre Inscríbete</button>
+					{% else %}
+
+						<div class="container-mensaje-temporada"  style="z-index:1000;">
+
+							{% if faseTemporada == 40 or faseTemporada == 10 %}
+
+								<p class="text-center"  style="font-weight:bold;font-size:1.3em;color:rgba(255, 255, 45, 1);padding:0;margin:0;">Próximamente</p>
+								<p class="text-center" style="font-weight:bold;font-size:1.5em;color:rgba(255, 255, 45, 1);padding:0;margin:0;" > Temporada {{ ciclo|lower|capitalize }} {{anio}} </p>
+
+								{% set arrayFechaPreInscripcion = fechaPreInscripcion|split('/') %}
+
+								<p class="text-center" style="font-weight:bold;font-size:1.3em;color:rgba(255, 255, 45, 1);padding:0;margin:0;">Inicio de Preinscripción: {{arrayFechaPreInscripcion[0]}} de {{mesesAnio[arrayFechaPreInscripcion[1]]}} {{arrayFechaPreInscripcion[2]}}</p>
+
+							{%  elseif faseTemporada == 50 %}
+
+								<p class="text-center"  style="font-weight:bold;font-size:1.3em;color:rgba(255, 255, 45, 1);padding:0;margin:0;">Próximamente</p>
+								<p class="text-center"  style="font-weight:bold;font-size:1.4em;color:rgba(255, 255, 45, 1);padding:0;margin:0;">Inicio Nueva Temporada</p>
+							{% endif %}
+
+						</div>
+
+					{% endif %}
+
 				</div>
 			</div>
 		</div>
@@ -188,7 +216,15 @@
 					<img src="{{asset('imgLanding/disenioRecreacion/autorizacionPadre.png')}}">
 
 					<div class="container__buton-pre-inscribete">
-						<button href="#" class="btn btn-success btn-success-mod" id="btnPreInscribete-req" >Pre-inscríbete</button>
+
+					{% if faseTemporada == 20 or faseTemporada == 30   %}
+
+						<button href="#" class="btn btn-success btn-success-mod pre-inscribete" >Pre-inscríbete</button>
+					{% else %}
+
+						<button href="#" class="btn btn-success btn-success-mod ">Próximamente</button>
+					{% endif %}
+							
 					</div>
 				</div>
 
@@ -246,7 +282,8 @@
 			</div>
 
 			<div class="container__hero__button">
-				<button href="#" class="btn btn-success btn-success-mod" ><i class="icon-pencil-square-o"></i>Pre-inscríbete</button>
+				
+					<button href="#" class="btn btn-success btn-success-mod" ><i class="icon-pencil-square-o"></i>Pre-inscríbete</button>
 			</div>
 
 		</div>
@@ -264,6 +301,7 @@
 
 							<div class="container__texto">
 								<h2 class="text-left">Descarga nuestra aplicación móvil:</h2>
+								<!--<h2 class="text-left"><i>Academia IPD</i></h2>-->
 							</div>
 
 							<iframe src="https://www.youtube.com/embed/Vdr9X0I29xQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -271,11 +309,14 @@
 							<div class="container-mensaje-iframe" >
 								<p class="text-left">Encuentra a los potenciales talentos deportivos del programa La Academia a nivel nacional.</p>
 							</div>
+								
 						</div>
 
 						<div class="images__app col-xs-12 col-sm-6 col-md-6 ">
+
 							<img src="{{asset('imgLanding/pantallazos.png')}}">
-							<img src="{{asset('imgLanding/img_google_play.png')}}" id="img-play-store"  style="cursor:pointer;" >
+							<img src="{{asset('imgLanding/img_google_play.png')}}">
+
 						</div>
 
 					</div>
@@ -375,19 +416,19 @@
 	<div class="container__btn__informacion">
 
 		<div class="col-xs-6 col-sm-3 col-md-3">
-			<button class=" btn__informacion" id="infografia">Infografía</button>
+			<button class=" btn__informacion">Infografía</button>
 		</div>
 		
 		<div class="col-xs-6 col-sm-3 col-md-3">
-			<button class="btn__informacion" id="videos">Videos</button>	
+			<button class="btn__informacion" >Videos</button>	
 		</div>
 
 		<div class="col-xs-6 col-sm-3 col-md-3">
-			<button class="btn__informacion" id="galeria">Galeria</button>	
+			<button class="btn__informacion" >Galeria</button>	
 		</div>
 
 		<div class="col-xs-6 col-sm-3 col-md-3">
-			<button class="btn__informacion" id="manual">Manual</button>	
+			<button class="btn__informacion">Manual</button>	
 		</div>
 		
 	</div>
@@ -401,7 +442,7 @@
 			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center">
 				<br>
 
-				<img class="align-self-center foot"  width="200" src="{{asset('imgLanding/ipdfooter.jpg')}}">
+				<img class="align-self-center foot"  width="200" src="{{ asset('assets/images/ipdfooter.png')}}">
 
 			</div>
 			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
@@ -427,13 +468,15 @@
 
 </footer>
 
+
+
   <!-- Modal -->
 <div class="modal fade" id="modal-escoger-tipo-horario" role="dialog">
     <div class="modal-dialog modal-md" style=" max-width: 450px;" >
       <div class="modal-content">
 	        <div class="modal-header">
 	          <button type="button" class="close" data-dismiss="modal">&times;</button>
-	          <h4 class="modal-title text-center">Selecciona la modalidad deportiva</h4>
+	          <h3 class="modal-title text-center">Elige Modalidad</h3>
 	        </div>
 
 	        <div class="modal-body">
@@ -441,11 +484,11 @@
 	          <div class="container container-button-modal" >
 	          	<div class="row">
 		          	<div class="col-xs-12 col-md-5" >
-		          		<a href="horarios-disponibles/0"><button class="btn-verHorario">Convencionales</button></a>
+		          		<a href="horarios-disponibles/0/temporada/{{idTemporada}}"><button class="btn-verHorario">Convencional</button></a>
 		          	</div>
 
 		          	<div class="col-xs-12 col-md-7" >
-		          		<a href="horarios-disponibles/1"><button class="btn-verHorario">Personas con Discapacidad</button></a>
+		          		<a href="horarios-disponibles/1/temporada/{{idTemporada}}"><button class="btn-verHorario">Personas con Discapacidad</button></a>
 		          	</div>
 		         </div>
 	          </div>
@@ -460,7 +503,23 @@
   	</div>
 </div>
 
+<!-- <div id="modal-nueva-temporada" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+					<h4 class="title-card" style="color:#d9534f">Información Inicio Temporada</h4>
+			</div>
+			<div class="modal-body">
+				<p>Pronto comenzara la nueva Temporada</p>
+			</div>
 
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button>
+			</div>
+		</div>
+	</div>
+</div> -->
 
 </body>
 
@@ -474,29 +533,25 @@
 	<script >
 		$(document).ready(function(){
 
-			$btnInfografia = $("#infografia");
-			$btnVideos = $("#videos");
-			$btnGaleria = $("#galeria");
-			$btnManual = $("#manual");
-			$imgPlayStore = $("#img-play-store");
+			{#
+			{%  if faseTemporadaActiva == 10 %}
+				$("#modal-nueva-temporada").modal('show');
+			{% endif %}
+			#}
+
 
 			$enviarCorreoUsuarioExt = $("#enviar-correo-usuario-ext");
 
 			TweenLite.to($("#mensaje-principal,#logo-principal"),3,{alpha:1});
 
 
-			$("#pre-inscribete").on('click',function(){
+			$(".pre-inscribete").on('click',function(){
 				window.open('ficha-preinscripcion');
 			});
 
 			$("#intranet").on('click',function(){
 				window.open('login','_blank');
 			});
-
-			$("#btnPreInscribete-req").on('click',function(){
-				window.open('ficha-preinscripcion');
-			});
-
 
 		 	function EnviarEmail(){
 
@@ -527,9 +582,9 @@
 			                	}else{
 			                		alertify.error('No se pudo Enviar el mensaje!');
 			                	}
-			                    $("#nombre-usuario-ext").val("");
-			                    $("#email-usuario-ext").val("");
-			                    $("#message-usuario-ext").val("");
+			                    $("#name").val("");
+			                    $("#email").val("");
+			                    $("#message").val("");
 
 			            }, error: function(error){
 			                console.log(error);
@@ -540,28 +595,8 @@
 
 	    $enviarCorreoUsuarioExt.on('click',function(){
 	    	EnviarEmail();
+	    	console.log("javier");
 	    });
-
-	    $btnInfografia.on('click',function(){
-	    	window.open('http://www.ipd.gob.pe/images/Infografia-Academia-01.png','_blank');
-	    });
-
-	    $btnVideos.on('click',function(){
-	    	window.open('http://www.ipd.gob.pe/videos-la-academia','_blank');
-	    });
-
-	    $btnGaleria.on('click',function(){
-			window.open('http://www.ipd.gob.pe/galeria-la-academia','_blank');
-	    });
-
-	    $btnManual.on('click',function(){
-	    	window.open('http://www.ipd.gob.pe/manual-de-la-academia-ipd','_blank');
-	    });
-
-	    $imgPlayStore.on('click',function(){
-	    	window.open('https://play.google.com/store/apps/details?id=com.laacademiaipd.laacademiaipd&hl=es_PE','_blank');
-	    });
-
 
 	});
 

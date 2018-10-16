@@ -1,0 +1,630 @@
+{% extends '::base.html.twig' %}
+{% block title %}La Academia{% endblock %}
+{% block body  %}
+
+    <header>
+        <nav class="navbar navbar-inverse" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="" />
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <span class="navbar-text">
+                        <h3>TEMPORADA {{descripcionTemporada[0]['ciclo']}}-{{descripcionTemporada[0]['anio']}}</h3>
+                    </span>
+                    <br>
+                    <ul class="nav navbar-nav navbar-right">
+						<li title="Inicio"><a href="{{url('akademia_panel')}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
+						<li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
+					</ul>
+                    <span class="navbar-text navbar-right" style="margin-right:30px;">
+                        Usuario: <b>{{app.user.username}}</b>
+                    </span>
+                </div>
+            </div>
+        </nav>
+    </header>
+	
+<section class="proceso-inscripcion">
+		<div id="proceso1" class="proceso" style="margin-bottom: 60px;">
+
+			<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert">
+				<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+				<p>Aquí podras gestionar los ciclos y temporadas de La Academia.</p>
+			</div>
+
+			<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-10 col-lg-11">
+				<div class="card" >
+
+					<div class="card-header text-center">
+						<h2>Temporadas</h2> 
+					</div>
+
+					<hr>
+
+					<div class="card-body">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="input-group col-xs-4 col-sm-4 col-md-4 col-lg-4">
+								 	<span class="input-group-addon">Buscar</span>
+								  	<input class="filtrar form-control" type="text" placeholder=" ingresa los campos a buscar">
+								</div>
+								<br>
+									
+								<div id="container-table-temporada">
+									{% include 'AkademiaBundle:Migracion_Asistencia:table_temporada.html.twig' %}
+								</div>
+							</div>
+						</div>
+
+						<hr>
+
+						<div class="row text-right" style="z-index:100;">
+							<button type="button" id="open-modal-confirmar" class="btn btn-danger" style="margin-right: 18px;" >Crear nuevo temporada</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+</section>
+
+
+<footer class="footer">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center">
+				<br>
+				<br>
+				<br>
+				<img class="align-self-center foot" src="{{ asset('assets/images/ipdfooter.png')}}">
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+				<br><br>
+				<h4>La Academia</h4>
+				<p class="footerTex">
+					Dirección:Calle Madre de Dios N° 463
+				</p>
+				<p class="footerTex">
+					Teléfono: 204-8420 /anexo 1302
+				</p>
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+				<br><br>
+				<h4>Enlaces de Interés</h4>
+				<p><a class="footerTex" href="http://www.ipd.gob.pe/">Instituto Peruano del Deporte</a></p>
+				<p><a class="footerTex" href="https://www.facebook.com/recreacion.ipd/">Facebook Recreación</a></p>
+				<p><a class="footerTex" href="http://www.ipd.gob.pe/formacion-deportiva">Formación Deportiva</a></p>
+			</div>
+		</div>
+		<br>
+    	<p class="col-xs-12 col-sm-12 col-md-12 col-lg-12 copyright">&copy; 2018 Todos los derechos reservados</p>
+	</div>
+</footer>
+
+
+<div id="modal-confirmar-nueva-temporada" class="modal-migracion">
+	<div class="modal-content-migracion">
+
+	    <span class="close-migracion close-modal-migracion" >&times;</span>
+	    <div class="row">
+
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-lg-offset-1">
+
+				<div>
+					<h3 class="text-bold text-warning" >Advertencia:</h3>
+				</div>
+
+				<div>
+					<p class="text-bold">Al continuar el proceso:</p>
+				</div>
+
+				<ol>
+					<li style="font-size:0.9em;font-weight:bold;" >Se iniciará la creación de una nueva temporada con fecha de APERTURA no anterior al CIERRE de la temporada en curso.</li>
+
+					<li style="font-size:0.9em;">Por defecto el sistema APERTURA la temporada en curso, una vez que inicie según la fecha programada.</li>
+
+					<li style="font-size:0.9em;font-weight:bold;">La información de PRE-INSCRIPCIÓN sólo serán visibles en la temporada en curso.</li>
+
+					<li style="font-size:0.9em;">Para que los usuarios puedan ingresar a temporadas anteriores deberán tener un usuario y contraseña activo, gestionadas por el administrador de sistema.</li>
+				</ol>
+
+			</div>
+		</div>
+
+		<div class="modal-migracion-footer">
+			<button type="button" class="btn btn-default close-modal-migracion">Cerrar</button>
+			<button type="button" class="btn btn-danger close-modal-migracion"  style="background-color:red;" data-toggle="modal" data-target="#modal-crear">Confirmar</button>
+		</div>
+
+	 </div>
+</div>
+
+<div id="modal-crear" class="modal fade" role="dialog" aria-labelledby="..." aria-hidden="true">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+					<h4 class="title-card">PROGRAMAR NUEVA TEMPORADA</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<ul>
+						
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Ciclo</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<select class="form-control" id="modal-crear-ciclo">
+										<option value="">--Seleccionar--</option>
+										<option value="1">VERANO</option>
+										<option value="2">INVIERNO</option>
+									</select>
+								</div>
+							</div>
+						</li>
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Apertura</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<input  type="date" class="form-control" id="modal-crear-apertura" />		
+								</div>
+							</div>
+							<br>
+						</li>
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Pre-Inscripciones</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<input  type="date" class="form-control" id="modal-crear-pre-inscripciones"/>		
+								</div>
+							</div>
+							<br>
+						</li>
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Inicio Clases</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<input  type="date" class="form-control" id="modal-crear-inicio-clases"/>		
+								</div>
+							</div>
+							<br>
+						</li>
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Cierre Clases</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<input  type="date" class="form-control" id="modal-crear-cierre-clases"/>		
+								</div>
+							</div>
+							<br>
+						</li>
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Fecha Subsanación</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<input  type="date" class="form-control" id="modal-crear-fecha-subsanacion"/>		
+								</div>
+							</div>
+						</li>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"  >Cerrar</button>
+				<button id="btn-crear-horario" type="button" class="btn btn-danger" data-dismiss="modal">Crear</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+<div id="modal-editar" class="modal fade" role="dialog" aria-labelledby="..." aria-hidden="true">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+					<h4 class="title-card-editar" id="title-card-temporada-editar" ></h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<ul>
+						<input type="hidden" id="modal-editar-id-temporada">
+
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Ciclo</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<select class="form-control" id="modal-editar-ciclo">
+										<option value="">--Seleccionar--</option>
+										<option value="1">VERANO</option>
+										<option value="2">INVIERNO</option>
+									</select>
+								</div>
+							</div>
+						</li>
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Apertura</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<input  type="date" class="form-control" id="modal-editar-apertura" />		
+								</div>
+							</div>
+							<br>
+						</li>
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Pre-Inscripciones</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<input  type="date" class="form-control" id="modal-editar-pre-inscripciones"/>		
+								</div>
+							</div>
+						</li>
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Inicio Clases</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<input  type="date" class="form-control" id="modal-editar-inicio-clases"/>		
+								</div>
+							</div>
+						</li>
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Cierre Clases</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<input  type="date" class="form-control" id="modal-editar-cierre-clases"/>		
+								</div>
+							</div>
+						</li>
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Fecha Subsanación</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<input  type="date" class="form-control" id="modal-editar-fecha-subsanacion"/>		
+								</div>
+							</div>
+						</li>
+
+						<li class="list-group-item">
+							<div class="row">
+								<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<p><strong>Estado</strong></p>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<p id="modal-editar-estado"></p>		
+								</div>
+							</div>
+						</li>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"  >Cerrar</button>
+				<button id="btn-editar-temporada" type="button" class="btn btn-danger" data-dismiss="modal">Editar</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}
+{% block javascripts %}
+
+<script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
+<script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
+
+<script>
+	
+	var modal = document.getElementById('modal-confirmar-nueva-temporada');
+
+	$modalEditarIdTemporada = $("#modal-editar-id-temporada");
+	$titleCardEditar = $("#title-card-temporada-editar");
+
+	$modalEditarCiclo = $("#modal-editar-ciclo");
+	$modalEditarEstado = $("#modal-editar-estado");
+	$modalEditarApertura = $("#modal-editar-apertura");
+	$modalEditarPreInscripciones = $("#modal-editar-pre-inscripciones");
+	$modalEditarInicioClases = $("#modal-editar-inicio-clases");
+	$modalEditarCierreClases = $("#modal-editar-cierre-clases");
+	$modalEditarFechaSubsanacion = $("#modal-editar-fecha-subsanacion");
+
+	$modalCrearCiclo = $("#modal-crear-ciclo");
+	$modalCrearEstado = $("#modal-crear-estado");
+	$modalCrearApertura = $("#modal-crear-apertura");
+	$modalCrearPreInscripciones = $("#modal-crear-pre-inscripciones");
+	$modalCrearInicioClases = $("#modal-crear-inicio-clases");
+	$modalCrearCierreClases = $("#modal-crear-cierre-clases");
+	$modalCrearFechaSubsanacion = $("#modal-crear-fecha-subsanacion");
+
+	$btnEditarTemporada = $("#btn-editar-temporada");
+	$btnCrearHorario = $("#btn-crear-horario");
+
+	function formatYYYYMMDDdate(fecha){
+
+		let arrayFecha = fecha.split('-');
+		let newFormatFecha = arrayFecha[2]+'-'+arrayFecha[1]+'-'+arrayFecha[0];
+		return newFormatFecha;
+	}
+
+
+	function getAnioFecha(fecha){
+
+		let arrayFecha = fecha.split('-');
+		let anio = arrayFecha[0];
+		return anio;
+
+	}
+
+	function cambiarFormatoStringToFecha(stringFecha){
+
+		let dateFecha = new Date(stringFecha);
+		return dateFecha.getTime();
+
+	}
+
+	function limpiarCamposModalCrear(){
+
+		$modalCrearCiclo.val("");
+		$modalCrearApertura.val("");
+		$modalCrearPreInscripciones.val("");
+		$modalCrearInicioClases.val("");
+		$modalCrearCierreClases.val("");
+		$modalCrearFechaSubsanacion.val(""); 
+	}
+
+	$btnCrearHorario.on('click',function(){
+
+		if( $modalCrearCiclo.val() !="" && $modalCrearApertura.val() != "" && $modalCrearPreInscripciones.val() != "" &&  $modalCrearInicioClases.val() != "" &&  $modalCrearCierreClases.val() != "" && $modalCrearFechaSubsanacion.val() != "" ){
+
+			let dateApertura = cambiarFormatoStringToFecha( $modalCrearApertura.val() );
+			let datePreInscripciones = cambiarFormatoStringToFecha( $modalCrearPreInscripciones.val() );
+			let dateInicioClases = cambiarFormatoStringToFecha( $modalCrearInicioClases.val() );
+			let dateCierreClases = cambiarFormatoStringToFecha( $modalCrearCierreClases.val() );
+			let dateFechaSubsanacion = cambiarFormatoStringToFecha( $modalCrearFechaSubsanacion.val() );
+
+			if( ( dateApertura >= datePreInscripciones )  ){
+				alertify.warning("<p style='color:black; font-weight:bold; ' >La fecha de apertura no puede ser mayor o igual a la fecha de pre-inscripción.</p>");
+
+			}else if( ( datePreInscripciones >= dateInicioClases ) ){
+				alertify.warning("<p style='color:black; font-weight:bold;' >La fecha de pre-nscripción no puede ser mayor o igual a la fecha de inicio de clases.</p>");
+
+			}else if( (dateInicioClases >= dateCierreClases) ){
+				alertify.warning("<p style='color:black; font-weight:bold;' >La fecha de inicio de clases no puede ser mayor o igual a la fecha de cierre de clases.</p>");
+
+			}else if(  (dateCierreClases >= dateFechaSubsanacion) ){
+				alertify.warning("<p style='color:black; font-weight:bold;' >La fecha de cierre de clases no puede ser mayor o igual a la fecha de subsanación.</p>");
+
+			}else{
+
+				let datosCrearTemporada = {
+
+					'crear-anio': getAnioFecha( $modalCrearInicioClases.val() ),
+					'crear-ciclo': $modalCrearCiclo.val(),
+					'crear-apertura':$modalCrearApertura.val(),
+					'crear-pre-inscripcion':$modalCrearPreInscripciones.val(),
+					'crear-inicio-clases': $modalCrearInicioClases.val(),
+					'crear-cierre-clases': $modalCrearCierreClases.val(),
+					'crear-fecha-subsanacion': $modalCrearFechaSubsanacion.val()
+				}
+
+				console.log(datosCrearTemporada);
+
+				$.ajax({
+
+						url: "{{url('akademia_temporadaCrear')}}",
+						data: datosCrearTemporada,
+
+						beforeSend: function(){				
+							console.log("Enviando => ",datosCrearTemporada);
+						},
+						success : function(data){
+
+							if(data == 0){
+								alertify.warning("<p style='color:black; font-weight:bold; ' >No se pudo crear una nueva disciplina, intentelo de nuevo porfavor!.</p>");
+
+							}
+							else if(data==2){
+								alertify.warning("<p style='color:black; font-weight:bold;' >Ya existen 2 temporadas en un mismo año!.</p>");
+
+							}else if(data==3){
+								alertify.warning("<p style='color:black; font-weight:bold;' >Ya existe una temporada en Curso, cambie las fechas de Inicio y Fin!.</p>");
+
+							}else if(data==4){
+								alertify.warning("<p style='color:black; font-weight:bold;' >Se deberá crear una nueva temporada con una fecha de apertura mayor a la fecha de cierre de la temporada cerrada recientemente</p>");
+
+							}else if(data == 5){
+								alertify.warning("<p style='color:black; font-weight:bold;' >El año de apertura debe ser mayor o igual que el año actual!.</p>");
+							}
+							else {
+								
+								$("#container-table-temporada").html(data);
+								alertify.success('Temporada Creada correctamente!');
+								limpiarCamposModalCrear();
+							}
+						},
+						error : function(data){
+							console.log(data);
+							alertify.error('Error del Sistema, porfavor comunicar al Area de Informática del IPD');
+						}
+				});
+
+			}
+
+		}else{
+
+			alertify.warning("<p style='color:black;' >Exiten campos vacios!.</p>");
+		}
+
+	});
+
+
+	$btnEditarTemporada.on('click',function(){
+
+		if( $modalEditarCiclo.val() !="" && $modalEditarApertura.val() != "" && $modalEditarPreInscripciones.val() != "" &&  $modalEditarInicioClases.val() != "" &&  $modalEditarCierreClases.val() != "" && $modalEditarFechaSubsanacion.val() != "" ){
+
+			let dateApertura = cambiarFormatoStringToFecha( $modalEditarApertura.val() );
+			let datePreInscripciones = cambiarFormatoStringToFecha( $modalEditarPreInscripciones.val() );
+			let dateInicioClases = cambiarFormatoStringToFecha( $modalEditarInicioClases.val() );
+			let dateCierreClases = cambiarFormatoStringToFecha( $modalEditarCierreClases.val() );
+			let dateFechaSubsanacion = cambiarFormatoStringToFecha( $modalEditarFechaSubsanacion.val() );
+
+			if( ( dateApertura >= datePreInscripciones )  ){
+				alertify.warning("<p style='color:black; font-weight:bold; ' >La fecha de apertura no puede ser mayor o igual a la fecha de pre-inscripción.</p>");
+
+			}else if( ( datePreInscripciones >= dateInicioClases ) ){
+				alertify.warning("<p style='color:black; font-weight:bold;' >La fecha de pre-nscripción no puede ser mayor o igual a la fecha de inicio de clases.</p>");
+
+			}else if( (dateInicioClases >= dateCierreClases) ){
+				alertify.warning("<p style='color:black; font-weight:bold;' >La fecha de inicio de clases no puede ser mayor o igual a la fecha de cierre de clases.</p>");
+
+			}else if(  (dateCierreClases >= dateFechaSubsanacion) ){
+				alertify.warning("<p style='color:black; font-weight:bold;' >La fecha de cierre de clases no puede ser mayor o igual a la fecha de subsanación.</p>");
+
+			}else{
+
+
+				let datosModificarTemporada = {
+
+							'id-temporada': $modalEditarIdTemporada.val(),
+							'editar-anio': getAnioFecha( $modalEditarInicioClases.val() ),
+							'editar-ciclo': $modalEditarCiclo.val(),
+							'editar-apertura':$modalEditarApertura.val(),
+							'editar-pre-inscripcion':$modalEditarPreInscripciones.val(),
+							'editar-inicio-clases': $modalEditarInicioClases.val(),
+							'editar-cierre-clases': $modalEditarCierreClases.val(),
+							'editar-fecha-subsanacion': $modalEditarFechaSubsanacion.val()
+				}
+
+				$.ajax({
+
+						url: "{{url('akademia_temporadaModificar')}}",
+						data: datosModificarTemporada,
+
+						beforeSend: function(){				
+							console.log("Enviando => ",datosModificarTemporada);
+						},
+						success : function(data){
+							
+
+
+							if(data == 0){
+								alertify.error('No se pudo actulizar la temporada, vuelva a actulizar por favor!.');
+
+							}else if(data == 2){
+								alertify.warning('Ya existe una temporada en curso, modificar fecha de apertura e inicio!.');
+
+							}else if(data == 3){
+								alertify.warning('Solo puede existir 2 temporadas por año.!.');
+
+							}else if(data == 4){
+								alertify.warning("La <b>fecha de apertura</b> no puede ser menor a la <b>fecha de cierre de la temporada anterior</b>",6);
+
+							}else if(data == 5){
+								alertify.warning("La <b>fecha de cierre</b> no puede ser mayor a la <b>fecha de apertura de la temporada posterior</b>.",6);
+							}else{
+
+								$("#container-table-temporada").html(data);
+								alertify.success('Temporada actulizada correctamente!');
+
+							}
+							
+						},
+						error : function(data){
+							console.log(data);
+						}
+				});
+			}
+
+		}else{
+
+			alertify.warning("<p style='color:black;font-weight:bold; ' >Exiten campos vacios!.</p>");
+		}
+	});
+
+	// Get the button that opens the modal
+	var btn = document.getElementById("open-modal-confirmar");
+
+	// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close-modal-migracion");
+
+	// When the user clicks the button, open the modal 
+
+	for (let i = 0; i < span.length; i++) {
+		// When the user clicks on <span> (x), close the modal
+		span[i].onclick = function() {
+		    modal.style.display = "none";
+		}
+	}
+
+	btn.onclick = function() {
+	    modal.style.display = "block";
+	}
+
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+	    if (event.target == modal) {
+	        modal.style.display = "none";
+	    }
+	};
+
+
+
+
+</script>
+
+{% endblock %}

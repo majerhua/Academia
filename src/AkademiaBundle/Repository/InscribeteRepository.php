@@ -11,7 +11,9 @@ namespace AkademiaBundle\Repository;
 class InscribeteRepository extends \Doctrine\ORM\EntityRepository
 {
 
-	public function getFicha($idInscripcion){
+
+    public function validarExistenciaFicha($idInscripcion){
+
       $query = "SELECT 
                 inscribete.id as id, 
                 inscribete.estado as estado, 
@@ -59,7 +61,68 @@ class InscribeteRepository extends \Doctrine\ORM\EntityRepository
                 apoderado.percodigo = personaApoderado.percodigo and
                 personaParticipante.perubigeo = grubigeo.ubicodigo and
                 participante.percodigo = personaParticipante.percodigo and
-                participante.apoderado_id = apoderado.id and inscribete.id = $idInscripcion";
+                participante.apoderado_id = apoderado.id and 
+                inscribete.id = $idInscripcion";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $ficha = $stmt->fetchAll();
+        return $ficha;
+    }
+
+	public function getFicha($idInscripcion,$idTemporada){
+      $query = "SELECT 
+                inscribete.id as id, 
+                inscribete.estado as estado, 
+                inscribete.fecha_registro as fechaModif,
+                personaApoderado.perapematerno as apellidoMaternoApoderado,
+                apoderado.dni as dniApoderado,
+                personaApoderado.perapepaterno as apellidoPaternoApoderado,
+                (cast(datediff(dd,personaParticipante.perfecnacimiento,GETDATE()) / 365.25 as int)) as edad,
+                personaApoderado.pernombres as nombrePadre,
+                personaParticipante.pernombres, 
+                personaParticipante.perapepaterno, 
+                personaParticipante.perapematerno, 
+                participante.dni, 
+                personaApoderado.perdomdireccion,
+                personaApoderado.percorreo,
+                personaApoderado.pertelefono,
+                grubigeo.ubinombre as distrito,
+                horario.id horario_id,
+                personaParticipante.perfecnacimiento,
+                disciplina.dis_descripcion as nombreDisciplina, 
+                edificacionDeportiva.ede_nombre as nombreComplejo,
+                CASE horario.discapacitados
+                WHEN '0' THEN 'Convencional'
+                WHEN '1' THEN 'Personas con Discapacidad'
+                END AS modalidad,
+                CASE horario.etapa
+                WHEN '0' THEN 'Formación'
+                WHEN '1' THEN 'Masificación'
+                END AS etapa
+                FROM
+                ACADEMIA.inscribete as inscribete, 
+                ACADEMIA.horario as horario,
+                ACADEMIA.participante as participante,
+                ACADEMIA.apoderado as apoderado,
+                CATASTRO.edificacionesdeportivas as edificacionDeportiva,
+                CATASTRO.edificacionDisciplina as edificacionDisciplina,
+                CATASTRO.disciplina as disciplina,
+                grpersona as personaParticipante,
+                grpersona as personaApoderado,
+                grubigeo as grubigeo
+                WHERE 
+                participante.apoderado_id = apoderado.id and
+                inscribete.participante_id = participante.id and
+                inscribete.horario_id = horario.id and
+                edificacionDisciplina.edi_codigo = horario.edi_codigo and
+                edificacionDisciplina.ede_codigo = edificacionDeportiva.ede_codigo and
+                edificacionDisciplina.dis_codigo = disciplina.dis_codigo and
+                apoderado.percodigo = personaApoderado.percodigo and
+                personaParticipante.perubigeo = grubigeo.ubicodigo and
+                participante.percodigo = personaParticipante.percodigo and
+                participante.apoderado_id = apoderado.id and inscribete.id = $idInscripcion
+                and edificacionDisciplina.temporada_id = $idTemporada";
 
     	$stmt = $this->getEntityManager()->getConnection()->prepare($query);
     	$stmt->execute();
@@ -68,25 +131,34 @@ class InscribeteRepository extends \Doctrine\ORM\EntityRepository
 	
 	}
 
-  public function cargaDatos($idInscripcion){
-      $query = "SELECT a.id as idFicha, a.horario_id as idHorario, a.estado as estadoFicha, a.participante_id as idParticipante, 
+
+    public function cargaDatos($idInscripcion){
+        $query = "SELECT a.id as idFicha, a.horario_id as idHorario, a.estado as estadoFicha, a.participante_id as idParticipante, 
                 b.dni as dniParticipante, c.dni as dniApoderado, c.id as idApoderado 
                 from 
                 academia.inscribete a inner join academia.participante b on a.participante_id = b.id 
                 inner join academia.apoderado c on b.apoderado_id = c.id where
                 a.id = $idInscripcion";
     
-      $stmt = $this->getEntityManager()->getConnection()->prepare($query);
-      $stmt->execute();
-      $datos = $stmt->fetchAll();
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $datos = $stmt->fetchAll();
 
-      return $datos;
-
+        return $datos;
   }
 
-  public function getDobleInscripcion($idHorario, $idParticipante){
+  public function getDobleInscripcion($idHorario, $idParticipante,$idTemporada){
     
-    $query = "SELECT * from academia.inscribete where participante_id = $idParticipante and horario_id = $idHorario and estado = 2";
+    $query = "
+                SELECT * from academia.inscribete ins
+                INNER JOIN ACADEMIA.horario hor ON hor.id=ins.horario_id
+                INNER JOIN CATASTRO.edificacionDisciplina edi ON edi.edi_codigo = hor.edi_codigo
+                WHERE 
+                 participante_id = $idParticipante AND
+                 horario_id = $idHorario AND 
+                 ins.estado = 2 AND 
+                 edi.temporada_id = $idTemporada ";
+            
     $stmt = $this->getEntityManager()->getConnection()->prepare($query);
     $stmt->execute();
     $datos = $stmt->fetchAll();
@@ -95,9 +167,17 @@ class InscribeteRepository extends \Doctrine\ORM\EntityRepository
 
   }
 
-  public function getCantInscripciones($idParticipante){
+  public function getCantInscripciones($idParticipante,$idTemporada){
 
-    $query = "SELECT count(*) cantidadRegistros from academia.inscribete where participante_id = $idParticipante and estado = 2";
+    $query = "
+            SELECT COUNT(*) cantidadRegistros FROM academia.inscribete ins
+            INNER JOIN ACADEMIA.horario hor ON hor.id=ins.horario_id
+            INNER JOIN CATASTRO.edificacionDisciplina edi ON edi.edi_codigo = hor.edi_codigo
+            WHERE 
+            participante_id = $idParticipante AND 
+            ins.estado = 2 AND
+            edi.temporada_id = $idTemporada
+            ";
     $stmt = $this->getEntityManager()->getConnection()->prepare($query);
     $stmt->execute();
     $datos = $stmt->fetchAll();

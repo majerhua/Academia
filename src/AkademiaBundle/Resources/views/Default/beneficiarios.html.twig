@@ -1,31 +1,38 @@
 {% extends '::base.html.twig' %}
 {% block title %}La Academia{% endblock %}
 {% block body  %}
+{% set numMesActual = ("now"|date("m"))|number_format %}
 
 <header>
-	 <nav class="navbar navbar-inverse" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    
-                </button>                       
-                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="" />                              
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <br>
-                <ul class="nav navbar-nav navbar-right">
-                    
-                    <li title="Horarios"><a href="{{url('akademia_horarios')}}"><i class="icon-arrow-left" style="font-size:1.5em; color:white"></i></a></li>
-                    <li title="Inicio"><a href="{{url('akademia_panel')}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
-                    <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
+	<nav class="navbar navbar-inverse" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="" />
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<span class="navbar-text">
+					<h3>TEMPORADA {{descripcionTemporada[0]['ciclo']}}-{{descripcionTemporada[0]['anio']}}</h3>
+				</span>
+				<br>
+				<ul class="nav navbar-nav navbar-right">
+				    <li title="Horarios"><a href="{{url('akademia_horarios',{'idTemporada':idTemporada})}}"><i class="icon-arrow-left font-color-li"></i></a></li>
+                    <li title="Inicio"><a href="{{url('akademia_panel',{'idTemporada':idTemporada})}}"><i class="icon-home font-color-li"></i></a></li>
+                    <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout font-color-li"></i></a></li>
                 </ul>
-            </div>
-        </div>
-    </nav>
+				<span class="navbar-text navbar-right" style="margin-right:30px;">
+					Usuario: <b>{{app.user.username}}</b>
+				</span>
+			</div>
+		</div>
+	</nav>
 </header>
+
+{% set mesesAnio = {'1': 'Ene', '2':'Feb', '3':'Mar','4':'Abr','5':'May','6':'Jun','7':'Jul','8':'Ago','9':'Sep','10':'Oct','11':'Nov','12':'Dic'} %}
 
 <section class="proceso-inscripcion">
 		<div id="proceso1" class="proceso" style="margin-bottom: 60px;">
@@ -148,7 +155,7 @@
 				<p>Puedes actualizar el estado de los participantes de este horario, verificar su asistencia, darlos de baja y recomendarlos como talentos</p>
 			</div>
 
-			<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-10 col-lg-10">
+			<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-11 col-lg-11">
 				<div class="card">
 					<div class="card-header text-center" role="tab">
 						<h3>Lista de Inscritos</h3>
@@ -158,25 +165,44 @@
 					<div class="card-body">
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-								<div class="input-group col-xs-4 col-sm-4 col-md-4 col-lg-4">
-								 	<span class="input-group-addon">Buscar</span>
-								  	<input class="filtrar form-control" type="text" ident-buscar="{{cont}}"  placeholder=" ingresa los campos a buscar ">
+
+								<div class="row container-find-assistance">
+
+									<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+										<div class="input-group" >
+									 		<span class="input-group-addon">Buscar</span>
+									  		<input class="filtrar form-control" type="text" ident-buscar="{{cont}}"  placeholder=" ingresa los campos a buscar">
+										</div>
+									</div>
+
+									<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+										{% if idTemporadaActiva == idTemporada %}
+											<button class="btn btn-success" id="asistencia-total-mensual" ><i class="icon-check" style="color:white;" ></i><b>Asistencia Mensual</b></button>
+										{% endif %}
+									</div>
+
 								</div>
+
 								<br>
 									
 								<div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:80vh;">
-									<table class="table"> 
+
+									<table class="table beneficiario-table"> 
 										<thead style="background:#F2F2F2; color:#585858"> 
 											<tr> 
-												<th class="text-center">Inscripción</th>
+												<th class="text-center">Cod</th>
 												<th class="text-center">Nombre</th> 
 												<th class="text-center">DNI</th>
 												<th class="text-center">Edad</th> 
 												<th class="text-center">Sexo</th> 
 												<th class="text-center">Categoría</th>
-												<th class="text-center">Asistencia</th>
-												<th></th>
-					
+												{% for mes in mesesTemporada %}
+												    <th class="text-center" style="background-color:rgba(0,0,0,0.2);" >{{mesesAnio[mes]}}</th>
+												{% endfor %}
+
+												{% if idTemporadaActiva == idTemporada %}
+													<th class="text-center"></th>
+												{%  endif %}
 											</tr>
 
 										</thead> 
@@ -184,9 +210,8 @@
 										<tbody class="buscar" style="color:#494343"> 
 
 											{% for beneficiario in beneficiarios %}
-												
 												{% if "now"|date("t") - 5 - "now"|date("d") <= 0 and  ("now"|date("m") > beneficiario['fechita']|date("m") or beneficiario['TipoAsistencia'] == 1)  %}
-													<tr style="background-color: #EF9A9A">
+													<tr >
 												{% else %}
 													<tr> 
 												{% endif %}
@@ -197,9 +222,9 @@
 													<td class="text-center">{{beneficiario['edad']}}</td> 
 													
 													{% if beneficiario['sexo'] == 2 %}
-														<td class="text-center"> Femenino </td> 
+														<td class="text-center">F</td> 
 													{% else %}
-														<td class="text-center"> Masculino </td>
+														<td class="text-center">M</td>
 													{% endif %}
 
 													{% if beneficiario['idCategoria'] == 1 %}
@@ -212,18 +237,126 @@
 														<td class="text-center">Talento</td>
 													{% endif %} 
 
-													{% if beneficiario['idAsistencia'] == 1 %}
-														<td class="text-center">Inscrito</td>
-													{% elseif beneficiario['idAsistencia'] == 2 %}
-														<td class="text-center">Asistente</td>
-													{% elseif beneficiario['idAsistencia'] == 3 %}
-														<td class="text-center">Retirado</td>
-													{% endif %}
+													{% for mes in mesesTemporada %}
 
-													<td><button type="button" title="Editar datos" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar" onclick="editarParticipante({{beneficiario['idParticipante']}})"><i class="icon-pencil-square-o" style="font-size:1em; margin-top:5px; color:white" ></button></td>
+														{% set flagAsis = false %}
+														{% set asistenciaId = null %}
+
+														{% for asisMen in asistenciaMensual %}
+														    
+															{% if asisMen['inscribete_id'] ==  beneficiario['idInscribete'] and asisMen['mes'] == mes %}
+
+																{% if asisMen['asistencia_id'] == 2 or asisMen['asistencia_id'] == 4  %}
+
+																	{% set flagAsis = true %}
+																	{% set asistenciaId = asisMen['asistencia_id'] %}
+
+																{% endif %}
+
+															{% endif %}
+
+														{% endfor %}
+
+														{%  if flagAsis == true %}
+
+															{% if numMesActual == mes %}
+
+																<td>
+																	<div class="options-bene">
+														    			<label  class="label-checkbox" >
+														        			<input type="checkbox" 
+
+															        			{% if  asistenciaId == 2 %}  
+															        				class="mes-actual" checked
+															        			{% elseif asistenciaId == 4 %}
+															        				class="mes-actual"
+															        			{% endif %} 
+
+														        				name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"/>
+														        			<img  	
+																        			{% if asistenciaId == 4 %}
+																        				class=" img-checkbox"
+																        			{% else %}
+																        				class="img-checkbox"
+																        			{% endif %} 
+
+														        			style="cursor:pointer;"  />   
+														   				</label>
+														   			</div>
+
+																</td>
+
+															{% else %}
+
+																<td style="background-color:rgba(0,0,0,0.3);">
+
+																	<div class="options-bene">
+														    			<label  class="label-checkbox" >
+
+														        			<input type="checkbox" 
+																				{% if  asistenciaId == 2 %}  
+															        				 checked
+															        			{% endif %} 
+
+														        			 disabled  name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"
+
+														        			 />
+														        			<img  
+																				{% if asistenciaId == 4 %}
+															        				class="img-checkbox "
+																        		{% else  %}
+																        			class="img-checkbox"
+															        			{% endif %}
+
+														        			style="cursor:no-drop;" 
+														        			/>   
+														   				</label>
+														   			</div>
+
+																</td>
+
+															{% endif %}
+
+														{%  else %}
+
+															{% if numMesActual == mes %}
+																<td >
+
+																	<div class="options-bene">
+														    			<label  class="label-checkbox" >
+														        			<input type="checkbox" class="mes-actual"   name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"/>
+														        			<img  style="cursor:pointer;"  class="img-checkbox"/>   
+														   				</label>
+														   			</div>
+
+																</td>
+
+															{% else %}
+																<td style="background-color:rgba(0,0,0,0.3);">
+
+																	<div class="options-bene">
+														    			<label  class="label-checkbox" >
+														        			<input type="checkbox"  disabled  name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"/>
+														        			<img  style="cursor:no-drop;"  class="img-checkbox"/>   
+														   				</label>
+														   			</div>
+
+																</td>
+
+															{% endif %}
+
+														{% endif %}
+
+													{% endfor %}
+
+													{% if idTemporadaActiva == idTemporada %}
+
+														<td><button type="button" title="Editar datos" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar" onclick="editarParticipante({{beneficiario['idParticipante']}})"><i class="icon-pencil-square-o" style="font-size:1em; margin-top:5px; color:white" ></button></td>
+
+													{% endif %}
 												</tr> 
 												
-											{% set cont = cont + 1 %}
+												{% set cont = cont + 1 %}
 											{% endfor %}								
 										</tbody> 
 									</table>
@@ -231,7 +364,7 @@
 
 							</div>
 
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 col-md-offset-1">
 								<br>
 								<div class="input-group">
 									<span class="input-group-addon alert-info">Inscritos:</span>
@@ -239,29 +372,39 @@
 								</div>
 							</div>
 
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
 								<br>
 								<div class="input-group">
 									<span class="input-group-addon alert-success">Asistentes:</span>
 									<p id="asistentes-horario" class="form-control">{{asistentes[0]['asistencias']}}</p>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
 								<br>
 								<div class="input-group">
 									<span class="input-group-addon alert-danger">Retirados:</span>
 									<p id="retirados-horario" class="form-control">{{retirados[0]['retirados']}}</p>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-2">
 								<br>
 								<div class="input-group">
 									<span class="input-group-addon alert-warning">Seleccionados:</span>
 									<p id="talentos-horario" class="form-control">{{seleccionados[0]['seleccionados']}}</p>
 								</div>
 							</div>
+
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 col-md-offset-1">
+								<br>
+								{% if idTemporadaActiva == idTemporada %}
+									<button class="btn btn-danger"  id="guardar-asistencia" onclick="guardarAsistencia()" >Guardar Asistencia</button>
+								{% endif %}
+							</div>
+
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -274,7 +417,7 @@
 				<br>
 				<br>
 				<br>
-				<img class="align-self-center foot" src="{{ asset('assets/images/ipdfooter.jpg')}}">
+				<img class="align-self-center foot" src="{{ asset('assets/images/ipdfooter.png')}}">
 			</div>
 			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 				<br><br>
@@ -299,13 +442,12 @@
 	</div>
 </footer>
 
-<div id="modal-editar" class="modal fade" role="dialog">
+<div id="modal-editar" class="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabelLarge" aria-hidden="true" data-backdrop="static">
 	<div class="modal-dialog">
-
 		<!-- Modal content-->
 		<div class="modal-content">
 			<div class="modal-header text-center">
-				<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+				<button type="button" class="close text-center cerrar-modal-editar"  data-dismiss="modal">&times;</button>
 				<h4 class="title-card" id="nombreParticipante" style="color:#38364D"></h4>
 			</div>
 			<div class="modal-body">
@@ -317,79 +459,82 @@
 						</div>
 						<div id="alerta-error" class="alert alert-danger collapse text-center"></div>
 						<ul class="list-group">
-							<li class="list-group-item">
+							<li class="list-group-item list-padding">
 								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Cod-inscripción</strong></p>
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-3">
+										<p><strong>Código</strong></p>
 									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-2">
 										<p id="idFicha"></p>
 									</div>
-								</div>
-							</li>
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-2">
 										<p><strong>DNI</strong></p>
 									</div>
 
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-4">
 										<p id="dniParticipante"></p>
 									</div>
+
 								</div>
 							</li>
 
-							<li class="list-group-item">
+							<li class="list-group-item list-padding">
 								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-3">
 										<p><strong>Edad</strong></p>
 									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-2">
 										<p id="edadParticipante"></p>
 									</div>
-								</div>
-							</li>
 
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-2">
 										<p><strong>Sexo</strong></p>
 									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-4">
 										<p id="sexoParticipante"></p>
 									</div>
+
 								</div>
 							</li>
 
-{# cbasistencia #}
-							<li class="list-group-item">
+							<li class="list-group-item list-padding">
 								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Asistencia</strong></p>
+
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-3">
+										<p><strong>Deporte</strong></p>
 									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-										<select class="form-control" id="asistenciaParticipante">
-											<option value="0">--Seleccionar--</option>
-											{% for asistencia in asistencias %}
-												{% if asistencia['id'] != 1 %}
-													<option value="{{asistencia['id']}}">{{asistencia['descripcion']}}</option>
-												{% endif %}
-											{% endfor %}
-										</select>
+
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-2">
+										<p id="deporteParticipante">{{horarios[0]['nombreDisciplina']}}</p>
 									</div>
+
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-2">
+										<p><strong>Modalidad</strong></p>
+									</div>
+
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-4">
+										<p id="modalidadParticipante"></p>
+									</div>
+
 								</div>
 							</li>
 
-							<li class="list-group-item" id="cbx-categoria">
+							<input type="hidden" id="asistenciaParticipante">
+
+							<li class="list-group-item list-padding" id="container-select-categoria">
 								<div class="row">
 									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
 										<p><strong>Categoría</strong></p>
 									</div>
 									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
 										<select class="form-control" id="categoriaParticipante"  name="categoriaParticipante">
-											<option value="0">--Seleccionar--</option>
-											<option value="3" id="optiones">Evaluado</option>
-											<option value="4" id="optiones2">Talento</option>
+
+											<option value="3" id="categoria-evaluado">Evaluado</option>
+											<option value="4" id="categoria-talento">Talento</option>
 										
 											{% for categoria in categorias %}
 												{% if categoria['id'] != 3 and categoria['id'] != 4 %}
@@ -398,30 +543,69 @@
 												{% endif %}
 											{% endfor %}
 										</select>
-
-
-
-									</div>
-								</div>
-							</li>	
-							<br>
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Última modificación: </strong></p>
-									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-										<p id="fecha-modificacion" style="color:grey"></p>
 									</div>
 								</div>
 							</li>
 
+							<li class="list-group-item list-padding">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-8 ">
+										<p><strong>Desea <b>MIGRAR</b> al participante a otro horario?</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-3">
+
+										<div class="input-group">
+			  								<span class="input-group-addon">
+			    								<input type="checkbox" name="check-confirmar-migracion" id="check-confirmar-migracion" value="1">
+			  								</span>
+		  									<p type="text" class="form-control">Si</p>
+										</div>
+
+									</div>
+								</div>
+							</li>
+
+
+							<li class="list-group-item list-padding" id="container-select-etapa">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Etapa: </strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<select class="form-control" id="cambiarHorariosMigracion" >
+											<option value="" >--Seleccionar--</option>
+											<option value="1" id="etapa-masificacion" >Masificación</option>
+											<option value="0" id="etapa-formacion" >Formación</option>
+										</select>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item list-padding" id="container-select-migracion">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-12">
+										<p><b>Horarios Migración</b></p>
+										<div id="container-horario-migracion">
+								        	<table class="table table-horario table-hover" id="tableHorario" style="width: 100%" >
+			        						</table>
+
+								        	<div class="container-loader-horario" id="container-loader-horario">
+			        							<div>
+			        								<div class="loader-horario"></div>
+			        							</div>
+			        						</div>
+
+										</div>
+									</div>
+								</div>
+							</li>
+						
 						</ul>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-default cerrar-modal-editar" data-dismiss="modal">Cerrar</button>
 				<button type="button" class="btn btn-danger" id="btn-actualizarEstado" data-dismiss="modal">Actualizar</button>
 			</div>
 		</div>
@@ -437,23 +621,170 @@
 
 
 <script type="text/javascript">
-	
+		
+
+
+		$(".cerrar-modal-editar").on('click',function(){
+
+			$("body").css('padding-right','0px');
+			setTimeout(function(){
+				if( !$('#modal-editar').hasClass('in') ){
+					$("body").css('padding-right','0px');
+				}else{
+					console.log("Se abrio modal");
+					$("body").css('padding-right','0px');
+				}
+			},500);
+			
+		});
+
+		$("#cambiarHorariosMigracion").on('change',function(){
+
+			if($("#cambiarHorariosMigracion").val()==""){
+				$("#tableHorario").empty();
+			}else{
+
+				var datosMigracionHorario = {
+											'ediCodigo':"{{ediCodigo}}",
+            								'modalidad':"{{modalidad}}",
+								            'etapa':$("#cambiarHorariosMigracion").val(),
+								            'edad': parseInt( $("#edad-beneficiario-horario").text() ),
+								            'horario-actual':"{{horarios[0]['idHorario']}}"
+											};
+				$.ajax({
+					type:'POST',
+					url: "{{url('akademia_getTableHorarioMigracion')}}",
+					data: datosMigracionHorario,
+					beforeSend: function(){
+						$("#container-loader-horario").show();
+						$("#tableHorario").empty();			
+					},
+					success: function(data,status, xhr){
+
+						$("#container-loader-horario").hide();
+						$("#tableHorario").html(data);
+						console.log("Status =>",status);
+
+					},
+					error: function(data){
+						alertify.error('<p style="color:white">Error </p>');	
+						console.log(data);
+					},
+				});
+			}
+
+		});
+
 		$(document).ready(function(){
 
 			$('#btn-close-alert-info').click(function(){
 				hideAlertMessage('#alert-info')
 			});
-
 			$('#btn-close-alert-editar-participante').click(function(){
 				hideAlertMessage('#alert-editar-participante')
 			});	
-
 			$("#optiones").attr('hidden',true);
 			$("#optiones2").attr('hidden',true);		
 
 		});
 
-		/*FILTROS */
+
+		var asistenciaMes =  new Array();
+
+		var checkMesActual = document.querySelectorAll('.mes-actual');
+
+		for (let i =0; i < checkMesActual.length; i++) {
+
+			if( $(checkMesActual[i]).prop('checked') ){
+
+				$(checkMesActual[i]).siblings('img').addClass('img-check');
+				asistenciaMes.push( $(checkMesActual[i]).val() );
+			}
+		}
+
+
+		$("#asistencia-total-mensual").on('click',function(){
+
+			let checkMesActual = document.querySelectorAll('.mes-actual');
+
+			for (let i =0; i < checkMesActual.length; i++) {
+
+				if( !$(checkMesActual[i]).prop( "checked") ){
+
+					$(checkMesActual[i]).siblings('img').removeClass('img-x');
+		  			$(checkMesActual[i]).siblings('img').addClass('img-check');
+		  			$(checkMesActual[i]).prop( "checked", true );
+					asistenciaMes.push( $(checkMesActual[i]).val() );
+
+				}			
+			}
+		});
+
+		function asistenciaMensual(element){
+
+		  	if (element.checked) {
+
+		  		$(element).siblings('img').removeClass('img-x');
+		  		$(element).siblings('img').addClass('img-check');
+		    	asistenciaMes.push(element.value);
+		    	console.log("Asistencia Element Checked => ",element.value);
+
+		  	}else{
+		  		$(element).siblings('img').removeClass('img-check');
+		    	$(element).siblings('img').addClass('img-x');		  		
+		    	asistenciaMes.splice( asistenciaMes.indexOf(element.value), 1);
+		  	}
+		}
+
+		const guardarAsistencia = ()=>{
+
+			var checkMen = document.querySelectorAll('.mes-actual');
+			var flag = true;
+
+			for (let i =0; i < checkMen.length; i++) {
+
+				if( !$(checkMen[i]).siblings('img').hasClass('img-check') && !$(checkMen[i]).siblings('img').hasClass('img-x')  )
+					flag = false;
+			}
+
+			if(flag){
+			
+				var datosAsistencia = {
+							'idHorario':"{{id}}",
+							'asistencia-mensual': asistenciaMes
+				}
+
+				$.ajax({
+
+					type:'POST',
+					dataType: 'json',
+					url: "{{url('akademia_guardarAsistenciaBeneficiarios')}}",
+					data: datosAsistencia,
+					beforeSend: function(){	
+						$("#guardar-asistencia").attr('disabled',true);
+					},
+					success: function(data){
+						console.log("Estado registro Asistencia => ",data);
+						if(data == 1){
+							alertify.success('<p style="color:white; font-weight:bold;">Se guardo Asistencia Correctamente!.</p>');
+							location.reload(true);
+						}else if(data == 2){
+							alertify.warning('<p style="color:black; font-weight:bold; ">Supero el limite de registro de asistencia!.</p>')
+						}
+						
+						$("#guardar-asistencia").attr('disabled',false);
+					},
+					error: function(data){
+						alertify.error('<p style="color:white">Error </p>');	
+					},
+				});
+			}
+				
+			else
+				alertify.warning('<p style="font-weight:bold;" >Porfavor Marque asistencia a todos los beneficiarios!.</p>');
+
+		}
+
 		$(document).ready(function () {
             (function ($) {
 
@@ -478,103 +809,136 @@
 
         });
 
-		// EDITAR PARTICIPANTE
-		function editarParticipante(idParticipante){
+		$("#categoriaParticipante").on('change',function(){
 
-			var idParticipante = idParticipante;
-			clearData();
-			
-			$("#cbx-categoria").hide();
+			let categoria = $("#categoriaParticipante").val();
+
+			if (categoria == 1){ //No Seleccionado
+
+				$("#etapa-masificacion").attr('hidden',false);
+				$("#etapa-formacion").attr('hidden',false);
+
+			}else{
+
+				$("#etapa-masificacion").attr('hidden',true);
+				$("#etapa-formacion").attr('hidden',false);
+			}
+
+			$("#cambiarHorariosMigracion").val("");
+			$("#tableHorario").html("");
+		});
+
+		// EDITAR PARTICIPANTE
+		$containerSelectCategoria = $("#container-select-categoria");
+		$containerSelectEtapa = $("#container-select-etapa");
+		$containerSelectMigracion = $("#container-select-migracion");
+
+		var nombre = null,
+			dni = null,
+			edad = null,
+			idInscribete = null,
+			modalidad = null,
+			sexo = null,
+			idCategoria = null,
+			idAsistencia = null,
+			etapa = null;
+
+		const  editarParticipante = (idParticipante) => {
+
+			clearData();//Limpiar los Campos
+
+			$("#check-confirmar-migracion").prop('checked',false); // Inicializar CheckBox ConfirmarMigracion False
+
+			$("#categoria-evaluado").attr('hidden',true);
+			$("#categoria-talento").attr('hidden',true);
+
+			$containerSelectCategoria.hide(); 
+			$containerSelectEtapa.hide(); 
+			$containerSelectMigracion.hide();
+
 
           	{% for beneficiario in beneficiarios %}
 
 				if( "{{beneficiario['idParticipante']}}" == idParticipante ){
 					
-					$("#nombreParticipante").append("<p>{{beneficiario['nombre']}}</p>");
-					$("#dniParticipante").append("<p>{{beneficiario['dni']}}</p>");
-					$("#edadParticipante").append("<p>{{beneficiario['edad']}} años</p>");
-					$("#idFicha").append("<p>{{beneficiario['idInscribete']}}</p>")
+					nombre = "{{beneficiario['nombre']}}";
+					dni = "{{beneficiario['dni']}}";
+					edad = "{{beneficiario['edad']}}";
+					idInscribete = "{{beneficiario['idInscribete']}}";
+					modalidad = "{{beneficiario['modalidad']}}";
 
+					$("#nombreParticipante").append(`<p>${nombre}</p>`);
+					$("#dniParticipante").append(`<p>${dni}</p>`);
+					$("#edadParticipante").append(`<p><span id='edad-beneficiario-horario' >${edad}</span> años</p>`);
+					$("#idFicha").append(`<p>${idInscribete}</p>`);
+					$("#modalidadParticipante").append(`<p>${modalidad}</p>`);
 					
-					if ("{{beneficiario['sexo']}}" == 2){
+					if ( sexo == 2 )
 					 	$("#sexoParticipante").append("<p>Femenino</p>");	
-					}else{
+					else
 					 	$("#sexoParticipante").append("<p>Masculino</p>");
-					}	
-
-					var idCat = {{beneficiario['idCategoria']}};
-					var idAsis = {{beneficiario['idAsistencia']}};
-
-					let categoria = parseInt(idCat);
-
-
-					if(idAsis == 1){
-						
-						$("#asistenciaParticipante").val(0);
-						$("#optiones").attr('hidden',true);
-						$("#optiones2").attr('hidden',true);
-						$("#categoriaParticipante").attr('readonly',false);
-						$("#categoriaParticipante").attr('disabled',false);
-						$("#categoriaParticipante").val(0);
-
-					}else{
-
-						$("#cbx-categoria").show();
-						$("#asistenciaParticipante").val(idAsis);
-
-						if(categoria == 3 || categoria == 4){
-
-							$("#optiones").attr('hidden',false);
-							$("#optiones2").attr('hidden',false);
-
-							if(categoria == 3){
-								$("#categoriaParticipante").val('3');
-							}else if (categoria == 4){
-								$("#categoriaParticipante").val('4');
-							}
-						
-							
-							$("#categoriaParticipante").attr('readonly',true);
-							$("#categoriaParticipante").attr('disabled',true);
 					
-						}else{
+					idCategoria = parseInt("{{beneficiario['idCategoria']}}");
+					idAsistencia = parseInt("{{beneficiario['idAsistencia']}}");
 
-							$("#optiones").attr('hidden',true);
-							$("#optiones2").attr('hidden',true);
-							$("#categoriaParticipante").attr('readonly',false);
-							$("#categoriaParticipante").attr('disabled',false);
-							$("#categoriaParticipante").val(idCat);
-							
-						
-						}
-						
-					}
-
-					$("#fecha-modificacion").append("<p>{{beneficiario['fechita']}}</p>")
-					
+					$("#etapa-optiones").attr('hidden',false);
+					$("#categoriaParticipante").attr('readonly',false);
+					$("#categoriaParticipante").attr('disabled',false);
 				}
 
 			{% endfor %}
 
+			etapa = "{{horarios[0]['etapa']}}";
+
+			if( etapa == 'Formación' )
+				$("#container-select-categoria").show();
+			else
+				$("#container-select-categoria").hide();
+			
+			if( idCategoria == 1 ){ //Si la Categoria es igual a No Seleccionado Entonces Ocultamos Select Categoria, Etapa y Migracion
+				$("#etapa-masificacion").attr('hidden',false);
+				$("#etapa-formacion").attr('hidden',false);
+			}
+			else if(idCategoria == 2){ // Si la categoria es Seleccionado
+				$("#etapa-masificacion").attr('hidden',true);
+				$("#etapa-formacion").attr('hidden',false);
+			}
+			else if( idCategoria == 3 || idCategoria == 4 ){ //Si la Categoria es Evaluado o Talento
+
+				$("#categoria-evaluado").attr('hidden',false);
+				$("#categoria-talento").attr('hidden',false);
+
+				if( idCategoria == 3) //Categoria Evaluado
+					$("#etapa-formacion").attr('hidden',true);
+
+				else if ( idCategoria == 4) //Categoria Talento
+					$("#etapa-formacion").attr('hidden',true);
+				
+				$("#categoriaParticipante").attr('readonly',true);
+				$("#categoriaParticipante").attr('disabled',true);
+			}
+
+			$("#categoriaParticipante").val(idCategoria);	
+			$("#asistenciaParticipante").val(idAsistencia);
 		}
 
-		$('#asistenciaParticipante').on('click', function(){
+		$("#check-confirmar-migracion").on('click',function(){
 
-			var cbx_asist = document.getElementById("asistenciaParticipante").value;
+			if( $("#check-confirmar-migracion").prop('checked') ){
 
-			if(cbx_asist == 2){
+				$("#container-select-etapa").show('slow');
+				$("#container-select-migracion").show('slow');
 
-				$("#cbx-categoria").show();
-
-			}else if (cbx_asist == 3){
-				
-				$("#cbx-categoria").hide();
 			}else{
 
-				$("#cbx-categoria").hide();
+				$("#container-select-etapa").hide('slow');
+				$("#container-select-migracion").hide('slow');
+				$("#cambiarHorariosMigracion").val("");
+				$("#tableHorario").html("");
 			}
 
 		});
+
 
 		function clearData(){
 
@@ -584,82 +948,65 @@
 			$("#sexoParticipante").empty();
 			$("#idFicha").empty();
 			$("#fecha-modificacion").empty();
-
-
+			$("#modalidadParticipante").empty();
+			$("#cambiarHorariosMigracion").val("");
+			$("#tableHorario").html("");
 		
 		}
 
 		/*ACTUALIZAR Beneficiario */
 
+		const $asistenciaParticipante = $("#asistenciaParticipante"),
+			  $categoriaParticipante = $("#categoriaParticipante"),
+			  $idFicha = $("#idFicha");
+
 		$("#btn-actualizarEstado").on("click", function(){
 
-			
-			var asistencia = $("#asistenciaParticipante").val();
-			var categoria = $("#categoriaParticipante").val();
+			$("#btn-actualizarEstado").attr("data-dismiss", "modal");
 
-			if((asistencia != 0 && categoria != 0 ) || (asistencia == 3 && categoria == 0)){
+			var idAsistencia = $asistenciaParticipante.val();
+			var idCategoria = $categoriaParticipante.val();
+			var idFicha = $idFicha.text();
+			var idHorario = "{{horarios[0]['idHorario']}}";
 
-				$("#btn-actualizarEstado").attr("data-dismiss", "modal");
+			const dataBeneficiario = {
 
-				if(asistencia == 3){
+				"idFicha" : idFicha,
+				"idAsistencia": idAsistencia,
+				"idCategoria": idCategoria,
+				"horarioActual": idHorario,
+				"horarioAMigrar": $('input:radio[name=codHorario]:checked').val()
+			};
 
-					var asistencia = 3;
-					var categoria = 1;
-					var idFicha = $("#idFicha").text();
 
-				}else{
+			console.log(dataBeneficiario);
+			 $.ajax({
+			 	type:'POST',
+			 	dataType: 'json',
+			 	url: "{{url('akademia_estadoBeneficiario')}}",
+			 	data: dataBeneficiario,
+			 	beforeSend: function(){
 
-					var asistencia = $("#asistenciaParticipante").val();
-					var categoria = $("#categoriaParticipante").val();
-					var idFicha = $("#idFicha").text();
-				}
-			//if(asistencia != 0 && categoria != 0){
+			 	},
 
-				console.log(asistencia, categoria, idFicha);
-				var dataBeneficiario = {
-					"idFicha" : idFicha,
-					"idAsistencia": asistencia,
-					"idCategoria": categoria
-				};
+			 	success: function(data){
 
-	
-				$.ajax({
-					type:'POST',
-					dataType: 'json',
-					url: "{{url('akademia_estadoBeneficiario')}}",
-					data: dataBeneficiario,
-					beforeSend: function(){				
-					
-					},
+			 		if(data == 1){
 
-					success: function(data){
+			 			alertify.success('<p style="color:white">Beneficiario Actualizado</p>');
+			 			location.reload(true);
+			 		}
+			 		if(data == 2){
 
-						if(data == 1){
+			 			alertify.error('<p style="color:white">Se produjo un error.</p>');	
+			 		}
+			 	},
 
-							alertify.success('<p style="color:white">Beneficiario Actualizado</p>');
-							location.reload(true);
-							//window.location.href = "{{url('akademia_beneficiarios',{idHorario:id})}}";
-								
-						}
-						if(data == 2){
-
-							alertify.error('<p style="color:white">Se produjo un error.</p>');	
-						}
-						
-					},
-
-					error: function(data){
-						alertify.error('<p style="color:white">Error </p>');	
-						console.log(data);
-					},
-				});
-
-			}else{
-
-				$("#btn-actualizarEstado").attr("data-dismiss", "");
-				showAlertMessage('#alerta-error', "Verifique que no existan campos vacíos.");
-			}
-
+			 	error: function(data){
+			 		alertify.error('<p style="color:white">Error </p>');	
+			 		console.log(data);
+			 	},
+			 });
 		});
 
 		/*Desplaza sutilmente la ventana hacía una sección*/
@@ -668,7 +1015,6 @@
 				scrollTop: $(destino).offset().top
 			}, 800);			
 		}
-
 
 		/*Muestra mensaje de alerta*/
 		function showAlertMessage(alert, mensaje){

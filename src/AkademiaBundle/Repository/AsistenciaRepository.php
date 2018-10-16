@@ -10,6 +10,28 @@ namespace AkademiaBundle\Repository;
  */
 class AsistenciaRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function getCantidadRegistrosMesActual($idHorario){
+
+        $query = "  SELECT MONTH(mov.fecha_modificacion) mes FROM ACADEMIA.horario hor
+                    INNER JOIN ACADEMIA.inscribete ins ON ins.horario_id = hor.id
+                    INNER JOIN ACADEMIA.movimientos mov ON mov.inscribete_id = ins.id
+                    WHERE 
+                    hor.id = '$idHorario' AND 
+                    ins.estado= 2 AND
+                    ins.id = ( SELECT top 1 ins2.id FROM ACADEMIA.horario hor2 
+                              INNER JOIN ACADEMIA.inscribete ins2 ON ins2.horario_id = hor2.id
+                              WHERE hor2.id=  '$idHorario' AND ins2.estado=2 ) AND
+                    MONTH( mov.fecha_modificacion) = MONTH(GETDATE() ) ";
+                    
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $cantidadRegistroAsistencia = $stmt->fetchAll();
+
+        return $cantidadRegistroAsistencia;  
+
+    }
+
 	public function getMostrarAsistencia(){
 
             $query = "select * from academia.asistencia";
@@ -18,5 +40,59 @@ class AsistenciaRepository extends \Doctrine\ORM\EntityRepository
             $asistencia = $stmt->fetchAll();
 
             return $asistencia;
+    }
+
+    public function insertAsistenciaBeneficiarios($asistenciaBeneMen,$idHorario,$usuario){
+
+
+        $query = "SELECT ins.id inscribeteId,hor.id horarioId FROM ACADEMIA.inscribete ins
+					INNER JOIN ACADEMIA.horario hor ON hor.id = ins.horario_id
+					WHERE hor.id=$idHorario and ins.estado=2";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $beneficiarios = $stmt->fetchAll();
+
+        $asistenciaId = 4;
+           
+		foreach ($beneficiarios as $key => $value) {
+
+			$flagAsis = false;
+			
+			for ($i = 0; $i < count($asistenciaBeneMen) ; $i++) {
+            	if($asistenciaBeneMen[$i] == $value['inscribeteId']){
+            		$flagAsis=true;
+            	}
+            }
+
+            if($flagAsis == true){
+            	$asistenciaId=2;
+            }else{
+            	$asistenciaId=3;
+            }
+
+            $idFicha = $value['inscribeteId'];
+
+    		$query = "SELECT categoria_id from ACADEMIA.movimientos
+						WHERE inscribete_id = $idFicha
+						ORDER BY id DESC; ";
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+            $movimientos = $stmt->fetchAll();
+
+            $categoriaId = $movimientos[0]['categoria_id'];
+
+    		$query = "INSERT into academia.movimientos(categoria_id, asistencia_id, inscribete_id, usuario_valida,horario_id) values ($categoriaId ,$asistenciaId,$idFicha ,$usuario ,$idHorario)";
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+
+            if($asistenciaId==3){
+                $query = "UPDATE academia.inscribete SET  estado = 1 WHERE id=$idFicha";
+                $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+                $stmt->execute();
+            }
+
+
+        }
+
     }
 }

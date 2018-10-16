@@ -1,3 +1,4 @@
+
 {% extends '::base.html.twig' %}
 {% block title %}La Academia{% endblock %}
 {% block body  %}
@@ -28,21 +29,24 @@
     </nav>
 </header>
 
+<section>
 <div class="proceso" style="display:flex !important; flex-wrap:wrap !important; align-items: center !important; justify-content: center !important; ">
 
-	<h1 style=" font-weight:bold; color:gray; font-size:1.5em !important;">
-		{% if estado == 0 %}
-			Deportes Convencionales
-		{% else %}
-			Deportes para Personas con Discapacidad		
-		{% endif %}
-	</h1>
-
-	<h2 style=" font-weight:bold; color:#000; font-size:1.4em;">
-		Temporada Invierno 2018 (Marzo-Noviembre)
-	</h2>
-
 	<div class="proceso-inscripcion__horarios" id="process4">
+
+		<div class="container-card col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+			<h1 style=" font-weight:bold; color:gray; font-size:1.7em;">
+				{% if estado == 0 %}
+					Modalidad de Deportes Convencionales
+				{% else %}
+					Modalidad de Deportes Adaptados		
+				{% endif %}
+			</h1>
+
+			<h2 style=" font-weight:bold; color:#000; font-size:1.4em;">
+				Temporada {{ descripcionTemporada[0]['ciclo'] }} {{ descripcionTemporada[0]['anio'] }} ( {{ descripcionTemporada[0]['mesInicio'] }} - {{ descripcionTemporada[0]['mesFin'] }} ) 
+			</h2>
+		</div>
 
 		<div class="container-card col-xs-12 col-sm-12 col-md-8 col-lg-7">
 			<div class="card">
@@ -140,12 +144,44 @@
 			</div>
 
 			<div style=" width:100%; display:flex; justify-content:center; align-items:center;" >
-				<button  id="pre-inscribete" class="btn btn-success"  style="padding:8px 12px; background:rgba(64, 172, 44, 1); font-weight:bold; " >Pre-Inscribete</button>
+				<button  id="pre-inscribete" class="btn btn-success"  style="padding:8px 12px; background:rgba(64, 172, 44, 1); font-weight:bold; " >Preinscribete</button>
 			</div>
 		</div>
 
 
 </div>
+</section>
+<footer class="footer">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center">
+				<br>
+				<br>
+				<br>
+				<img class="align-self-center foot" src="{{ asset('assets/images/ipdfooter.png')}}">
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+				<br><br>
+				<h4>La Academia</h4>
+				<p class="footerTex">
+					Dirección:Calle Madre de Dios N° 463
+				</p>
+				<p class="footerTex">
+					Teléfono: 204-8420 /anexo 1302
+				</p>
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+				<br><br>
+				<h4>Enlaces de Interés</h4>
+				<p><a class="footerTex" href="http://www.ipd.gob.pe/">Instituto Peruano del Deporte</a></p>
+				<p><a class="footerTex" href="https://www.facebook.com/recreacion.ipd/">Facebook Recreación</a></p>
+				<p><a class="footerTex" href="http://www.ipd.gob.pe/formacion-deportiva">Formación Deportiva</a></p>
+			</div>
+		</div>
+		<br>
+    	<p class="col-xs-12 col-sm-12 col-md-12 col-lg-12 copyright">&copy; 2018 Todos los derechos reservados</p>
+	</div>
+</footer>
 
 <div id="myModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
@@ -336,4 +372,3 @@
 	<script src="{{asset('assets/vendor/js/googleMapsComplejo2.js')}}"></script>
 
 {% endblock %}
-

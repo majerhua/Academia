@@ -11,7 +11,7 @@ namespace AkademiaBundle\Repository;
 class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 {
 
-	public function getprovincesPublicGeneralByDisability($disability,$ageBeneficiario){
+	public function getprovincesPublicGeneralByDisability($disability,$ageBeneficiario,$idTemporada){
 
 	    $query = "SELECT DISTINCT ubiDpto.ubidpto idDepartamento, 
 					ubiProv.ubiprovincia idProvincia,
@@ -29,6 +29,7 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 	                hor.discapacitados = '$disability' AND
 	                hor.vacantes <> 0 AND
 	                hor.convocatoria = 1 AND
+	                edi.temporada_id = $idTemporada AND
 	                hor.etapa = 1 AND
 
 	                ubiDpto.ubidpto <> '00' AND 
@@ -54,7 +55,7 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 	    return $provincias;
 	}
 
-	public function getProvincesPromotorByDisability($disability,$ageBeneficiario){
+	public function getProvincesPromotorByDisability($disability,$ageBeneficiario,$idTemporada){
 
 	    $query = "SELECT DISTINCT ubiDpto.ubidpto idDepartamento, 
 					ubiProv.ubiprovincia idProvincia,
@@ -69,7 +70,6 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 	                WHERE
 
 	                hor.estado = 1 AND
-	                hor.convocatoria = 1 AND 
 	                hor.discapacitados = '$disability' AND
 	                hor.vacantes <> 0 AND
 
@@ -86,6 +86,8 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 	                ubi.ubiprovincia <> '00' AND 
 	                ubi.ubiprovincia <> '00' AND
 
+	                edi.temporada_id = $idTemporada AND
+
 	                '$ageBeneficiario' <= hor.edadMaxima AND 
                     '$ageBeneficiario' >= hor.edadMinima ";
 	    
@@ -97,7 +99,7 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 	}
 	
 
-	public function getProvincesLandingByDisability($disability){
+	public function getProvincesLandingByDisability($disability,$idTemporada){
 
 	    $query = "SELECT DISTINCT ubiDpto.ubidpto idDepartamento, 
 					ubiProv.ubiprovincia idProvincia,
@@ -115,10 +117,13 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 	                hor.discapacitados = '$disability' AND
 	                hor.vacantes <> 0 AND
 	                hor.convocatoria = 1 AND
+	                hor.etapa = 1 AND
 	                
 	                ubiDpto.ubidpto <> '00' AND 
 	                ubiDpto.ubidistrito ='00' AND
 	                ubiDpto.ubiprovincia ='00' AND
+	                
+	                edi.temporada_id = '$idTemporada' AND
 	                
 	                ubiProv.ubidpto = ubi.ubidpto AND
 	                ubiProv.ubidpto <> '00' AND
