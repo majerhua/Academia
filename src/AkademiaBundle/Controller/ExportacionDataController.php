@@ -1,6 +1,4 @@
-
 <?php
-
 namespace AkademiaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -830,8 +828,5 @@ class ExportacionDataController extends Controller
     return $this->render('AkademiaBundle:Export:export.html.twig',array('departamentosExport' => $mdlDepartamentosExport,'departamentosAll' => $mdlDepartamentos,'ComplejoDeportivoExport' => $mdlComplejoDeportivoExport,'DisciplinaDeportivaExport' => $mdlDisciplinasDeportivasExport,'idTemporadaHabilitada'=>$idTemporada,'descripcionTemporada'=>$descripcionTemporada , 'mesInicioFinTemporada' => $mesesInicioAndFinTemporada[0] )); 
   
   }
-
-
-
 
 }
