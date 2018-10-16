@@ -23,74 +23,91 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 class DisciplinaController extends Controller
 {
-	// CREAR NUEVA DISCIPLINA 
 
-    public function crearDisciplinaAction(Request $request){    
+    public function getRankAgesDisciplineAction(Request $request){
+
         if($request->isXmlHttpRequest()){
 
-            $idDisciplina = $request->request->get('idDisciplina');           
+            $idDisciplina = $request->request->get('idDisciplina');
+            $idTemporada = $request->request->get('idTemporada');  
+
+            if(!empty($idDisciplina)){
+
+                $em = $this->getDoctrine()->getManager();
+                $rankAgeDiscipline = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getRankAgeDisciplineById($idDisciplina,$idTemporada);
+
+                if( !empty($rankAgeDiscipline[0]['edad_min_convencional']) )
+                    return new JsonResponse($rankAgeDiscipline);
+                else
+                    return new JsonResponse(0);
+
+            }else
+                return new JsonResponse(0);
+            
+        }
+    }
+
+	// CREAR NUEVA DISCIPLINA 
+    public function crearDisciplinaAction(Request $request){ 
+
+        if( $request->isXmlHttpRequest() ){
+
+             $mensaje = NULL;
+
+            $idDisciplina = $request->request->get('idDisciplina'); 
+            $idTemporada = $request->request->get('idTemporada');  
+
             $idComplejo = $this->getUser()->getIdComplejo();
             $usuario = $this->getUser()->getId();
-            
+
             $em = $this->getDoctrine()->getManager();
-            $estado = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getCompararEstado($idComplejo, $idDisciplina);
+            $estado = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getCompararEstado($idComplejo, $idDisciplina,$idTemporada);
         
             if(!empty($estado)){
+
                 $em = $this->getDoctrine()->getManager();
                 $estadoActual = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getCambiarEstado($idComplejo, $idDisciplina);
-                $mensaje = 1;
-                return new JsonResponse($mensaje);    
+
+                $mensaje = 1;  
             
             }else{
-                $disciplina = new ComplejoDisciplina();
-                $em = $this->getDoctrine()->getRepository(DisciplinaDeportiva::class);
-                $codigoDisciplina = $em->find($idDisciplina);
-                $disciplina->setDisciplinaDeportiva($codigoDisciplina);
-               
-                $em = $this->getDoctrine()->getRepository(ComplejoDeportivo::class);
-                $codigoComplejo = $em->find($idComplejo);
-                $disciplina->setComplejoDeportivo($codigoComplejo);
-                $disciplina->setEstado(1);
-                $disciplina->setUsuario($usuario);
-         
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($disciplina);
-                $em->flush();  
-                $mensaje = 2;
-                return new JsonResponse($mensaje);           
+
+                $estado = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->crearComplejoDisciplina($idComplejo, $idDisciplina,$usuario,$idTemporada);
+ 
+                $mensaje = $estado;            
             }
-          
+
+            return new JsonResponse($mensaje); 
         }
     }
 
 
     // ELIMINAR DISCIPLINA
-    
     public function eliminarDisciplinaAction(Request $request){
 
         if($request->isXmlHttpRequest()){
 
-            $idDisciplina = $request->request->get('codigoDisciplina');  
+            $idDisciplina = $request->request->get('codigoDisciplina'); 
+            $idTemporada =  $request->request->get('idTemporada');
+
             $idComplejo = $this->getUser()->getIdComplejo();
 
             $em = $this->getDoctrine()->getManager();
-            $ediCodigo = $em->getRepository('AkademiaBundle:Horario')->getCapturarEdiCodigo($idComplejo, $idDisciplina);   
+            $ediCodigo = $em->getRepository('AkademiaBundle:Horario')->getCapturarEdiCodigo($idComplejo, $idDisciplina,$idTemporada);   
             $codigoEdi = $ediCodigo[0]['edi_codigo'];
 
             $cantidad = $em->getRepository('AkademiaBundle:Horario')->cantHorarioDisciplina($codigoEdi);
-
-            //echo $cantidad['cantHorarios'];
-            //exit;
 
             if(!empty($cantidad['cantHorarios'])){
                 $mensaje = 1;
                 return new JsonResponse($mensaje);
             
             }else{
-                
-                $em->getRepository('AkademiaBundle:Horario')->eliminarDisciplina($codigoEdi);
+                $usuario = $this->getUser()->getId();
+                $em->getRepository('AkademiaBundle:Horario')->eliminarDisciplina($codigoEdi,$usuario);
                 $mensaje = 2;
                 return new JsonResponse($mensaje);
             

@@ -1,3 +1,4 @@
+
 <?php
 
 namespace AkademiaBundle\Repository;
@@ -77,3 +78,4 @@ class MigracionRepository extends \Doctrine\ORM\EntityRepository
 	    return $asistenciaMensualInscribete;
 	}
 }
+

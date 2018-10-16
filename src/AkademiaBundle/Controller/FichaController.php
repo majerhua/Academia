@@ -1,3 +1,4 @@
+
 <?php
 namespace AkademiaBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -32,28 +33,52 @@ class FichaController extends Controller
         if($request->isXmlHttpRequest()){
            
             $idFicha = $request->request->get('id');
-            $em = $this->getDoctrine()->getManager();
-            $ficha = $em->getRepository('AkademiaBundle:Inscribete')->getFicha($idFicha);
-            $idHorario = $ficha[0]['horario_id'];
-            $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($idHorario);
-            $ficha[0]['turnos'] = $fichaTurnoHorario;
+            $idTemporada = $request->request->get('idTemporada');
 
-            if( !empty($ficha) && !empty($fichaTurnoHorario) ){
-                $encoders = array(new JsonEncoder());
-                $normalizer = new ObjectNormalizer();
-                $normalizer->setCircularReferenceLimit(1);
-                   
-                $normalizer->setCircularReferenceHandler(function ($object) {
-                    return $object->getId();
-                });
-                $normalizers = array($normalizer);
-                $serializer = new Serializer($normalizers, $encoders);
-                $jsonContent = $serializer->serialize($ficha,'json');
-                return new JsonResponse($jsonContent);
-            }else{
-                $mensaje = 1;
-                return new JsonResponse($mensaje);
-            }
+
+            $em = $this->getDoctrine()->getManager();
+
+            $validarExistenciaFicha = $em->getRepository('AkademiaBundle:Inscribete')->validarExistenciaFicha($idFicha);
+
+            if( !empty( $validarExistenciaFicha ) ){
+
+                //VALIDAMOS SI LA FICHA PERTENECE A LA TEMPORADA ACTUAL
+                $validarFichaToTemporada = $em->getRepository('AkademiaBundle:Temporada')->validarFichaToTemporada($idFicha,$idTemporada);
+
+                //RETORNAMOS LA FICHA QUE PERTENECE A LA TEMPORADA ACTUAL
+                if( $validarFichaToTemporada[0]['flagPertenece'] == 1 ){
+
+                    $ficha = $em->getRepository('AkademiaBundle:Inscribete')->getFicha($idFicha,$idTemporada);
+
+                    $idHorario = $ficha[0]['horario_id'];
+
+                    $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($idHorario);
+
+                    $ficha[0]['turnos'] = $fichaTurnoHorario;
+
+                    $encoders = array(new JsonEncoder());
+                    $normalizer = new ObjectNormalizer();
+                    $normalizer->setCircularReferenceLimit(1);
+                       
+                    $normalizer->setCircularReferenceHandler(function ($object) {
+                        return $object->getId();
+                    });
+                    $normalizers = array($normalizer);
+                    $serializer = new Serializer($normalizers, $encoders);
+                    $jsonContent = $serializer->serialize($ficha,'json');
+
+                    return new JsonResponse($jsonContent);
+
+                }else
+                    $mensaje=2; // SI LA FICHA PERTENECE A OTRA TEMPORADA
+                
+
+
+            }else
+                $mensaje = 1;  //SI NO EXISTE LA FICHA
+            
+
+            return new JsonResponse($mensaje);
         }
     }
     
@@ -62,100 +87,97 @@ class FichaController extends Controller
     public function cambiarestadoAction(Request $request){
         
         if($request-> isXmlHttpRequest()){
+
             $idFicha = $request->request->get('id');
+            $idTemporada = $request->request->get('idTemporada');
+
+            $usuario = $this->getUser()->getId();
+           
+            $em = $this->getDoctrine()->getManager();
+
+            $data = $em->getRepository('AkademiaBundle:Inscribete')->cargaDatos($idFicha);
+            $estadoFicha = $data[0]['estadoFicha'];
+            $idParticipante = $data[0]['idParticipante'];
+            $dniParticipante = $data[0]['dniParticipante'];
+            $idApoderado = $data[0]['idApoderado'];
+            $dniApoderado = $data[0]['dniApoderado'];
+            $idHorario = $data[0]['idHorario'];
             
-            if( !empty($idFicha) and !empty( $this->getUser()->getId() ) ){
+            //Verificar si el horario está activo
+            $horarios = $em->getRepository('AkademiaBundle:Horario')->horarioActivos($idHorario);
 
-                $usuario = $this->getUser()->getId();
-                
-                $em = $this->getDoctrine()->getManager();
-
-                $data = $em->getRepository('AkademiaBundle:Inscribete')->cargaDatos($idFicha);
-                $estadoFicha = $data[0]['estadoFicha'];
-                $idParticipante = $data[0]['idParticipante'];
-                $dniParticipante = $data[0]['dniParticipante'];
-                $idApoderado = $data[0]['idApoderado'];
-                $dniApoderado = $data[0]['dniApoderado'];
-                $idHorario = $data[0]['idHorario'];
-                
-                //Verificar si el horario está activo
-                $horarios = $em->getRepository('AkademiaBundle:Horario')->horarioActivos($idHorario);
-
-                if(empty($horarios)){
-                    $mensaje = 5;
-                    return new JsonResponse($mensaje);
-                }else{
-                    
-                    //Verficar si el alumno tiene una inscripcion previa
-                    $data = $em->getRepository('AkademiaBundle:Inscribete')->getDobleInscripcion($idHorario,$idParticipante);
-                    if(!empty($data)){
-                        $mensaje = 3;
-                        return new JsonResponse($mensaje);
-                    }else {
-                        
-                        $em = $this->getDoctrine()->getManager();
-                        $data = $em->getRepository('AkademiaBundle:Inscribete')->getCantInscripciones($idParticipante);
-                        $cantRegistros = $data[0]['cantidadRegistros'];
-
-                        // CANTIDAD DE PRE - INSCRIPCIONES
-                        if(intval($cantRegistros) >= 1){
-                            $mensaje = 4;
-                            return new JsonResponse($mensaje);
-                        }else{
-                           
-                            if( $estadoFicha == 1){
-
-                                $em = $this->getDoctrine()->getManager();
-                                $vacantesHorario = $em->getRepository('AkademiaBundle:Horario')->getHorariosVacantes($idHorario);
-                                $cantVacantes = $vacantesHorario[0]['vacantes'];
-                                
-                                // VALIDAR CANTIDAD DE VACANTES
-                                if($cantVacantes > 0 ){
-                            
-                                    $em = $this->getDoctrine()->getRepository(Participante::class);
-                                    $participante = $em->find($idParticipante);
-                                    $em = $this->getDoctrine()->getManager();
-                                    $em->flush();
-                                    $em = $this->getDoctrine()->getRepository(Apoderado::class);
-                                    $apoderado = $em->find($idApoderado);
-                                    $em = $this->getDoctrine()->getManager();
-                                    $em->flush();
-                                   
-                                    $em2 = $this->getDoctrine()->getManager();
-                                    $ficha = $em2->getRepository('AkademiaBundle:Inscribete');
-                                    $estadoFicha = $ficha->find($idFicha);
-                                    $estadoFicha->setEstado(2);
-                                    $estadoFicha->setUsuarioValida($usuario);
-                                    $em2->persist($estadoFicha);
-                                    $em2->flush();
-                                    $em= $this->getDoctrine()->getManager();
-                                    $em->getRepository('AkademiaBundle:Horario')->getActualizarVacantesHorarios($idHorario);
-                                    $em->flush();
-                                    $em= $this->getDoctrine()->getManager();
-                                    $em->getRepository('AkademiaBundle:Horario')->getAcumularInscritos($idHorario);
-                                    $em->flush();
-                                    $em3= $this->getDoctrine()->getManager();
-                                    $em3->getRepository('AkademiaBundle:Movimientos')->RegistrarMovInicial($idFicha, $usuario);
-                                    $em3->flush();
-                                    $mensaje = 1;
-                                    return new JsonResponse($mensaje);
-                               
-                                }else{
-                                    $mensaje = 2;
-                                    return new JsonResponse($mensaje);
-                                    
-                                }
-
-
-                                  
-                            }  
-                        }
-                    }  
-                } 
+            if(empty($horarios)){
+                $mensaje = 5;
+                return new JsonResponse($mensaje);
             }else{
-                return $this->redirectToRoute('akademia_login');
-            }
+                
+                //Verficar si el alumno tiene una inscripcion previa
+                $data = $em->getRepository('AkademiaBundle:Inscribete')->getDobleInscripcion($idHorario,$idParticipante,$idTemporada);
+                if(!empty($data)){
+                    $mensaje = 3;
+                    return new JsonResponse($mensaje);
+                }else {
+                    
+                    $em = $this->getDoctrine()->getManager();
+                    $data = $em->getRepository('AkademiaBundle:Inscribete')->getCantInscripciones($idParticipante,$idTemporada);
+                    $cantRegistros = $data[0]['cantidadRegistros'];
 
+                    // CANTIDAD DE PRE - INSCRIPCIONES
+                    if(intval($cantRegistros) >= 1){
+                        $mensaje = 4;
+                        return new JsonResponse($mensaje);
+                    }else{
+                       
+                        if( $estadoFicha == 1){
+
+                            $em = $this->getDoctrine()->getManager();
+                            $vacantesHorario = $em->getRepository('AkademiaBundle:Horario')->getHorariosVacantes($idHorario);
+                            $cantVacantes = $vacantesHorario[0]['vacantes'];
+                            
+                            // VALIDAR CANTIDAD DE VACANTES
+                            if($cantVacantes > 0 ){
+                        
+                                $em = $this->getDoctrine()->getRepository(Participante::class);
+                                $participante = $em->find($idParticipante);
+                                $em = $this->getDoctrine()->getManager();
+                                $em->flush();
+                                $em = $this->getDoctrine()->getRepository(Apoderado::class);
+                                $apoderado = $em->find($idApoderado);
+                                $em = $this->getDoctrine()->getManager();
+                                $em->flush();
+                               
+                                $em2 = $this->getDoctrine()->getManager();
+                                $ficha = $em2->getRepository('AkademiaBundle:Inscribete');
+                                $estadoFicha = $ficha->find($idFicha);
+                                $estadoFicha->setEstado(2);
+                                $estadoFicha->setUsuarioValida($usuario);
+                                $em2->persist($estadoFicha);
+                                $em2->flush();
+                                $em= $this->getDoctrine()->getManager();
+                                $em->getRepository('AkademiaBundle:Horario')->getActualizarVacantesHorarios($idHorario);
+                                $em->flush();
+                                $em= $this->getDoctrine()->getManager();
+                                $em->getRepository('AkademiaBundle:Horario')->getAcumularInscritos($idHorario);
+                                $em->flush();
+                                $em3= $this->getDoctrine()->getManager();
+                                $em3->getRepository('AkademiaBundle:Movimientos')->RegistrarMovInicial($idFicha, $usuario,$idHorario);
+                                $em3->flush();
+                                $mensaje = 1;
+                                return new JsonResponse($mensaje);
+                           
+                            }else{
+                                $mensaje = 2;
+                                return new JsonResponse($mensaje);
+                                
+                            }
+
+
+                              
+                        }  
+                    }
+                }  
+            } 
         }
     }
+
 }

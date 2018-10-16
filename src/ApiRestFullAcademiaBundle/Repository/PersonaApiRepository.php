@@ -1,3 +1,4 @@
+
 <?php
 
 namespace ApiRestFullAcademiaBundle\Repository;
@@ -9,9 +10,7 @@ namespace ApiRestFullAcademiaBundle\Repository;
  * repository methods below.
  */
 
-
-
-
+use Doctrine\DBAL\DBALException;
 
 class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
 {
@@ -525,17 +524,36 @@ class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
 
     public function registrarUsuario($nombre,$paterno,$materno,$numeroDoc,$telefono,$correo,$organizacion,$estado,$password,$token,$fechaNacimiento,$sexo,$tipoDoc){
 
-        $query = " INSERT INTO ACADEMIA.usuario_app(nombre,paterno,materno,numeroDoc,telefono,correo,organizacion,estado,password,token,fechaNacimiento,sexo,tipoDoc) VALUES('$nombre','$paterno','$materno','$numeroDoc','$telefono','$correo','$organizacion','$estado','$password','$token', '$fechaNacimiento','$sexo','$tipoDoc'); ";
+        $message = null;
 
-        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
-        $stmt->execute();
+        try {
 
-        $query2 ="SELECT id FROM ACADEMIA.usuario_app WHERE correo = '$correo'";
-        $stmt2 = $this->getEntityManager()->getConnection()->prepare($query2);
-        $stmt2->execute();
-        $idUsuario = $stmt2->fetchAll();
+            $query = " INSERT INTO ACADEMIA.usuario_app(nombre,paterno,materno,numeroDoc,telefono,correo,organizacion,estado,password,token,fechaNacimiento,sexo,tipoDoc) VALUES('$nombre','$paterno','$materno','$numeroDoc','$telefono','$correo','$organizacion','$estado','$password','$token', '$fechaNacimiento','$sexo','$tipoDoc');";
 
-        return $idUsuario; 
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+
+            $query2 ="SELECT id as result FROM ACADEMIA.usuario_app WHERE correo = '$correo'";
+            $stmt2 = $this->getEntityManager()->getConnection()->prepare($query2);
+            $stmt2->execute();
+            $idUsuario = $stmt2->fetchAll();
+
+            return $idUsuario[0]; 
+
+        }catch (DBALException $e) {
+          $message = $e->getCode();
+        }
+
+        if($message == 0 ){
+
+            $query = "SELECT correo as result FROM ACADEMIA.usuario_app WHERE numeroDoc='$numeroDoc'";
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+            $correo = $stmt->fetchAll();
+
+            return $correo[0];
+        }
+        
     }
 
     public function activarCuentaUsuario($token){
@@ -573,5 +591,4 @@ class PersonaApiRepository extends \Doctrine\ORM\EntityRepository
         $tokenUser = $stmt->fetchAll();
         return $tokenUser;  
     }
-
 }

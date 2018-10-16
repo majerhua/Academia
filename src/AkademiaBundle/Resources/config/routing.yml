@@ -4,15 +4,47 @@
 #  defaults: { _controller: AkademiaBundle:ExportacionData:exportPrueba }
 
 
-##PAGINA MOSTRAR HORARIOS
+
+##PAGINA MOSTRAR TEMPORADA
+akademia_temporadasPrincipal:
+  path: /temporadas/{idTemporada}
+  defaults: { _controller: AkademiaBundle:Temporada:temporadaPrincipal,idTemporada:0 }
+  methods: [GET,POST]
+  
+akademia_temporadaModificar:
+  path: /modificar-temporada
+  defaults: { _controller: AkademiaBundle:Temporada:temporadaModificar}
+  methods: [GET,POST]
+
+akademia_temporadaCrear:
+  path: /crear-temporada
+  defaults: { _controller: AkademiaBundle:Temporada:temporadaCrear}
+  methods: [GET,POST]
+
+##END
+
+##PAGINA MOSTRAR DISCIPLINAS
+akademia_disciplinasPrincipal:
+  path: /disciplinas/temporada/{idTemporada}
+  defaults: { _controller: AkademiaBundle:MigracionAsistencia:disciplinaPrincipal,idTemporada:0}
+
+akademia_disciplinaConfiguracionById:
+  path: /get/disciplina
+  defaults: { _controller: AkademiaBundle:MigracionAsistencia:disciplinaConfiguracionById}
+  methods: [GET,POST]
+
+akademia_updateDisciplina:
+  path: /update/disciplina
+  defaults: { _controller: AkademiaBundle:MigracionAsistencia:updateDisciplina}
+  methods: [GET,POST]
 
 ##END
 
 ## MOD HORARIOS
 
 akademia_paginaHorariosDisponibles:
-    path: /horarios-disponibles/{estado}
-    defaults: { _controller: AkademiaBundle:Horario:mostrarHorariosLanding}
+    path: /horarios-disponibles/{estado}/temporada/{idTemporada}
+    defaults: { _controller: AkademiaBundle:Horario:mostrarHorariosLanding,idTemporada:0}
 
 tableHorario:
     path: /ajax/tableHorario
@@ -39,8 +71,8 @@ akademia_ocultarHorario:
    methods: [GET,POST]
 
 akademia_horarios:
-    path:    /horarios
-    defaults: {_controller: AkademiaBundle:Horario:horarios}
+    path:    /panel/horarios/temporada/{idTemporada}
+    defaults: {_controller: AkademiaBundle:Horario:horarios,idTemporada:0}
     methods: [GET,POST]
 
 ##END
@@ -58,8 +90,8 @@ akademia_registrar:
     methods:  [GET,POST]
 
 akademia_fichaPreInscripcion:
-    path: /ficha-preinscripcion
-    defaults: { _controller: AkademiaBundle:Preinscripcion:fichaPreInscripcion}
+    path: /ficha-preinscripcion/{idTemporada}
+    defaults: { _controller: AkademiaBundle:Preinscripcion:fichaPreInscripcion,idTemporada:0}
 
 akademia_registroFinal:
     path:     /registrofinal/{disability}
@@ -67,12 +99,12 @@ akademia_registroFinal:
     methods:  [GET,POST]
 
 akademia_generarPdfInscripcion:
-    path:     /ajax/pdf/inscripcion/{id}
+    path:     /ajax/pdf/inscripcion/{id}/temporada/{idTemporada}
     defaults: { _controller: AkademiaBundle:Preinscripcion:generarPdfInscripcion}
     methods:  [GET,POST]
 
 akademia_generarPdfDeclaracionJurada:
-    path:     /ajax/pdf/declaracion-jurada/{id}
+    path:     /ajax/pdf/declaracion-jurada/{id}/temporada/{idTemporada}
     defaults: { _controller: AkademiaBundle:Preinscripcion:generarPdfDeclaracionJurada}
     methods:  [GET,POST]
 
@@ -110,8 +142,8 @@ akademia_mostrarcomplejos:
     methods: [GET,POST]
 
 akademia_inscritos:
-    path:    /inscritos
-    defaults: {_controller: AkademiaBundle:Default:inscritos}
+    path:    /inscritos/temporada/{idTemporada}
+    defaults: {_controller: AkademiaBundle:Default:inscritos,idTemporada:0}
     methods: [GET,POST]
   
 ## MOD DISCIPLINAS
@@ -124,6 +156,11 @@ akademia_eliminarDisciplina:
     path:     /ajax/eliminarDisciplina
     defaults: { _controller: AkademiaBundle:Disciplina:eliminarDisciplina}  
     methods:  [GET,POST]
+
+akademia_getRankAgesDiscipline:
+  path: /ajax/get/edades/disciplina
+  defaults: { _controller: AkademiaBundle:Disciplina:getRankAgesDiscipline}
+  methods: [GET,POST]
 ##END
 
 ## VALIDAR FICHA
@@ -154,13 +191,24 @@ akademia_configuracion:
 
 ## MOD BENEFICIARIOS Y TALENTOS
 
+
+akademia_getTableHorarioMigracion:
+    path:     /table-horario-migracion
+    defaults: { _controller: AkademiaBundle:Beneficiario:getTableHorarioMigracion}
+    methods:  [GET,POST]
+
+akademia_guardarAsistenciaBeneficiarios:
+    path:     /guardar-asistencia
+    defaults: { _controller: AkademiaBundle:Beneficiario:guardarAsistenciaBeneficiarios}
+    methods:  [GET,POST]
+
 akademia_estadoBeneficiario:
     path:     /estadoBeneficiario
     defaults: { _controller: AkademiaBundle:Beneficiario:estadoBeneficiario}
     methods:  [GET,POST]
 
 akademia_beneficiarios:
-    path:    /beneficiarios/{idHorario}
+    path:    /beneficiarios/{idHorario}/temporada/{idTemporada}
     defaults: {_controller: AkademiaBundle:Beneficiario:beneficiarios}
     methods: [GET,POST]
 
@@ -171,12 +219,12 @@ akademia_cantInscritos:
 
 
 akademia_evaluados:
-    path:     /ajax/evaluados
-    defaults: { _controller: AkademiaBundle:Talentos:evaluados}
+    path:     /ajax/evaluados/temporada/{idTemporada}
+    defaults: { _controller: AkademiaBundle:Talentos:evaluados,idTemporada:0}
     methods:  [GET,POST]
 
 akademia_talentos:
-    path:     /ajax/talentos/{idParticipante}
+    path:     /ajax/talentos/{idParticipante}/temporada/{idTemporada}
     defaults: { _controller: AkademiaBundle:Talentos:talentos}
     methods:  [GET,POST]
 
@@ -206,12 +254,12 @@ akademia_actualizarIndicador:
     methods:  [GET,POST]
 
 akademia_mostrarTalentos:
-    path:     /ajax/mostrarTalentos
-    defaults: { _controller: AkademiaBundle:Talentos:mostrarTalentos}
+    path:     /ajax/mostrarTalentos/temporada/{idTemporada}
+    defaults: { _controller: AkademiaBundle:Talentos:mostrarTalentos , idTemporada:0 }
     methods:  [GET,POST]
 
 akademia_mostrarDetalleTalento:
-    path:     /ajax/detalle/{idParticipante}
+    path:     /ajax/detalle/{idParticipante}/temporada/{idTemporada}
     defaults: { _controller: AkademiaBundle:Talentos:mostrarDetalleTalento}
     methods:  [GET,POST]
 
@@ -288,8 +336,8 @@ akademia_contador:
     defaults: { _controller: AkademiaBundle:Default:contador }
     
 akademia_panel:
-    path:     /panel
-    defaults: { _controller: AkademiaBundle:Default:panel}
+    path:     /panel/temporada/{idTemporada}
+    defaults: { _controller: AkademiaBundle:Default:panel,idTemporada:0}
     methods:  [GET,POST]
 
 akademia_getPost:

@@ -38,10 +38,12 @@ security:
             anonymous: ~
             pattern: ^/
             provider: user_db_provider
+
             form_login:
                 login_path: /login
                 check_path: /login
                 default_target_path: akademia_panel
+
             http_basic: ~
             logout:
                 path: /logout

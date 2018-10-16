@@ -48,7 +48,7 @@ const elegirDias = (element)=>{
   }else{
     diasElegidos.splice( diasElegidos.indexOf(element.value), 1);
   }
-		    
+  	
 	turno_dias=ordenarCheckbox(diasElegidos);
 }
 
@@ -225,22 +225,29 @@ var crearHorario = ()=>{
 
 	$flagRegistroHorario=-1;
 
+	var edadMinima = parseInt( $("#edad-minima").val() );
+	var edadMaxima = parseInt($("#edad-maxima").val() );
+
+	var edad_min_convencional = parseInt( sessionStorage.getItem('edad_min_convencional') );
+	var edad_max_convencional = parseInt( sessionStorage.getItem('edad_max_convencional') );
+
+	var edad_min_discapacitado = parseInt( sessionStorage.getItem('edad_min_discapacitado') );
+	var edad_max_discapacitado = parseInt( sessionStorage.getItem('edad_max_discapacitado') );
+
 	if( $("#modalidad-horario").text() != "" && $("#etapa-horario").val() != "" && $("#edad-minima").val() != "" && $("#edad-maxima").val() != "" && $("#vacantes-horario").val() != "" && $("#preinscripciones-horario").val() != "" &&  Object.values(totalTurnosAcumulados).length!=0 ){
 
-		if( ( parseInt($("#edad-minima").val()) <4 || parseInt($("#edad-maxima").val()) >17 ) && $("#modalidad-horario").val() == 0 && parseInt($("#idDisciplinaNewHorario").val()) == 21 ){
+		if( ( edadMinima < edad_min_convencional || edadMaxima > edad_max_convencional ) && $("#modalidad-horario").val() == 0 ){
 
-			alertify.error('Verifique la Edad Minima y Maxima para la Modalidad Convencional esten en el rango establecido.',4);
-
-		}
-		else if(( parseInt($("#edad-minima").val()) < 6 || parseInt($("#edad-maxima").val()) > 17 ) && $("#modalidad-horario").val() == 0 && parseInt($("#idDisciplinaNewHorario").val()) != 21){
-			alertify.error('Verifique la Edad Minima y Maxima para la Modalidad Convencional esten en el rango establecido.',4);
+			alertify.error('Verifique la Edad Minima y Maxima para la Modalidad Convencional esten en el rango establecido.',3);
 		}
 
-		else if( ( parseInt($("#edad-minima").val()) < 6 || parseInt($("#edad-maxima").val()) > 59 ) && $("#modalidad-horario").val() == 1){
-			alertify.error('Verifique la Edad Minima y Maxima para la Modalidad Personas Discapacitadas esten en el rango establecido.',5);
+		else if( ( edadMinima < edad_min_discapacitado || edadMaxima  > edad_max_discapacitado ) && $("#modalidad-horario").val() == 1){
+
+			alertify.error('Verifique la Edad Minima y Maxima para la Modalidad Personas Discapacitadas esten en el rango establecido.',3);
 
 		}else if( parseInt($("#edad-minima").val())  > parseInt($("#edad-maxima").val()) ){
 			alertify.error('Verifique que la Edad Minima debe ser menor a la Edad Máxima.',3);
+
 		}else if( parseInt($vacantes.val()) > parseInt($preinscripciones.val()) ){
 			alertify.error('"El N° de Límite de pre - inscritos debe ser igual o mayor que el N° de vacantes disponibles.',3);
 		}
@@ -260,13 +267,14 @@ var crearHorario = ()=>{
 				'preinscripciones':$preinscripciones.val(),
 				'turnos-seleccionados':arrayTurnoOrdenado,
 				'turnos-seleccionados-string':convertArrayToString(arrayTurnoOrdenado),
-				'idDisciplina':$("#idDisciplinaNewHorario").val()
+				'idDisciplina': $("#idDisciplinaNewHorario").val(),
+				'idTemporada': $("#inputHiddenIdTemporada").val()
 			}
 
 			$.ajax({
 
 				type:'POST',
-				url:'ajax/crearHorario',
+				url:'/academia/web/ajax/crearHorario',
 				data:datos,
 				beforeSend:function(){
 					
@@ -278,7 +286,7 @@ var crearHorario = ()=>{
 					}
 					else if(data==2){
 						alertify.success('Felicidades!,Horario Creado Correctamente!',4);
-						window.location.href = "horarios";
+						location.reload();
 					}
 				}
 			});

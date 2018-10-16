@@ -1,3 +1,4 @@
+
 {% extends '::base.html.twig' %}
 {% block title %}La Academia{% endblock %}
 {% block body  %}
@@ -13,7 +14,16 @@
                     <span class="icon-bar"></span>
                     
                 </button>                       
-                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="logoAcademia" />                                      
+                <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="logoAcademia" {% if flagUser == "1" %} style="float:left;" {% endif %} /> 
+
+                {% if flagUser == "1" %}
+
+	                <div class="navbar-text">
+	                	<h3>TEMPORADA {{descripcionTemporada[0]['ciclo']}}-{{descripcionTemporada[0]['anio']}}</h3>
+	                </div>
+
+                {% endif %}
+                                                     
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <br>
@@ -21,7 +31,7 @@
                 	
                 	{% if flagUser == "1" %}
                 	
-                    	<li title="Regresar"><a href="panel"><i class="icon-back" style="font-size:1.9em; color:white" ></i></a></li>
+                    	<li title="Regresar"><a href="{{url('akademia_panel',{'idTemporada':idTemporada})}}"><i class="icon-back" style="font-size:1.9em; color:white" ></i></a></li>
                     {%  else %}
                     	<li title="Regresar"><a href="{{url('akademia_homepage')}}"><i class="icon-back" style="font-size:1.9em; color:white" ></i></a></li>
                     {% endif %}
@@ -47,19 +57,21 @@
 		</div>
 	</div>	
 
-			<div class="progreso_container">
-				<div class="progreso__barraInscripcion">
-					<div class="bar-inscripcion__1 active" >1</div>
-					<div class="bar-inscripcion__2 ">2</div>
-					<div class="bar-inscripcion__3">3</div>
-					<div class="bar-inscripcion__4">4</div>
-					<div class="bar-inscripcion__5">5</div>
-				</div>		
-			</div>
+		<div class="progreso_container">
+			<div class="progreso__barraInscripcion">
+				<div class="bar-inscripcion__1 active" >1</div>
+				<div class="bar-inscripcion__2 ">2</div>
+				<div class="bar-inscripcion__3">3</div>
+				<div class="bar-inscripcion__4">4</div>
+				<div class="bar-inscripcion__5">5</div>
+			</div>		
+		</div>
+
 		{% else %}
+		
 			<div class="container-titulo">		
-				<p>PREINSCRIPCIÓN 2018 II</p>
-				<h4>Ciclo: Marzo - Diciembre</h4>
+				<p>PRE - INSCRIPCIÓN {{descripcionTemporada[0]['anio']}} {{descripcionTemporada[0]['ciclo_romanos']}}</p>
+				<h4>Ciclo: {{descripcionTemporada[0]['mesInicio']}} - {{descripcionTemporada[0]['mesFin']}}</h4>
 			</div>
 			<br>
 			<div class="progreso_container">
@@ -448,6 +460,7 @@
 </div>
 
 
+
 {% endblock %}
 
 {% block javascripts %}
@@ -473,7 +486,7 @@
 		$.ajax({
 			type:'POST',
 			url:urlRegFinal,
-			data:{'edadBeneficiario':sessionStorage.getItem("edad")},
+			data:{'edadBeneficiario':sessionStorage.getItem("edad"),'idTemporada':"{{idTemporada}}"},
 			beforeSend:function(){
 				$('#loader').show();
 			},
@@ -730,7 +743,7 @@ $("#boton3").on('click',function(){
 		if( sessionStorage.getItem("edad") != null || sessionStorage.getItem("edad")!=undefined ){
 			if(sessionStorage.getItem('flagDiscapacitado') == '1' ){
 
-				if(sessionStorage.getItem("edad") <= 59 && sessionStorage.getItem("edad") >= 4){
+				if( sessionStorage.getItem("edad") <= parseInt("{{rankAgesPreRegistration['edadMaximaDiscapacitado']}}") && sessionStorage.getItem("edad") >= parseInt("{{rankAgesPreRegistration['edadMinimaDiscapacitado']}}") ){
 
 					$("#proceso3").hide();
 					console.log("Val flagDiscapacitado ==>",sessionStorage.getItem('flagDiscapacitado'));
@@ -740,11 +753,11 @@ $("#boton3").on('click',function(){
 					$(".bar-inscripcion__4").addClass('active');	
 			    
 			    }else{
-			    	alertify.error('<p style="color:white">Sólo de 6 a 59 años. </p>'); 
+			    	alertify.error("<p style='color:white'>Sólo de {{rankAgesPreRegistration['edadMinimaDiscapacitado']}} a {{rankAgesPreRegistration['edadMaximaDiscapacitado']}} años.</p>"); 
 			    }
 
 			}else if(sessionStorage.getItem('flagDiscapacitado') == '0' ){
-				if(sessionStorage.getItem("edad") < 18 && sessionStorage.getItem("edad") >= 4){
+				if(sessionStorage.getItem("edad") <= parseInt("{{rankAgesPreRegistration['edadMaximaConvencional']}}") && sessionStorage.getItem("edad") >= parseInt("{{rankAgesPreRegistration['edadMinimaConvencional']}}") ){
 					
 					$("#proceso3").hide();
 					
@@ -756,7 +769,7 @@ $("#boton3").on('click',function(){
 
 				}else{
 
-					alertify.error('<p style="color:white">Sólo de 6 a 17 años. </p>'); 
+					alertify.error("<p style='color:white'>Sólo de {{rankAgesPreRegistration['edadMinimaConvencional']}} a {{rankAgesPreRegistration['edadMaximaConvencional']}} años.</p>"); 
 			    }
 			}
 			
@@ -964,6 +977,5 @@ $("#mensajeEdad").empty();
 
 
 </script>
-
 
 {% endblock %}

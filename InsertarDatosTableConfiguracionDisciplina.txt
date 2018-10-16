@@ -1,0 +1,24 @@
+INSERTAR PARAMETROS EDAD TABLE CONFIGURACION EDADES
+
+DECLARE @disCodigo int   
+DECLARE customers cursor 
+
+	FOR SELECT
+	dis.dis_codigo
+    FROM
+    CATASTRO.disciplina dis
+    
+	OPEN customers
+	fetch customers into @disCodigo
+	
+	while(@@FETCH_STATUS=0) begin
+		INSERT INTO ACADEMIA.ConfiguracionEdadesDisciplina(disciplina_id,
+		edad_min_discapacitado,edad_max_discapacitado,edad_min_convencional,
+		edad_max_convencional) VALUES(@disCodigo,6,
+		59,6,17)
+	
+	fetch customers into @disCodigo
+	end 
+	
+close customers
+deallocate customers 

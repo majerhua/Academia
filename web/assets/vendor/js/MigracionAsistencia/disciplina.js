@@ -1,3 +1,4 @@
+
 	$codigoDisciplina = $("#codigo-disciplina");
 	$nombreDisciplina = $("#nombre-disciplina");
 	$convencionalEdadMinima = $("#convencional-edad-minima");

@@ -1,3 +1,4 @@
+
 <?php
 
 namespace AkademiaBundle\Entity;
@@ -32,4 +33,5 @@ class Temporada
         return $this->id;
     }
 }
+
 
