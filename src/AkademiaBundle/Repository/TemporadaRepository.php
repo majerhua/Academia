@@ -12,6 +12,7 @@ use Doctrine\DBAL\DBALException;
 class TemporadaRepository extends \Doctrine\ORM\EntityRepository
 {
 
+
 	public function validarFichaToTemporada($idFicha,$idTemporada){
 
 		try {

@@ -63,40 +63,30 @@
 				<p class="title-card text-center">Beneficiarios</p>
 				<div class="alert alert-success">
 					<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
-					<p class="text-center">Lista de beneficiarios acumulados hasta su último estado.</p>
+					<p class="text-center">Lista de beneficiarios hasta su último estado.</p>
 				</div>
 				<hr>
 				<div class="row">
-					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-						<label>Año</label>
-						<select class="form-control" id="select-ano" >
-							<option value="2018">2018</option>
-							<option value="2019">2019</option>
-							<option value="2020" >2020</option>
-						</select>
-
-					</div>
 
 					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
+						
 						<label>Hasta el mes de</label>
 						<select class="form-control" id="select-mes" >
 
 							<option value="">--Seleccionar--</option>
 							{% for mes in meses %}
-							<option value="{{cont}}">{{mes}}</option>
+								{% if cont  >= mesInicioFinTemporada['mes_inicio_temporada'] and cont <= mesInicioFinTemporada['mes_fin_temporada'] %}
+									<option value="{{cont}}">{{mes}}</option>
+								{% endif %}
 							{% set cont = cont + 1 %}
 							{% endfor %}
 						</select>
 
 					</div>
-				</div>
 
-				<div class="row" >
+					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
-					<br>
-					<div class="form-group col-md-6 col-md-offset-3"  id="container-departamento">
 						<label>Departamentos</label>
 						<select class="form-control"  id="select-departamento" onchange="cambiarDepartamentoExport(this)" >
 							{% if app.user.idPerfil == 2 %}	
@@ -110,6 +100,7 @@
 								{% endfor %}
 				        	{% endfor %}	
 				    	</select>
+
 					</div>
 
 				</div>
@@ -132,41 +123,34 @@
 				<div class="row">
 					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
-						<label>Año</label>
-						<select class="form-control" id="select-ano-informe" >
-							<option selected value="2018">2018</option>
-							<option value="2019">2019</option>
-							<option value="2020" >2020</option>
+						<label>Hasta el mes de</label>
+						<select class="form-control" id="select-mes-informe">
+							<option value="">--Seleccionar--</option>
+							{% for mes in meses %}
+
+								{% if cont2  >= mesInicioFinTemporada['mes_inicio_temporada'] and cont2 <= mesInicioFinTemporada['mes_fin_temporada'] %}
+
+									<option value="{{cont2}}">{{mes}}</option>
+								
+								{% endif %}
+
+							{% set cont2 = cont2 + 1 %}
+							{% endfor %}
 						</select>
 
 					</div>
 
 					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
-						<label>Hasta el mes de</label>
-						<select class="form-control" id="select-mes-informe">
-							<option value="">--Seleccionar--</option>
-							{% for mes in meses %}
-							<option value="{{cont2}}">{{mes}}</option>
-							{% set cont2 = cont2 + 1 %}
-							{% endfor %}
-						</select>
-
-					</div>
-				</div>
-
-				<div class="row" >
-
-					<br>
-					<div class="form-group col-md-6 col-md-offset-3"  id="container-informe">
-						
 						<label>Reporte</label>
 						<select class="form-control"  id="select-informe" >
 							<option value="1" >Regional</option>
 							<option value="2">Lima-Callao</option>
 				    	</select>
+
 					</div>
 				</div>
+
 
 				<div class="container-button-exportPREINS">
 					<button class="btn btn-danger" id="export-informe">Descargar Informes</button>
@@ -210,26 +194,21 @@
 				</div>
 				<hr>
 				<div class="row">
-					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
-						<label>Año</label>
-						<select class="form-control" id="select-ano" >
-							<option value="2018">2018</option>
-							<option value="2019">2019</option>
-							<option value="2020" >2020</option>
-						</select>
+					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6 col-lg-offset-3 ">
 
-					</div>
-
-					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-						<label>Hasta el mes de</label>
+						<label for="select-mes">Hasta el mes de</label>
 						<select class="form-control" id="select-mes" >
 
 							<option value="">--Seleccionar--</option>
 							{% for mes in meses %}
-							<option value="{{cont}}">{{mes}}</option>
+
+								{% if cont  >= mesInicioFinTemporada['mes_inicio_temporada'] and cont <= mesInicioFinTemporada['mes_fin_temporada'] %}
+									<option value="{{cont}}">{{mes}}</option>
+								
+								{% endif %}	
 							{% set cont = cont + 1 %}
+
 							{% endfor %}
 						</select>
 
@@ -316,7 +295,6 @@
 
 	const $exportInforme = $("#export-informe");
 	const $selectInforme = $("#select-informe");
-	const $selectAnoInforme = $("#select-ano-informe");
 	const $selectMesInforme = $("#select-mes-informe");
 
 
@@ -325,27 +303,26 @@
 
 	
 	const $containerDepartamento = $("#container-departamento");
-	const $selectAno = $("#select-ano");
 	const $selectMes = $("#select-mes");
 	const $selectDepartamento = $("#select-departamento");
 
 	
 	$exportBeneficiariosAnalista.on('click',function(){
 
-			location.href='exportDataBeneficiariosAnalista?ano='+$selectAno.val()+'&mes='+$selectMes.val()+'&departamento='+$selectDepartamento.val()+'&idTemporada={{idTemporadaHabilitada}}';
+			location.href='exportDataBeneficiariosAnalista?mes='+$selectMes.val()+'&departamento='+$selectDepartamento.val()+'&idTemporada={{idTemporadaHabilitada}}';
 	});
 
 	$exportBeneficiariosComplejo.on('click',function(){
 
-			location.href='exportDataBeneficiariosComplejo?ano='+$selectAno.val()+'&mes='+$selectMes.val()+'&idTemporada={{idTemporadaHabilitada}}';
+			location.href='exportDataBeneficiariosComplejo?mes='+$selectMes.val()+'&idTemporada={{idTemporadaHabilitada}}';
 	});
 
 	$exportInforme.on('click',function(){
 	
 		if ($selectInforme.val() == 1)
-			location.href='exportInscripcionesRegiones?ano='+$selectAnoInforme.val()+'&mes='+$selectMesInforme.val()+'&idTemporada={{idTemporadaHabilitada}}';
+			location.href='exportInscripcionesRegiones?mes='+$selectMesInforme.val()+'&idTemporada={{idTemporadaHabilitada}}';
 		else if($selectInforme.val() == 2)
-			location.href='exportInscripcionesLimaCallaos?ano='+$selectAnoInforme.val()+'&mes='+$selectMesInforme.val()+'&idTemporada={{idTemporadaHabilitada}}';
+			location.href='exportInscripcionesLimaCallaos?mes='+$selectMesInforme.val()+'&idTemporada={{idTemporadaHabilitada}}';
 	});
 
 

@@ -33,7 +33,6 @@ class ExportacionDataController extends Controller
   // MODULO DE EXORTACION
   public function exportInscripcionesRegionesAction(Request $request){
 
-    $anio = $request->query->get('ano');
     $mes = $request->query->get('mes');
     $idTemporada = $request->query->get('idTemporada');
 
@@ -43,15 +42,15 @@ class ExportacionDataController extends Controller
 
     $conn = $this->get('database_connection');
     
-    $response = new StreamedResponse(function() use($conn,$anio,$mes,$idTemporada) {
+    $response = new StreamedResponse(function() use($conn,$mes,$idTemporada) {
       $handle = fopen('php://output','w+');
 
-              fputcsv($handle, ['Departamento','Provincia', 'Disciplina', 'Modalidad','InscritosTotales','CantidadInscritosVigentes','CantidadRetirados'],",");
+              fputcsv($handle, ['Departamento','Provincia','Complejo' ,'Disciplina', 'Modalidad','InscritosTotales','CantidadInscritosVigentes','CantidadRetirados','Temporada'],",");
 
-      $results = $conn->query("exec ACADEMIA.inscripcionesRegiones $anio,$mes,$idTemporada");
+      $results = $conn->query("exec ACADEMIA.inscripcionesRegiones $mes,$idTemporada");
 
       while($row = $results->fetch()) {
-        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Disciplina'],$row['Modalidad'],$row['InscritosTotales'],$row['CantidadInscritosVigentes'],$row['CantidadRetirados']), ",");
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'],$row['Complejo'], $row['Disciplina'],$row['Modalidad'],$row['InscritosTotales'],$row['CantidadInscritosVigentes'],$row['CantidadRetirados'],$row['Temporada']), ",");
       }
       fclose($handle);
     });
@@ -63,7 +62,6 @@ class ExportacionDataController extends Controller
 
   public function exportInscripcionesLimaCallaosAction(Request $request){
 
-    $anio = $request->query->get('ano');
     $mes = $request->query->get('mes');
     $idTemporada = $request->query->get('idTemporada');
 
@@ -73,12 +71,12 @@ class ExportacionDataController extends Controller
 
     $conn = $this->get('database_connection');
     
-    $response = new StreamedResponse(function() use($conn,$anio,$mes,$idTemporada) {
+    $response = new StreamedResponse(function() use($conn,$mes,$idTemporada) {
 
     $handle = fopen('php://output','w+');
               fputcsv($handle, ['Provincia','Complejo','Disciplina','Modalidad','InscritosTotales','CantidadInscritosVigentes','CantidadRetirados','Temporada'],",");
 
-      $results = $conn->query("exec ACADEMIA.inscripcionesLimaCallao $anio,$mes,$idTemporada ");
+      $results = $conn->query("exec ACADEMIA.inscripcionesLimaCallao $mes,$idTemporada ");
 
       while($row = $results->fetch()) {
         fputcsv($handle, array( $row['Provincia'], $row['Complejo'], $row['Disciplina'],$row['Modalidad'],$row['InscritosTotales'],$row['CantidadInscritosVigentes'],$row['CantidadRetirados'],$row['Temporada']), ",");
@@ -102,13 +100,13 @@ class ExportacionDataController extends Controller
     $response = new StreamedResponse(function() use($conn,$idComplejo,$idTemporada) {
 
       $handle = fopen('php://output','w+');
-              fputcsv($handle,['Departamento','Provincia','Complejo','Disciplina','CodigoHorario','Horario','Modalidad','Etapa','RangoEdad','Convocatoria','Estado','InscritosTotales','CantidadInscritosVigentes','CantidadRetirados'],",");
+              fputcsv($handle,['Departamento','Provincia','Distrito','Complejo','Disciplina','CodigoHorario','Horario','Modalidad','Etapa','RangoEdad','Convocatoria','Estado','InscritosTotales','Inscritos','Retirados','Temporada'],",");
 
       $results = $conn->query("exec ACADEMIA.cantidadHorariosCreadosRegion '$idComplejo','$idTemporada' ");
       
       while($row = $results->fetch()){
 
-        fputcsv($handle, array( $row['Departamento'], $row['Provincia'], $row['Complejo'],$row['Disciplina'],$row['CodigoHorario'],$row['Horario'],$row['Modalidad'],$row['Etapa'],$row['RangoEdad'],$row['Convocatoria'],$row['Estado'],$row['InscritosTotales'],$row['CantidadInscritosVigentes'],$row['CantidadRetirados']), ",");
+        fputcsv($handle, array( $row['Departamento'], $row['Provincia'],$row['Distrito'],$row['Complejo'],$row['Disciplina'],$row['CodigoHorario'],$row['Horario'],$row['Modalidad'],$row['Etapa'],$row['RangoEdad'],$row['Convocatoria'],$row['Estado'],$row['InscritosTotales'],$row['Inscritos'],$row['Retirados'],$row['Temporada']), ",");
       }
       fclose($handle);
     });
@@ -145,25 +143,23 @@ class ExportacionDataController extends Controller
   public function exportDataBeneficiariosAnalistaAction(Request $request)
   {
 
-    $ano = $request->query->get('ano');
     $numMes = $request->query->get('mes');
     $departamento = $request->query->get('departamento');
+    $idTemporada = $request->query->get('idTemporada');
     $conn = $this->get('database_connection');
 
-    $response = new StreamedResponse(function() use($conn,$ano,$numMes,$departamento) {
+    $response = new StreamedResponse(function() use($conn,$numMes,$departamento,$idTemporada) {
       
       $query2='';
       
-      if( empty($numMes) && empty($departamento) )
-        $query2 = " YEAR(mov.fecha_modificacion)='$ano' ";  
-      
-      else if(!empty($numMes) && !empty($departamento) )
-        $query2 = " YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' AND MONTH(mov.fecha_modificacion)<='$numMes' ";    
+      if(!empty($numMes) && !empty($departamento) )
+        $query2 = " AND ubiDpto.ubidpto='$departamento' AND MONTH(mov.fecha_modificacion)<='$numMes' ";
+
       else if(!empty($numMes) && empty($departamento) )
-        $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND MONTH(mov.fecha_modificacion)<='$numMes' "; 
+        $query2 = "AND MONTH(mov.fecha_modificacion) <= '$numMes' "; 
         
       else if(empty($numMes) && !empty($departamento)  )
-        $query2 = "  YEAR(mov.fecha_modificacion)='$ano' AND ubiDpto.ubidpto='$departamento' ";     
+        $query2 = " AND ubiDpto.ubidpto='$departamento' ";     
       
       $handle = fopen('php://output','w+');
 
@@ -296,6 +292,7 @@ class ExportacionDataController extends Controller
                                 ubiProv.ubidpto <> '00' AND
                                 ubiDpto.ubidistrito = '00' AND 
                                 ubiDpto.ubiprovincia = '00' AND 
+                                edi.temporada_id = $idTemporada AND
                                 mov.id in (
                                 SELECT movi.id as id
                                 FROM ACADEMIA.participante parti
@@ -311,7 +308,7 @@ class ExportacionDataController extends Controller
                                 par2.id = parti.id 
                                 GROUP BY par2.id) 
                                 ) AND
-                               ubiDpto.ubidpto <> '00' AND ".$query2;
+                               ubiDpto.ubidpto <> '00' ".$query2;
 
                               $querySinMes = "SELECT 
                                                     ubiDpto.ubinombre Departamento ,
@@ -442,6 +439,7 @@ class ExportacionDataController extends Controller
                                 ubiProv.ubidpto <> '00' AND
                                 ubiDpto.ubidistrito = '00' AND 
                                 ubiDpto.ubiprovincia = '00' AND 
+                                edi.temporada_id = $idTemporada AND
                                 mov.id in (
                                 SELECT movi.id as id
                                   FROM ACADEMIA.participante parti
@@ -456,7 +454,7 @@ class ExportacionDataController extends Controller
                                   par2.id = parti.id 
                                   GROUP BY par2.id) 
                                 ) AND
-                                ubiDpto.ubidpto <> '00' AND ".$query2;
+                                ubiDpto.ubidpto <> '00' ".$query2;
 
               if(empty($numMes)){
                 $results = $conn->query($querySinMes);
@@ -479,7 +477,6 @@ class ExportacionDataController extends Controller
  public function exportDataBeneficiariosComplejoAction(Request $request)
   {
 
-    $ano = $request->query->get('ano');
     $numMes = $request->query->get('mes');
     $idTemporada = $request->query->get('idTemporada');
 
@@ -487,7 +484,7 @@ class ExportacionDataController extends Controller
 
     $conn = $this->get('database_connection');
 
-    $response = new StreamedResponse(function() use($conn,$ano,$numMes,$idComplejo,$idTemporada) {
+    $response = new StreamedResponse(function() use($conn,$numMes,$idComplejo,$idTemporada) {
        
       $handle = fopen('php://output','w+');
 
@@ -497,7 +494,9 @@ class ExportacionDataController extends Controller
                               ubiProv.ubinombre Provincia  ,
                               ubi.ubinombre Distrito,
                               ede.ede_nombre as Complejo,
-                              dis.dis_descripcion as Disciplina, grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, 
+                              dis.dis_descripcion as Disciplina, 
+                              '\"'+RTRIM(grPar.perdni)+'\"' DNI,
+                              grPar.perapepaterno ApellidoPaterno, 
                               grPar.perapematerno ApellidoMaterno ,
                               grPar.pernombres Nombres,
                               CONVERT(varchar, grPar.perfecnacimiento, 103) FechaNacimiento,
@@ -635,13 +634,15 @@ class ExportacionDataController extends Controller
                                 par2.id = parti.id 
                                 GROUP BY par2.id) 
                                 ) AND
-                               ubiDpto.ubidpto <> '00' AND YEAR(mov.fecha_modificacion)='$ano' AND ede.ede_codigo='$idComplejo' ";
+                               ubiDpto.ubidpto <> '00' AND ede.ede_codigo='$idComplejo' ";
 
                           $querySinMes = "SELECT  ubiDpto.ubinombre Departamento ,
                                                   ubiProv.ubinombre Provincia  ,
                                                   ubi.ubinombre Distrito , 
                                                   ede.ede_nombre as Complejo,
-                              dis.dis_descripcion as Disciplina, grPar.perdni DNI,grPar.perapepaterno ApellidoPaterno, 
+                              dis.dis_descripcion as Disciplina, 
+                              '\"'+RTRIM(grPar.perdni)+'\"' DNI,
+                              grPar.perapepaterno ApellidoPaterno, 
                               grPar.perapematerno ApellidoMaterno ,
                               grPar.pernombres Nombres,
                               CONVERT(varchar, grPar.perfecnacimiento, 103) FechaNacimiento,
@@ -776,7 +777,7 @@ class ExportacionDataController extends Controller
                                   par2.id = parti.id 
                                   GROUP BY par2.id) 
                                 ) AND
-                                ubiDpto.ubidpto <> '00' AND YEAR(mov.fecha_modificacion)='$ano' AND ede.ede_codigo='$idComplejo' ";
+                                ubiDpto.ubidpto <> '00' AND ede.ede_codigo='$idComplejo' ";
 
               if(empty($numMes)){
                 $results = $conn->query($querySinMes);
@@ -822,8 +823,10 @@ class ExportacionDataController extends Controller
     $mdlDisciplinasDeportivasExport = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->disciplinaDeportivaExport();
     
     $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+
+    $mesesInicioAndFinTemporada = $em->getRepository('AkademiaBundle:Temporada')->getCantidadMesesTemporadaEnCurso($idTemporada);
     
-    return $this->render('AkademiaBundle:Export:export.html.twig',array('departamentosExport' => $mdlDepartamentosExport,'departamentosAll' => $mdlDepartamentos,'ComplejoDeportivoExport' => $mdlComplejoDeportivoExport,'DisciplinaDeportivaExport' => $mdlDisciplinasDeportivasExport,'idTemporadaHabilitada'=>$idTemporada,'descripcionTemporada'=>$descripcionTemporada)); 
+    return $this->render('AkademiaBundle:Export:export.html.twig',array('departamentosExport' => $mdlDepartamentosExport,'departamentosAll' => $mdlDepartamentos,'ComplejoDeportivoExport' => $mdlComplejoDeportivoExport,'DisciplinaDeportivaExport' => $mdlDisciplinasDeportivasExport,'idTemporadaHabilitada'=>$idTemporada,'descripcionTemporada'=>$descripcionTemporada , 'mesInicioFinTemporada' => $mesesInicioAndFinTemporada[0] )); 
   
   }
 
