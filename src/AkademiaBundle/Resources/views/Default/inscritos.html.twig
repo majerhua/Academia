@@ -15,21 +15,22 @@
 
                 <img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="" style="float:left;" />       
 
-                <div class="container-title-header">
-                	<p  class="text-bold title-header">TEMPORADA {{descripcionTemporada[0]['ciclo']}}-{{descripcionTemporada[0]['anio']}}</p>
-                </div>   
-
             </div>
 
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <br>
-                <ul class="nav navbar-nav navbar-right">
-  
-                	<li title="Inicio"><a href="{{url('akademia_panel',{'idTemporada':idTemporada})}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<span class="navbar-text">
+					<h3>TEMPORADA {{descripcionTemporada[0]['ciclo']}}-{{descripcionTemporada[0]['anio']}}</h3>
+				</span>
+				<br>
+				<ul class="nav navbar-nav navbar-right">
+                    <li title="Inicio"><a href="{{url('akademia_panel',{'idTemporada':idTemporada})}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
                     <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
-                    
-                </ul>
-            </div>
+				</ul>
+				<span class="navbar-text navbar-right" style="margin-right:30px;">
+					Usuario: <b>{{app.user.username}}</b>
+				</span>
+			</div>
+
         </div>
     </nav>
 </header>
@@ -37,9 +38,6 @@
 	
 	<section >
 		<br>
-		<div style="width:93%">
-			<p class="text-right" style="color:grey" >Usuario: {{ app.user.username}} </p>
-		</div>
 		<div class="proceso" style="margin-bottom: 60px;">
 			
 			<h2>Administración de Inscritos</h2>
