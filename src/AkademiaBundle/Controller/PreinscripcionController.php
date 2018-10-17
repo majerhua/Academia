@@ -506,7 +506,6 @@ class PreinscripcionController extends Controller
 	public function generarPdfInscripcionAction(Request $request,$id,$idTemporada){   
  	     
         $em = $this->getDoctrine()->getManager();
-
         $mdlFicha = $em->getRepository('AkademiaBundle:Inscribete')->getFicha($id,$idTemporada);
 
         
@@ -515,8 +514,6 @@ class PreinscripcionController extends Controller
 
         $mdlFicha[0]['turnos'] = $fichaTurnoHorario;
         $mdlFicha[0]['temporada'] = $descripcionTemporada; 
-
-
 
         $html = $this->renderView('AkademiaBundle:Pdf:inscripcionPdf.html.twig', ["inscripcion" => $mdlFicha]);
 

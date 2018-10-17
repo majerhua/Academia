@@ -1,6 +1,4 @@
-
 <?php
-
 namespace AkademiaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

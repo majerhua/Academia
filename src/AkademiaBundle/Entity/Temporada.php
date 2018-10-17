@@ -1,6 +1,4 @@
-
 <?php
-
 namespace AkademiaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
