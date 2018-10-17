@@ -29,66 +29,74 @@ class PreinscripcionController extends Controller
 
     public function indexAction(Request $request){
 
-        
-        $em = $this->getDoctrine()->getManager();
 
-        $arrayTemporadaActiva = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
-        $flagFinTemporada = false;
-        $fechaPreInscripcion = null;
-        $anio = null;
-        $ciclo = null;
-        
-        if( !empty( $arrayTemporadaActiva) ){
+        $flag_mantenimiento = $this->container->getParameter('flagMantenimiento');
 
-            $idTemporada =  $arrayTemporadaActiva[0]['temporadaId'];
-            $arrayFaseTemporada = $em->getRepository('AkademiaBundle:Temporada')->faseTemporadaActiva($idTemporada);
-            $faseTemporada = $arrayFaseTemporada[0]['fase'];
+        if( $flag_mantenimiento == 0 ){
 
-            if( $faseTemporada == 10 ){
+            $em = $this->getDoctrine()->getManager();
 
-                $arrayFechaPreInscripcion = $em->getRepository('AkademiaBundle:Temporada')->getFechaPreInscripcion($idTemporada);
-                $fechaPreInscripcion = $arrayFechaPreInscripcion[0]['fecha_preinscripcion'];
-                $ciclo = $arrayFechaPreInscripcion[0]['ciclo'];
-                $anio = $arrayFechaPreInscripcion[0]['anio'];
-            }
-
-            else if( $faseTemporada == 40 )
-                $flagFinTemporada = true;
+            $arrayTemporadaActiva = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
+            $flagFinTemporada = false;
+            $fechaPreInscripcion = null;
+            $anio = null;
+            $ciclo = null;
             
-        }else
-            $flagFinTemporada = true;
+            if( !empty( $arrayTemporadaActiva) ){
+
+                $idTemporada =  $arrayTemporadaActiva[0]['temporadaId'];
+                $arrayFaseTemporada = $em->getRepository('AkademiaBundle:Temporada')->faseTemporadaActiva($idTemporada);
+                $faseTemporada = $arrayFaseTemporada[0]['fase'];
+
+                if( $faseTemporada == 10 ){
+
+                    $arrayFechaPreInscripcion = $em->getRepository('AkademiaBundle:Temporada')->getFechaPreInscripcion($idTemporada);
+                    $fechaPreInscripcion = $arrayFechaPreInscripcion[0]['fecha_preinscripcion'];
+                    $ciclo = $arrayFechaPreInscripcion[0]['ciclo'];
+                    $anio = $arrayFechaPreInscripcion[0]['anio'];
+                }
+
+                else if( $faseTemporada == 40 )
+                    $flagFinTemporada = true;
+                
+            }else
+                $flagFinTemporada = true;
 
 
-        if( $flagFinTemporada ){
+            if( $flagFinTemporada ){
 
-            $faseTemporada = 40; //OBTENEMOS LA FECHA DE PRE-INSCRIPCION PROXIMA
+                $faseTemporada = 40; //OBTENEMOS LA FECHA DE PRE-INSCRIPCION PROXIMA
 
-            $arrayProximaTemporada = $em->getRepository('AkademiaBundle:Temporada')->temporadaProxima();
+                $arrayProximaTemporada = $em->getRepository('AkademiaBundle:Temporada')->temporadaProxima();
 
-            if( !empty($arrayProximaTemporada[0]['pre_inscripciones']) ){
-                $fechaPreInscripcion = $arrayProximaTemporada[0]['fecha_preinscripcion'];
-                $ciclo = $arrayProximaTemporada[0]['ciclo'];
-                $anio = $arrayProximaTemporada[0]['anio'];
+                if( !empty($arrayProximaTemporada[0]['pre_inscripciones']) ){
+                    $fechaPreInscripcion = $arrayProximaTemporada[0]['fecha_preinscripcion'];
+                    $ciclo = $arrayProximaTemporada[0]['ciclo'];
+                    $anio = $arrayProximaTemporada[0]['anio'];
+                }
+                else
+                    $faseTemporada = 50; //NO EXISTE TEMPORADA PROXIMA
             }
-            else
-                $faseTemporada = 50; //NO EXISTE TEMPORADA PROXIMA
-        }
 
-        $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
-        $idTemporada =0;
+            $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
+            $idTemporada =0;
+            
+            if( !empty( $arrayTemporada) )
+                $idTemporada =  $arrayTemporada[0]['temporadaId'];
+
+            else{
+
+                if( !empty( $this->getUser() ) ){
+                    $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
+                    $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
+                }
+            }
+
+            return $this->render('AkademiaBundle:Default:index.html.twig',array('faseTemporada'=>$faseTemporada, 'fechaPreInscripcion'=>$fechaPreInscripcion, 'anio'=>$anio, 'ciclo'=>$ciclo,'idTemporada'=>$idTemporada )); 
+        }else if($flag_mantenimiento == 1) {
+            return $this->render('AkademiaBundle:Default:pagina_en_mantenimiento.html.twig'); 
+        }
         
-        if( !empty( $arrayTemporada) )
-            $idTemporada =  $arrayTemporada[0]['temporadaId'];
-
-        else{
-
-            if( !empty( $this->getUser() ) ){
-                $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
-                $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
-            }
-        }
-
-        return $this->render('AkademiaBundle:Default:index.html.twig',array('faseTemporada'=>$faseTemporada, 'fechaPreInscripcion'=>$fechaPreInscripcion, 'anio'=>$anio, 'ciclo'=>$ciclo,'idTemporada'=>$idTemporada )); 
     }
 
     public function fichaPreInscripcionAction(Request $request,$idTemporada){
