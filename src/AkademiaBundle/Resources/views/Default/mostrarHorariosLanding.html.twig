@@ -341,27 +341,31 @@
 			$("#vacantes").empty();
 			$("#mensaje").empty();
 
-			let datos = {
-				'idComplejoDisciplina':idComplejoDisciplina,
-				'flag':0,
-				'flagDiscapacidad':"{{estado}}"
-			};
+			if(idComplejoDisciplina!=''){
+				let datos = {
+					'idComplejoDisciplina':idComplejoDisciplina,
+					'flag':0,
+					'flagDiscapacidad':"{{estado}}"
+				};
 
-			$.ajax({
+				$.ajax({
 
-				type:'POST',
-				url: "{{url('tableHorario')}}",
-				data: datos,
-				beforeSend:function(){
-					$("#container-loader-horario").show();
-					$("#tableHorario").empty();
-					console.log(datos);
-				},
-				success:function(data){
-					$("#container-loader-horario").hide();
-					$("#tableHorario").html(data);
-				}
-			});
+					type:'POST',
+					url: "{{url('tableHorario')}}",
+					data: datos,
+					beforeSend:function(){
+						$("#container-loader-horario").show();
+						$("#tableHorario").empty();
+						console.log(datos);
+					},
+					success:function(data){
+						$("#container-loader-horario").hide();
+						$("#tableHorario").html(data);
+					}
+				});				
+			}else{
+				$("#tableHorario").empty();
+			}
 		}
 
 		$("#pre-inscribete").on('click',function(){
