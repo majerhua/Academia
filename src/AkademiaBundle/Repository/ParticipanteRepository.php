@@ -118,7 +118,7 @@ class ParticipanteRepository extends \Doctrine\ORM\EntityRepository
                 ubiDpto.ubidpto <> '00' AND
                 ins.estado = 2 AND
                 edi.temporada_id= $idTemporada AND
-                mov.asistencia_id = 2  AND (  mov.categoria_id = 2 OR mov.categoria_id= 3 )";
+                mov.asistencia_id != 3   AND (  mov.categoria_id = 2 OR mov.categoria_id= 3 )";
   
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
@@ -319,7 +319,7 @@ class ParticipanteRepository extends \Doctrine\ORM\EntityRepository
                 ins.estado = 2 AND 
                 edi.temporada_id = '$idTemporada' AND
                 mov.categoria_id = 4 AND 
-                mov.asistencia_id = 2";
+                mov.asistencia_id != 3;";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();

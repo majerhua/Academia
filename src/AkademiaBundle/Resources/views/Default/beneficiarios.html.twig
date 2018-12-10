@@ -200,9 +200,8 @@
 												    <th class="text-center" style="background-color:rgba(0,0,0,0.2);" >{{mesesAnio[mes]}}</th>
 												{% endfor %}
 
-												{% if idTemporadaActiva == idTemporada %}
-													<th class="text-center"></th>
-												{%  endif %}
+												<th class="text-center"></th>
+										
 											</tr>
 
 										</thead> 
@@ -246,114 +245,71 @@
 														    
 															{% if asisMen['inscribete_id'] ==  beneficiario['idInscribete'] and asisMen['mes'] == mes %}
 
-																{% if asisMen['asistencia_id'] == 2 or asisMen['asistencia_id'] == 4  %}
+																{% if asisMen['asistencia_id'] == 2  %}
 
 																	{% set flagAsis = true %}
 																	{% set asistenciaId = asisMen['asistencia_id'] %}
-
+																	{% set break = true %}
+																		
 																{% endif %}
 
 															{% endif %}
 
 														{% endfor %}
 
-														{%  if flagAsis == true %}
+														<td 	{% if numMesActual != mes %} 
+																	style="background-color:rgba(0,0,0,0.3);" 	
+																{% endif %}
+														>
 
-															{% if numMesActual == mes %}
+															{%  if flagAsis == true %}
 
-																<td>
-																	<div class="options-bene">
-														    			<label  class="label-checkbox" >
-														        			<input type="checkbox" 
+																<div class="options-bene">
+												    				<label  class="label-checkbox" >
+												        				<input type="checkbox"
 
-															        			{% if  asistenciaId == 2 %}  
-															        				class="mes-actual" checked
-															        			{% elseif asistenciaId == 4 %}
-															        				class="mes-actual"
-															        			{% endif %} 
+												        					checked
 
-														        				name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"/>
-														        			<img  	
-																        			{% if asistenciaId == 4 %}
-																        				class=" img-checkbox"
-																        			{% else %}
-																        				class="img-checkbox"
-																        			{% endif %} 
+												        				 {% if numMesActual == mes %}
+												        				 	class="mes-actual"
+												        				 		
+												        				 	name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"
+												        				 {% else %}
 
-														        			style="cursor:pointer;"  />   
-														   				</label>
-														   			</div>
+												        				 	disabled 
+												        				{% endif %}
 
-																</td>
+												        				 />
+												        				<img  {% if numMesActual != mes %} style="cursor:no-drop;" {% else %} style="cursor:pointer;" {% endif %} class="img-check"/>   
+												   					</label>
+												   				</div>
 
-															{% else %}
+												   			{% else %}
 
-																<td style="background-color:rgba(0,0,0,0.3);">
+																<div class="options-bene">
+												    				<label  class="label-checkbox" >
+												        				<input type="checkbox"    
 
-																	<div class="options-bene">
-														    			<label  class="label-checkbox" >
+												        				{% if numMesActual == mes %}
+												        					class="mes-actual"
 
-														        			<input type="checkbox" 
-																				{% if  asistenciaId == 2 %}  
-															        				 checked
-															        			{% endif %} 
+												        					name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"
+												        				{% else %}
 
-														        			 disabled  name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"
+												        					disabled
+												        				{% endif %}
+												        				/>
+												        				<img  {% if numMesActual != mes %} style="cursor:no-drop;" {% else %} style="cursor:pointer;" {% endif %} />   
+												   					</label>
+												   				</div>
+												   			{% endif %}
 
-														        			 />
-														        			<img  
-																				{% if asistenciaId == 4 %}
-															        				class="img-checkbox "
-																        		{% else  %}
-																        			class="img-checkbox"
-															        			{% endif %}
-
-														        			style="cursor:no-drop;" 
-														        			/>   
-														   				</label>
-														   			</div>
-
-																</td>
-
-															{% endif %}
-
-														{%  else %}
-
-															{% if numMesActual == mes %}
-																<td >
-
-																	<div class="options-bene">
-														    			<label  class="label-checkbox" >
-														        			<input type="checkbox" class="mes-actual"   name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"/>
-														        			<img  style="cursor:pointer;"  class="img-checkbox"/>   
-														   				</label>
-														   			</div>
-
-																</td>
-
-															{% else %}
-																<td style="background-color:rgba(0,0,0,0.3);">
-
-																	<div class="options-bene">
-														    			<label  class="label-checkbox" >
-														        			<input type="checkbox"  disabled  name="codHorario" value="{{beneficiario['idInscribete']}}" onclick="asistenciaMensual(this)"/>
-														        			<img  style="cursor:no-drop;"  class="img-checkbox"/>   
-														   				</label>
-														   			</div>
-
-																</td>
-
-															{% endif %}
-
-														{% endif %}
+														</td>
 
 													{% endfor %}
 
-													{% if idTemporadaActiva == idTemporada %}
+													<td><button type="button" title="Editar datos" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar" onclick="editarParticipante({{beneficiario['idParticipante']}})"><i class="icon-pencil-square-o" style="font-size:1em; margin-top:5px; color:white" ></button></td>
 
-														<td><button type="button" title="Editar datos" class="btn btn-danger" data-toggle="modal" data-target="#modal-editar" onclick="editarParticipante({{beneficiario['idParticipante']}})"><i class="icon-pencil-square-o" style="font-size:1em; margin-top:5px; color:white" ></button></td>
-
-													{% endif %}
 												</tr> 
 												
 												{% set cont = cont + 1 %}
@@ -539,7 +495,6 @@
 											{% for categoria in categorias %}
 												{% if categoria['id'] != 3 and categoria['id'] != 4 %}
 													<option value="{{categoria['id']}}">{{categoria['descripcion']}}</option>
-
 												{% endif %}
 											{% endfor %}
 										</select>
@@ -702,6 +657,8 @@
 			}
 		}
 
+		console.log("Asistencia Mes => ",asistenciaMes);
+
 
 		$("#asistencia-total-mensual").on('click',function(){
 
@@ -734,6 +691,9 @@
 		    	$(element).siblings('img').addClass('img-x');		  		
 		    	asistenciaMes.splice( asistenciaMes.indexOf(element.value), 1);
 		  	}
+
+		  	console.log("Asistencia Mes => ",asistenciaMes);
+
 		}
 
 		const guardarAsistencia = ()=>{
@@ -852,7 +812,6 @@
 			$("#categoria-evaluado").attr('hidden',true);
 			$("#categoria-talento").attr('hidden',true);
 
-			$containerSelectCategoria.hide(); 
 			$containerSelectEtapa.hide(); 
 			$containerSelectMigracion.hide();
 
@@ -887,13 +846,6 @@
 				}
 
 			{% endfor %}
-
-			etapa = "{{horarios[0]['etapa']}}";
-
-			if( etapa == 'Formación' )
-				$("#container-select-categoria").show();
-			else
-				$("#container-select-categoria").hide();
 			
 			if( idCategoria == 1 ){ //Si la Categoria es igual a No Seleccionado Entonces Ocultamos Select Categoria, Etapa y Migracion
 				$("#etapa-masificacion").attr('hidden',false);

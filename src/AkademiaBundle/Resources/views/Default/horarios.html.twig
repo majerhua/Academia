@@ -114,9 +114,9 @@
 													<th class="text-center" style="font-size:14px">Límite de preinscripciones</th> 
 													<th class="text-center" style="font-size:14px">Inscritos</th>
 													<th></th>
-													{% if idTemporadaActiva == idTemporada %}
+													
 														<th></th>
-													{% endif %}
+												
 												</tr>
 												
 											</thead> 
@@ -172,20 +172,19 @@
 													{% endif %}
 
 													<td id="8h{{horario['idHorario']}}" class="text-center">
-														
 														{{horario['vacantes']}} 
 													</td>
 
-													<td id="9h{{horario['idHorario']}}" class="text-center">{{horario['preinscripciones']}}</td> 
+													<td id="9h{{horario['idHorario']}}" class="text-center">{{horario['preinscripciones']}}
+													</td> 
+
 													<td id="10h{{horario['idHorario']}}" class="text-center">{{horario['inscritos']}}</td>
 												
-													{% if is_granted('ROLE_ADMIN') and idTemporadaActiva == idTemporada %}
 													
-														<td><button title="Editar horario" type="button" id="{{horario['idHorario']}}" onclick="editarHorario({{horario['idHorario']}},{{horario['idDisciplina']}} )" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1.2em; margin-top:5px; color:white" ></i></button></td>
+													<td><button title="Editar horario" type="button" id="{{horario['idHorario']}}" onclick="editarHorario({{horario['idHorario']}},{{horario['idDisciplina']}} )" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1.2em; margin-top:5px; color:white" ></i></button></td>
 														
-													{% endif %}
-													
-														<td><a href="{{url('akademia_beneficiarios',{ idHorario:horario['idHorario'], idTemporada : idTemporada })}}"  title="Mostrar Inscritos" type="button" class="btn btn-default btn-xs"><i class="icon-checklist" style="font-size: 1.3em;"></i></a></td>
+												
+													<td><a href="{{url('akademia_beneficiarios',{ idHorario:horario['idHorario'], idTemporada : idTemporada })}}"  title="Mostrar Inscritos" type="button" class="btn btn-default btn-xs"><i class="icon-checklist" style="font-size: 1.3em;"></i></a></td>
 												</tr> 
 												<input type="hidden" value="{{horario['idDisciplina']}}">				
 												
