@@ -1,0 +1,35 @@
+
+<div style="width:100%;overflow-y:scroll;height:60vh;" >
+	<table class="table table-hover" width="100%;"> 
+		<thead > 
+			<tr  > 
+				<th class="text-center " style="  font-size:14px;" >Código</th>
+				<th class="text-center " style="  font-size:14px;" >Estructura</th> 
+				<th class="text-center " style="  font-size:14px;">Departamento</th>
+				<th class="text-center " style="  font-size:14px;" >Provincia</th> 
+				<th class="text-center " style="  font-size:14px;" >Distrito</th> 
+				<th class="text-center " style="  font-size:14px;" >Tipo</th> 
+				<th class="text-center " style="  font-size:14px;" >Estado</th> 
+				<th class="text-center " style="  font-size:14px;" class="col-xs-1"><em style="visibility:hidden;padding:0;margin:0;border:0;font-size:14px;">Editar</em></th> 
+			</tr>
+
+		</thead> 
+
+		<tbody  class="buscar"  style=" width:100%; ">
+			{% for complejo in complejosDeportivos %}
+			 	<tr >
+			 		<td class="text-center " style=" font-size:14px;"  >{{complejo['complejoId']}}</td>
+			 		<td class="text-center " style=" font-size:14px;" >{{complejo['complejoNombre']}}</td>
+			 		<td class="text-center" style="  font-size:14px;" >{{complejo['departamento']}} </td>
+			 		<td class="text-center " style=" font-size:14px;" >{{complejo['provincia']}}</td>
+			 		<td class="text-center " style=" font-size:14px;" >{{complejo['distrito']}}</td>
+			 		<td class="text-center " style=" font-size:14px;" >{{complejo['complejoTipo']}}</td>
+			 		<td class="text-center " style=" font-size:14px;" >{{complejo['complejoEstado']}}</td>
+			 		<td class="text-center " style=" font-size:14px;"><button class="btn btn-success" onclick="getComplejoById({{complejo['complejoId']}})" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1em; margin-top:5px; color:white" ></i></button></td>
+			 	</tr>	    
+			 {% endfor %} 							
+		</tbody> 
+
+	</table>
+</div>
+

@@ -229,6 +229,25 @@ class TemporadaRepository extends \Doctrine\ORM\EntityRepository
         return $message;
 	}
 
+	public function getTemporadasHabilitadasAnalista(){
+
+        try {
+				$query = "	SELECT temp.id temporadaId, cic.descripcion ciclo, temp.anio anio
+							FROM ACADEMIA.temporada temp
+							INNER JOIN ACADEMIA.ciclo cic ON cic.id = temp.ciclo_id;";
+
+			    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+			    $stmt->execute();
+			    $temporadas = $stmt->fetchAll();
+           		return $temporadas;
+
+        }catch (DBALException $e) {
+          $message = $e->getCode();
+        }
+
+        return $message;
+	}
+
 
 	public function crearTemporada($crearAnio,$crearCiclo,$crearApertura,$crearPreInscripcion,$crearInicioClases,$crearCierreClases,$crearFechaSubsanacion,$usuario){
 

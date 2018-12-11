@@ -13,7 +13,7 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 
 	public function getprovincesPublicGeneralByDisability($disability,$ageBeneficiario,$idTemporada){
 
-	    $query = "SELECT DISTINCT ubiDpto.ubidpto idDepartamento, 
+	    $query = "	SELECT DISTINCT ubiDpto.ubidpto idDepartamento, 
 					ubiProv.ubiprovincia idProvincia,
 					ubiProv.ubinombre nombreProvincia
 					
@@ -46,7 +46,7 @@ class ProvinciaRepository extends \Doctrine\ORM\EntityRepository
 	                ubi.ubiprovincia <> '00' AND 
 	                
 	                '$ageBeneficiario' <= hor.edadMaxima AND 
-                    '$ageBeneficiario' >= hor.edadMinima ";
+                    '$ageBeneficiario' >= hor.edadMinima  ";
 	    
 	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
 	    $stmt->execute();

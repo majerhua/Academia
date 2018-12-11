@@ -1,0 +1,340 @@
+{% extends '::base.html.twig' %}
+{% block title %}La Academia{% endblock %}
+{% block body  %}
+
+<header>
+	
+	<nav class="navbar navbar-inverse" role="navigation">
+
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="" />
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<span class="navbar-text">
+					<h3>TEMPORADA {{descripcionTemporada[0]['ciclo']}}-{{descripcionTemporada[0]['anio']}}</h3>
+				</span>
+				<br>
+				<ul class="nav navbar-nav navbar-right">
+					<li title="Inicio"><a href="{{url('akademia_panel',{'idTemporada':idTemporada})}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
+					<li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
+				</ul>
+				<span class="navbar-text navbar-right" style="margin-right:30px;">
+					Usuario: <b>{{app.user.username}}</b>
+				</span>
+			</div>
+		</div>
+	</nav>
+</header>
+
+<section class="proceso-inscripcion">
+		<div id="proceso1" class="proceso" style="margin-bottom: 60px;">
+
+			<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-10 col-lg-10">
+    				<p style="float: left;" class="align-middle"><img src="{{ asset('assets/images/disciplina.png') }}" width="80" height="80"></p>
+    				<h1 class="align-middle" style="margin-left: 120px;">Complejos Deportivos</h1>
+			</div>
+
+			<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert">
+				<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+				<p>Asigna las disciplinas de la temporada en curso según sus modalidades y su configuración.</p>
+			</div>
+
+			<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-10 col-lg-10">
+				<div class="card">
+					<div class="card-header text-center" role="tab">
+						<h3>Deportes Generales</h3> 
+					</div>
+					<hr>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="input-group col-xs-4 col-sm-4 col-md-4 col-lg-4">
+								 	<span class="input-group-addon">Buscar</span>
+								  	<input class="filtrar form-control" type="text"   placeholder=" ingresa los campos a buscar">
+								</div>
+								<br>
+									
+								<div id="container-table-disciplina">
+									{% include 'AkademiaBundle:Complejo:table_complejo.html.twig' %}
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+</section>
+
+{% include 'AkademiaBundle:Footer:footer.html.twig' %}
+
+
+<div id="modal-editar" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+				<h4 class="title-card" id="nombreParticipante" style="color:#38364D"></h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div id="alert-editar-participante" class="alert alert-warning alert-dismissible text-center" role="alert">
+							<button id="btn-close-alert-editar-participante" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+							<p>Actualizar Complejo</p>
+						</div>
+						<div id="alerta-error" class="alert alert-danger collapse text-center"></div>
+						<ul class="list-group">
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Código</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<p type="text" name="codigo-complejo" id="codigo-complejo-editar"></p>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Nombre</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<input class="form-control" type="text" name="nombre-complejo-editar" id="nombre-complejo-editar">
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Departamento</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<select  class="form-control" type="text" name="departamento-complejo-editar" id="departamento-complejo-editar" onchange="cambiarDepartamento(this)" >
+										</select>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Provincia</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<select class="form-control" type="text" name="provincia-complejo-editar" id="provincia-complejo-editar" onchange="cambiarProvincia(this)" >
+										</select>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Distrito</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<select class="form-control" type="text" name="distrito-complejo-editar" id="distrito-complejo-editar">
+										</select>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Tipo</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<select class="form-control" type="text" name="tipo-complejo-editar" id="tipo-complejo-editar">
+											<option value="1" >Ipd</option>
+											<option value="2" >Asociado</option>
+											<option value="2" >No asociado</option>
+										</select>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Estado</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<select class="form-control" type="text" name="estado-complejo-editar" id="estado-complejo-editar">
+											<option value="1">Habilitado</option>
+											<option value="2">Desabilitado</option>
+										</select>
+									</div>
+								</div>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-danger" id="btn-editar-complejo"  data-dismiss="modal">Editar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+<script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
+<script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
+
+<script>
+	
+
+	$codigoComplejoEditar = $("#codigo-complejo-editar");
+	$nombreComplejoEditar = $("#nombre-complejo-editar");
+	$departamentoComplejoEditar = $("#departamento-complejo-editar");
+	$provinciaComplejoEditar = $("#provincia-complejo-editar");
+	$distritoComplejoEditar = $("#distrito-complejo-editar");
+	$tipoComplejoEditar = $("#tipo-complejo-editar");
+	$estadoComplejoEditar = $("#estado-complejo-editar");
+	$btnEditarComplejo = $("#btn-editar-complejo");
+
+
+	const getComplejoById = function( complejoId ){
+
+		var datos = { 'codigoComplejo': complejoId };
+
+		$.ajax({
+			type:'POST',
+			url: "{{url('akademia_getComplejoById')}}",
+			data: datos,
+			beforeSend: function(){
+				console.log("Enviando => ",datos);			
+			},
+			success: function(data){
+
+				dataComplejo = data[0];
+				$codigoComplejoEditar.text(dataComplejo.complejoId);
+				$nombreComplejoEditar.val(dataComplejo.complejoNombre);
+
+				{% for dep in departamentos %}
+
+					if( "{{dep['id']}}" == dataComplejo.departamento )
+						$departamentoComplejoEditar.append("<option selected value={{dep['id']}}>{{dep['nombre']}}</option>")
+					else
+						$departamentoComplejoEditar.append("<option value={{dep['id']}}>{{dep['nombre']}}</option>")
+
+				{% endfor %}
+
+				{% for prov in provincias %}
+
+					if( "{{prov['idDepartamento']}}" == dataComplejo.departamento && "{{prov['idProvincia']}}" == dataComplejo.provincia )
+
+						$provinciaComplejoEditar.append("<option selected value={{prov['idProvincia']}} data-departamento={{prov['idDepartamento']}} >{{prov['nombreProvincia']}}</option>")
+
+					else if( "{{prov['idDepartamento']}}" == dataComplejo.departamento )
+
+						$provinciaComplejoEditar.append("<option value={{prov['idProvincia']}} data-departamento={{prov['idDepartamento']}} >{{prov['nombreProvincia']}}</option>")
+					
+				{% endfor %}
+
+				{% for dis in distritos %}
+
+					if( "{{dis['idDepartamento']}}" == dataComplejo.departamento && "{{dis['idProvincia']}}" == dataComplejo.provincia && "{{dis['idDistrito_2']}}" == dataComplejo.distrito )
+						$distritoComplejoEditar.append("<option selected value={{dis['idDistrito']}}>{{dis['nombreDistrito']}}</option>")
+
+					else if( "{{dis['idDepartamento']}}" == dataComplejo.departamento && "{{dis['idProvincia']}}" == dataComplejo.provincia )
+						$distritoComplejoEditar.append("<option value={{dis['idDistrito']}}>{{dis['nombreDistrito']}}</option>")
+
+				{% endfor %}
+
+			},
+			error: function(error){
+				alertify.error('<p style="color:white">Error </p>');	
+				console.log(error);
+			},
+		});
+	};
+
+	const cambiarDepartamento = function(departamento){
+		
+		idDepartamento = departamento.value;
+
+		$distritoComplejoEditar.empty();
+		$provinciaComplejoEditar.empty();
+
+		$provinciaComplejoEditar.append("<option value='' >--Seleccionar--</option>");
+		$distritoComplejoEditar.append("<option value='' >--Seleccionar--</option>");
+
+		{% for prov in provincias  %}
+
+			if("{{prov['idDepartamento']}}" == idDepartamento)
+				$provinciaComplejoEditar.append("<option value={{prov['idProvincia']}} data-departamento={{prov['idDepartamento']}} >{{prov['nombreProvincia']}}</option>")
+				
+		{% endfor %}
+	}
+
+
+	const cambiarProvincia = function(provincia){
+		
+		idProvincia = provincia.value;
+		$distritoComplejoEditar.empty();
+
+		idDepartamento = $(provincia[1]).attr('data-departamento');
+
+		$distritoComplejoEditar.append("<option value='' >--Seleccionar--</option>");
+
+		{% for dis in distritos  %}
+
+			if( "{{dis['idDepartamento']}}" == idDepartamento && "{{dis['idProvincia']}}" == idProvincia )
+				$distritoComplejoEditar.append("<option value={{dis['idDistrito']}} >{{dis['nombreDistrito']}}</option>");
+				
+		{% endfor %}
+	}
+
+	const editarComplejo = function(){
+
+		$.ajax({
+				
+			type:'POST',
+			url: "{{url('akademia_getTableHorarioMigracion')}}",
+			data: datosMigracionHorario,
+			beforeSend: function(){
+
+				$btnEditarComplejo.attr('disabled');			
+			},
+			success: function(data){
+
+
+
+
+				$departamentoComplejoEditar
+
+				
+			},
+			error: function(data){
+				alertify.error('<p style="color:white">Error </p>');	
+				console.log(data);
+			},
+		});	
+	};
+
+
+	$btnEditarComplejo.on('click',editarComplejo);
+
+</script>
+
+
+{% endblock %}

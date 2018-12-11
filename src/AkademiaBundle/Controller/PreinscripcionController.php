@@ -30,6 +30,9 @@ class PreinscripcionController extends Controller
     public function indexAction(Request $request){
 
 
+
+
+
         $flag_mantenimiento = $this->container->getParameter('flagMantenimiento');
 
         if( $flag_mantenimiento == 0 ){
@@ -87,8 +90,23 @@ class PreinscripcionController extends Controller
             else{
 
                 if( !empty( $this->getUser() ) ){
-                    $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
-                    $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
+
+                        $usuario = $this->getUser();
+                        $roles = $usuario->getRoles();
+                        
+                    if( $roles[0] == "ROLE_ANALISTA" ){
+                        $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadasAnalista();
+                    }else{
+                        $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
+                    }
+
+                    if(!empty($temporadasHabilitadas)){
+                        $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
+                    }else{
+                        $idTemporada = NULL;
+                    }
+
+                    
                 }
             }
 

@@ -47,26 +47,49 @@ class DefaultController extends Controller
         $idComplejo = $this->getUser()->getIdComplejo();
         $em = $this->getDoctrine()->getManager();
 
-        $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
+        $usuario = $this->getUser();
+        $roles = $usuario->getRoles();
 
+        $Nombre = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->nombreComplejo($idComplejo);
+
+        if( $roles[0] == "ROLE_ANALISTA" ){
+            $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadasAnalista();
+        }else{
+            $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
+        }
+
+        
         if($idTemporada == 0){
            $temporadaArray = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva(); 
 
             if(!empty($temporadaArray)){
                 $idTemporada = $temporadaArray[0]['temporadaId'];
             }else{
-                $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
+
+                if(!empty($temporadasHabilitadas))
+                    $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
+                else
+                    $idTemporada = NULL;
+                
             }  
         }
 
-        $Nombre = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->nombreComplejo($idComplejo);
-
+        
         $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+
+        if(empty($descripcionTemporada)){
+            $descripcionTemporada = NULL;
+        }
 
         if(!empty($Nombre)){ 
 
-            $arrayFaseTemporada = $em->getRepository('AkademiaBundle:Temporada')->faseTemporadaActiva($idTemporada);
-            $faseTemporada = $arrayFaseTemporada[0]['fase'];
+            if(!empty($idTemporada)){
+                $arrayFaseTemporada = $em->getRepository('AkademiaBundle:Temporada')->faseTemporadaActiva($idTemporada);
+                $faseTemporada = $arrayFaseTemporada[0]['fase'];
+            }else{
+                $faseTemporada=NULL;
+            }
+
 
           return $this->render('AkademiaBundle:Default:menuprincipal.html.twig', array("valor"=>"1", "nombreComplejo"=> $Nombre,'temporadasHabilitadas'=>$temporadasHabilitadas,'idTemporadaHabilidatada' => $idTemporada , 'faseTemporada'=> $faseTemporada,'descripcionTemporada' => $descripcionTemporada ));
           

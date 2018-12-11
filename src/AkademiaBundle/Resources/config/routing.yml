@@ -5,6 +5,27 @@
 
 
 
+##ADMINISTRACION COMPLEJOS
+
+akademia_complejos:
+  path: /complejos/{idTemporada}
+  defaults: { _controller: AkademiaBundle:Complejo:complejos,idTemporada:0 }
+  methods: [GET,POST]
+
+
+akademia_complejosEditar:
+  path: /editar/complejos
+  defaults: { _controller: AkademiaBundle:Complejo:complejosEditar }
+  methods: [GET,POST]
+
+
+akademia_getComplejoById:
+  path: /get/complejo
+  defaults: { _controller: AkademiaBundle:Complejo:getComplejoById }
+  methods: [GET,POST]
+##
+
+
 ##PAGINA MOSTRAR TEMPORADA
 akademia_temporadasPrincipal:
   path: /temporadas/{idTemporada}

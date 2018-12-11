@@ -11,6 +11,71 @@ namespace AkademiaBundle\Repository;
 class ComplejoDeportivoRepository extends \Doctrine\ORM\EntityRepository
 {
 
+
+	public function getComplejoById($codigo){
+
+		$query = "SELECT 
+					ede.ede_codigo complejoId,
+					ede.ede_nombre complejoNombre,
+					ubi.ubidpto departamento,
+					ubi.ubiprovincia provincia,
+					ubi.ubidistrito distrito,
+					ede.ede_asociado complejoTipo,
+					ede_estado complejoEstado
+					FROM CATASTRO.edificacionesdeportivas ede
+					INNER JOIN grubigeo AS ubi ON ubi.ubicodigo = ede.ubicodigo
+					WHERE
+					ubi.ubidistrito <> '00' AND 
+					ubi.ubiprovincia <> '00' AND 
+					ubi.ubiprovincia <> '00' AND
+					ede.ede_codigo = $codigo; ";
+
+		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
+		$stmt->execute();
+		$complejo = $stmt->fetchAll();
+		return $complejo;
+	}
+
+	public function getComplejos(){
+
+		$query = "SELECT 
+					ede.ede_codigo complejoId,
+					ede.ede_nombre complejoNombre,
+					ubiDpto.ubinombre departamento,
+					ubiProv.ubinombre provincia,
+					ubi.ubinombre distrito,
+					CASE ede.ede_asociado
+					WHEN 1 THEN 'IPD'
+					WHEN 2 THEN 'Asociado'
+					WHEN 3 THEN 'No asociado'
+					END
+					AS complejoTipo,
+					ede_estado complejoEstado
+					 FROM CATASTRO.edificacionesdeportivas ede
+					INNER JOIN grubigeo AS ubi ON ubi.ubicodigo = ede.ubicodigo
+					INNER JOIN grubigeo AS ubiProv ON ubiProv.ubiprovincia = ubi.ubiprovincia
+					INNER JOIN grubigeo AS ubiDpto ON ubiDpto.ubidpto = ubi.ubidpto
+					WHERE
+					ubiDpto.ubidpto <> '00' AND 
+					ubiDpto.ubidistrito ='00' AND
+					ubiDpto.ubiprovincia ='00' AND
+
+					ubiProv.ubidpto = ubi.ubidpto AND
+					ubiProv.ubidpto <> '00' AND
+					ubiProv.ubiprovincia <> '00' AND
+					ubiProv.ubidistrito = '00' AND
+
+					ubi.ubidistrito <> '00' AND 
+					ubi.ubiprovincia <> '00' AND 
+					ubi.ubiprovincia <> '00';";
+
+		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
+		$stmt->execute();
+		$complejosDeportivos = $stmt->fetchAll();
+		return $complejosDeportivos;
+	}
+
+
 	public function getComplexesPublicGeneralByDisability($disability,$ageBeneficiario,$idTemporada)
 	{
 		$query = "SELECT distinct edde.ede_codigo as id, edde.ede_nombre as nombre ,edde.ubicodigo ,edde.ede_direccion as direccion, edde.ede_estado as estado,edde.ede_discapacitado as discapacitado from ACADEMIA.horario AS hor , CATASTRO.edificacionDisciplina as eddis, CATASTRO.edificacionesdeportivas AS edde where hor.discapacitados='$disability' and hor.estado=1 and hor.edi_codigo=eddis.edi_codigo and edde.ede_codigo=eddis.ede_codigo and hor.vacantes <> 0 and hor.convocatoria=1 and hor.etapa = 1 and '$ageBeneficiario'<=hor.edadMaxima and '$ageBeneficiario'>=hor.edadMinima and eddis.temporada_id = $idTemporada;";
