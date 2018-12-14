@@ -56,12 +56,21 @@
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 								<div class="input-group col-xs-4 col-sm-4 col-md-4 col-lg-4">
 								 	<span class="input-group-addon">Buscar</span>
-								  	<input class="filtrar form-control" type="text"   placeholder=" ingresa los campos a buscar">
+								  	<input class="filtrar form-control" type="text" placeholder=" ingresa los campos a buscar">
 								</div>
 								<br>
 									
-								<div id="container-table-disciplina">
+								<div id="container-table-complejo">
 									{% include 'AkademiaBundle:Complejo:table_complejo.html.twig' %}
+								</div>
+
+								<div class="row">
+									<div class="col-md-2 col-md-offset-10">
+										<div style="padding:20px 0 10px 50px;">
+											<button class="btn btn-danger" data-toggle="modal" data-target="#modal-crear">Crear</button>
+										</div>
+										
+									</div>
 								</div>
 
 							</div>
@@ -74,122 +83,8 @@
 
 {% include 'AkademiaBundle:Footer:footer.html.twig' %}
 
-
-<div id="modal-editar" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-		<!-- Modal content-->
-		<div class="modal-content">
-			<div class="modal-header text-center">
-				<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
-				<h4 class="title-card" id="nombreParticipante" style="color:#38364D"></h4>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-						<div id="alert-editar-participante" class="alert alert-warning alert-dismissible text-center" role="alert">
-							<button id="btn-close-alert-editar-participante" type="button" class="close"><span aria-hidden="true">&times;</span></button>
-							<p>Actualizar Complejo</p>
-						</div>
-						<div id="alerta-error" class="alert alert-danger collapse text-center"></div>
-						<ul class="list-group">
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Código</strong></p>
-									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-										<p type="text" name="codigo-complejo" id="codigo-complejo-editar"></p>
-									</div>
-								</div>
-							</li>
-
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Nombre</strong></p>
-									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-										<input class="form-control" type="text" name="nombre-complejo-editar" id="nombre-complejo-editar">
-									</div>
-								</div>
-							</li>
-
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Departamento</strong></p>
-									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-										<select  class="form-control" type="text" name="departamento-complejo-editar" id="departamento-complejo-editar" onchange="cambiarDepartamento(this)" >
-										</select>
-									</div>
-								</div>
-							</li>
-
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Provincia</strong></p>
-									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-										<select class="form-control" type="text" name="provincia-complejo-editar" id="provincia-complejo-editar" onchange="cambiarProvincia(this)" >
-										</select>
-									</div>
-								</div>
-							</li>
-
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Distrito</strong></p>
-									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-										<select class="form-control" type="text" name="distrito-complejo-editar" id="distrito-complejo-editar">
-										</select>
-									</div>
-								</div>
-							</li>
-
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Tipo</strong></p>
-									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-										<select class="form-control" type="text" name="tipo-complejo-editar" id="tipo-complejo-editar">
-											<option value="1" >Ipd</option>
-											<option value="2" >Asociado</option>
-											<option value="2" >No asociado</option>
-										</select>
-									</div>
-								</div>
-							</li>
-
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Estado</strong></p>
-									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-										<select class="form-control" type="text" name="estado-complejo-editar" id="estado-complejo-editar">
-											<option value="1">Habilitado</option>
-											<option value="2">Desabilitado</option>
-										</select>
-									</div>
-								</div>
-							</li>
-
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-danger" id="btn-editar-complejo"  data-dismiss="modal">Editar</button>
-			</div>
-		</div>
-	</div>
-</div>
+{% include 'AkademiaBundle:Complejo:modal_crear_complejo.html.twig' %}
+{% include 'AkademiaBundle:Complejo:modal_editar_complejo.html.twig' %}
 
 {% endblock %}
 
@@ -202,15 +97,44 @@
 <script>
 	
 
-	$codigoComplejoEditar = $("#codigo-complejo-editar");
-	$nombreComplejoEditar = $("#nombre-complejo-editar");
+	$departamentoComplejo = $("select[name=departamento-complejo]");
+	$provinciaComplejo = $("select[name=provincia-complejo]");
+	$distritoComplejo = $("select[name=distrito-complejo]");
+
+
+	/*EDITAR*/
 	$departamentoComplejoEditar = $("#departamento-complejo-editar");
 	$provinciaComplejoEditar = $("#provincia-complejo-editar");
 	$distritoComplejoEditar = $("#distrito-complejo-editar");
+	$codigoComplejoEditar = $("#codigo-complejo-editar");
+	$nombreComplejoEditar = $("#nombre-complejo-editar");
 	$tipoComplejoEditar = $("#tipo-complejo-editar");
 	$estadoComplejoEditar = $("#estado-complejo-editar");
-	$btnEditarComplejo = $("#btn-editar-complejo");
+	$latitudComplejoEditar = $("#latitud-complejo-editar");
+	$longitudComplejoEditar = $("#longitud-complejo-editar");
 
+	/*CREAR*/
+	$departamentoComplejoCrear = $("#departamento-complejo-crear");
+	$provinciaComplejoCrear = $("#provincia-complejo-crear");
+	$distritoComplejoCrear = $("#distrito-complejo-crear");
+	$codigoComplejoCrear = $("#codigo-complejo-editar");
+	$nombreComplejoCrear = $("#nombre-complejo-editar");
+	$tipoComplejoCrear = $("#tipo-complejo-editar");
+	$estadoComplejoCrear = $("#estado-complejo-editar");
+	$latitudComplejoCrear = $("#latitud-complejo-editar");
+	$longitudComplejoCrear = $("#longitud-complejo-editar");
+
+	$btnEditarComplejo = $("#btn-editar-complejo");
+	$btnCrearComplejo = $("#btn-crear-complejo");
+
+	$containerTableComplejo = $("#container-table-complejo");
+
+
+	$nombreComplejoCrear = $("#nombre-complejo-crear");
+	$tipoComplejoCrear = $("#tipo-complejo-crear");
+	$estadoComplejoCrear = $("#estado-complejo-crear");
+	$latitudComplejoCrear = $("#latitud-complejo-crear");
+	$longitudComplejoCrear = $("#longitud-complejo-crear");
 
 	const getComplejoById = function( complejoId ){
 
@@ -220,21 +144,25 @@
 			type:'POST',
 			url: "{{url('akademia_getComplejoById')}}",
 			data: datos,
-			beforeSend: function(){
-				console.log("Enviando => ",datos);			
+			beforeSend: function(){		
 			},
 			success: function(data){
 
 				dataComplejo = data[0];
 				$codigoComplejoEditar.text(dataComplejo.complejoId);
 				$nombreComplejoEditar.val(dataComplejo.complejoNombre);
+				$tipoComplejoEditar.val(dataComplejo.complejoTipo);
+				$estadoComplejoEditar.val(dataComplejo.complejoEstado);
+				$latitudComplejoEditar.val(dataComplejo.latitud);
+				$longitudComplejoEditar.val(dataComplejo.longitud);
+
 
 				{% for dep in departamentos %}
 
 					if( "{{dep['id']}}" == dataComplejo.departamento )
-						$departamentoComplejoEditar.append("<option selected value={{dep['id']}}>{{dep['nombre']}}</option>")
+						$departamentoComplejo.append("<option selected value={{dep['id']}}>{{dep['nombre']}}</option>")
 					else
-						$departamentoComplejoEditar.append("<option value={{dep['id']}}>{{dep['nombre']}}</option>")
+						$departamentoComplejo.append("<option value={{dep['id']}}>{{dep['nombre']}}</option>")
 
 				{% endfor %}
 
@@ -242,21 +170,21 @@
 
 					if( "{{prov['idDepartamento']}}" == dataComplejo.departamento && "{{prov['idProvincia']}}" == dataComplejo.provincia )
 
-						$provinciaComplejoEditar.append("<option selected value={{prov['idProvincia']}} data-departamento={{prov['idDepartamento']}} >{{prov['nombreProvincia']}}</option>")
+						$provinciaComplejo.append("<option selected value={{prov['idProvincia']}} data-departamento={{prov['idDepartamento']}} >{{prov['nombreProvincia']}}</option>")
 
 					else if( "{{prov['idDepartamento']}}" == dataComplejo.departamento )
 
-						$provinciaComplejoEditar.append("<option value={{prov['idProvincia']}} data-departamento={{prov['idDepartamento']}} >{{prov['nombreProvincia']}}</option>")
+						$provinciaComplejo.append("<option value={{prov['idProvincia']}} data-departamento={{prov['idDepartamento']}} >{{prov['nombreProvincia']}}</option>")
 					
 				{% endfor %}
 
 				{% for dis in distritos %}
 
 					if( "{{dis['idDepartamento']}}" == dataComplejo.departamento && "{{dis['idProvincia']}}" == dataComplejo.provincia && "{{dis['idDistrito_2']}}" == dataComplejo.distrito )
-						$distritoComplejoEditar.append("<option selected value={{dis['idDistrito']}}>{{dis['nombreDistrito']}}</option>")
+						$distritoComplejo.append("<option selected value={{dis['idDistrito']}}>{{dis['nombreDistrito']}}</option>")
 
 					else if( "{{dis['idDepartamento']}}" == dataComplejo.departamento && "{{dis['idProvincia']}}" == dataComplejo.provincia )
-						$distritoComplejoEditar.append("<option value={{dis['idDistrito']}}>{{dis['nombreDistrito']}}</option>")
+						$distritoComplejo.append("<option value={{dis['idDistrito']}}>{{dis['nombreDistrito']}}</option>")
 
 				{% endfor %}
 
@@ -272,67 +200,123 @@
 		
 		idDepartamento = departamento.value;
 
-		$distritoComplejoEditar.empty();
-		$provinciaComplejoEditar.empty();
+		$distritoComplejo.empty();
+		$provinciaComplejo.empty();
 
-		$provinciaComplejoEditar.append("<option value='' >--Seleccionar--</option>");
-		$distritoComplejoEditar.append("<option value='' >--Seleccionar--</option>");
+		$provinciaComplejo.append("<option value='' >--Seleccionar--</option>");
+		$distritoComplejo.append("<option value='' >--Seleccionar--</option>");
 
 		{% for prov in provincias  %}
 
 			if("{{prov['idDepartamento']}}" == idDepartamento)
-				$provinciaComplejoEditar.append("<option value={{prov['idProvincia']}} data-departamento={{prov['idDepartamento']}} >{{prov['nombreProvincia']}}</option>")
+				$provinciaComplejo.append("<option value={{prov['idProvincia']}} data-departamento={{prov['idDepartamento']}} >{{prov['nombreProvincia']}}</option>")
 				
 		{% endfor %}
 	}
 
-
 	const cambiarProvincia = function(provincia){
 		
 		idProvincia = provincia.value;
-		$distritoComplejoEditar.empty();
+		$distritoComplejo.empty();
 
 		idDepartamento = $(provincia[1]).attr('data-departamento');
 
-		$distritoComplejoEditar.append("<option value='' >--Seleccionar--</option>");
+		$distritoComplejo.append("<option value='' >--Seleccionar--</option>");
 
 		{% for dis in distritos  %}
 
 			if( "{{dis['idDepartamento']}}" == idDepartamento && "{{dis['idProvincia']}}" == idProvincia )
-				$distritoComplejoEditar.append("<option value={{dis['idDistrito']}} >{{dis['nombreDistrito']}}</option>");
+				$distritoComplejo.append("<option value={{dis['idDistrito']}} >{{dis['nombreDistrito']}}</option>");
 				
 		{% endfor %}
 	}
 
 	const editarComplejo = function(){
 
+
+		var datos = {
+			'codigo': $codigoComplejoEditar.text(),
+			'nombre': $nombreComplejoEditar.val(),
+			'ubicodigo': $distritoComplejoEditar.val(),
+			'tipo': $tipoComplejoEditar.val(),
+			'estado': $estadoComplejoEditar.val(),
+			'latitud': $latitudComplejoEditar.val(),
+			'longitud': $longitudComplejoEditar.val()
+		};
+
 		$.ajax({
 				
 			type:'POST',
-			url: "{{url('akademia_getTableHorarioMigracion')}}",
-			data: datosMigracionHorario,
+			url: "{{url('akademia_complejosEditar')}}",
+			data: datos,
 			beforeSend: function(){
 
+				console.log("Enviando Datos a Editar =>",datos);
 				$btnEditarComplejo.attr('disabled');			
 			},
 			success: function(data){
 
+				if(data == -1){
+					alertify.warning('<p style="color:black">Existen Campos Vacios!.</p>');
+				}else if(data == 0){
+					alertify.warning('<p style="color:black">Ocurrio Error a la hora de Editar!.</p>');
+				}else{
 
+					$("#container-table-complejo").html(data);
 
-
-				$departamentoComplejoEditar
-
-				
+					alertify.success('<p style="color:white">Se edito correctamente!.</p>');
+				}
 			},
-			error: function(data){
+			error: function(error){
 				alertify.error('<p style="color:white">Error </p>');	
-				console.log(data);
+				console.log(error);
+			},
+		});	
+	};
+
+	const crearComplejo = function(){
+
+		var datos = {
+			'nombre': $nombreComplejoCrear.val(),
+			'ubicodigo': $distritoComplejoCrear.val(),
+			'tipo': $tipoComplejoCrear.val(),
+			'estado': $estadoComplejoCrear.val(),
+			'latitud': $latitudComplejoCrear.val(),
+			'longitud': $longitudComplejoCrear.val()
+		};
+		console.log("Datos a Crear =>",datos);
+		$.ajax({
+				
+			type:'POST',
+			url: "{{url('akademia_complejosCrear')}}",
+			data: datos,
+			beforeSend: function(){
+
+				$btnCrearComplejo.attr('disabled');			
+			},
+			success: function(data){
+				
+				if(data == -1){
+					alertify.warning('<p style="color:black">Existen Campos Vacios!.</p>');
+				}else if(data == 0){
+					alertify.warning('<p style="color:black">Ocurrio Error a la hora de Editar!.</p>');
+				}else{
+
+					$("#container-table-complejo").html(data);
+
+					alertify.success('<p style="color:white">Se creo correctamente!.</p>');
+				}
+			},
+			error: function(error){
+				alertify.error('<p style="color:white">Error </p>');	
+				console.log(error);
 			},
 		});	
 	};
 
 
 	$btnEditarComplejo.on('click',editarComplejo);
+	$btnCrearComplejo.on('click',crearComplejo);
 
 </script>
 

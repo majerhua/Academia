@@ -1,0 +1,21 @@
+{% for user in usuarios %}
+	{% if user['id_perfil'] == perfilUsuarioId %}
+		
+		<tr>
+			<td  class="text-center" style="font-size:14px">{{user['id']}}</td>
+			<td  class="text-center" style="font-size:14px">{{user['nombre']}}</td>
+			<td  class="text-center" style="font-size:14px">{{user['correo']}}</td>
+			<td  class="text-center" style="font-size:14px">{{user['telefono']}}</td>
+			<td  class="text-center" style="font-size:14px">
+				<button class="btn btn-primary"><i class="icon-pencil-square-o" style="color:white;font-size:13px;"></i></button>
+			</td>
+			<td  class="text-center" style="font-size:14px">
+				<button class="btn btn-info"><i class="icon-eye" style="color:white;font-size:13px;" ></i></button>
+			</td>
+			<td  class="text-center" style="font-size:14px">
+				<button class="btn btn-danger"><i class="icon-trash" style="color:white;font-size:13px;"></i></button>
+			</td>
+		</tr>
+
+	{% endif %}
+{% endfor %}

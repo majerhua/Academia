@@ -1,2 +1,22 @@
 parameters:
     flagMantenimiento: 0
+    rol:
+      1: '["ROLE_ADMIN"]'
+      2: '["ROLE_MACRO"]'
+      3: '["ROLE_MONITOR"]'
+      4: '["ROLE_PROMOTOR"]'
+      5: '["ROLE_PROFESOR"]'
+    perfilUsuario:
+      administrador: 1
+      macro: 2
+      monitor: 3
+      promotor: 4
+      profesor: 5
+twig:
+  globals:
+    perfilUsuario:
+      administrador: 1
+      macro: 2
+      monitor: 3
+      promotor: 4
+      profesor: 5

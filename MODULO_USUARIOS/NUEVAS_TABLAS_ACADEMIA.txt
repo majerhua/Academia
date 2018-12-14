@@ -1,0 +1,54 @@
+CREATE TABLE ACADEMIA.Usuario_Ubigeo (
+    id int  IDENTITY(1,1) NOT NULL,
+    usuario_id int NOT NULL,
+    ubicodigo int NOT NULL,
+    fecha_registro datetime2(7) DEFAULT GETDATE() NOT NULL,
+    usuario_crea int NOT NULL, 
+    fecha_modificacion datetime2(7) NULL,
+    usuario_modifico int  NULL,
+    CONSTRAINT PK_ACADEMIA_Usuario_Ubigeo PRIMARY KEY (id),
+    CONSTRAINT FK_ACADEMIA_Usuario_Ubigeo_USUARIO FOREIGN KEY (usuario_id)
+    REFERENCES ACADEMIA.usuario(id),
+    CONSTRAINT FK_ACADEMIA_Usuario_Ubigeo_UBIGEO FOREIGN KEY (ubicodigo)
+    REFERENCES grubigeo(ubicodigo)
+);
+
+SELECT *FROM CATASTRO.edificacionesdeportivas
+
+CREATE TABLE ACADEMIA.Usuario_Edificacion (
+    id int  IDENTITY(1,1) NOT NULL,
+    usuario_id int NOT NULL,
+    ede_codigo smallint NOT NULL,
+    fecha_registro datetime2(7) DEFAULT GETDATE() NOT NULL,
+    usuario_crea int NOT NULL, 
+    fecha_modificacion datetime2(7) NULL,
+    usuario_modifico int  NULL,
+    CONSTRAINT PK_ACADEMIA_Usuario_Edificacion PRIMARY KEY (id),
+    CONSTRAINT FK_ACADEMIA_Usuario_Edificacion_USUARIO FOREIGN KEY (usuario_id)
+    REFERENCES ACADEMIA.usuario(id),
+    CONSTRAINT FK_ACADEMIA_Usuario_Edificacion_EDIFICACION FOREIGN KEY (ede_codigo)
+    REFERENCES CATASTRO.edificacionesdeportivas(ede_codigo)
+);
+
+
+CREATE TABLE ACADEMIA.Usuario_EdificacionDisciplina (
+    id int  IDENTITY(1,1) NOT NULL,
+    usuario_id int NOT NULL,
+    edi_codigo int NOT NULL,
+    fecha_registro datetime2(7) DEFAULT GETDATE() NOT NULL,
+    usuario_crea int NOT NULL, 
+    fecha_modificacion datetime2(7) NULL,
+    usuario_modifico int  NULL,
+    CONSTRAINT PK_ACADEMIA_Usuario_EdificacionDisciplina PRIMARY KEY (id),
+    CONSTRAINT FK_ACADEMIA_Usuario_EdificacionDisciplina_USUARIO FOREIGN KEY (usuario_id)
+    REFERENCES ACADEMIA.usuario(id),
+    CONSTRAINT FK_ACADEMIA_Usuario_EdificacionDisciplina_EDIFICACION FOREIGN KEY (edi_codigo)
+    REFERENCES CATASTRO.edificacionDisciplina(edi_codigo)
+);
+
+CREATE TABLE ACADEMIA.perfilUsuario(
+id INT IDENTITY(1,1) NOT NULL,
+descripcion VARCHAR(120) NOT NULL,
+estado int NOT NULL
+);
+

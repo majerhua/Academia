@@ -1,0 +1,136 @@
+<div id="modal-crear" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+				<h4 class="title-card" id="nombreParticipante" style="color:#38364D"></h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div id="alert-crear-participante" class="alert alert-warning alert-dismissible text-center" role="alert">
+							<button id="btn-close-alert-crear-participante" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+							<p>Crear Complejo</p>
+						</div>
+						<div id="alerta-error" class="alert alert-danger collapse text-center"></div>
+						<ul class="list-group">
+
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Nombre</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<input class="form-control" type="text" name="nombre-complejo-crear" id="nombre-complejo-crear">
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Departamento</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<select  class="form-control" type="text" name="departamento-complejo" id="departamento-complejo-crear" onchange="cambiarDepartamento(this)" >
+											<option value="" >--Seleccionar--</option>
+											{% for dep in departamentos %}
+												<option value={{dep['id']}}>{{dep['nombre']}}</option>
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Provincia</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<select class="form-control" type="text" name="provincia-complejo" id="provincia-complejo-crear" onchange="cambiarProvincia(this)">
+											<option value="" >--Seleccionar--</option>
+										</select>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Distrito</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<select class="form-control" type="text" name="distrito-complejo" id="distrito-complejo-crear">
+											<option value="" >--Seleccionar--</option>
+										</select>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Longitud</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<input class="form-control" type="text" name="longitud-complejo-crear" id="longitud-complejo-crear">
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Latitud</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<input class="form-control" type="text" name="latitud-complejo-crear" id="latitud-complejo-crear">
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Tipo</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<select class="form-control" type="text" name="tipo-complejo-crear" id="tipo-complejo-crear">
+											<option value="" >--Seleccionar--</option>
+											<option value="1" >Ipd</option>
+											<option value="2" >Asociado</option>
+											<option value="3" >No asociado</option>
+										</select>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Estado</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+										<select class="form-control" type="text" name="estado-complejo-crear" id="estado-complejo-crear">
+											<option value="" >--Seleccionar--</option>
+											<option value="1">Habilitado</option>
+											<option value="0">Desabilitado</option>
+										</select>
+									</div>
+								</div>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-danger" id="btn-crear-complejo"  data-dismiss="modal">Crear</button>
+			</div>
+		</div>
+	</div>
+</div>

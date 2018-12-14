@@ -181,7 +181,27 @@
 							<p class="title-card">Temporada</p>
 						</div>
 					</a>
+				</div>
+
+				<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
+					<a href="{{url('akademia_complejos',{'idTemporada':idTemporadaHabilidatada})}}">
+						<div class="card">
+							<img src="{{ asset('assets/images/complejos.png') }}" width="120" height="120">
+							<p class="title-card">Administración de Complejos</p>
+						</div>
+					</a>
 				</div>	
+
+
+				<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">
+					<a href="{{url('akademia_usuario',{'idTemporada':idTemporadaHabilidatada})}}">
+						<div class="card">
+							<img src="{{ asset('assets/images/usuarios.png') }}" width="120" height="120">
+							<p class="title-card">Gestión de Usuario</p>
+						</div>
+					</a>
+				</div>	
+
 				{% elseif is_granted('ROLE_DOCENTE') %}
 					
 					<div id="option-horarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 text-center">

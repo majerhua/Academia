@@ -29,10 +29,6 @@ class PreinscripcionController extends Controller
 
     public function indexAction(Request $request){
 
-
-
-
-
         $flag_mantenimiento = $this->container->getParameter('flagMantenimiento');
 
         if( $flag_mantenimiento == 0 ){

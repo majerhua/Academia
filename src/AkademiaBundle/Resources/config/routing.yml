@@ -3,7 +3,19 @@
 #  path: /exporExcelPrueba
 #  defaults: { _controller: AkademiaBundle:ExportacionData:exportPrueba }
 
+##ADMINISTRACION USUARIOS
 
+akademia_usuario:
+  path: /usuarios/{idTemporada}
+  defaults: { _controller: AkademiaBundle:Usuarios:usuarios,idTemporada:0 }
+  methods: [GET,POST]
+
+akademia_usuarioCrear:
+  path: /crear/usuarios
+  defaults: { _controller: AkademiaBundle:Usuarios:usuariosCrear }
+  methods: [GET,POST]
+
+##
 
 ##ADMINISTRACION COMPLEJOS
 
@@ -18,6 +30,10 @@ akademia_complejosEditar:
   defaults: { _controller: AkademiaBundle:Complejo:complejosEditar }
   methods: [GET,POST]
 
+akademia_complejosCrear:
+  path: /crear/complejos
+  defaults: { _controller: AkademiaBundle:Complejo:complejosCrear }
+  methods: [GET,POST]
 
 akademia_getComplejoById:
   path: /get/complejo

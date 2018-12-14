@@ -1,0 +1,461 @@
+{% extends '::base.html.twig' %}
+{% block title %}La Academia{% endblock %}
+{% block body  %}
+
+<header>
+	
+	<nav class="navbar navbar-inverse" role="navigation">
+
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<img src="{{ asset('assets/images/logo_academia.png') }}" class="img-responsive" alt="" />
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<span class="navbar-text">
+					<h3>TEMPORADA {{descripcionTemporada[0]['ciclo']}}-{{descripcionTemporada[0]['anio']}}</h3>
+				</span>
+				<br>
+				<ul class="nav navbar-nav navbar-right">
+					<li title="Inicio"><a href="{{url('akademia_panel',{'idTemporada':idTemporada})}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
+					<li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
+				</ul>
+				<span class="navbar-text navbar-right" style="margin-right:30px;">
+					Usuario: <b>{{app.user.username}}</b>
+				</span>
+			</div>
+		</div>
+	</nav>
+</header>
+
+<section class="proceso-inscripcion">
+		<div id="proceso1" class="proceso" style="margin-bottom: 60px;">
+
+			<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-10 col-lg-10">
+    				<p style="float: left;" class="align-middle"><img src="{{ asset('assets/images/usuarios.png') }}" width="80" height="80"></p>
+    				<h1 class="align-middle" style="margin-left: 120px;">Usuarios</h1>
+			</div>
+
+			<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert">
+				<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+				<p>Crea usuarios y asigna Departamentos,Provincias y Complejos..</p>
+			</div>
+
+			<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-10 col-lg-10">
+				<div class="card">
+					<div class="card-header text-center" role="tab">
+						<h3>Gestión de Usuarios</h3> 
+					</div>
+					<hr>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+									
+								<div id="container-table-usuario">
+									
+									{% set cont = 0 %}
+									{% for perfil in perfilUsuarios %}
+										{% if  perfil['id'] !=  perfilUsuario['administrador'] and perfil['id'] !=  perfilUsuario['profesor'] %}
+											<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-11 col-lg-11">	
+
+												<div class="card">
+													<div class="card-header text-center" role="tab" id="" style="height:50px; padding-top:12px;" >
+														<a class="title-card" data-toggle="collapse" href="#caja{{perfil['id']}}" >
+															<strong>{{perfil['descripcion']}}</strong>
+														</a>
+													</div>
+													
+													<div id="caja{{perfil['id']}}" class="collapse" role="tabpanel" data-parent="#accordion">
+														<hr>
+														<div class="card-body">
+															<div class="row">
+																<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+																	<div class="row">
+
+																		<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+																			<div class="input-group col-xs-8 col-sm-8 col-md-8 col-lg-8">
+																			  <span class="input-group-addon">Buscar</span>
+																			  <input class="filtrar form-control" type="text" ident-buscar="{{cont}}"  placeholder=" Ingresa los campos a buscar">
+																			</div>
+																		</div>
+																
+																	</div>
+																	<br>
+																	<div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:50vh; ">			
+
+																		<table class="table"  style="width: 100%;"> 
+
+																			<thead style="background:#cb2f1d; color:#F2F2F2;" class="text-center"> 
+																				<tr> 
+																					<th class="text-center" style="font-size:14px">Código</th>
+																					<th class="text-center" style="font-size:14px">Nombre</th>
+																					<th class="text-center" style="font-size:14px">Correo</th>
+																					<th class="text-center" style="font-size:14px">Telefono</th> 
+																					<th></th>
+																					<th></th>
+																					<th></th>
+																				</tr>
+																				
+																			</thead> 
+																			
+																			<tbody id="1{{perfil['id']}}" class="buscar"> 
+
+																				{% for user in usuarios %}
+																					{% if user['id_perfil'] == perfil['id'] %}
+																						
+																						<tr>
+																							<td  class="text-center" style="font-size:14px">{{user['id']}}</td>
+																							<td  class="text-center" style="font-size:14px">{{user['nombre']}}</td>
+																							<td  class="text-center" style="font-size:14px">{{user['correo']}}</td>
+																							<td  class="text-center" style="font-size:14px">{{user['telefono']}}</td>
+																							<td  class="text-center" style="font-size:14px">
+																								<button class="btn btn-primary"><i class="icon-pencil-square-o" style="color:white;font-size:13px;"></i></button>
+																							</td>
+																							<td  class="text-center" style="font-size:14px">
+																								<button class="btn btn-info"><i class="icon-eye" style="color:white;font-size:13px;" ></i></button>
+																							</td>
+																							<td  class="text-center" style="font-size:14px">
+																								<button class="btn btn-danger"><i class="icon-trash" style="color:white;font-size:13px;"></i></button>
+																							</td>
+																						</tr>
+
+																					{% endif %}
+																				{% endfor %}
+
+																			</tbody> 
+
+																		</table>
+																	</div>
+
+																	<div class="row">
+																		<div class="col-md-3 col-lg-2 col-md-offset-9 col-lg-offset-10">
+																			<div style="padding:0 0 0 50px;">
+																				<button class="btn btn-danger" data-toggle="modal" onclick="mostrarListaTipoUsuario({{perfil['id']}})" data-target="#modal-crear">Agregar</button>
+																			</div>
+																		</div>
+																	</div>
+
+																</div>
+															</div>
+
+														</div>
+													</div>
+												</div>       
+											</div>
+										{% endif %}
+									{% set cont = cont + 1 %}
+									{% endfor %}
+
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+</section>
+
+{% include 'AkademiaBundle:Footer:footer.html.twig' %}
+
+{% include 'AkademiaBundle:Usuario:modal_crear_usuario.html.twig' %}
+
+{% endblock %}
+
+{% block javascripts %}
+
+<script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
+<script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/alertify.min.js"></script>
+
+<script>
+	
+	$listUsuarioMacro = $("#list-usuario-macro");
+	$listUsuarioMonitor = $("#list-usuario-monitor");
+	$listUsuarioPromotor = $("#list-usuario-promotor");
+
+	$btnAgregarDepartamento = $("#btn-agregar-departamento");
+	$btnAgregarProvincia = $("#btn-agregar-provincia");
+	$btnAgregarComplejo = $("#btn-agregar-complejo");
+
+	$btnCrearUsuario = $("#btn-crear-usuario");
+	$divContDep = $("#div-cont-dep");
+	$divContProv = $("#div-cont-prov");
+	$divContEdi = $("#div-cont-edi");
+
+	$departamentoCrear = $("#departamento-crear");
+	$provinciaCrear = $("#provincia-crear");
+	$complejoCrear = $("#complejo-crear");
+
+	/*CREAR USUARIO*/
+	$perfilUsuarioCrear = $("#perfil-usuario-crear");
+	$tipoDocumentoCrear = $("#tipo-documento-crear");
+	$numeroDocumentoCrear = $("#numero-documento-crear");
+	$nombreCrear = $("#nombre-crear");
+	$apellidoParternoCrear = $("#apellido-parterno-crear");
+	$apellidoMaternoCrear = $("#apellido-materno-crear");
+	$telefonoCrear = $("#telefono-crear");
+	$correoCrear = $("#correo-crear");
+	$usuarioCrear = $("#usuario-crear");
+	$passwordCrear = $("#password-crear");
+
+	$departamento = $("select[name=departamento]");
+	$provincia = $("select[name=provincia]");
+	$complejo = $("select[name=complejo]");
+
+	$nombreTipoUsuarioModal = $("#nombre-tipo-usuario-modal");
+
+	var totalDepartSelect = new Object();
+	var totalProvSelect = new Object();
+	var totalEdiSelect = new Object()
+
+	$btnCrearUsuario.on('click',function(){
+
+		let arrayDeparSelect = Object.values(totalDepartSelect);
+		let arrayProvSelect = Object.values(totalProvSelect);
+		let arrayEdiSelect = Object.values(totalEdiSelect);
+
+		var datos = {
+						'tipoDocumento': $tipoDocumentoCrear.val(),
+						'numeroDocumento': $numeroDocumentoCrear.val(),
+						'nombre': $nombreCrear.val(),
+						'apellidoPaterno': $apellidoParternoCrear.val(),
+						'apellidoMaterno': $apellidoMaternoCrear.val(),
+						'telefono': $telefonoCrear.val(),
+						'correo': $correoCrear.val(),
+						'username': $usuarioCrear.val(),
+						'password': $passwordCrear.val(),
+						'perfilUsuario': $perfilUsuarioCrear.val()
+					}
+
+		if( $perfilUsuarioCrear.val() == "{{perfilUsuario['macro']}}" )
+			datos['coleccion'] = arrayDeparSelect;
+		else if( $perfilUsuarioCrear.val() == "{{perfilUsuario['monitor']}}" )
+			datos['coleccion'] = arrayProvSelect;
+		else if( $perfilUsuarioCrear.val() == "{{perfilUsuario['promotor']}}" )
+			datos['coleccion'] = arrayEdiSelect;
+		
+
+		console.log("Datos a Enviar =>",datos);
+		$.ajax({
+			type:'POST',
+			url:"{{url('akademia_usuarioCrear')}}",
+			data:datos,
+			beforeSend:function(){
+				console.log("Enviando Datos =>",datos);
+			},
+			success:function(data){
+
+				if(data == -2){
+					alertify.warning("<p style='color:black; font-weight=bold;' >El username esta en uso.!</p>");
+				}else if(data == -1){
+					alertify.warning("<p style='color:black; font-weight=bold;' >Existen Campos Vacios.!</p>");
+				}else if(data == 0){
+					alertify.warning("<p style='color:black; font-weight=bold;' >Ocurrio un error al editar, actulize la pagina porfavor.!</p>");
+				}else {
+					alertify.success('<p>Se creo el Usuario Correctamente</p>');
+					$("#1"+$perfilUsuarioCrear.val()).html(data);
+				}
+			},
+			error:function(error){
+				alertify.error("<p>Ocurrio un Error en el Sistema!.</p>")
+			}
+		});	
+	});
+
+	const generateKey = ()=>{
+		let numberRandom = Math.floor(Math.random() * 10000000) + 1 ;
+		return numberRandom;
+	}
+
+	const eliminarDepartamentoSeleccionado = function(keyObject){
+
+		delete  totalDepartSelect[parseInt(keyObject)];
+
+		
+		var divContKeyDep = document.querySelectorAll('.div-cont-key-dep');
+		var divContKeyDepLength = divContKeyDep.length;
+
+		for (let i =0; i < divContKeyDepLength; i++) {
+		
+			if(  keyObject == parseInt( $(divContKeyDep[i]).attr('key-div') ) ){
+				$(divContKeyDep[i]).empty();
+				break;
+			}
+		}
+		console.log(totalDepartSelect);
+	};
+
+	const mostrarListaTipoUsuario = function(perfilUsuarioId){
+
+		$listUsuarioMacro.hide();
+		$listUsuarioMonitor.hide();
+		$listUsuarioPromotor.hide();
+
+		$divContDep.empty();
+		$divContProv.empty();
+		$divContEdi.empty();
+
+		totalDepartSelect = new Object();
+		totalProvSelect = new Object();
+		totalEdiSelect = new Object();
+
+		var nombreTipoUsuario = null;
+
+		if( perfilUsuarioId == "{{perfilUsuario['macro']}}" ){
+			$listUsuarioMacro.show();
+			nombreTipoUsuario = "Macro";
+
+		}else if( perfilUsuarioId == "{{perfilUsuario['monitor']}}" ){
+			$listUsuarioMonitor.show();
+			nombreTipoUsuario = "Monitor";
+
+		}else if( perfilUsuarioId == "{{perfilUsuario['promotor']}}" ){
+			$listUsuarioPromotor.show();
+			nombreTipoUsuario = "Promotor";
+		}
+
+		$nombreTipoUsuarioModal.text(nombreTipoUsuario);
+		$perfilUsuarioCrear.val(perfilUsuarioId);
+	};
+
+	const cambiarDepartamento = function(departamento){
+		
+		idDepartamento = departamento.value;
+
+		$provincia.empty();
+		$provincia.append("<option value=''>--Seleccionar--</option>");
+		$complejo.empty();
+		$complejo.append("<option value=''>--Seleccionar--</option>");
+
+		{% for prov in provincias  %}
+
+			if("{{prov['idDepartamento']}}" == idDepartamento)
+				$provincia.append("<option value={{prov['ubicodigo']}} data-departamento={{prov['idDepartamento']}} data-provincia={{prov['idProvincia']}} name-provincia='{{prov['nombreProvincia']}}' >{{prov['nombreProvincia']}}</option>")
+				
+		{% endfor %}
+	};
+
+	const cambiarProvincia = function(provincia){
+		
+		var idDepartamento = $('option:selected', provincia).attr('data-departamento');
+		var idProvincia = $('option:selected', provincia).attr('data-provincia');
+
+		console.log("Id Departament =>",idDepartamento);
+		console.log("Id Provincia =>",idProvincia);
+
+		$complejo.empty();
+		$complejo.append("<option value=''>--Seleccionar--</option>");
+
+		{% for comp in complejos  %}
+
+			if( "{{comp['departamentoId']}}" == idDepartamento && "{{comp['provinciaId']}}" == idProvincia )
+				$complejo.append("<option value={{comp['complejoId']}} name-complejo='{{comp['complejoNombre']}}' >{{comp['complejoNombre']}}</option>");
+				
+		{% endfor %}
+	};
+
+	$btnAgregarDepartamento.on('click',function(){
+
+		let nameOption = $('option:selected', $departamentoCrear).attr('name-departamento');
+		let valOption = $departamentoCrear.val();
+		let key = generateKey();
+
+		var arrayTotalDepartSelect = Object.values(totalDepartSelect);
+
+		var flag = true;
+
+		for (let i = 0; i < arrayTotalDepartSelect.length ; i++) {
+			if( valOption == arrayTotalDepartSelect[i] ){
+				flag = false;
+				break;
+			}
+		}
+
+		if( flag == true ){
+
+			totalDepartSelect[ key ] = valOption;
+			$divContDep.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarDepartamentoSeleccionado(${key})' ></i></div>`);
+				console.log(totalDepartSelect);
+		}else{
+			alertify.warning("<p style='color:black;font-weight:bold;'>El departamento ya fue seleccionado</p>");
+		}
+
+	});
+
+	$btnAgregarProvincia.on('click',function(){
+
+		let nameOption = $('option:selected', $provincia).attr('name-provincia');
+		let valOption = $provincia.val();
+		let key = generateKey();
+
+		if(valOption == ''){
+			alertify.warning("<p style='color:black;font-weight:bold;'>Debe seleccionar una provincia!.</p>");
+			return false;
+		}
+
+
+		var arrayTotalProvSelect = Object.values(totalProvSelect);
+
+		var flag = true;
+
+		for (let i = 0; i < arrayTotalProvSelect.length ; i++) {
+			if( valOption == arrayTotalProvSelect[i] ){
+				flag = false;
+				break;
+			}
+		}
+
+		if( flag == true ){
+
+			totalProvSelect[ key ] = valOption;
+			$divContProv.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarProvinciaSeleccionado(${key})' ></i></div>`);
+				console.log(totalProvSelect);
+		}else{
+			alertify.warning("<p style='color:black;font-weight:bold;'>La provincia ya fue seleccionado!.</p>");
+		}
+
+	});
+
+	$btnAgregarComplejo.on('click',function(){
+
+		let nameOption = $('option:selected', $complejo).attr('name-complejo');
+		let valOption = $complejo.val();
+		let key = generateKey();
+
+		if(valOption == ''){
+			alertify.warning("<p style='color:black;font-weight:bold;'>Debe seleccionar un Complejo Deportivo!.</p>");
+			return false;
+		}
+
+
+		var arrayTotalEdiSelect = Object.values(totalEdiSelect);
+
+		var flag = true;
+
+		for (let i = 0; i < arrayTotalEdiSelect.length ; i++) {
+			if( valOption == arrayTotalEdiSelect[i] ){
+				flag = false;
+				break;
+			}
+		}
+
+		if( flag == true ){
+
+			totalEdiSelect[ key ] = valOption;
+			$divContEdi.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarEdificacionesSeleccionado(${key})' ></i></div>`);
+				console.log(totalEdiSelect);
+		}else{
+			alertify.warning("<p style='color:black;font-weight:bold;'>El Complejo ya fue seleccionado!.</p>");
+		}
+
+	});
+
+</script>
+
+{% endblock %}

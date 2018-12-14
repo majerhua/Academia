@@ -1,0 +1,44 @@
+CREATE PROCEDURE [ACADEMIA].[crearUsuario]
+@tipoDocumento INT,
+@numeroDocumento VARCHAR(100),
+@nombre VARCHAR(100),
+@apellidoPaterno VARCHAR(100),
+@apellidoMaterno VARCHAR(100),
+@telefono VARCHAR(100),
+@correo VARCHAR(100),
+@username VARCHAR(100),
+@contrasena VARCHAR(100),
+@perfilUsuarioo INT,
+@rol VARCHAR(200)
+AS
+BEGIN
+
+  SET NOCOUNT ON;
+
+  BEGIN TRAN Tadd;
+
+  BEGIN TRY
+
+	INSERT INTO ACADEMIA.usuario
+				(tipoDocumento,numeroDocumento,nombre,apellidoPaterno,apellidoMaterno,telefono,correo,
+				usuario,contrasena,id_perfil,estado,roles)
+	VALUES(@tipoDocumento,@numeroDocumento,@nombre,@apellidoPaterno,
+	@apellidoMaterno,@telefono,@correo,@username,@contrasena,@perfilUsuarioo,1,@rol)
+	
+	SELECT TOP 1 * FROM ACADEMIA.usuario WHERE usuario = @username
+
+COMMIT TRAN Tadd
+	    
+	END TRY
+		BEGIN CATCH
+		
+	DECLARE @msg VARCHAR(255)
+
+        --SET @msg ='Ocurrio un Error: ' + ERROR_MESSAGE() + ' en la línea ' + CONVERT(NVARCHAR(255), ERROR_LINE() ) + '.'
+        SET @msg = '0'
+        
+            SELECT  @msg AS id
+            ROLLBACK TRAN Tadd;
+		
+        END CATCH;		
+END

@@ -1,0 +1,51 @@
+SELECT *FROM grubigeo ubiDep
+WHERE 
+ubiDep.ubidpto != '00' AND
+ubiDep.ubiprovincia = '00' AND
+ubiDep.ubidistrito = '00'
+
+SELECT *FROM grubigeo ubiProv
+WHERE 
+ubiProv.ubidpto != '00' AND
+ubiProv.ubiprovincia != '00' AND
+ubiProv.ubidistrito = '00'
+
+--COMPLEJOS DE UN DEPARTAMENTO DEPARTAMENTO
+SELECT *FROM grubigeo ubi
+INNER JOIN CATASTRO.edificacionesdeportivas ede ON ede.ubicodigo = ubi.ubicodigo
+WHERE
+ubi.ubidpto = '14' AND
+ubi.ubiprovincia != '00' AND
+ubi.ubidistrito != '00'
+ 
+--COMPLEJOS DE UN DEPARTAMENTO PROVINCIA
+SELECT *FROM grubigeo ubi
+INNER JOIN CATASTRO.edificacionesdeportivas ede ON ede.ubicodigo = ubi.ubicodigo
+WHERE
+ubi.ubidpto = '14' AND
+ubi.ubiprovincia = '01' AND
+ubi.ubidistrito != '00'
+
+
+---AGREGAR COLUMNAS TABLA ACADEMIA.USUARIO
+
+ALTER TABLE ACADEMIA.usuario 
+ADD tipoDocumento INT NULL;
+
+ALTER TABLE ACADEMIA.usuario 
+ADD numeroDocumento INT NULL;
+
+ALTER TABLE ACADEMIA.usuario 
+ADD  telefono INT NULL ;
+
+ALTER TABLE ACADEMIA.usuario 
+ADD correo VARCHAR(100) NULL;
+
+ALTER TABLE ACADEMIA.usuario 
+ADD nombre VARCHAR(100) NULL;
+
+ALTER TABLE ACADEMIA.usuario 
+ADD apellidoPaterno VARCHAR(100) NULL;
+
+ALTER TABLE ACADEMIA.usuario 
+ADD apellidoMaterno VARCHAR(100) NULL;

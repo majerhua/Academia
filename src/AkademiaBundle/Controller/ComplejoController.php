@@ -22,7 +22,7 @@ class ComplejoController extends Controller
 
         $usuario = $this->getUser()->getId();
 		$descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
-
+        
 
         $departamentos = $em->getRepository('AkademiaBundle:Distrito')->getDepartamentos( );
         $provincias = $em->getRepository('AkademiaBundle:Distrito')->getProvincias( );
@@ -39,37 +39,95 @@ class ComplejoController extends Controller
       						);
     }
 
-    public function complejosEditarAction(Request $request){
+    public function complejosCrearAction(Request $request){
 
-    	if( $request->isXmlHttpRequest() ){
 
-             
-            $ubigeo = $request->request->get('ediUbigeo'); 
-            $nombre = $request->request->get('ediNombre');
-            $tipo =   $request->request->get('tipo');
+        $nombre = $request->get('nombre');
+        $ubicodigo = $request->get('ubicodigo');
+        $tipo = $request->get('tipo');
+        $estado = $request->get('estado');
+        $latitud = $request->get('latitud');
+        $longitud = $request->get('longitud');
+        $usuario = $this->getUser()->getId();
 
-            $idComplejo = $this->getUser()->getIdComplejo();
-            $usuario = $this->getUser()->getId();
+        if( 
+            isset($nombre) && !empty($nombre) && 
+            isset($ubicodigo) && !empty($ubicodigo) && 
+            isset($tipo) && !empty($tipo) && 
+            isset($estado) && !empty($estado) &&
+            isset($latitud) && !empty($latitud) &&
+            isset($longitud) && !empty($longitud) &&
+            isset($usuario) && !empty($usuario) 
+        ){
 
-            $em = $this->getDoctrine()->getManager();
-            $estado = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getCompararEstado($idComplejo, $idDisciplina,$idTemporada);
-        
-            if(!empty($estado)){
-
-                $em = $this->getDoctrine()->getManager();
-                $estadoActual = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getCambiarEstado($idComplejo, $idDisciplina);
-
-                $mensaje = 1;  
+            $em = $this->getDoctrine()->getManager(); 
             
+            $estadoCrear = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->crearComplejoDeportivo($nombre,$ubicodigo,$tipo,$estado,$latitud,$longitud,$usuario);
+            $complejosDeportivos = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplejos();
+            if( $estadoCrear != 0){
+
+                echo $this->renderView('AkademiaBundle:Complejo:table_complejo.html.twig',
+                        array(
+                            'complejosDeportivos' => $complejosDeportivos
+                        )
+                    );
+                exit;    
             }else{
 
-                $estado = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->crearComplejoDisciplina($idComplejo, $idDisciplina,$usuario,$idTemporada);
- 
-                $mensaje = $estado;            
+                echo "0";//Ocurrio un Error a la hora de editar
+                exit;
             }
 
-            return new JsonResponse($mensaje); 
-        }
+        }else{
+            echo "-1";//EXISTEN CAMPOS VACIOS O NULOS
+            exit;
+        } 
+    }
+
+
+    public function complejosEditarAction(Request $request){
+
+        $codigo = $request->get('codigo');
+        $nombre = $request->get('nombre');
+        $ubicodigo = $request->get('ubicodigo');
+        $tipo = $request->get('tipo');
+        $estado = $request->get('estado');
+        $latitud = $request->get('latitud');
+        $longitud = $request->get('longitud');
+        $usuario = $this->getUser()->getId();
+
+        if( isset($codigo) && !empty($codigo) &&
+            isset($nombre) && !empty($nombre) && 
+            isset($ubicodigo) && !empty($ubicodigo) && 
+            isset($tipo) && !empty($tipo) && 
+            isset($estado) && !empty($estado) &&
+            isset($latitud) && !empty($latitud) &&
+            isset($longitud) && !empty($longitud) &&
+            isset($usuario) && !empty($usuario) 
+        ){
+
+            $em = $this->getDoctrine()->getManager(); 
+            
+            $estadoUpdate = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->editarComplejoDeportivo($codigo,$nombre,$ubicodigo,$tipo,$estado,$latitud,$longitud,$usuario);
+            $complejosDeportivos = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplejos();
+            if( $estadoUpdate != 0){
+
+                echo $this->renderView('AkademiaBundle:Complejo:table_complejo.html.twig',
+                        array(
+                            'complejosDeportivos' => $complejosDeportivos
+                        )
+                    );
+                exit;    
+            }else{
+
+                echo "0";//Ocurrio un Error a la hora de editar
+                exit;
+            }
+
+        }else{
+            echo "-1";//EXISTEN CAMPOS VACIOS O NULOS
+            exit;
+        } 
     }
 
     public function getComplejoByIdAction(Request $request){

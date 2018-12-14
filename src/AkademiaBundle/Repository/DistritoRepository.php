@@ -118,7 +118,7 @@ class DistritoRepository extends \Doctrine\ORM\EntityRepository
 
 	public function getDepartamentos(){
 
-        $query = "SELECT ubidpto as id ,ubinombre as nombre 
+        $query = "SELECT ubidpto as id ,ubinombre as nombre,ubicodigo as ubicodigo 
                 FROM grubigeo WHERE ubiprovincia='00' and ubidistrito='00' AND ubidpto!='00'
                 ORDER BY ubinombre ASC;";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
@@ -130,7 +130,7 @@ class DistritoRepository extends \Doctrine\ORM\EntityRepository
 
 	public function getProvincias(){
 
-        $query = " SELECT ubidpto as idDepartamento,ubiprovincia as idProvincia , ubinombre as nombreProvincia 
+        $query = " SELECT ubicodigo , ubidpto as idDepartamento,ubiprovincia as idProvincia , ubinombre as nombreProvincia 
                 FROM grubigeo where ubidistrito='00' AND ubidpto!='00' AND ubiprovincia!='00'
                 ORDER BY ubinombre ASC;";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
