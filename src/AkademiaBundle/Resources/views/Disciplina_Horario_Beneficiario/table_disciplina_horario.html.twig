@@ -1,0 +1,68 @@
+{% for horario in horarios %}
+	{% if horario['idDisciplina'] == idDisciplina %}
+		<tr> 
+			<td id="1h{{horario['idHorario']}}" class="text-center">{{horario['idHorario']}}</td>
+			<td id="2h{{horario['idHorario']}}" class="text-center" >  
+				{% if  horario['discapacidad'] == 0 %}
+				 	Convencional
+				{% else %}
+				    Personas con Discapacidad
+				{% endif %}
+			</td> 
+			<td id="3h{{horario['idHorario']}}" class="text-center"> 
+				{% if  horario['etapa'] == 0 %}
+				    Formación  
+				{% else %}
+					Masificación
+				{% endif %}
+			</td>
+			<td id="4h{{horario['idHorario']}}" class="text-center">
+				{% if  horario['edadMaxima'] != horario['edadMinima'] %}
+					{{horario['edadMinima']}} - {{horario['edadMaxima']}} años</td>
+				{% else %}
+					{{horario['edadMinima']}} años
+				{% endif %}
+			</td> 
+			
+			<td id="5h{{horario['idHorario']}}" class="text-center" >
+				{% for turno in turnos %}
+					{% if turno['horario_id'] == horario['idHorario']  %}
+							<div   >{{turno['dias']}}</div>
+					{% endif %}
+				{% endfor %}
+			</td> 
+			<td id="6h{{horario['idHorario']}}" class="text-center">
+				{% for turno in turnos %}
+					{% if turno['horario_id'] == horario['idHorario']  %}
+						<div style="width:110px;  padding-bottom:5px;">{{turno['hora']}}</div>
+					{% endif %}
+				{% endfor %}
+			</td> 
+
+			<td id="7h{{horario['idHorario']}}" class="text-center">
+				{% if  horario['convocatoria'] == 1 %}
+					<p  style="color:green" >Abierta</p>
+				{% else %}
+				<p style="color:red; font-weight:bold;"> Cerrado </p> 
+			{% endif %}
+
+			<td id="8h{{horario['idHorario']}}" class="text-center">
+				{{horario['vacantes']}} 
+			</td>
+
+			<td id="9h{{horario['idHorario']}}" class="text-center">{{horario['preinscripciones']}}
+			</td> 
+
+			<td id="10h{{horario['idHorario']}}" class="text-center">{{horario['inscritos']}}</td>
+		
+			
+			<td><button title="Editar horario" type="button" id="{{horario['idHorario']}}" onclick="editarHorario({{horario['idHorario']}},{{horario['idDisciplina']}} )" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1.2em; margin-top:5px; color:white" ></i></button></td>
+				
+		
+			<td><a href="{{url('akademia_beneficiarios',{ idHorario:horario['idHorario'], idTemporada : idTemporada })}}"  title="Mostrar Inscritos" type="button" class="btn btn-default btn-xs"><i class="icon-checklist" style="font-size: 1.3em;"></i></a></td>
+		</tr> 
+		<input type="hidden" value="{{horario['idDisciplina']}}">				
+		
+	{% endif %}
+{% endfor
+ %}

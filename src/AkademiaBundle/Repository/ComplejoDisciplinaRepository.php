@@ -22,7 +22,7 @@ class ComplejoDisciplinaRepository extends \Doctrine\ORM\EntityRepository
               $query="EXEC crearComplejoDisciplina $idComplejo,$idDisciplina,$usuario,$idTemporada";
               $stmt = $this->getEntityManager()->getConnection()->prepare($query);
               $stmt->execute();
-               $message = 2;
+               $message = 1;
 
             }catch (DBALException $e) {
               $message = $e->getCode();
@@ -80,7 +80,7 @@ class ComplejoDisciplinaRepository extends \Doctrine\ORM\EntityRepository
 
 	}
 
-	public function getCompararEstado($idComplejo, $idDisciplina , $idTemporada){
+	public function vertificarEdificacionDisciplina($idComplejo, $idDisciplina , $idTemporada){
 		
 		$query = "SELECT edi_estado AS estado FROM catastro.edificacionDisciplina WHERE ede_codigo = $idComplejo AND dis_codigo = $idDisciplina AND temporada_id = $idTemporada ";
 		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
@@ -91,11 +91,18 @@ class ComplejoDisciplinaRepository extends \Doctrine\ORM\EntityRepository
 
 	}
 
-	public function getCambiarEstado($idComplejo, $idDisciplina){
-		$query = "UPDATE catastro.edificacionDisciplina set edi_estado = 1 where ede_codigo = $idComplejo and dis_codigo = $idDisciplina";
-		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
-        $stmt->execute();
-  
+	public function habilitarEdificacionDisciplina($idComplejo, $idDisciplina){
+		
+  		try {
+  			$query = "UPDATE catastro.edificacionDisciplina set edi_estado = 1 where ede_codigo = $idComplejo and dis_codigo = $idDisciplina";
+			$stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        	$stmt->execute();
+        	$message ="1";
+ 		}catch (DBALException $e) {
+            $message = $e->getCode();
+        }
+       	
+       	return $message;
 	}
 
 	public function getEdiCodDisciplina($idComplejo, $idDisciplina){

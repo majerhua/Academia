@@ -12,6 +12,85 @@ use Doctrine\DBAL\DBALException;
 class UsuariosRepository extends \Doctrine\ORM\EntityRepository
 {
 
+	public function editarUsuario($usuarioId,$perfilUsuario,$tipoDocumento,$numeroDocumento,$nombre,$apellidoPaterno,$apellidoMaterno,$telefono,$username,$password){
+
+	    $query = "	UPDATE ACADEMIA.usuario 
+					SET usuario='$username', contrasena ='$password',tipoDocumento='$tipoDocumento',telefono='$telefono',numeroDocumento='$numeroDocumento',apellidoPaterno='$apellidoPaterno',apellidoMaterno='$apellidoMaterno',correo='$correo',nombre='$nombre'
+					WHERE id=$usuarioId; ";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    return "1";
+
+	}
+
+public function updateUsuarioUbigeo($usuarioId, $ubicodigo, $newUbicodigo,$usuarioIdSis){
+
+    	//try {
+          $query="  UPDATE ACADEMIA.Usuario_Ubigeo 
+					SET ubicodigo='$newUbicodigo',
+						fecha_modificacion = getDate(),
+						usuario_modifico = $usuarioIdSis
+					WHERE ubicodigo='$ubicodigo' AND usuario_id = '$usuarioId';";
+
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+
+            $result = '1';
+            return $result;
+
+       // }catch (DBALException $e) {
+       //     $message = $e->getCode();
+		//return $message;
+       // }
+  	}
+
+public function insertUsuarioUbigeo($usuarioId, $ubicodigo,$usuarioIdSis){
+
+    	try {
+          $query="  INSERT INTO ACADEMIA.Usuario_Ubigeo(usuario_id,ubicodigo,usuario_crea)
+					VALUES($usuarioId,$ubicodigo,$usuarioIdSis)";
+
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+
+            $result = '1';
+            return $result;
+
+        }catch (DBALException $e) {
+            $message = $e->getCode();
+            return $message;
+        }
+  	}
+
+	public function removeUsuarioUbigeo($usuarioId){
+		//try {
+	        $query = "DELETE FROM ACADEMIA.Usuario_Ubigeo  WHERE usuario_id='$usuarioId';";
+	        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	        $stmt->execute();
+            $result = '1';
+            return $result;
+       //}catch (DBALException $e) {
+        //    $message = $e->getCode();
+        //    return $message;
+        //}
+    }
+
+	public function getUsuarioUbigeoByUsuarioId($usuarioId){
+	    $query = "	SELECT 
+  					CONVERT(VARCHAR(100),STUFF(( SELECT  ',' +
+       				CONVERT(VARCHAR(100),usuUbi.ubicodigo)
+          			FROM  ACADEMIA.Usuario_Ubigeo AS usuUbi
+          			WHERE   usuUbi.usuario_id = usu.id
+          			FOR XML PATH('') ), 1, 1, '') ) AS ubigeos
+					FROM ACADEMIA.usuario usu
+					WHERE usu.id = 217;";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    $ubigeoUsuario = $stmt->fetchAll();
+	}
+
 	public function crearUsuario($tipoDocumento,$numeroDocumento,$nombre,$apellidoPaterno,$apellidoMaterno,$telefono,$correo,$username,$password,$coleccion,$perfilUsuario,$rol,$usuario,$confPerfilUsuario){
 
 	    $query = "EXEC ACADEMIA.crearUsuario $tipoDocumento,'$numeroDocumento','$nombre','$apellidoPaterno','$apellidoMaterno',$telefono,'$correo','$username','$password',$perfilUsuario,1,'$rol' ";
@@ -19,7 +98,6 @@ class UsuariosRepository extends \Doctrine\ORM\EntityRepository
 	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
 	    $stmt->execute();
 	    $usuarioEncontrado = $stmt->fetchAll();
-
 	    $usuarioId = $usuarioEncontrado[0]['id'];
 
 	    if(!empty($usuarioId)){
@@ -114,6 +192,35 @@ class UsuariosRepository extends \Doctrine\ORM\EntityRepository
 	    $usuarios = $stmt->fetchAll();
 	    
 	    return $usuarios;
+	}
+
+	public function getUsuarioById($usuarioId){
+
+		$query = "	SELECT *FROM ACADEMIA.usuario
+					WHERE id=$usuarioId";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    $usuario = $stmt->fetchAll();
+	    
+	    return $usuario;
+	}
+
+	public function getUbigeoByUsuarioId($usuarioId){
+
+		$query = "	SELECT 
+					usuUbi.ubicodigo ubicodigo,
+					usuUbi.usuario_id usuarioId,
+					ubi.ubinombre nombreUbigeo
+					 FROM ACADEMIA.Usuario_Ubigeo usuUbi
+					INNER JOIN grubigeo ubi ON ubi.ubicodigo = usuUbi.ubicodigo
+					WHERE usuario_id = $usuarioId;";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    $ubigeoUsuario = $stmt->fetchAll();
+	    
+	    return $ubigeoUsuario;
 	}
 
 }

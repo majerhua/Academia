@@ -127,6 +127,41 @@ class DistritoRepository extends \Doctrine\ORM\EntityRepository
         return $departamentos;
 	}
 
+    public function getDepartamentosUsuario($usuarioId){
+
+        $query = "SELECT 
+                    ubi.ubicodigo ubicodigo,
+                    ubi.ubidpto id ,
+                    ubi.ubinombre nombre
+                    FROM ACADEMIA.usuario usu
+                    INNER JOIN ACADEMIA.Usuario_Ubigeo usuUbi ON usuUbi.usuario_id = usu.id
+                    INNER JOIN grubigeo ubi ON ubi.ubicodigo = usuUbi.ubicodigo
+                    WHERE usu.id = $usuarioId;";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $departamentos = $stmt->fetchAll();
+        return $departamentos;
+
+    }
+
+    public function getProvinciasUsuario($usuarioId){
+
+        $query = "SELECT 
+                    ubi.ubicodigo ubicodigo,
+                    ubi.ubidpto idDepartamento,
+                    ubi.ubiprovincia idProvincia,
+                    ubi.ubinombre nombre
+                    FROM ACADEMIA.usuario usu
+                    INNER JOIN ACADEMIA.Usuario_Ubigeo usuUbi ON usuUbi.usuario_id = usu.id
+                    INNER JOIN grubigeo ubi ON ubi.ubicodigo = usuUbi.ubicodigo
+                    WHERE usu.id = $usuarioId;";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $departamentos = $stmt->fetchAll();
+        return $departamentos;
+
+    }
+
 
 	public function getProvincias(){
 

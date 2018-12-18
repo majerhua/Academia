@@ -15,6 +15,15 @@ akademia_usuarioCrear:
   defaults: { _controller: AkademiaBundle:Usuarios:usuariosCrear }
   methods: [GET,POST]
 
+akademia_usuarioEditar:
+  path: /editar/usuarios
+  defaults: { _controller: AkademiaBundle:Usuarios:usuariosEditar }
+  methods: [GET,POST]
+
+akademia_getDatosUsuariosByEditar:
+  path: /get/usuario
+  defaults: { _controller: AkademiaBundle:Usuarios:getDatosUsuariosByEditar }
+  methods: [GET,POST]
 ##
 
 ##ADMINISTRACION COMPLEJOS
@@ -110,6 +119,11 @@ akademia_ocultarHorario:
 akademia_horarios:
     path:    /panel/horarios/temporada/{idTemporada}
     defaults: {_controller: AkademiaBundle:Horario:horarios,idTemporada:0}
+    methods: [GET,POST]
+
+akademia_tableHorarioComplejoBeneficiario:
+    path:    /panel/horarios/tableHorarioComplejoBeneficiario
+    defaults: {_controller: AkademiaBundle:Horario:tableHorarioComplejoBeneficiario}
     methods: [GET,POST]
 
 ##END

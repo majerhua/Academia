@@ -36,7 +36,7 @@ ALTER TABLE ACADEMIA.usuario
 ADD numeroDocumento INT NULL;
 
 ALTER TABLE ACADEMIA.usuario 
-ADD  telefono INT NULL ;
+ADD  telefono VARCHAR(20) NULL ;
 
 ALTER TABLE ACADEMIA.usuario 
 ADD correo VARCHAR(100) NULL;

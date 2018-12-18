@@ -44,35 +44,60 @@ class DefaultController extends Controller
     //PANEL PRINCIPAL 
     public function panelAction(Request $request,$idTemporada){
 
-        $idComplejo = $this->getUser()->getIdComplejo();
+        $confPerfilUsuario = $this->container->getParameter('perfilUsuario');
+
         $em = $this->getDoctrine()->getManager();
 
         $usuario = $this->getUser();
-        $roles = $usuario->getRoles();
 
-        $Nombre = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->nombreComplejo($idComplejo);
+        $rol = $usuario->getRoles()[0];
+        $idPerfil = $usuario->getIdPerfil();
 
-        if( $roles[0] == "ROLE_ANALISTA" ){
-            $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadasAnalista();
-        }else{
+        $nombrePerfilUsuario = $this->container->getParameter('nombrePerfilUsuario');
+        $nombrePerfil = $nombrePerfilUsuario[$idPerfil];
+
+
+        if( $idPerfil == $confPerfilUsuario['administrador'] )
+            $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadasAdministrador();
+        else
             $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
+
+        if ( $idTemporada == 0 ){
+            if ($idPerfil == $confPerfilUsuario['administrador']){
+                $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
+            }else{
+                if( !empty($temporadasHabilitadas) ){
+                    $temporadaActiva = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
+                    if(!empty($temporadaActiva)){
+                        $idTemporada = $temporadaActiva[0]['temporadaId'];
+                    }else{
+                        $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
+                    }
+                }
+            }
         }
+
+        // if( $roles[0] == "ROLE_ANALISTA" ){
+        //     $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadasAnalista();
+        // }else{
+        //     $temporadasHabilitadas = $em->getRepository('AkademiaBundle:Temporada')->getTemporadasHabilitadas();
+        // }
 
         
-        if($idTemporada == 0){
-           $temporadaArray = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva(); 
+        // if($idTemporada == 0){
+        //    $temporadaArray = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva(); 
 
-            if(!empty($temporadaArray)){
-                $idTemporada = $temporadaArray[0]['temporadaId'];
-            }else{
+        //     if(!empty($temporadaArray)){
+        //         $idTemporada = $temporadaArray[0]['temporadaId'];
+        //     }else{
 
-                if(!empty($temporadasHabilitadas))
-                    $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
-                else
-                    $idTemporada = NULL;
+        //         if(!empty($temporadasHabilitadas))
+        //             $idTemporada = $temporadasHabilitadas[0]['temporadaId'];
+        //         else
+        //             $idTemporada = NULL;
                 
-            }  
-        }
+        //     }  
+        // }
 
         
         $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
@@ -81,7 +106,7 @@ class DefaultController extends Controller
             $descripcionTemporada = NULL;
         }
 
-        if(!empty($Nombre)){ 
+        if( $idPerfil != $confPerfilUsuario['administrador'] ){ 
 
             if(!empty($idTemporada)){
                 $arrayFaseTemporada = $em->getRepository('AkademiaBundle:Temporada')->faseTemporadaActiva($idTemporada);
@@ -90,11 +115,10 @@ class DefaultController extends Controller
                 $faseTemporada=NULL;
             }
 
-
-          return $this->render('AkademiaBundle:Default:menuprincipal.html.twig', array("valor"=>"1", "nombreComplejo"=> $Nombre,'temporadasHabilitadas'=>$temporadasHabilitadas,'idTemporadaHabilidatada' => $idTemporada , 'faseTemporada'=> $faseTemporada,'descripcionTemporada' => $descripcionTemporada ));
+          return $this->render('AkademiaBundle:Default:menuprincipal.html.twig', array("valor"=>"1", "nombreTipoUsuario"=> $nombrePerfil,'temporadasHabilitadas'=>$temporadasHabilitadas,'idTemporada' => $idTemporada , 'faseTemporada'=> $faseTemporada,'descripcionTemporada' => $descripcionTemporada ));
           
         }else{
-          return $this->render('AkademiaBundle:Default:menuprincipal.html.twig', array("valor"=>"2",'temporadasHabilitadas'=>$temporadasHabilitadas,'idTemporadaHabilidatada'=>$idTemporada,'descripcionTemporada' => $descripcionTemporada  ));
+          return $this->render('AkademiaBundle:Default:menuprincipal.html.twig', array("valor"=>"2",'temporadasHabilitadas'=>$temporadasHabilitadas,'idTemporada'=>$idTemporada,'descripcionTemporada' => $descripcionTemporada, "nombreTipoUsuario"=> $nombrePerfil ));
         }
     }
 

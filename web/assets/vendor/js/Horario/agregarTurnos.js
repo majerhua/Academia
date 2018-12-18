@@ -222,7 +222,7 @@ const eventAgregarTurnos = ()=>{
 
 
 var crearHorario = ()=>{
-
+	
 	$flagRegistroHorario=-1;
 
 	var edadMinima = parseInt( $("#edad-minima").val() );
@@ -268,8 +268,11 @@ var crearHorario = ()=>{
 				'turnos-seleccionados':arrayTurnoOrdenado,
 				'turnos-seleccionados-string':convertArrayToString(arrayTurnoOrdenado),
 				'idDisciplina': $("#idDisciplinaNewHorario").val(),
-				'idTemporada': $("#inputHiddenIdTemporada").val()
+				'idTemporada': $("#inputHiddenIdTemporada").val(),
+				'idComplejo': $("#input-hidden-id-complejo").val()
 			}
+
+			var inputIdDisciplina = $("#idDisciplinaNewHorario").val();
 
 			$.ajax({
 
@@ -284,9 +287,9 @@ var crearHorario = ()=>{
 					if(data == 1){
 						alertify.error('El horario que usted intenta crear ya existe!',4);
 					}
-					else if(data==2){
+					else {
 						alertify.success('Felicidades!,Horario Creado Correctamente!',4);
-						location.reload();
+						$("#1"+inputIdDisciplina).html(data);
 					}
 				}
 			});

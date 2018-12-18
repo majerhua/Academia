@@ -12,6 +12,12 @@ parameters:
       monitor: 3
       promotor: 4
       profesor: 5
+    nombrePerfilUsuario:
+      1: administrador
+      2: macro
+      3: monitor
+      4: promotor
+      5: profesor
 twig:
   globals:
     perfilUsuario:

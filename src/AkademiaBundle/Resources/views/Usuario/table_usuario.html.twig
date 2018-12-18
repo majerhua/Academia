@@ -7,7 +7,7 @@
 			<td  class="text-center" style="font-size:14px">{{user['correo']}}</td>
 			<td  class="text-center" style="font-size:14px">{{user['telefono']}}</td>
 			<td  class="text-center" style="font-size:14px">
-				<button class="btn btn-primary"><i class="icon-pencil-square-o" style="color:white;font-size:13px;"></i></button>
+				<button   data-toggle="modal" data-target="#modal-editar" class="btn btn-primary" onclick="getDatosUsuariosByEditar({{perfilUsuarioId}},{{user['id']}})" ><i class="icon-pencil-square-o" style="color:white;font-size:13px;"></i></button>
 			</td>
 			<td  class="text-center" style="font-size:14px">
 				<button class="btn btn-info"><i class="icon-eye" style="color:white;font-size:13px;" ></i></button>

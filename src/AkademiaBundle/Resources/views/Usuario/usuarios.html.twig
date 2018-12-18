@@ -99,21 +99,19 @@
 																					<th></th>
 																					<th></th>
 																				</tr>
-																				
 																			</thead> 
 																			
 																			<tbody id="1{{perfil['id']}}" class="buscar"> 
 
 																				{% for user in usuarios %}
 																					{% if user['id_perfil'] == perfil['id'] %}
-																						
 																						<tr>
 																							<td  class="text-center" style="font-size:14px">{{user['id']}}</td>
 																							<td  class="text-center" style="font-size:14px">{{user['nombre']}}</td>
 																							<td  class="text-center" style="font-size:14px">{{user['correo']}}</td>
 																							<td  class="text-center" style="font-size:14px">{{user['telefono']}}</td>
 																							<td  class="text-center" style="font-size:14px">
-																								<button class="btn btn-primary"><i class="icon-pencil-square-o" style="color:white;font-size:13px;"></i></button>
+																								<button class="btn btn-primary" onclick="getDatosUsuariosByEditar({{perfil['id']}},{{user['id']}})"  data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="color:white;font-size:13px;" ></i></button>
 																							</td>
 																							<td  class="text-center" style="font-size:14px">
 																								<button class="btn btn-info"><i class="icon-eye" style="color:white;font-size:13px;" ></i></button>
@@ -164,6 +162,7 @@
 {% include 'AkademiaBundle:Footer:footer.html.twig' %}
 
 {% include 'AkademiaBundle:Usuario:modal_crear_usuario.html.twig' %}
+{% include 'AkademiaBundle:Usuario:modal_editar_usuario.html.twig' %}
 
 {% endblock %}
 
@@ -175,18 +174,46 @@
 
 <script>
 	
-	$listUsuarioMacro = $("#list-usuario-macro");
-	$listUsuarioMonitor = $("#list-usuario-monitor");
-	$listUsuarioPromotor = $("#list-usuario-promotor");
+	$listUsuarioMacro = $(".list-usuario-macro");
+	$listUsuarioMonitor = $(".list-usuario-monitor");
+	$listUsuarioPromotor = $(".list-usuario-promotor");
 
-	$btnAgregarDepartamento = $("#btn-agregar-departamento");
-	$btnAgregarProvincia = $("#btn-agregar-provincia");
-	$btnAgregarComplejo = $("#btn-agregar-complejo");
+	/***** MODAL EDITAR ****/
+	$btnAgregarDepartamentoEditar = $("#btn-agregar-departamento-editar");
+	$btnAgregarProvinciaEditar = $("#btn-agregar-provincia-editar");
+	$btnAgregarComplejoEditar = $("#btn-agregar-complejo-editar");
+
+	$divContDepEditar = $("#div-cont-dep-editar");
+	$divContProvEditar = $("#div-cont-prov-editar");
+	$divContEdiEditar = $("#div-cont-edi-editar");
+
+	/*EDITAR USUARIO*/
+	$usuarioIdEditar = $("#usuario-id-editar");
+	$perfilUsuarioEditar = $("#perfil-usuario-editar");
+	$tipoDocumentoEditar = $("#tipo-documento-editar");
+	$numeroDocumentoEditar = $("#numero-documento-editar");
+	$nombreEditar = $("#nombre-editar");
+	$apellidoParternoEditar = $("#apellido-parterno-editar");
+	$apellidoMaternoEditar = $("#apellido-materno-editar");
+	$telefonoEditar = $("#telefono-Editar");
+	$correoEditar = $("#correo-Editar");
+	$usuarioEditar = $("#usuario-Editar");
+	$passwordEditar = $("#password-Editar");
+
+	$departamentoEditar = $("#departamento-editar");
+	$provinciaEditar = $("#provincia-editar");
+	$complejoEditar = $("#complejo-editar");
+
+	/**** MODAL CREAR ****/
+	$btnAgregarDepartamentoCrear = $("#btn-agregar-departamento-crear");
+	$btnAgregarProvinciaCrear = $("#btn-agregar-provincia-crear");
+	$btnAgregarComplejoCrear = $("#btn-agregar-complejo-crear");
 
 	$btnCrearUsuario = $("#btn-crear-usuario");
-	$divContDep = $("#div-cont-dep");
-	$divContProv = $("#div-cont-prov");
-	$divContEdi = $("#div-cont-edi");
+
+	$divContDepCrear = $("#div-cont-dep-crear");
+	$divContProvCrear = $("#div-cont-prov-crear");
+	$divContEdiCrear = $("#div-cont-edi-crear");
 
 	$departamentoCrear = $("#departamento-crear");
 	$provinciaCrear = $("#provincia-crear");
@@ -203,6 +230,17 @@
 	$correoCrear = $("#correo-crear");
 	$usuarioCrear = $("#usuario-crear");
 	$passwordCrear = $("#password-crear");
+
+	$perfilUsuarioEditar = $("#perfil-usuario-editar");
+	$tipoDocumentoEditar = $("#tipo-documento-editar");
+	$numeroDocumentoEditar = $("#numero-documento-editar");
+	$nombreEditar = $("#nombre-editar");
+	$apellidoParternoEditar = $("#apellido-parterno-editar");
+	$apellidoMaternoEditar = $("#apellido-materno-editar");
+	$telefonoEditar = $("#telefono-editar");
+	$correoEditar = $("#correo-editar");
+	$usuarioEditar = $("#usuario-editar");
+	$passwordEditar = $("#password-editar");
 
 	$departamento = $("select[name=departamento]");
 	$provincia = $("select[name=provincia]");
@@ -240,8 +278,6 @@
 		else if( $perfilUsuarioCrear.val() == "{{perfilUsuario['promotor']}}" )
 			datos['coleccion'] = arrayEdiSelect;
 		
-
-		console.log("Datos a Enviar =>",datos);
 		$.ajax({
 			type:'POST',
 			url:"{{url('akademia_usuarioCrear')}}",
@@ -273,10 +309,9 @@
 		return numberRandom;
 	}
 
-	const eliminarDepartamentoSeleccionado = function(keyObject){
+	const eliminarDepartamentoSeleccionadoCrear = function(keyObject){
 
 		delete  totalDepartSelect[parseInt(keyObject)];
-
 		
 		var divContKeyDep = document.querySelectorAll('.div-cont-key-dep');
 		var divContKeyDepLength = divContKeyDep.length;
@@ -284,22 +319,43 @@
 		for (let i =0; i < divContKeyDepLength; i++) {
 		
 			if(  keyObject == parseInt( $(divContKeyDep[i]).attr('key-div') ) ){
+				console.log("Se elimino");
 				$(divContKeyDep[i]).empty();
 				break;
 			}
 		}
-		console.log(totalDepartSelect);
+	};
+
+	const eliminarDepartamentoSeleccionadoEditar = function(keyObject){
+
+		delete  totalDepartSelect[parseInt(keyObject)];
+		
+		var divContKeyDep = document.querySelectorAll('.div-cont-key-dep');
+		var divContKeyDepLength = divContKeyDep.length;
+
+		for (let i =0; i < divContKeyDepLength; i++) {
+		
+			if(  keyObject == parseInt( $(divContKeyDep[i]).attr('key-div') ) ){
+				console.log("Se elimino");
+				$(divContKeyDep[i]).empty();
+				break;
+			}
+		}
+
+		console.log("Elementos Totales A Editar=>",totalDepartSelect);
 	};
 
 	const mostrarListaTipoUsuario = function(perfilUsuarioId){
+
+		console.log("Perfil de Usuario =>",perfilUsuarioId);
 
 		$listUsuarioMacro.hide();
 		$listUsuarioMonitor.hide();
 		$listUsuarioPromotor.hide();
 
-		$divContDep.empty();
-		$divContProv.empty();
-		$divContEdi.empty();
+		$divContDepCrear.empty();
+		$divContProvCrear.empty();
+		$divContEdiCrear.empty();
 
 		totalDepartSelect = new Object();
 		totalProvSelect = new Object();
@@ -323,6 +379,112 @@
 		$nombreTipoUsuarioModal.text(nombreTipoUsuario);
 		$perfilUsuarioCrear.val(perfilUsuarioId);
 	};
+
+	const getDatosUsuariosByEditar = function(perfilUsuarioId,usuarioId){
+
+		$divContDepEditar.empty();
+		$divContProvEditar.empty();
+
+		mostrarListaTipoUsuario(perfilUsuarioId);
+		var datos = {
+									'usuarioId':usuarioId
+								}
+		$.ajax({
+			type:'POST',
+			url:"{{url('akademia_getDatosUsuariosByEditar')}}",
+			data:datos,
+			beforeSend:function(){
+				console.log("Enviando Datos =>",datos);
+			},
+			success:function(data){
+
+				totalDepartSelect = new Object();
+				datosUsuario = data[0];
+				
+				$usuarioIdEditar.val(datosUsuario['id']);
+				$perfilUsuarioEditar.val(datosUsuario['id_perfil'])
+				$tipoDocumentoEditar.val(datosUsuario['tipoDocumento']);
+				$numeroDocumentoEditar.val(datosUsuario['numeroDocumento']);
+				$nombreEditar.val(datosUsuario['nombre']);
+	 			$apellidoParternoEditar.val(datosUsuario['apellidoPaterno']);
+				$apellidoMaternoEditar.val(datosUsuario['apellidoMaterno'])
+				$telefonoEditar.val(datosUsuario['telefono']);
+				$correoEditar.val(datosUsuario['correo']);
+				$usuarioEditar.val(datosUsuario['usuario']);
+				$passwordEditar.val(datosUsuario['contrasena']);
+
+				console.log("Datos Usuario =>",datosUsuario['coleccion']);
+
+				var coleccion = datosUsuario['coleccion'];
+
+				$.each(coleccion,function(index,value){
+					let key = generateKey();
+					totalDepartSelect[ key ] = value.ubicodigo;
+					if( datosUsuario['id_perfil'] == "{{perfilUsuario['macro']}}" ){
+						$divContDepEditar.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${value.nombreUbigeo}<i title='eliminar' style='cursor:pointer;' class='icon-trash' onclick='eliminarDepartamentoSeleccionadoEditar(${key})'></i></div>`);
+					}else if( datosUsuario['id_perfil'] == "{{perfilUsuario['monitor']}}"  ){
+						$divContProvEditar.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${value.nombreUbigeo}<i title='eliminar' style='cursor:pointer;' class='icon-trash' onclick='eliminarProvinciaSeleccionadoEditar(${key})'></i></div>`);
+					}
+				});
+			},
+			error:function(error){
+				alertify.error("<p>Ocurrio un Error en el Sistema!.</p>")
+			}
+		});
+	}
+
+	const editarUsuario = function(){
+  
+		var coleccion = Object.values(totalDepartSelect);
+
+		if( $usuarioIdEditar.val() != "" &&
+			$perfilUsuarioEditar.val()!= "" && 
+			$tipoDocumentoEditar.val() != "" &&  
+			$numeroDocumentoEditar.val() != "" &&
+			$nombreEditar.val() != "" && 
+			$apellidoParternoEditar.val() && 
+			$apellidoMaternoEditar.val() != "" &&
+			$telefonoEditar.val() != "" && 
+			$correoEditar.val() != "" && 
+			$usuarioEditar.val() != "" && 
+			$passwordEditar.val() !="" &&
+			coleccion.length > 0 ){
+
+		var datos = {
+					'usuarioId':$usuarioIdEditar.val(),
+					'perfilUsuario': $perfilUsuarioEditar.val(),
+					'tipoDocumento': $tipoDocumentoEditar.val(),
+					'numeroDocumento': $numeroDocumentoEditar.val(),
+					'nombre': $nombreEditar.val(),
+					'apellidoPaterno': $apellidoParternoEditar.val(),
+					'apellidoMaterno': $apellidoMaternoEditar.val(),
+					'correo': $correoEditar.val(),
+					'usuario': $usuarioEditar.val(),
+					'password': $passwordEditar.val(),
+					'coleccion': coleccion
+					}
+		console.log("Enviando Datos =>",datos);
+		$.ajax({
+			type:'POST',
+			url:"{{url('akademia_usuarioEditar')}}",
+			data:datos,
+			beforeSend:function(){
+				console.log("Enviando Datos =>",datos);
+			},
+			success:function(data){
+				console.log(data);
+			},
+			error:function(error){
+				alertify.error("<p>Ocurrio un Error en el Sistema!.</p>")
+			}
+		});
+
+
+
+		}else{
+			alertify.warning("<p style='color:black;font-weight:bold;'>Existen Campos Vacios!.</p>")
+		}
+	}
 
 	const cambiarDepartamento = function(departamento){
 		
@@ -360,7 +522,35 @@
 		{% endfor %}
 	};
 
-	$btnAgregarDepartamento.on('click',function(){
+
+	const agregarDepartamentoEditar = function(){
+
+		let nameOption = $('option:selected', $departamentoEditar).attr('name-departamento');
+		let valOption = $departamentoEditar.val();
+		let key = generateKey();
+
+		var arrayTotalDepartSelect = Object.values(totalDepartSelect);
+
+		var flag = true;
+
+		for (let i = 0; i < arrayTotalDepartSelect.length ; i++) {
+			if( valOption == arrayTotalDepartSelect[i] ){
+				flag = false;
+				break;
+			}
+		}
+
+		if( flag == true ){
+
+			totalDepartSelect[ key ] = valOption;
+			$divContDepEditar.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarDepartamentoSeleccionadoEditar(${key})' ></i></div>`);
+				console.log(totalDepartSelect);
+		}else{
+			alertify.warning("<p style='color:black;font-weight:bold;'>El departamento ya fue seleccionado</p>");
+		}
+	}
+
+	const agregarDepartamentoCrear = function(){
 
 		let nameOption = $('option:selected', $departamentoCrear).attr('name-departamento');
 		let valOption = $departamentoCrear.val();
@@ -380,15 +570,14 @@
 		if( flag == true ){
 
 			totalDepartSelect[ key ] = valOption;
-			$divContDep.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarDepartamentoSeleccionado(${key})' ></i></div>`);
+			$divContDepCrear.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarDepartamentoSeleccionadoCrear(${key})' ></i></div>`);
 				console.log(totalDepartSelect);
 		}else{
 			alertify.warning("<p style='color:black;font-weight:bold;'>El departamento ya fue seleccionado</p>");
 		}
+	}
 
-	});
-
-	$btnAgregarProvincia.on('click',function(){
+	const agregarProvinciaCrear = function(){
 
 		let nameOption = $('option:selected', $provincia).attr('name-provincia');
 		let valOption = $provincia.val();
@@ -398,7 +587,6 @@
 			alertify.warning("<p style='color:black;font-weight:bold;'>Debe seleccionar una provincia!.</p>");
 			return false;
 		}
-
 
 		var arrayTotalProvSelect = Object.values(totalProvSelect);
 
@@ -414,15 +602,15 @@
 		if( flag == true ){
 
 			totalProvSelect[ key ] = valOption;
-			$divContProv.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarProvinciaSeleccionado(${key})' ></i></div>`);
+			$divContProvCrear.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarProvinciaSeleccionadoCrear(${key})' ></i></div>`);
 				console.log(totalProvSelect);
 		}else{
 			alertify.warning("<p style='color:black;font-weight:bold;'>La provincia ya fue seleccionado!.</p>");
 		}
+		
+	} 
 
-	});
-
-	$btnAgregarComplejo.on('click',function(){
+	const agregarComplejoCrear = function(){
 
 		let nameOption = $('option:selected', $complejo).attr('name-complejo');
 		let valOption = $complejo.val();
@@ -448,13 +636,18 @@
 		if( flag == true ){
 
 			totalEdiSelect[ key ] = valOption;
-			$divContEdi.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarEdificacionesSeleccionado(${key})' ></i></div>`);
+			$divContEdiCrear.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarEdificacionesSeleccionadoCrear(${key})' ></i></div>`);
 				console.log(totalEdiSelect);
 		}else{
 			alertify.warning("<p style='color:black;font-weight:bold;'>El Complejo ya fue seleccionado!.</p>");
 		}
+	}
 
-	});
+	$btnAgregarDepartamentoCrear.on('click',agregarDepartamentoCrear);
+	$btnAgregarProvinciaCrear.on('click',agregarProvinciaCrear);
+	$btnAgregarComplejoCrear.on('click',agregarComplejoCrear);
+
+	$btnAgregarDepartamentoEditar.on('click',agregarDepartamentoEditar);
 
 </script>
 

@@ -229,7 +229,7 @@ class TemporadaRepository extends \Doctrine\ORM\EntityRepository
         return $message;
 	}
 
-	public function getTemporadasHabilitadasAnalista(){
+	public function getTemporadasHabilitadasAdministrador(){
 
         try {
 				$query = "	SELECT temp.id temporadaId, cic.descripcion ciclo, temp.anio anio

@@ -1,0 +1,215 @@
+<div class="row" style="margin:0 auto; width:92%;" >
+	<h3 style="color:grey" class="text-center">{{nombreComplejo}}</h3>
+	{% set cont = 0 %}
+	{% for complejosDisciplina in complejosDisciplinas %}
+
+	<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-11 col-lg-12">	
+
+		<div class="card" id="listadoDisciplinas">
+			<div class="card-header text-center" role="tab" id="" style="height:50px; padding-top:12px;" >
+				<a class="title-card" data-toggle="collapse" href="#caja{{complejosDisciplina['idDisciplina']}}" >
+					<strong>{{complejosDisciplina['nombreDisciplina']}}</strong>
+				</a>
+			</div>
+			
+			<div id="caja{{complejosDisciplina['idDisciplina']}}" class="collapse" role="tabpanel" data-parent="#accordion">
+				<hr>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="row">
+
+								<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+									<div class="input-group col-xs-8 col-sm-8 col-md-8 col-lg-8">
+									  <span class="input-group-addon">Buscar</span>
+									  <input class="filtrar form-control" type="text" ident-buscar="{{cont}}"  placeholder=" ingresa los campos a buscar ">
+									</div>
+								</div>
+								
+								<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+
+									{% if idTemporadaActiva == idTemporada %}
+											
+									<div style="float:right; margin-right:20px">
+										<span style="color:grey">Eliminar disciplina </span>
+										<button title="Eliminar disciplina" type="button" id="{{complejosDisciplina['idDisciplina']}}"  class="btn btn-default btn-xs" data-toggle="modal" data-target="#confirmarEliminarDisciplina" onclick="xDisciplina({{complejosDisciplina['idDisciplina']}})"><i class="icon-trash" style="font-size:1.6em; margin-top:5px; color:#B45F04" ></i></button>
+									</div>
+
+									{% endif %}
+								</div>
+
+							</div>
+							
+							<br>
+
+							<div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:50vh; ">			
+
+								<table class="table"  style="width: 100%;"> 
+									<thead style="background:#cb2f1d; color:#F2F2F2;" class="text-center"> 
+										<tr> 
+											<th class="text-center" style="font-size:14px">Código</th>
+											<th class="text-center" style="font-size:14px">Modalidad</th>
+											<th class="text-center" style="font-size:14px">Etapa</th>
+											<th class="text-center" style="font-size:14px">Edades</th> 
+											<th class="text-center" style="font-size:14px">Frecuencia</th>
+											<th class="text-center" style="font-size:14px">Hora</th> 
+											<th class="text-center" style="font-size:14px">Convocatoria</th>
+											<th class="text-center" style="font-size:14px">Vacantes disponibles</th>
+											<th class="text-center" style="font-size:14px">Límite de preinscripciones</th> 
+											<th class="text-center" style="font-size:14px">Inscritos</th>
+											<th></th>
+											<th></th>
+										</tr>
+										
+									</thead> 
+									
+									<tbody id="1{{complejosDisciplina['idDisciplina']}}" class="buscar"  > 
+									
+									{% for horario in horarios %}
+										{% if horario['idDisciplina'] == complejosDisciplina['idDisciplina'] %}
+											<tr> 
+												<td id="1h{{horario['idHorario']}}" class="text-center">{{horario['idHorario']}}</td>
+												<td id="2h{{horario['idHorario']}}" class="text-center" >  
+													{% if  horario['discapacidad'] == 0 %}
+													 	Convencional
+													{% else %}
+													    Personas con Discapacidad
+													{% endif %}
+												</td> 
+												<td id="3h{{horario['idHorario']}}" class="text-center"> 
+													{% if  horario['etapa'] == 0 %}
+													    Formación  
+													{% else %}
+														Masificación
+													{% endif %}
+												</td>
+												<td id="4h{{horario['idHorario']}}" class="text-center">
+													{% if  horario['edadMaxima'] != horario['edadMinima'] %}
+														{{horario['edadMinima']}} - {{horario['edadMaxima']}} años</td>
+													{% else %}
+														{{horario['edadMinima']}} años
+													{% endif %}
+												</td> 
+												
+												<td id="5h{{horario['idHorario']}}" class="text-center" >
+													{% for turno in turnos %}
+														{% if turno['horario_id'] == horario['idHorario']  %}
+																<div   >{{turno['dias']}}</div>
+														{% endif %}
+													{% endfor %}
+												</td> 
+												<td id="6h{{horario['idHorario']}}" class="text-center">
+													{% for turno in turnos %}
+														{% if turno['horario_id'] == horario['idHorario']  %}
+															<div style="width:110px;  padding-bottom:5px;">{{turno['hora']}}</div>
+														{% endif %}
+													{% endfor %}
+												</td> 
+
+												<td id="7h{{horario['idHorario']}}" class="text-center">
+													{% if  horario['convocatoria'] == 1 %}
+														<p  style="color:green" >Abierta</p>
+													{% else %}
+													<p style="color:red; font-weight:bold;"> Cerrado </p> 
+												{% endif %}
+
+												<td id="8h{{horario['idHorario']}}" class="text-center">
+													{{horario['vacantes']}} 
+												</td>
+
+												<td id="9h{{horario['idHorario']}}" class="text-center">{{horario['preinscripciones']}}
+												</td> 
+
+												<td id="10h{{horario['idHorario']}}" class="text-center">{{horario['inscritos']}}</td>
+											
+												
+												<td><button title="Editar horario" type="button" id="{{horario['idHorario']}}" onclick="editarHorario({{horario['idHorario']}},{{horario['idDisciplina']}} )" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1.2em; margin-top:5px; color:white" ></i></button></td>
+													
+											
+												<td><a href="{{url('akademia_beneficiarios',{ idHorario:horario['idHorario'], idTemporada : idTemporada })}}"  title="Mostrar Inscritos" type="button" class="btn btn-default btn-xs"><i class="icon-checklist" style="font-size: 1.3em;"></i></a></td>
+											</tr> 
+											<input type="hidden" value="{{horario['idDisciplina']}}">				
+											
+										{% endif %}
+								    {% endfor %}
+																						
+									</tbody> 
+								</table>
+							</div>
+						</div>
+					</div>
+					<hr>
+					
+					{# {% if is_granted('ROLE_ADMIN')  and idTemporadaActiva == idTemporada %} #}
+
+						<div class="row text-right">
+							<button type="button" data-toggle="modal" data-target="#modal-crear" id="Crear-Nuevo-Horario"  class="btn btn-danger" style="margin-right: 18px;" onclick="disciplina({{complejosDisciplina['idDisciplina']}});">Crear nuevo horario</button>
+						</div>
+					{# {% endif %} #}
+				</div>
+			</div>
+		</div>       
+	</div>
+	{% set cont = cont + 1 %}
+	{% endfor %}
+
+	{# {% if is_granted('ROLE_ADMIN') %} #}
+		<div class="container-card col-xs-12 col-sm-10 col-md-10 col-lg-10 col-lg-offset-1" style="padding-top:20px;" >				
+			<div class="card-header text-center">
+				<p style="font-size:16px; color:grey">¿Quieres aperturar una nueva disciplina en tu complejo deportivo?</p>
+				<button type="button" data-toggle="modal" data-target="#modal-disciplina" class="btn btn-danger" id="CrearDisc" style="margin-right: 18px;">Crear nueva disciplina</button>		
+			</div>
+		</div>
+	{# {% endif %} #}
+	
+	<input type="hidden" name="input-hidden-id-complejo" id="input-hidden-id-complejo" value="{{idComplejo}}">
+
+</div>
+
+<div id="modal-disciplina" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+		
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div id="alert-crear-disciplina-info" class="alert alert-warning alert-dismissible text-center" role="alert">
+							<button id="btn-close-alert-crear-disciplina" type="button"  class="close" ><span aria-hidden="true">&times;</span></button>
+							<p>Apertura una nueva disciplina</p>
+						</div>
+						<ul class="list-group">
+							<div id="alerta-errorModal" class="alert alert-danger collapse text-center"></div>
+							<!--<p id="alerta-errorModal"></p>-->
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+										<p><strong>Disciplina</strong></p>
+									</div>
+									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+
+										<select id="Disciplina" class="form-control"  name="Disciplina" >
+									    	<option value="0" selected>--SELECCIONAR--</option>
+								      		{% for disciplina in disciplinas %}
+												<option value="{{disciplina['dis_codigo']}}">{{disciplina['dis_descripcion']}}</option>
+											{% endfor %}
+									    </select>
+									</div>
+									
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button id="btn-crear-disciplina" onclick="crearDisciplina()"  type="button" data-dismiss="modal" class="btn btn-danger">Crear</button>
+			</div>
+
+		</div>
+	</div>
+</div>

@@ -1,4 +1,4 @@
-<div id="modal-crear" class="modal fade" role="dialog">
+<div id="modal-editar" class="modal fade" role="dialog">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
@@ -10,22 +10,24 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 						<div id="alert-crear-info" class="alert alert-warning alert-dismissible text-center" role="alert">
 							<button id="btn-close-alert-crear-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
-							<p style="font-size:14px">Crear Usuarios <b id="nombre-tipo-usuario-modal"></b> </p>
+							<p style="font-size:14px">Editar Usuarios <b id="nombre-tipo-usuario-modal"></b> </p>
 						</div>
 						<div id="alerta-errorCrear" class="alert alert-danger collapse text-center"></div>
 
 						<ul class="list-group">
-							<input type="hidden" id="perfil-usuario-crear">
+							<input type="hidden" id="perfil-usuario-editar">
 							<li class="list-group-item">
 
 								<div class="row">
+
+									<input type="hidden" name="usuario-id-editar" id="usuario-id-editar">
 
 									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
 										<p><strong>Tipo Doc</strong></p>
 									</div>
 
 									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" >
-										<select class="form-control" id="tipo-documento-crear">
+										<select class="form-control" id="tipo-documento-editar">
 											<option value="">--Seleccionar--</option>
 											<option selected value="30">DNI</option>
 											<option value="31">CARNET EXTRANJERIA</option>
@@ -37,12 +39,11 @@
 									</div>
 
 									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4">
-										<input type="text" value="75723309" class="form-control"  name="numero-documento-crear" id="numero-documento-crear">
+										<input type="text" class="form-control"  name="numero-documento-editar" id="numero-documento-editar">
 									</div>
 
 								</div>
 							</li>
-
 
 							<li class="list-group-item">
 								<div class="row">
@@ -51,7 +52,7 @@
 									</div>
 
 									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-8" >
-										<input value="carlos javier" class="form-control" type="text" name="nombre-crear" id="nombre-crear" >
+										<input class="form-control" type="text" name="nombre-editar" id="nombre-editar" >
 									</div>
 								</div>
 							</li>
@@ -64,7 +65,7 @@
 									</div>
 
 									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-8" >
-										<input value="majerhua" class="form-control" type="text" name="apellido-parterno-crear" id="apellido-parterno-crear" >
+										<input class="form-control" type="text" name="apellido-parterno-editar" id="apellido-parterno-editar" >
 									</div>
 								</div>
 							</li>
@@ -76,7 +77,7 @@
 									</div>
 
 									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-8" >
-										<input value="nuñez" class="form-control" type="text" name="apellido-materno-crear" id="apellido-materno-crear">
+										<input  class="form-control" type="text" name="apellido-materno-editar" id="apellido-materno-editar">
 									</div>
 								</div>
 							</li>
@@ -89,7 +90,7 @@
 									</div>
 
 									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" >
-										<input value="990845177" class="form-control" type="text" name="telefono-crear" id="telefono-crear" >
+										<input class="form-control" type="text" name="telefono-editar" id="telefono-editar" >
 									</div>
 
 									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
@@ -97,7 +98,7 @@
 									</div>
 
 									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" >
-										<input  value="majerhua123@gmail.com" class="form-control" type="text" name="correo-crear" id="correo-crear" >
+										<input  value="majerhua123@gmail.com" class="form-control" type="text" name="correo-editar" id="correo-editar" >
 									</div>
 
 								</div>
@@ -111,7 +112,7 @@
 									</div>
 
 									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" >
-										<input value="majerhua" class="form-control" type="text" name="usuario-crear" id="usuario-crear" >
+										<input class="form-control" type="text" name="usuario-editar" id="usuario-editar" >
 									</div>
 
 									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
@@ -119,12 +120,12 @@
 									</div>
 
 									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" >
-										<input  value="majerhua123" class="form-control" type="password" name="password-crear" id="password-crear">
+										<input  class="form-control" type="password" name="password-editar" id="password-editar">
 									</div>
 								</div>
 							</li>
 
-							<li class="list-group-item list-usuario-macro">
+							<li class="list-group-item list-usuario-macro" >
 								<div class="row">
 
 									<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" >
@@ -132,7 +133,7 @@
 									</div>
 
 									<div class="col-xs-6 col-sm-6 col-md-4 col-lg-6" >
-										<select class="form-control" id="departamento-crear"  name="departamento" >
+										<select class="form-control" id="departamento-editar"  name="departamento" >
 											<option value="" >--Seleccionar--</option>
 											{%  for dep in departamentos %}
 												<option name-departamento="{{dep['nombre']}}" value="{{dep['ubicodigo']}}" >{{dep['nombre']}}</option>
@@ -141,12 +142,12 @@
 									</div>
 
 									<div class="col-xs-6 col-sm-12 col-md-4 col-lg-3">
-										<button class="btn btn-default" id="btn-agregar-departamento-crear">AGREGAR +</button>
+										<button class="btn btn-default" id="btn-agregar-departamento-editar">AGREGAR +</button>
 									</div>
 
 								</div>
 
-								<div class="row" id="div-cont-dep-crear" style="padding:10px 0 10px 0;">
+								<div class="row" id="div-cont-dep-editar" style="padding:10px 0 10px 0;">
 									
 								</div>
 							</li>
@@ -159,7 +160,7 @@
 									</div>
 
 									<div class="col-xs-6 col-sm-6 col-md-8 col-lg-8" >
-										<select class="form-control" id="departamento-crear"  name="departamento" onchange="cambiarDepartamento(this)">
+										<select class="form-control" id="departamento-editar"  name="departamento" onchange="cambiarDepartamento(this)">
 											<option value="" >--Seleccionar--</option>
 											{%  for dep in departamentos %}
 												<option name-departamento="{{dep['nombre']}}" value="{{dep['ubicodigo']}}" >{{dep['nombre']}}</option>
@@ -173,19 +174,19 @@
 
 									<div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
 										<div class="form-group" style="padding:15px 0 0 0;">
-											<select class="form-control" id="provincia-crear"  name="provincia" >
+											<select class="form-control" id="provincia-editar"  name="provincia" >
 												<option value="">--Seleccionar--</option>
 											</select>
 										</div>
 									</div>
 
 									<div class="col-xs-6 col-sm-12 col-md-12 col-lg-12">
-										<button class="btn btn-default" id="btn-agregar-provincia-crear">AGREGAR +</button>
+										<button class="btn btn-default" id="btn-agregar-provincia">AGREGAR +</button>
 									</div>
 
 								</div>
 
-								<div class="row" id="div-cont-prov-crear"  style="padding:10px 0 10px 0;">
+								<div class="row"  id="div-cont-prov-editar" style="padding:10px 0 10px 0;">
 									
 								</div>
 							</li>
@@ -198,7 +199,7 @@
 									</div>
 
 									<div class="col-xs-6 col-sm-6 col-md-8 col-lg-8" >
-										<select class="form-control" id="departamento-crear"  name="departamento" onchange="cambiarDepartamento(this)">
+										<select class="form-control" id="departamento-editar"  name="departamento" onchange="cambiarDepartamento(this)">
 											<option value="" >--Seleccionar--</option>
 											{%  for dep in departamentos %}
 												<option name-departamento="{{dep['nombre']}}" value="{{dep['ubicodigo']}}" >{{dep['nombre']}}</option>
@@ -212,7 +213,7 @@
 
 									<div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
 										<div class="form-group" style="padding:15px 0 0 0;">
-											<select class="form-control" id="provincia-crear"  name="provincia" onchange="cambiarProvincia(this)" >
+											<select class="form-control" id="provincia-editar"  name="provincia" onchange="cambiarProvincia(this)" >
 												<option value="">--Seleccionar--</option>
 											</select>
 										</div>
@@ -225,24 +226,25 @@
 
 									<div class="col-xs-6 col-sm-6 col-md-8 col-lg-8">
 										<div class="form-group" style="padding:15px 0 0 0;">
-											<select class="form-control" id="complejo-crear"  name="complejo" >
+											<select class="form-control" id="complejo-editar"  name="complejo" >
 												<option value="">--Seleccionar--</option>
 											</select>
 										</div>
 									</div>
 
 									<div class="col-xs-6 col-sm-12 col-md-12 col-lg-12">
-										<button class="btn btn-default" id="btn-agregar-complejo-crear">AGREGAR +</button>
+										<button class="btn btn-default" id="btn-agregar-complejo">AGREGAR +</button>
 									</div>
+
 								</div>
 
-								<div class="row" id="div-cont-edi-crear" style="padding:10px 0 10px 0;">
+								<div class="row" id="div-cont-edi-editar" style="padding:10px 0 10px 0;">
 									
 								</div>
 							</li>
 
 								
-							<div id="alerta-errorCrearVacante" class="alert alert-danger collapse text-center"></div>
+							<div id="alerta-erroreditarVacante" class="alert alert-danger collapse text-center"></div>
 						</ul>
 					</div>
 				</div>
@@ -250,7 +252,7 @@
 
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button id="btn-crear-usuario" type="button" data-dismiss="modal" class="btn btn-danger" >Crear</button>
+				<button id="btn-editar-usuario" type="button" data-dismiss="modal" class="btn btn-danger" onclick="editarUsuario()" >Editar</button>
 			</div>
 		</div>
 	</div>

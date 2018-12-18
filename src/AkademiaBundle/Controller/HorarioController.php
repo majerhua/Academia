@@ -35,7 +35,6 @@ class HorarioController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-
         $mdDepartamentsByDisability = $em->getRepository('AkademiaBundle:Departamento')->getDepartmentsLandingByDisability($estado,$idTemporada);
         $mdProvinceByDisability = $em->getRepository('AkademiaBundle:Provincia')->getProvincesLandingByDisability($estado,$idTemporada);
         $mdDistrictsByDisability = $em->getRepository('AkademiaBundle:Distrito')->getDistrictsLandingByDisability($estado,$idTemporada);
@@ -87,19 +86,29 @@ class HorarioController extends Controller
     // FUNCION PARA RENDERIZAR LA VISTA DE HORARIOS
   	public function horariosAction(Request $request,$idTemporada){
 
-        $idComplejo = $this->getUser()->getIdComplejo();
+        $confPerfilUsuario = $this->container->getParameter('perfilUsuario');
+        $usuario = $this->getUser();
+
         $em = $this->getDoctrine()->getManager();
 
-        $ComplejoDisciplinas = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getComplejosDisciplinasHorarios($idComplejo,$idTemporada);
+        if( $usuario->getIdPerfil() == $confPerfilUsuario['administrador'] ){
+            $ubigeos = $em->getRepository('AkademiaBundle:Distrito')->getDepartamentos();
+            $complejos = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplejos();
 
-        $Horarios = $em->getRepository('AkademiaBundle:Horario')->getHorariosComplejos($idComplejo,$idTemporada);
-        $turnos = $em->getRepository('AkademiaBundle:Horario')->getTurnosComplejos($idComplejo);
+        }else if( $usuario->getIdPerfil() == $confPerfilUsuario['macro'] ){
+            $ubigeos = $em->getRepository('AkademiaBundle:Distrito')->getDepartamentosUsuario($usuario->getId());
+            $complejos = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplejos();
 
-        $Disciplinas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasDiferentes($idComplejo,$idTemporada);
-        $Nombre = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->nombreComplejo($idComplejo);
-            
-        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+        }else if( $usuario->getIdPerfil() == $confPerfilUsuario['monitor'] ){
+            $ubigeos = $em->getRepository('AkademiaBundle:Distrito')->getProvinciasUsuario($usuario->getId());
+            $complejos = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplejos();
+
+        }else if( $usuario->getIdPerfil() == $confPerfilUsuario['promotor'] ){
+            $ubigeos = NULL;
+            $complejos = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplejosUsuario($usuario->getId());
+        }
         
+        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
         //OBTENEMOS LA TEMPORADA COMPARAR CON LA TEMPORADA QUE RECIBIMOS COMO PARAMETRO
         $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
 
@@ -108,84 +117,137 @@ class HorarioController extends Controller
         else
             $idTemporadaActiva = null;
 
-        if(!empty($Nombre)){ 
+        return $this->render('AkademiaBundle:Default:horarios.html.twig', 
 
-            return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"1", "nombreComplejo"=> $Nombre, 'turnos'=>$turnos,'idTemporada'=>$idTemporada,'idTemporadaActiva'=>$idTemporadaActiva, 'descripcionTemporada'=>$descripcionTemporada ));
+                                array(
+                                    'idTemporada' => $idTemporada,
+                                    'idTemporadaActiva' => $idTemporadaActiva,
+                                    'descripcionTemporada' => $descripcionTemporada ,
+                                    'ubigeos' => $ubigeos,
+                                    'complejos' => $complejos
+                                )
+                    );
+    }
 
-            //MODULO ANALISTA
-        }else{
+    public function tableHorarioComplejoBeneficiarioAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
 
-            return $this->render('AkademiaBundle:Default:horarios.html.twig', array("complejosDisciplinas" => $ComplejoDisciplinas ,"horarios" => $Horarios, "disciplinas" => $Disciplinas, "valor"=>"2", 'turnos'=>$turnos, 'idTemporada'=>$idTemporada,'descripcionTemporada'=>$descripcionTemporada )); 
-        }
+        $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
+
+        if(!empty($arrayTemporada))
+            $idTemporadaActiva = $arrayTemporada[0]['temporadaId'];
+        else
+            $idTemporadaActiva = null;
+
+        $idComplejo = $request->request->get('idComplejo');
+        $idTemporada = $request->request->get('idTemporada');
+
+        $ComplejoDisciplinas = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getComplejosDisciplinasHorarios($idComplejo,$idTemporada);
+
+        $complejo = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplejoById($idComplejo);
+        $nombreComplejo = $complejo[0]['complejoNombre'];
+
+        $Horarios = $em->getRepository('AkademiaBundle:Horario')->getHorariosComplejos($idComplejo,$idTemporada);
+        $turnos = $em->getRepository('AkademiaBundle:Horario')->getTurnosComplejos($idComplejo);
+
+        $Disciplinas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasDiferentes($idComplejo,$idTemporada);
+
+        echo $this->renderView('AkademiaBundle:Disciplina_Horario_Beneficiario:table_disciplina_horario_beneficiario.html.twig',
+                        array(
+                                "complejosDisciplinas" => $ComplejoDisciplinas ,
+                                "horarios" => $Horarios, 
+                                "disciplinas" => $Disciplinas,
+                                "nombreComplejo"=> $nombreComplejo, 
+                                'turnos'=> $turnos,
+                                'idTemporada' => $idTemporada,
+                                'idTemporadaActiva' => $idTemporadaActiva,
+                                'idComplejo' => $idComplejo
+                        )
+                    );
+                exit;
     }
 
     // FUNCION PARA LA CREACION DE HORARIOS
     public function crearHorarioAction(Request $request){
-            
-        if( $request->isXmlHttpRequest() ){
              
+        $em = $this->getDoctrine()->getManager();
+
+        $idDisciplina = $request->request->get('idDisciplina');
+        $idTemporada = $request->request->get('idTemporada'); 
+        $idComplejo = $request->request->get('idComplejo');
+
+        $ediCodigo = $em->getRepository('AkademiaBundle:Horario')->getCapturarEdiCodigo($idComplejo, $idDisciplina,$idTemporada); 
+
+        $codigoEdi = $ediCodigo[0]['edi_codigo'];
+        
+        $modalidad = $request->request->get('modalidad-horario');
+        $etapa = $request->request->get('etapa-horario');
+        $edadMinima = $request->request->get('edadMinima');
+        $edadMaxima = $request->request->get('edadMaxima');
+        $vacantes = $request->request->get('vacantes-horario');
+        $preinscripciones = $request->request->get('preinscripciones-horario');
+        $turnos = $request->request->get('turnos-seleccionados');
+        $turnosString = $request->request->get('turnos-seleccionados-string');
+        $usuario = $this->getUser()->getId();
+     
+        $dataHorarioRepetido = $em->getRepository('AkademiaBundle:Horario')->getDiferenciarHorarios($modalidad,$etapa,$edadMinima,$edadMaxima,$codigoEdi,$turnosString);
+        $dataHorRept = $dataHorarioRepetido[0]['cantHorario'];
+        
+        if(!empty($dataHorRept)){
+
+            $mensaje = 1;
+        }else{
+
+            if($modalidad == 1){
+        
+                $cambios = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getEditarDiscapacitado($idComplejo, $usuario);
+                $cambiosDisciplina = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getEditarDiscapacitado($idDisciplina, $usuario);
+            }
+
+            $horario = new Horario();
+
+            $horario->setDiscapacitados($modalidad);
+            $horario->setEtapa($etapa);
+            $horario->setEdadMinima($edadMinima);
+            $horario->setEdadMaxima($edadMaxima);
+
+            $em = $this->getDoctrine()->getRepository(complejoDisciplina::class);
+            $codigoDisciplina = $em->find($codigoEdi);
+            $horario->setComplejoDisciplina($codigoDisciplina);
+
+            $horario->setUsuarioCrea($usuario);
+            $horario->setVacantes($vacantes);
+            $horario->setPreinscripciones($preinscripciones);
+            $horario->setConvocatoria(0);
+            $horario->setEstado(1);
+            $horario->setInscritos(0);
+
             $em = $this->getDoctrine()->getManager();
-
-            $idComplejo = $this->getUser()->getIdComplejo();
-
-            $idDisciplina = $request->request->get('idDisciplina');
-            $idTemporada = $request->request->get('idTemporada'); 
-
-            $ediCodigo = $em->getRepository('AkademiaBundle:Horario')->getCapturarEdiCodigo($idComplejo, $idDisciplina,$idTemporada); 
-
-            $codigoEdi = $ediCodigo[0]['edi_codigo'];
+            $em->persist($horario);
+            $em->flush();
+            $idHorarioNuevo = $horario->getId();
             
-            $modalidad = $request->request->get('modalidad-horario');
-            $etapa = $request->request->get('etapa-horario');
-            $edadMinima = $request->request->get('edadMinima');
-            $edadMaxima = $request->request->get('edadMaxima');
-            $vacantes = $request->request->get('vacantes-horario');
-            $preinscripciones = $request->request->get('preinscripciones-horario');
-            $turnos = $request->request->get('turnos-seleccionados');
-            $turnosString = $request->request->get('turnos-seleccionados-string');
-            $usuario = $this->getUser()->getId();
-         
-            $dataHorarioRepetido = $em->getRepository('AkademiaBundle:Horario')->getDiferenciarHorarios($modalidad,$etapa,$edadMinima,$edadMaxima,$codigoEdi,$turnosString);
-            $dataHorRept = $dataHorarioRepetido[0]['cantHorario'];
-            
-            if(!empty($dataHorRept)){
+            $mensaje = $em->getRepository('AkademiaBundle:Horario')->guardarTurnoHorario($turnos,$idHorarioNuevo);
+        } 
 
-                $mensaje = 1;
-            }else{
+        if( $mensaje == "2" ){
 
-                if($modalidad == 1){
-            
-                    $cambios = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getEditarDiscapacitado($idComplejo, $usuario);
-                    $cambiosDisciplina = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getEditarDiscapacitado($idDisciplina, $usuario);
-                }
+            $horarios = $em->getRepository('AkademiaBundle:Horario')->getHorariosComplejos($idComplejo,$idTemporada);
+            $turnos = $em->getRepository('AkademiaBundle:Horario')->getTurnosComplejos($idComplejo);
 
-                $horario = new Horario();
+            echo $this->renderView('AkademiaBundle:Disciplina_Horario_Beneficiario:table_disciplina_horario.html.twig',
+                                        array(
+                                            'idTemporada'=>$idTemporada,
+                                            'horarios' => $horarios,
+                                            'turnos' => $turnos,
+                                            'idDisciplina'=> $idDisciplina
+                                        )
+                            );
+            exit;
 
-                $horario->setDiscapacitados($modalidad);
-                $horario->setEtapa($etapa);
-                $horario->setEdadMinima($edadMinima);
-                $horario->setEdadMaxima($edadMaxima);
-
-                $em = $this->getDoctrine()->getRepository(complejoDisciplina::class);
-                $codigoDisciplina = $em->find($codigoEdi);
-                $horario->setComplejoDisciplina($codigoDisciplina);
-
-                $horario->setUsuarioCrea($usuario);
-                $horario->setVacantes($vacantes);
-                $horario->setPreinscripciones($preinscripciones);
-                $horario->setConvocatoria(0);
-                $horario->setEstado(1);
-                $horario->setInscritos(0);
-
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($horario);
-                $em->flush();
-                $idHorarioNuevo = $horario->getId();
-                
-                $mensaje = $em->getRepository('AkademiaBundle:Horario')->guardarTurnoHorario($turnos,$idHorarioNuevo);
-            } 
-                echo $mensaje;
-                exit;
+        }else{
+            echo $mensaje;
+            exit;
         }
     }
 
@@ -259,20 +321,43 @@ class HorarioController extends Controller
     // FUNCION PARA OCULTAR O ELIMINAR HORARIOS
 
     public function ocultarHorarioAction(Request $request){
-        if($request->isXmlHttpRequest()){
+        
+        $idHorario = $request->request->get('idHorario');
+        $idTemporada = $request->request->get('idTemporada');
+        $idDisciplina = $request->request->get('idDisciplina');
+        $idComplejo = $request->request->get('idComplejo');
 
-            $idHorario = $request->request->get('idHorario');
-            $usuario = $this->getUser()->getId();
-            
-            if(!empty($idHorario) && !empty($usuario) ){
+        $usuario = $this->getUser();
+        $usuarioId = $usuario->getId();
 
-                $em = $this->getDoctrine()->getManager();
-                $em ->getRepository('AkademiaBundle:Horario')->getOcultarHorario($idHorario, $usuario);
-                $em->flush();
-                $mensaje = 1;
-                return new JsonResponse($mensaje);
-            }
+        $em = $this->getDoctrine()->getManager();
+        $cantidadInscritosByHorario = $em->getRepository('AkademiaBundle:Horario')->cantidadInscritos($idHorario);
+
+
+        if( !empty($cantidadInscritosByHorario) ){
+            echo "-2"; //NO SE PUEDE ELIMINAR PORQUE EXISTEN INSCRITOS ACTIVOS EN EL HORARIO
+            exit;
+        }
+
+        if(!empty($idHorario) && !empty($usuarioId) ){
+
+            $em ->getRepository('AkademiaBundle:Horario')->getOcultarHorario($idHorario, $usuarioId);
+
+            $horarios = $em->getRepository('AkademiaBundle:Horario')->getHorariosComplejos($idComplejo,$idTemporada);
+            $turnos = $em->getRepository('AkademiaBundle:Horario')->getTurnosComplejos($idComplejo);
+
+            echo $this->renderView('AkademiaBundle:Disciplina_Horario_Beneficiario:table_disciplina_horario.html.twig',
+                                        array(
+                                            'idTemporada'=>$idTemporada,
+                                            'horarios' => $horarios,
+                                            'turnos' => $turnos,
+                                            'idDisciplina'=> $idDisciplina
+                                        )
+                            );
+            exit;
+        }else{
+            echo "-1"; //NO SE PUDO OCULTAR HORARIO.
+            exit;
         }
     }
-
 }

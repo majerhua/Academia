@@ -36,226 +36,70 @@
 
 	<input type="hidden"  id="inputHiddenIdTemporada" value="{{idTemporada}}">	
 
-		<div id="proceso1" class="proceso" style="margin-bottom: 60px;">	
-		    
-			{% if  is_granted('ROLE_ANALISTA') %}	
-				<h1>LA ACADEMIA IPD </h1>
-			{% else %}
-				{% if valor == '1'%}
-					<h1> CP {{nombreComplejo[0]['nombreComplejo'] }} </h1>
-				{% elseif valor == '2' %}
-					<h1> Complejo Deportivo - IPD </h1>
-				{% endif %}
-			{% endif %}
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4">
+					<p style="font-size:1.3em;font-weight:bold;padding-top:25px;">Disciplina/Horario/Beneficiario</p>
+				</div>
+				<div class="col-lg-4">
+					<div class="form-group">
 
-			<h4 style="color:grey">ADMINISTRACIÓN DE HORARIOS</h4>
+						{% if is_granted('ROLE_MACRO') or is_granted('ROLE_ADMIN') %}
 
-			<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px; margin-bottom: 20px;">
+							<label>Departamento</label>
+							<select class="form-control" id="departamento" name="departamento" onchange="cambiarDepartamento(this)">
+								<option value="" >--Seleccionar--</option>
+								{% for dep in ubigeos %}
+									<option  value={{dep['id']}}>{{dep['nombre']}}</option>
+								{% endfor %} 
+							</select>
 
-				<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
-				<p> Administra los horarios asignados a tu complejo deportivo. <br>También puedes actualizar el número de vacantes, abrir o cerrar las convocatorias de los horarios y visualizar la lista de sus inscritos.</p>
-			</div>
+						{% elseif is_granted('ROLE_MONITOR') %}
 
-			{% set cont = 0 %}
-			{% for complejosDisciplina in complejosDisciplinas %}
-			
-			<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-11 col-lg-11">	
+							<label>Provincia</label>
+							<select class="form-control" id="provincia" name="provincia" onchange="cambiarProvincia(this)">
+								<option value="" >--Seleccionar--</option>
+								{% for prov in ubigeos %}
+									<option  data-departamento="{{prov['idDepartamento']}}" value={{prov['idProvincia']}}>{{prov['nombre']}}</option>
+								{% endfor %} 
+							</select>							
 
-				<div class="card" id="listadoDisciplinas">
-					<div class="card-header text-center" role="tab" id="" style="height:50px; padding-top:12px;" >
-						<a class="title-card" data-toggle="collapse" href="#caja{{complejosDisciplina['idDisciplina']}}" >
-							<strong>{{complejosDisciplina['nombreDisciplina']}}</strong>
-						</a>
+						{% endif %}
+
 					</div>
-					
-					<div id="caja{{complejosDisciplina['idDisciplina']}}" class="collapse" role="tabpanel" data-parent="#accordion">
-						<hr>
-						<div class="card-body">
-							<div class="row">
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-									<div class="row">
+				</div>
+				<div class="col-lg-4">
 
-										<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-											<div class="input-group col-xs-8 col-sm-8 col-md-8 col-lg-8">
-											  <span class="input-group-addon">Buscar</span>
-											  <input class="filtrar form-control" type="text" ident-buscar="{{cont}}"  placeholder=" ingresa los campos a buscar ">
-											</div>
-										</div>
-										
-										<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-
-											{% if idTemporadaActiva == idTemporada %}
-													
-											<div style="float:right; margin-right:20px">
-												<span style="color:grey">Eliminar disciplina </span>
-												<button title="Eliminar disciplina" type="button" id="{{complejosDisciplina['idDisciplina']}}"  class="btn btn-default btn-xs" data-toggle="modal" data-target="#confirmarEliminarDisciplina" onclick="xDisciplina({{complejosDisciplina['idDisciplina']}})"><i class="icon-trash" style="font-size:1.6em; margin-top:5px; color:#B45F04" ></i></button>
-											</div>
-
-											{% endif %}
-										</div>
-
-									</div>
-									
-									<br>
-
-									<div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:50vh; ">			
-
-										<table class="table"  style="width: 100%;"> 
-											<thead style="background:#cb2f1d; color:#F2F2F2;" class="text-center"> 
-												<tr> 
-													<th class="text-center" style="font-size:14px">Código</th>
-													<th class="text-center" style="font-size:14px">Modalidad</th>
-													<th class="text-center" style="font-size:14px">Etapa</th>
-													<th class="text-center" style="font-size:14px">Edades</th> 
-													<th class="text-center" style="font-size:14px">Frecuencia</th>
-													<th class="text-center" style="font-size:14px">Hora</th> 
-													<th class="text-center" style="font-size:14px">Convocatoria</th>
-													<th class="text-center" style="font-size:14px">Vacantes disponibles</th>
-													<th class="text-center" style="font-size:14px">Límite de preinscripciones</th> 
-													<th class="text-center" style="font-size:14px">Inscritos</th>
-													<th></th>
-													
-														<th></th>
-												
-												</tr>
-												
-											</thead> 
-											
-											<tbody id="1{{complejosDisciplina['idDisciplina']}}" class="buscar"  > 
-											
-											{% for horario in horarios %}
-											{% if horario['idDisciplina'] == complejosDisciplina['idDisciplina'] %}
-												<tr> 
-													<td id="1h{{horario['idHorario']}}" class="text-center">{{horario['idHorario']}}</td>
-													<td id="2h{{horario['idHorario']}}" class="text-center" >  
-														{% if  horario['discapacidad'] == 0 %}
-														 	Convencional
-														{% else %}
-														    Personas con Discapacidad
-														{% endif %}
-													</td> 
-													<td id="3h{{horario['idHorario']}}" class="text-center"> 
-														{% if  horario['etapa'] == 0 %}
-														    Formación  
-														{% else %}
-															Masificación
-														{% endif %}
-													</td>
-													<td id="4h{{horario['idHorario']}}" class="text-center">
-														{% if  horario['edadMaxima'] != horario['edadMinima'] %}
-															{{horario['edadMinima']}} - {{horario['edadMaxima']}} años</td>
-														{% else %}
-															{{horario['edadMinima']}} años
-														{% endif %}
-													</td> 
-													
-													<td id="5h{{horario['idHorario']}}" class="text-center" >
-														{% for turno in turnos %}
-															{% if turno['horario_id'] == horario['idHorario']  %}
-																	<div   >{{turno['dias']}}</div>
-															{% endif %}
-														{% endfor %}
-													</td> 
-													<td id="6h{{horario['idHorario']}}" class="text-center">
-														{% for turno in turnos %}
-															{% if turno['horario_id'] == horario['idHorario']  %}
-																<div style="width:110px;  padding-bottom:5px;">{{turno['hora']}}</div>
-															{% endif %}
-														{% endfor %}
-													</td> 
-
-													<td id="7h{{horario['idHorario']}}" class="text-center">
-														{% if  horario['convocatoria'] == 1 %}
-															<p  style="color:green" >Abierta</p>
-														{% else %}
-														<p style="color:red; font-weight:bold;"> Cerrado </p> 
-													{% endif %}
-
-													<td id="8h{{horario['idHorario']}}" class="text-center">
-														{{horario['vacantes']}} 
-													</td>
-
-													<td id="9h{{horario['idHorario']}}" class="text-center">{{horario['preinscripciones']}}
-													</td> 
-
-													<td id="10h{{horario['idHorario']}}" class="text-center">{{horario['inscritos']}}</td>
-												
-													
-													<td><button title="Editar horario" type="button" id="{{horario['idHorario']}}" onclick="editarHorario({{horario['idHorario']}},{{horario['idDisciplina']}} )" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="font-size:1.2em; margin-top:5px; color:white" ></i></button></td>
-														
-												
-													<td><a href="{{url('akademia_beneficiarios',{ idHorario:horario['idHorario'], idTemporada : idTemporada })}}"  title="Mostrar Inscritos" type="button" class="btn btn-default btn-xs"><i class="icon-checklist" style="font-size: 1.3em;"></i></a></td>
-												</tr> 
-												<input type="hidden" value="{{horario['idDisciplina']}}">				
-												
-											{% endif %}
-										    {% endfor %}
-																								
-											</tbody> 
-										</table>
-									</div>
-								</div>
-							</div>
-							<hr>
-							
-							{% if is_granted('ROLE_ADMIN')  and idTemporadaActiva == idTemporada %}
-
-								<div class="row text-right">
-									<button type="button" data-toggle="modal" data-target="#modal-crear" id="Crear-Nuevo-Horario"  class="btn btn-danger" style="margin-right: 18px;" onclick="disciplina({{complejosDisciplina['idDisciplina']}});">Crear nuevo horario</button>
-								</div>
-							{% endif %}
-						</div>
+					<div class="form-group">
+						<label>Complejo</label>
+						<select class="form-control"  id="complejo" name="complejo" onchange="cambiarComplejo(this)" >
+							<option value="" >--Seleccionar--</option>
+							{%  if is_granted('ROLE_PROMOTOR') %}
+								{% for comp in complejos %}
+									<option value="{{comp['complejoId']}}">{{comp['complejoNombre']}}</option>
+								{% endfor %}
+							{% endif %} 
+						</select>
 					</div>
-				</div>       
-			</div>
-			{% set cont = cont + 1 %}
-			{% endfor %}
-			
-			<hr>
-			{% if is_granted('ROLE_ADMIN')  and idTemporadaActiva == idTemporada %}
-			<div class="container-card col-xs-12 col-sm-10 col-md-10 col-lg-10">				
-				<div class="card-header text-center">
-					<p style="font-size:16px; color:grey">¿Quieres aperturar una nueva disciplina en tu complejo deportivo?</p>
-					<button type="button" data-toggle="modal" data-target="#modal-disciplina" class="btn btn-danger" id="CrearDisc" style="margin-right: 18px;">Crear nueva disciplina</button>		
+
 				</div>
 			</div>
-			{% endif %}
-
 		</div>
+
+		<div id="proceso1" class="proceso" style="margin-bottom: 60px;min-height: 26.4vh;" >	
+		    
+			<div id="container-complejo-disciplina-horarios" style="width:100%;" >
+				
+			</div>
+			
+			<hr>
+		</div>
+
+{% include 'AkademiaBundle:Footer:footer.html.twig' %}
 
 </section>
 
-<footer class="footer">
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center">
-				<br>
-				<br>
-				<br>
-				<img class="align-self-center foot" src="{{ asset('assets/images/ipdfooter.png')}}">
-			</div>
-			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-				<br><br>
-				<h4>La Academia</h4>
-				<p class="footerTex">
-					Dirección:Calle Madre de Dios N° 463
-				</p>
-				<p class="footerTex">
-					Teléfono: 204-8420 /anexo 1302
-				</p>
-			</div>
-			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-				<br><br>
-				<h4>Enlaces de Interés</h4>
-				<p><a class="footerTex" href="http://www.ipd.gob.pe/">Instituto Peruano del Deporte</a></p>
-				<p><a class="footerTex" href="https://www.facebook.com/recreacion.ipd/">Facebook Recreación</a></p>
-				<p><a class="footerTex" href="http://www.ipd.gob.pe/formacion-deportiva">Formación Deportiva</a></p>
-			</div>
-		</div>
-		<br>
-    	<p class="col-xs-12 col-sm-12 col-md-12 col-lg-12 copyright">&copy; 2018 Todos los derechos reservados</p>
-	</div>
-</footer>
+
 
 <!-- modal -->
 <div id="modal-editar" class="modal fade" role="dialog">
@@ -264,11 +108,6 @@
 		<div class="modal-content">
 			<div class="modal-header text-center">
 				<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
-				{% if valor == '1'%}
-					<h4 class="title-card" style="color:#d9534f">CP de {{nombreComplejo[0]['nombreComplejo']}}</h4>
-				{% elseif valor == '2' %}
-					<h4 class="title-card" style="color:#d9534f"> Complejo Deportivo - IPD </h4>
-				{% endif %}
 			</div>
 			<div class="modal-body">
 					<div class="row">
@@ -448,11 +287,6 @@
 		<div class="modal-content">
 			<div class="modal-header text-center">
 				<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
-				{% if valor == '1'%}
-					<h4 class="title-card" style="color:#d9534f">CP de {{nombreComplejo[0]['nombreComplejo']}}</h4>
-				{% elseif valor == '2' %}
-					<h4 class="title-card" style="color:#d9534f"> Complejo Deportivo - IPD </h4>
-				{% endif %}
 
 			</div>
 			<div class="modal-body">
@@ -697,68 +531,13 @@
 
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button id="btn-crear-horario" type="button" class="btn btn-danger" >Crear</button>
+				<button id="btn-crear-horario" type="button" data-dismiss="modal" class="btn btn-danger" >Crear</button>
 			</div>
-		</div>
-	</div>
-</div>
-
-<div id="modal-disciplina" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-		<!-- Modal content-->
-		<div class="modal-content">
-			<div class="modal-header text-center">
-				<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
-				
-				{% if valor == '1'%}
-					<h4 class="title-card" style="color:#d9534f">CP de {{nombreComplejo[0]['nombreComplejo']}}</h4>
-				{% elseif valor == '2' %}
-					<h4 class="title-card" style="color:#d9534f"> Complejo Deportivo - IPD </h4>
-				{% endif %}
-
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-						<div id="alert-crear-disciplina-info" class="alert alert-warning alert-dismissible text-center" role="alert">
-							<button id="btn-close-alert-crear-disciplina" type="button"  class="close" ><span aria-hidden="true">&times;</span></button>
-							<p>Apertura una nueva disciplina</p>
-						</div>
-						<ul class="list-group">
-							<div id="alerta-errorModal" class="alert alert-danger collapse text-center"></div>
-							<!--<p id="alerta-errorModal"></p>-->
-							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-										<p><strong>Disciplina</strong></p>
-									</div>
-									<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-
-										<select id="Disciplina" class="form-control"  name="Disciplina" >
-									    	<option value="0" selected>--SELECCIONAR--</option>
-								      		{% for disciplina in disciplinas %}
-												<option value="{{disciplina['dis_codigo']}}">{{disciplina['dis_descripcion']}}</option>
-											{% endfor %}
-									    </select>
-									</div>
-									
-								</div>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-				<button id="btn-confirm" type="button" class="btn btn-danger">Crear</button>
-			</div>
-
 		</div>
 	</div>
 </div>
 
 <!--CREAR NUEVA DISCIPLINA-->
-
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="confirmarDisciplina">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -770,7 +549,7 @@
       		<p class="text-center" style="color:grey">¿ Estás seguro de crear esta nueva disciplina ?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" id="modal-btn-si">Si</button>
+        <button type="button" class="btn btn-danger" id="modal-btn-si" >Si</button>
         <button type="button" class="btn btn-default" id="modal-btn-no">No</button>
       </div>
     </div>
@@ -778,7 +557,6 @@
 </div>
 
 <!--NO SE PUEDE ELIMINAR HORARIO-->
-
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="errorEliminacionHorario">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -819,6 +597,37 @@
   </div>
 </div>
 
+<div id="modal-confirmar-eliminar-horario" class="modal-migracion">
+	<div class="modal-content-migracion">
+
+	    <span class="close-migracion modal-close-confirmar-horario" >&times;</span>
+	    <div class="row">
+
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 col-lg-offset-1">
+
+				<div>
+					<h3 class="text-bold text-warning" >¿Estás seguro de eliminar este horario?</h3>
+				</div>
+				<div>
+					<p class="text-bold">Recuerda que:</p>
+				</div>
+				<ol>
+					<li style="font-size:0.9em;font-weight:bold;" >No podrás revertir el proceso.</li>
+
+					<li style="font-size:0.9em;">La lista de beneficiarios asociados al horario ya no serán visibles.</li>
+				</ol>
+			</div>
+		</div>
+
+		<div class="modal-migracion-footer">
+			<button type="button" class="btn btn-default modal-close-confirmar-horario">No</button>
+			<button type="button" class="btn btn-danger"  style="background-color:red;" onclick="eliminarHorario()">Si</button>
+		</div>
+
+	 </div>
+</div>
+
+
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="confirmarEliminarDisciplina">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -835,13 +644,14 @@
       <div class="modal-footer">
       	<strong><p class="text-center" style="color:#B40404; font-weight:bold">¿Desea continuar? </p></strong>
 
-        <button type="button" class="btn btn-danger" id="modal-btn-si-disciplina">Si</button>
-        <button type="button" class="btn btn-default" id="modal-btn-no-disciplina">No</button>
+        <button type="button" class="btn btn-danger" id="modal-btn-si-disciplina" onclick="eliminarDisciplina()" data-dismiss="modal">Si</button>
+        <button type="button" class="btn btn-default" id="modal-btn-no-disciplina" data-dismiss="modal">No</button>
       </div>
     </div>
   </div>
 </div>
 
+<input type="hidden" id="input-hidden-id-disciplina">
 
 {% endblock %}
 {% block javascripts %}
@@ -849,436 +659,396 @@
 <script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
 <script src="{{asset('assets/vendor/bootstrap/dist/js/bootstrap.js')}}"></script>
 <script src="{{asset('assets/vendor/js/Horario/validacionesHorario2.js')}}"></script>
-<script src="{{asset('assets/vendor/js/Horario/agregarTurnos2.js')}}"></script>
+<script src="{{asset('assets/vendor/js/Horario/agregarTurnos.js')}}"></script>
 
 <script type="text/javascript">
 		
-	
-        // FUNCION PARA SELECCIONAR LA FRECUENCIA EN LOS HORARIOS 
+	$btnCrearDisciplina = $("#btn-crear-disciplina");
+	$inputHiddenIdDisciplina = $("#input-hidden-id-disciplina");
+	var modalConfElimHor = document.getElementById('modal-confirmar-eliminar-horario');
+	var modalCloseConfHor = document.getElementsByClassName("modal-close-confirmar-horario");
+	var turno = document.getElementById('turno');
 
-        var turno = document.getElementById('turno');
-
-
-		/* EDITAR HORARIO*/
-
-		function editarHorario(idHorario, idDisciplina){
-			
-			sessionStorage.removeItem('flagOcularHorario');
-			$("#cbx-horario").prop('checked', false);
-			$("#btn-actualizar").attr('value','Actualizar');
-			$("#advertencia").hide();
-
-			var idHorario = idHorario;
-			var idDisciplina = idDisciplina;
-			
-			clearData();
-			
-			var dataHorario = {
-				"idHorario" : idHorario,
-				"idDisciplina" : idDisciplina
-			};
-
-			$.ajax({
-				type:'POST',
-				dataType: "json",
-				url: "{{url('akademia_mostrarHorarioIndividual')}}",
-				data: dataHorario,
-
-				beforeSend: function(){				
-					
-				},
-				success : function(data){
-					if(data != 1){
-
-						var dataHorario =JSON.parse(data)[0];
-						console.log("Data Horario =>",dataHorario);
-
-						$("#editar_codigo_horario").append(dataHorario.idHorario);
-						$("#editar_disciplina_horario").append(dataHorario.nombreDisciplina);
-						$("#editar_edades_horario").append(dataHorario.edad);
-						$("#editar_modalidad_horario").append(dataHorario.modalidad);
-
-						if(dataHorario.etapa=='Formación'){
-							$("#editar_etapa_horario").val(0);
-							console.log("Formacion")
-						}else if(dataHorario.etapa=='Masificación'){
-							$("#editar_etapa_horario").val(1);
-							console.log("Masificación");
-						}
-						
-						$("#editar_convocatoria_horario").val(dataHorario.convocatoria);
-						$("#editar_vacantes_horario").val(dataHorario.vacantes);
-						$("#editar_preinscripciones_horario").val(dataHorario.preinscripciones);
-						
-						dataHorario.turnos.forEach(function(value,index){
-							$("#editar_frecuencia_horario").append(`<div>${value.frecuencia}</div>`);
-							$("#editar_dias_horario").append(`<div>${value.hora}</div>`);
-						});
-
-					}else{
-						alertify.error('<p style="color:white">Se produjo un error al cargar los datos del Horario. </p>'); 
-					}
-
-				},
-				error : function(data){
-
-				},
-			})
+	for (let i = 0; i < modalCloseConfHor.length; i++) {
+		modalCloseConfHor[i].onclick = function() {
+		    modalConfElimHor.style.display = "none";
 		}
+	}
 
-		/*ACTUALIZAR Y/O ELIMINAR  HORARIO*/
+	function cambiarDepartamento(departamento){
 
-		$('#cbx-horario').on( 'click', function() {
-			
-		    if($(this).is(':checked'))
-		    {
-		        $("#advertencia").show();
-		        sessionStorage.setItem('flagOcularHorario',$(this).val());
-		        $("#btn-actualizar").attr('value',"Eliminar");
-		    
-		    }else{
-		    	sessionStorage.removeItem('flagOcularHorario');
-		    	$("#advertencia").hide();
-		    	$("#btn-actualizar").attr('value',"Actualizar");
+		var departamentoId = departamento.value;
+		$("#complejo").empty();
+		$("#complejo").append("<option value=''>--Seleccionar--</option>");
+		{% for  comp in complejos %}
+			if("{{comp['departamentoId']}}" == departamentoId )
+				$("#complejo").append("<option value={{comp['complejoId']}}>{{comp['complejoNombre']}}</option>");
 
-		    }
-		});		
+		{% endfor %}
+	}
 
-		// ACTUALIZAR Y ELIMINAR HORARIOS 
+	function cambiarProvincia(provincia){
 
-		function actualizarHorario(){
+		var provinciaId = provincia.value;
+		var departamentoId =  $('option:selected', provincia).attr('data-departamento');
+		$("#complejo").empty();
+		$("#complejo").append("<option value=''>--Seleccionar--</option>");
+		{% for  comp in complejos %}
 
-			console.log('Flag Horario =>',sessionStorage.getItem('flagOcularHorario'));
+			if("{{comp['provinciaId']}}" == provinciaId &&  "{{comp['departamentoId']}}" == departamentoId )
+				$("#complejo").append("<option value={{comp['complejoId']}}>{{comp['complejoNombre']}}</option>");
 
-			if(sessionStorage.getItem('flagOcularHorario') == '1' ){
+		{% endfor %}
+	}
 
-				var codHorario = $("#editar_codigo_horario").text();	
-				console.log(sessionStorage.getItem('flagOcularHorario'));
+	function cambiarComplejo(complejo){
 
-				var data={
-					"idHorario" : codHorario
-				};
+		var datos = {
+						'idComplejo':complejo.value,
+						'idTemporada':"{{idTemporada}}"
+					}			
+		$.ajax({
+			type:'POST',
+			url: "{{url('akademia_tableHorarioComplejoBeneficiario')}}",
+			data: datos,
+			beforeSend: function(){				
+			},
+			success : function(data){
+				$("#container-complejo-disciplina-horarios").html(data);
+			},
+			error : function(error){
+				alertify.error('Ocurrio un error en el sistema!.');
+			},
+		})
+	}
 
-				$.ajax({
+	/* EDITAR HORARIO*/
+	function editarHorario(idHorario, idDisciplina){
+		
+		sessionStorage.removeItem('flagOcularHorario');
+		$("#cbx-horario").prop('checked', false);
+		$("#btn-actualizar").attr('value','Actualizar');
+		$("#advertencia").hide();
+
+		$inputHiddenIdDisciplina.val(idDisciplina);
+
+		var idHorario = idHorario;
+		var idDisciplina = idDisciplina;
+		
+		clearData();
+		
+		var dataHorario = {
+			"idHorario" : idHorario,
+			"idDisciplina" : idDisciplina
+		};
+
+		$.ajax({
+			type:'POST',
+			dataType: "json",
+			url: "{{url('akademia_mostrarHorarioIndividual')}}",
+			data: dataHorario,
+
+			beforeSend: function(){				
+				
+			},
+			success : function(data){
+				if(data != 1){
+
+					var dataHorario =JSON.parse(data)[0];
+					console.log("Data Horario =>",dataHorario);
+
+					$("#editar_codigo_horario").append(dataHorario.idHorario);
+					$("#editar_disciplina_horario").append(dataHorario.nombreDisciplina);
+					$("#editar_edades_horario").append(dataHorario.edad);
+					$("#editar_modalidad_horario").append(dataHorario.modalidad);
+
+					if(dataHorario.etapa=='Formación'){
+						$("#editar_etapa_horario").val(0);
+						console.log("Formacion")
+					}else if(dataHorario.etapa=='Masificación'){
+						$("#editar_etapa_horario").val(1);
+						console.log("Masificación");
+					}
+					
+					$("#editar_convocatoria_horario").val(dataHorario.convocatoria);
+					$("#editar_vacantes_horario").val(dataHorario.vacantes);
+					$("#editar_preinscripciones_horario").val(dataHorario.preinscripciones);
+					
+					dataHorario.turnos.forEach(function(value,index){
+						$("#editar_frecuencia_horario").append(`<div>${value.frecuencia}</div>`);
+						$("#editar_dias_horario").append(`<div>${value.hora}</div>`);
+					});
+
+				}else{
+					alertify.error('<p style="color:white">Se produjo un error al cargar los datos del Horario. </p>'); 
+				}
+			},
+			error : function(error){
+				alertify.error("Ocurrio un Error en el Sistema!.");
+			},
+		})
+	}
+
+	/*ACTUALIZAR Y/O ELIMINAR  HORARIO*/
+	$('#cbx-horario').on( 'click', function() {
+		
+	    if($(this).is(':checked'))
+	    {
+	        $("#advertencia").show();
+	        sessionStorage.setItem('flagOcularHorario',$(this).val());
+	        $("#btn-actualizar").attr('value',"Eliminar");
+	    
+	    }else{
+	    	sessionStorage.removeItem('flagOcularHorario');
+	    	$("#advertencia").hide();
+	    	$("#btn-actualizar").attr('value',"Actualizar");
+
+	    }
+	});		
+
+	function eliminarHorario(){
+
+		console.log("Eliminar Horario");
+
+	 	 var idHorario = $("#editar_codigo_horario").text();	
+		 var idDisciplina = $inputHiddenIdDisciplina.val();
+		 var datos={
+			'idHorario' : idHorario,
+			'idTemporada': "{{idTemporada}}",
+			'idComplejo': $("#input-hidden-id-complejo").val(),
+			'idDisciplina': idDisciplina
+
+		};
+
+		$.ajax({
+			type:'POST',
+			url: "{{url('akademia_ocultarHorario')}}",
+			data: datos,
+			beforeSend: function(){				
+			},
+			success: function(data){
+				console.log("Response datos Eliminar =>",data);
+				if(data == "-2"){
+					alertify.warning("<p style='color:black;font-weight:bold;'>No se pudo eliminar porque aún existen participantes activos en el Horario!.</p>");
+				}else if(data == "-1"){
+					alertify.warning("<p style='color:black;font-weight:bold;'>No se pudo eliminar el Horario</p>");
+				}else{
+					alertify.success("Se elimino horario correctamente!");
+					$("#1"+idDisciplina).html(data);	
+				}
+			},
+			error: function(error){
+				alertify.error("Ocurrio un error en el sistema!.");
+			}
+		});
+		modalConfElimHor.style.display = "none";					
+	}
+
+	// ACTUALIZAR Y ELIMINAR HORARIOS 
+	function actualizarHorario(){
+
+		if(sessionStorage.getItem('flagOcularHorario') == '1'){
+
+			modalConfElimHor.style.display = "block";
+		}else{
+
+			// ACTUALIZAR LOS HORARIOS
+			console.log(sessionStorage.getItem('flagOcularHorario'));
+			if($("#editar_vacantes_horario").val()==""){
+               	alertify.error('<p style="color:white">Se requiere que ingrese la cantidad de vacantes. </p>'); 
+               	$("#editar_vacantes_horario").focus();
+
+            }else if($("#editar_preinscritos_horario").val()==""){
+            	alertify.error('<p style="color:white">Se requiere que ingrese el límite de preinscripciones. </p>'); 
+               	$("#editar_preinscripciones_horario").focus();
+
+            }else if($("#editar_convocatoria_horario").val()==""){
+            	alertify.error('<p style="color:white">Seleccione la convocatoria. </p>');
+
+            }else if(parseInt($("#editar_vacantes_horario").val())<0){
+				alertify.error('<p style="color:white">Verifique el número de vacantes. </p>');
+
+            }else if(parseInt($("#editar_preinscripciones_horario").val()) < parseInt($("#editar_vacantes_horario").val())){
+            	
+            	$("#btn-actualizar").attr("data-dismiss", "");
+            	showAlertMessage('#alerta-errorEditarVacante', "Verifique que el Nº vacantes de Preinscritos sea mayor al Nº de vacantes de Inscritos.");
+
+            }else if($("#editar_convocatoria_horario").val()!= "" && $("#editar_vacantes_horario").val()!="" && $("#editar_preinscripciones_horario").val() != ""){
+            		
+            		$("#btn-actualizar").attr("data-dismiss", "modal");
+
+		           	var idHorario = $("#editar_codigo_horario").text();
+					var vacantes = $("#editar_vacantes_horario").val();
+					var preinscripciones = $("#editar_preinscripciones_horario").val()
+					var convocatoria = $("#editar_convocatoria_horario").val();
+					var etapa = $("#editar_etapa_horario").val();
+
+
+					var dataActualizarHorario={
+						"idHorario" : idHorario,
+						"vacantes" :vacantes,
+						"preinscripciones" : preinscripciones,
+						"convocatoria" : convocatoria,
+						"etapa" : etapa
+					};
+
+					$.ajax({
+
 						type:'POST',
 						dataType: "json",
-						url: "{{url('akademia_cantInscritos')}}",
-						data: data,
+						url: "{{url('akademia_actualizarHorario')}}",
+						data: dataActualizarHorario,
+
+						beforeSend: function(){				
+				
+						},
+
 						success: function(data){
 
-							if(data == 2){
-								$("#errorEliminacionHorario").modal('show');
-							}else{
+							if(data != 1){
+								var dataHorario =JSON.parse(data)[0];
 
-								/*FUNCION PARA ELIMINAR HORARIO*/
-								var confirmarHorario = function(callback){
-											
-									$("#confirmarEliminarHorario").modal('show');					
-									$("#modal-btn-si-horario").on("click", function(){
-								    	callback(true);
-								    	$("#confirmarEliminarHorario").modal('hide');
-								  	});
-								  
-									$("#modal-btn-no-horario").on("click", function(){
-									    callback(false);
-									    $("#confirmarEliminarHorario").modal('hide');
-									});
+								$("#1h"+dataHorario.id).empty();
+								$("#7h"+dataHorario.id).empty();
+								$("#8h"+dataHorario.id).empty();
+								$("#9h"+dataHorario.id).empty();
+
+								$("#1h"+dataHorario.id).text(dataHorario.id);
+
+								if(dataHorario.convocatoria == 1){
+									$("#7h"+dataHorario.id).text("Abierto");
+									$("#7h"+dataHorario.id).css("color","green");
+								}else{
+									$("#7h"+dataHorario.id).text("Cerrado");
+									$("#7h"+dataHorario.id).css("color","red");
+									$("#7h"+dataHorario.id).css("font-weight","bold");
 								}
 
-								confirmarHorario(function(confirm){
-								  
-									if(confirm){
+								$("#8h"+dataHorario.id).text(dataHorario.vacantes);
+								
+								if(dataHorario.etapa == 0){
+									$("#3h"+dataHorario.id).text("Formación");
+								}else if(dataHorario.etapa == 1){
+									$("#3h"+dataHorario.id).text("Masificación");	
+								}
 
-									  	var idHorario = $("#editar_codigo_horario").text();	
-										
-										var dataOcultarHorario={
-											"idHorario" : idHorario
-										};
+								if(dataHorario.preinscripciones == 0){
+									$("#9h"+dataHorario.id).text(dataHorario.preinscripciones);
+									$("#9h"+dataHorario.id).css("color","red");
+									$("#9h"+dataHorario.id).css("font-weight","bold");
 
-										$.ajax({
-											type:'POST',
-											dataType: "json",
-											url: "{{url('akademia_ocultarHorario')}}",
-											data: dataOcultarHorario,
-											beforeSend: function(){				
-											},
-											success: function(data){
-												if(data == 1){
-													console.log(data);
-													//window.location.href = "horarios/{{idTemporada}}";
-													location.reload();
-												}
-											},
-											error: function(error){
-												console.log(error);
-											}
-										});
-									}
-								});
+								}else{
+									$("#9h"+dataHorario.id).text(dataHorario.preinscripciones);	
+									$("#9h"+dataHorario.id).css("color","black");
+								}
+								
 
+
+								alertify.success('Horario Actualizado');					
+							}else{
+								alertify.error('<p style="color:white">Error al actualizar los datos </p>'); 
 							}
 						},
 						error: function(error){
-							console.log(error);
 						}
-				})
-				
-			}else{
-
-				// ACTUALIZAR LOS HORARIOS
-				console.log(sessionStorage.getItem('flagOcularHorario'));
-				if($("#editar_vacantes_horario").val()==""){
-	               	alertify.error('<p style="color:white">Se requiere que ingrese la cantidad de vacantes. </p>'); 
-	               	$("#editar_vacantes_horario").focus();
-
-	            }else if($("#editar_preinscritos_horario").val()==""){
-	            	alertify.error('<p style="color:white">Se requiere que ingrese el límite de preinscripciones. </p>'); 
-	               	$("#editar_preinscripciones_horario").focus();
-
-	            }else if($("#editar_convocatoria_horario").val()==""){
-	            	alertify.error('<p style="color:white">Seleccione la convocatoria. </p>');
-
-	            }else if(parseInt($("#editar_vacantes_horario").val())<0){
-					alertify.error('<p style="color:white">Verifique el número de vacantes. </p>');
-
-	            }else if(parseInt($("#editar_preinscripciones_horario").val()) < parseInt($("#editar_vacantes_horario").val())){
-	            	
-	            	$("#btn-actualizar").attr("data-dismiss", "");
-	            	showAlertMessage('#alerta-errorEditarVacante', "Verifique que el Nº vacantes de Preinscritos sea mayor al Nº de vacantes de Inscritos.");
-
-	            }else if($("#editar_convocatoria_horario").val()!= "" && $("#editar_vacantes_horario").val()!="" && $("#editar_preinscripciones_horario").val() != ""){
-	            		
-	            		$("#btn-actualizar").attr("data-dismiss", "modal");
-
-			           	var idHorario = $("#editar_codigo_horario").text();
-						var vacantes = $("#editar_vacantes_horario").val();
-						var preinscripciones = $("#editar_preinscripciones_horario").val()
-						var convocatoria = $("#editar_convocatoria_horario").val();
-						var etapa = $("#editar_etapa_horario").val();
-
-
-						var dataActualizarHorario={
-							"idHorario" : idHorario,
-							"vacantes" :vacantes,
-							"preinscripciones" : preinscripciones,
-							"convocatoria" : convocatoria,
-							"etapa" : etapa
-						};
-
-						$.ajax({
-
-							type:'POST',
-							dataType: "json",
-							url: "{{url('akademia_actualizarHorario')}}",
-							data: dataActualizarHorario,
-
-							beforeSend: function(){				
-					
-							},
-
-							success: function(data){
-
-								if(data != 1){
-
-									var dataHorario =JSON.parse(data)[0];
-									console.log(dataHorario);
-
-									$("#1h"+dataHorario.id).empty();
-									$("#7h"+dataHorario.id).empty();
-									$("#8h"+dataHorario.id).empty();
-									$("#9h"+dataHorario.id).empty();
-
-									$("#1h"+dataHorario.id).text(dataHorario.id);
-
-									if(dataHorario.convocatoria == 1){
-										$("#7h"+dataHorario.id).text("Abierto");
-										$("#7h"+dataHorario.id).css("color","green");
-									}else{
-										$("#7h"+dataHorario.id).text("Cerrado");
-										$("#7h"+dataHorario.id).css("color","red");
-										$("#7h"+dataHorario.id).css("font-weight","bold");
-									}
-
-									$("#8h"+dataHorario.id).text(dataHorario.vacantes);
-									
-									if(dataHorario.etapa == 0){
-										$("#3h"+dataHorario.id).text("Formación");
-									}else if(dataHorario.etapa == 1){
-										$("#3h"+dataHorario.id).text("Masificación");	
-									}
-
-									if(dataHorario.preinscripciones == 0){
-										$("#9h"+dataHorario.id).text(dataHorario.preinscripciones);
-										$("#9h"+dataHorario.id).css("color","red");
-										$("#9h"+dataHorario.id).css("font-weight","bold");
-
-									}else{
-										$("#9h"+dataHorario.id).text(dataHorario.preinscripciones);	
-										$("#9h"+dataHorario.id).css("color","black");
-									}
-									
-
-
-									alertify.success('<p style="color:black">Horario Actualizado .</p>');					
-								}else{
-									alertify.error('<p style="color:white">Error al actualizar los datos </p>'); 
-								}
-							},
-							error: function(error){
-							}
-						});
-	            }
-			}
-			
-		} 
-
-		function dateToHour(date){
-			return date.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
+					});
+            }
 		}
+	} 
 
-		/*NUEVO HORARIO*/
-		function disciplina(idDisciplina2){
+	
+	function disciplina(idDisciplina2){
 
-			diasElegidos = [];
-			clearDataCrear();
+		diasElegidos = [];
+		clearDataCrear();
 
-			$("#idDisciplinaNewHorario").val(idDisciplina2);
-			$("#diasTurno :checkbox").attr('checked', false);
-			$("#idDisciplina").val(idDisciplina2);
-			var idDisciplina = $("#idDisciplina").val();
+		$("#idDisciplinaNewHorario").val(idDisciplina2);
+		$("#diasTurno :checkbox").attr('checked', false);
+		$("#idDisciplina").val(idDisciplina2);
+		var idDisciplina = $("#idDisciplina").val();
 
-			var datos = {
-						  'idDisciplina': idDisciplina2,
-						  'idTemporada': "{{idTemporada}}"
-			};
-
-			$.ajax({
-				type:'POST',
-				dataType: 'json',
-				url: "{{url('akademia_getRankAgesDiscipline')}}",
-				data: datos,
-				beforeSend: function(){				
-					console.log('Enviado Id Disciplina => ',datos);
-				},
-
-				success: function(data){
-					
-					if(parseInt(data) == 0){
-						alertify.error('<p style="color:white">Se produjo un error!. </p>');
-					}else{
-
-						data.forEach(function(value,index){
-							sessionStorage.removeItem('edad_min_convencional');
-							sessionStorage.setItem('edad_min_convencional',value.edad_min_convencional);
-
-							sessionStorage.removeItem('edad_max_convencional');
-							sessionStorage.setItem('edad_max_convencional',value.edad_max_convencional);
-
-							sessionStorage.removeItem('edad_min_discapacitado');
-							sessionStorage.setItem('edad_min_discapacitado',value.edad_min_discapacitado);
-
-							sessionStorage.removeItem('edad_max_discapacitado');
-							sessionStorage.setItem('edad_max_discapacitado',value.edad_max_discapacitado);
-						});
-					}
-
-				},
-
-				error: function(data){
-
-					alertify.error('<p style="color:white">Se produjo un error!. </p>');	
-					console.log(data);
-				},
-			});
-		}
-		
-		/*CREAR NUEVO HORARIO*/
-
-		$("#CrearDisc").on("click", function(){
-			$("#Disciplina").val(0);
-		});
-
-
-		/* CONFIRMAR LA CREACION DE DISCIPLINAS*/
-
-		var modalConfirm = function(callback){
-  
-		  $("#btn-confirm").on("click", function(){
-
-		  	if($("#Disciplina").val() == 0){
-
-		  		$("#btn-confirm").attr("data-dismiss", "");
-		  		showAlertMessage('#alerta-errorModal', "Debe seleccionar una disciplina ");
-
-		  	}else{
-		  		$("#btn-confirm").attr("data-dismiss", "modal");
-		  		$("#confirmarDisciplina").modal('show');
-
-		  	}
-		   
-		  });
-
-		  $("#modal-btn-si").on("click", function(){
-		    	callback(true);
-		    	$("#confirmarDisciplina").modal('hide');
-		  });
-		  
-		  $("#modal-btn-no").on("click", function(){
-		    	callback(false);
-		    	$("#confirmarDisciplina").modal('hide');
-		  });
+		var datos = {
+					  'idDisciplina': idDisciplina2,
+					  'idTemporada': "{{idTemporada}}"
 		};
 
-		modalConfirm(function(confirm){
-		  if(confirm){
-		  	crearDisciplina()
-		  }
-		});
+		$.ajax({
+			type:'POST',
+			dataType: 'json',
+			url: "{{url('akademia_getRankAgesDiscipline')}}",
+			data: datos,
+			beforeSend: function(){				
+				console.log('Enviado Id Disciplina => ',datos);
+			},
 
+			success: function(data){
+				
+				if(parseInt(data) == 0){
+					alertify.error('<p style="color:white">Se produjo un error!. </p>');
+				}else{
+
+					data.forEach(function(value,index){
+						sessionStorage.removeItem('edad_min_convencional');
+						sessionStorage.setItem('edad_min_convencional',value.edad_min_convencional);
+
+						sessionStorage.removeItem('edad_max_convencional');
+						sessionStorage.setItem('edad_max_convencional',value.edad_max_convencional);
+
+						sessionStorage.removeItem('edad_min_discapacitado');
+						sessionStorage.setItem('edad_min_discapacitado',value.edad_min_discapacitado);
+
+						sessionStorage.removeItem('edad_max_discapacitado');
+						sessionStorage.setItem('edad_max_discapacitado',value.edad_max_discapacitado);
+					});
+				}
+
+			},
+
+			error: function(data){
+
+				alertify.error('<p style="color:white">Se produjo un error!. </p>');	
+				console.log(data);
+			},
+		});
+	}
+		
 
 	/*CREAR NUEVA DISCIPLINA*/
-	
 	function crearDisciplina(){
+
 		var disciplina = $("#Disciplina").val();
-		console.log(disciplina);
+		var idComplejo = $("#input-hidden-id-complejo").val();
 
 		if(disciplina != ""){
 
-			var Datadisciplina = {
+			var datos = {
 				"idDisciplina" : disciplina,
-				"idTemporada": "{{idTemporada}}"
+				"idTemporada": "{{idTemporada}}",
+				"idComplejo": idComplejo
 			};
 
 			$.ajax({
 				type:'POST',
-				dataType: 'json',
 				url: "{{url('akademia_crearDisciplina')}}",
-				data: Datadisciplina,
+				data: datos,
 				beforeSend: function(){				
-				
 				},
 
 				success: function(data){
 
-
-					if (data==0){
-						alertify.warning("Ocurrio un error al momento de crear una Disciplina!.");
+					if (data == -2){
+						alertify.warning("<p style='color:black;font-weight:bold;'>Ocurrio un error al momento de crear una Disciplina!.</p>");
 					}
+					else if(data  == -1){
+						alertify.warning("<p style='color:black;font-weight:bold;'>Existen campos vacios!.</p>");			
 
-					else if(data == 1){
-
-						alertify.success('<p style="color:white">Nueva disciplina creada exitosamente</p>');	
-						location.reload();
-											
-					}else if(data == 2){
-
-						alertify.success('<p style="color:white">Disciplina creada exitosamente</p>');	
-						location.reload();
+					}else if(data == 0){
+						alertify.success("<p style='color:black;font-weight:bold;'>Ocurrio un error al momento de crear una Disciplina!.</p>");
 
 					}else{
+						$("#container-complejo-disciplina-horarios").html(data);
+						alertify.success('<p style="color:white">Disciplina creada exitosamente</p>');
 
-						alertify.error('<p style="color:white">Se produjo un error al crear la nueva disciplina. </p>');	
-						console.log(data);
 					}
 				},
 
@@ -1294,77 +1064,59 @@
 		}
 	}
 
+	$btnCrearDisciplina.on('click',crearDisciplina);
+
 	/*ELIMINAR DISCIPLINA*/
 
-	function xDisciplina($idDisciplina){
-		
-		console.log($idDisciplina);
-
-		var modalConfirmDisciplina = function(callback){
-
-		  	$("#modal-btn-si-disciplina").on("click", function(){
-		    	callback(true);
-		    	$("#confirmarEliminarDisciplina").modal('hide');
-		  	});
-		  
-		  	$("#modal-btn-no-disciplina").on("click", function(){
-		    	callback(false);
-		    	$('#confirmarEliminarDisciplina').modal('hide');
-		  	});
-
-		}
-
-		modalConfirmDisciplina(function(confirm){
-			if(confirm){
-				eliminarDisciplina($idDisciplina);
-			}
-		});
-
+	function xDisciplina(idDisciplina){
+		$inputHiddenIdDisciplina.val(idDisciplina);
 	}
 
 	// ELIMINAR DISCIPLINA
+	function eliminarDisciplina(){
 
-	function eliminarDisciplina($idDisciplina){
+		console.log("codigo de la disciplina a eliminar =>",$inputHiddenIdDisciplina.val());
 
-		console.log("codigo de la disciplina =>",$idDisciplina);
+		var datos = {
+				'codigoDisciplina':$inputHiddenIdDisciplina.val(),
+				'idTemporada': "{{idTemporada}}",
+				'idComplejo': $("#input-hidden-id-complejo").val()
+			}
+
 		$.ajax({
 			type:'POST',
-			dataType: 'json',
 			url: "{{url('akademia_eliminarDisciplina')}}",
-			data:{
-				'codigoDisciplina':$idDisciplina,
-				'idTemporada': "{{idTemporada}}"
-			},
-			beforeSend: function(){				
+			data:datos,
+			beforeSend: function(){
+				console.log("Datos a Eniar para eliminar Disciplina =>",datos);		
 			},
 			success: function(data){
-				console.log("DATA Eliminar DIsciplina => ",data);
-				if(data == 1){
-					alertify.error('<p style="color:white">Esta disciplina no puede eliminarse.</p>');					
-				}else if(data == 2){
-					alertify.success('<p style="color:white">La disciplina se eliminó correctamente.</p>');	
-					location.reload();
+
+				if(data == "-1"){
+					alertify.error('<p style="color:white">Esta disciplina no puede eliminarse porque existen horarios activos.</p>');					
+				}else{
+					alertify.success('<p style="color:white">La disciplina se eliminó correctamente!.</p>');
+					$("#container-complejo-disciplina-horarios").html(data);	
 				}
 			},
-			
 			error: function(error){
-				console.log(data);
+				alertify.error('<p style="color:white">Ocurrio un error en el Sistema!.</p>');
 			},
 		});
 	}
 
-	/* MOSTRAR MENSAJE DE ALERTA */
-	function showAlertMessage(alert, mensaje){
-		$(alert).text(mensaje).show('fade');
-		setTimeout(function(){
-			hideAlertMessage(alert);	
-		}, 6000);
-	}
+	$("#modalidad-horario").on('change',function(){
 
-	/* COULTAR ALERTA*/
-	function hideAlertMessage(alert){
-		$(alert).hide('fade');
-	}
+		if( $("#modalidad-horario").val() == '0' ){
+			$("#textEdad").html(`<b style="font-size:1em;" >${sessionStorage.getItem('edad_min_convencional')} a ${sessionStorage.getItem('edad_max_convencional')} años.</b>`);
+
+		}else if( $("#modalidad-horario").val() == '1' ){
+			$("#textEdad").html(`<b style="font-size:1em;" >${sessionStorage.getItem('edad_min_discapacitado')} a ${sessionStorage.getItem('edad_max_discapacitado')} años.</b>`);
+			
+		}else{
+			$("#textEdad").html('');
+		}
+	});
 
 	function validateHora(n){
 		
@@ -1389,20 +1141,9 @@
 	    if ( n.value < n.min ) 
 	        n.value = n.value.slice(0, 0);
 	}
-
-	$("#modalidad-horario").on('change',function(){
-
-		if( $("#modalidad-horario").val() == '0' ){
-			$("#textEdad").html(`<b style="font-size:1em;" >${sessionStorage.getItem('edad_min_convencional')} a ${sessionStorage.getItem('edad_max_convencional')} años.</b>`);
-
-		}else if( $("#modalidad-horario").val() == '1' ){
-			$("#textEdad").html(`<b style="font-size:1em;" >${sessionStorage.getItem('edad_min_discapacitado')} a ${sessionStorage.getItem('edad_max_discapacitado')} años.</b>`);
-			
-		}else{
-			$("#textEdad").html('');
-		}
-	});
-
+	function dateToHour(date){
+		return date.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
+	}
 </script>
 
 {% endblock %}

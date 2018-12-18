@@ -63,6 +63,23 @@ class ComplejoDeportivoRepository extends \Doctrine\ORM\EntityRepository
        	}
 	}
 
+	public function getComplejosUsuario($usuarioId){
+
+		$query = "  SELECT 
+					ede.ede_codigo complejoId,
+					ede.ede_nombre complejoNombre,
+					ubi.ubidpto departamentoId,
+					ubi.ubiprovincia provinciaId
+					 FROM ACADEMIA.Usuario_Edificacion usuEdi
+					INNER JOIN ACADEMIA.usuario usu ON usu.id = usuEdi.usuario_id
+					INNER JOIN CATASTRO.edificacionesdeportivas ede ON ede.ede_codigo = usuEdi.ede_codigo
+					INNER JOIN grubigeo ubi ON ubi.ubicodigo= ede.ubicodigo
+					WHERE usu.id  = $usuarioId ";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
+		$stmt->execute();
+		$complejos = $stmt->fetchAll();
+		return $complejos;
+	}
 
 	public function getComplejoById($codigo){
 
