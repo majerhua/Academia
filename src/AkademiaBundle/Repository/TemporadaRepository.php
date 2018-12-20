@@ -234,7 +234,8 @@ class TemporadaRepository extends \Doctrine\ORM\EntityRepository
         try {
 				$query = "	SELECT temp.id temporadaId, cic.descripcion ciclo, temp.anio anio
 							FROM ACADEMIA.temporada temp
-							INNER JOIN ACADEMIA.ciclo cic ON cic.id = temp.ciclo_id;";
+							INNER JOIN ACADEMIA.ciclo cic ON cic.id = temp.ciclo_id
+							ORDER BY temp.id DESC;";
 
 			    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
 			    $stmt->execute();

@@ -1,0 +1,164 @@
+<div id="modal-crear-usuario" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div id="alert-crear-info" class="alert alert-warning alert-dismissible text-center" role="alert">
+							<button id="btn-close-alert-crear-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+							<p style="font-size:14px">Crear Usuarios <b id="nombre-tipo-usuario-modal"></b> </p>
+						</div>
+						<div id="alerta-errorCrear" class="alert alert-danger collapse text-center"></div>
+
+						<ul class="list-group">
+							<input type="hidden" id="perfil-usuario-crear">
+							<li class="list-group-item">
+
+								<div class="row">
+
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
+										<p><strong>Tipo Doc</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" >
+										<select class="form-control" id="tipo-documento-crear">
+											<option value="">--Seleccionar--</option>
+											<option selected value="30">DNI</option>
+											<option value="31">CARNET EXTRANJERIA</option>
+										</select>
+									</div>
+
+									<div class="col-xs-3 col-sm-2 col-md-1 col-lg-2">
+										<p><strong>Número</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4">
+										<input type="text" value="75723309" class="form-control"  name="numero-documento-crear" id="numero-documento-crear">
+									</div>
+
+								</div>
+							</li>
+
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-4">
+										<p><strong>Nombre</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-8" >
+										<input value="carlos javier" class="form-control" type="text" name="nombre-crear" id="nombre-crear" >
+									</div>
+								</div>
+							</li>
+
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-4">
+										<p><strong>Apellido Paterno</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-8" >
+										<input value="majerhua" class="form-control" type="text" name="apellido-parterno-crear" id="apellido-parterno-crear" >
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-4">
+										<p><strong>Apellido Materno</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-8" >
+										<input value="nuñez" class="form-control" type="text" name="apellido-materno-crear" id="apellido-materno-crear">
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
+										<p><strong>Teléfono</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" >
+										<input value="990845177" class="form-control" type="text" name="telefono-crear" id="telefono-crear" >
+									</div>
+
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
+										<p><strong>Correo</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" >
+										<input  value="majerhua123@gmail.com" class="form-control" type="text" name="correo-crear" id="correo-crear" >
+									</div>
+
+								</div>
+							</li>
+
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
+										<p><strong>Usuario</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" >
+										<input value="majerhua" class="form-control" type="text" name="usuario-crear" id="usuario-crear" >
+									</div>
+
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
+										<p><strong>Password</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" >
+										<input  value="majerhua123" class="form-control" type="password" name="password-crear" id="password-crear">
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item list-usuario-profesor">
+								<div class="row">
+
+									<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3" >
+										<p ><strong><b>Disciplinas:</b></strong></p>
+									</div>
+
+									<div class="col-xs-6 col-sm-6 col-md-4 col-lg-6" >
+										<select class="form-control" id="disciplina-crear"  name="disciplina" >
+											<option value="" >--Seleccionar--</option>
+											{%  for dis in disciplinasByComplejoTemporada %}
+												<option value="{{dis['ediCodigo']}}" name-disciplina="{{dis['disciplinaNombre']}}" >{{dis['disciplinaNombre']}}</option>
+											{%  endfor %}
+										</select>
+									</div>
+
+									<div class="col-xs-6 col-sm-12 col-md-4 col-lg-3">
+										<button class="btn btn-default" onclick="agregarDisciplinaCrear()">AGREGAR +</button>
+									</div>
+
+								</div>
+
+								<div class="row" id="div-cont-dis-crear" style="padding:10px 0 10px 0;">
+									
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button id="btn-crear-usuario-profesor" onclick="crearUsuarioProfesor()" type="button" data-dismiss="modal" class="btn btn-danger" >Crear</button>
+			</div>
+		</div>
+	</div>
+</div>

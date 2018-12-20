@@ -163,6 +163,7 @@
 
 			{% elseif is_granted('ROLE_MACRO') %}
 
+				{% if faseTemporada != 10 %}
 
 					<div id="option-talentos" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
 						<a href="{{url('akademia_mostrarTalentos',{'idTemporada':idTemporada})}}">
@@ -191,6 +192,8 @@
 						</a>
 					</div>
 
+				{% endif %}
+
 					<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
 						<a href="{{url('akademia_usuario',{'idTemporada':idTemporada})}}">
 							<div class="card">
@@ -200,6 +203,7 @@
 						</a>
 					</div>
 
+				{% if faseTemporada != 10 %}
 					<div id="option-validacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
 						<a href="{{url('akademia_inscritos',{'idTemporada':idTemporada})}}">
 							<div class="card">
@@ -210,6 +214,7 @@
 						</a>
 					</div>
 
+				{% endif %}
 					<div id="option-horarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
 						<a href="{{url('akademia_horarios',{'idTemporada':idTemporada})}}">
 							<div class="card">
@@ -218,6 +223,62 @@
 							</div>
 						</a>
 					</div>
+				{% if faseTemporada != 10 %}
+					<div id="option-beneficiarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
+						<a href="{{url('akademia_fichaPreInscripcion',{'idTemporada':idTemporada})}}">
+							<div class="card">
+								
+								<img src="{{ asset('assets/images/preinscripcion-directa.png') }}" width="110" height="110">
+								<p class="title-card"style="font-size:0.9em !important;">Inscripción directa</p>
+							</div>
+						</a>
+					</div>
+				{% endif %}
+
+			{% elseif is_granted('ROLE_MONITOR') %}
+
+				{% if faseTemporada != 10 %}
+					<div id="option-validacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
+						<a href="{{url('akademia_inscritos',{'idTemporada':idTemporada})}}">
+							<div class="card">
+
+								<img src="{{ asset('assets/images/icon_confirmar.png') }}" width="110" height="110">
+								<p class="title-card"style="font-size:0.9em !important;">Validar fichas de Pre-Inscritos</p>
+							</div>
+						</a>
+					</div>
+				{% endif %}
+
+				<div id="option-horarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
+					<a href="{{url('akademia_horarios',{'idTemporada':idTemporada})}}">
+						<div class="card">
+							<img src="{{ asset('assets/images/icon_horarios.png') }}" width="110" height="110">
+							<p class="title-card"style="font-size:0.85em !important;">Disciplinas/ Horarios/ Beneficiarios</p>
+						</div>
+					</a>
+				</div>
+
+				<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
+					<a href="{{url('akademia_usuario',{'idTemporada':idTemporada})}}">
+						<div class="card">
+							<img src="{{ asset('assets/images/usuarios.png') }}" width="110" height="110">
+							<p class="title-card"style="font-size:0.9em !important;">Gestión de Usuario</p>
+						</div>
+					</a>
+				</div>
+
+				{% if faseTemporada != 10 %}
+
+					<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
+						<a href="{{url('akademia_exportData',{'idTemporada':idTemporada})}}">
+							<div class="card">
+								<img src="{{ asset('assets/images/icon_data.png') }}" width="110" height="110">
+								<p class="title-card"style="font-size:0.9em !important;">Exportación de datos </p>
+							</div>
+						</a>
+					</div>
+
+
 
 					<div id="option-beneficiarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
 						<a href="{{url('akademia_fichaPreInscripcion',{'idTemporada':idTemporada})}}">
@@ -229,58 +290,22 @@
 						</a>
 					</div>
 
-			{% elseif is_granted('ROLE_MONITOR') %}
-
-				<div id="option-validacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
-					<a href="{{url('akademia_inscritos',{'idTemporada':idTemporada})}}">
-						<div class="card">
-
-							<img src="{{ asset('assets/images/icon_confirmar.png') }}" width="110" height="110">
-							<p class="title-card"style="font-size:0.9em !important;">Validar fichas de Pre-Inscritos</p>
-						</div>
-					</a>
-				</div>
-
-				<div id="option-horarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
-					<a href="{{url('akademia_horarios',{'idTemporada':idTemporada})}}">
-						<div class="card">
-							<img src="{{ asset('assets/images/icon_horarios.png') }}" width="110" height="110">
-							<p class="title-card"style="font-size:0.85em !important;">Disciplinas/ Horarios/ Beneficiarios</p>
-						</div>
-					</a>
-				</div>
-
-				<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
-					<a href="{{url('akademia_exportData',{'idTemporada':idTemporada})}}">
-						<div class="card">
-							<img src="{{ asset('assets/images/icon_data.png') }}" width="110" height="110">
-							<p class="title-card"style="font-size:0.9em !important;">Exportación de datos </p>
-						</div>
-					</a>
-				</div>
-
-
-				<div id="option-beneficiarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
-					<a href="{{url('akademia_fichaPreInscripcion',{'idTemporada':idTemporada})}}">
-						<div class="card">
-							
-							<img src="{{ asset('assets/images/preinscripcion-directa.png') }}" width="110" height="110">
-							<p class="title-card"style="font-size:0.9em !important;">Inscripción directa</p>
-						</div>
-					</a>
-				</div>
-
+				{% endif %}
 			{% elseif is_granted('ROLE_PROMOTOR') %}
 
-				<div id="option-validacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
-					<a href="{{url('akademia_inscritos',{'idTemporada':idTemporada})}}">
-						<div class="card">
+				{% if faseTemporada != 10 %}
 
-							<img src="{{ asset('assets/images/icon_confirmar.png') }}" width="110" height="110">
-							<p class="title-card"style="font-size:0.9em !important;">Validar fichas de Pre-Inscritos</p>
-						</div>
-					</a>
-				</div>
+					<div id="option-validacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
+						<a href="{{url('akademia_inscritos',{'idTemporada':idTemporada})}}">
+							<div class="card">
+
+								<img src="{{ asset('assets/images/icon_confirmar.png') }}" width="110" height="110">
+								<p class="title-card"style="font-size:0.9em !important;">Validar fichas de Pre-Inscritos</p>
+							</div>
+						</a>
+					</div>
+
+				{% endif %}
 
 				<div id="option-horarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
 					<a href="{{url('akademia_horarios',{'idTemporada':idTemporada})}}">
@@ -291,25 +316,72 @@
 					</a>
 				</div>
 
-				<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
-					<a href="{{url('akademia_exportData',{'idTemporada':idTemporada})}}">
+				{% if faseTemporada != 10 %}
+
+					<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
+						<a href="{{url('akademia_exportData',{'idTemporada':idTemporada})}}">
+							<div class="card">
+								<img src="{{ asset('assets/images/icon_data.png') }}" width="110" height="110">
+								<p class="title-card"style="font-size:0.9em !important;">Exportación de datos </p>
+							</div>
+						</a>
+					</div>
+
+
+					<div id="option-beneficiarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
+						<a href="{{url('akademia_fichaPreInscripcion',{'idTemporada':idTemporada})}}">
+							<div class="card">
+								
+								<img src="{{ asset('assets/images/preinscripcion-directa.png') }}" width="110" height="110">
+								<p class="title-card"style="font-size:0.9em !important;">Inscripción directa</p>
+							</div>
+						</a>
+					</div>
+				{% endif %}
+
+			{% elseif is_granted('ROLE_PROFESOR') %}
+
+				{% if faseTemporada != 10 %}
+					<div id="option-validacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
+						<a href="{{url('akademia_inscritos',{'idTemporada':idTemporada})}}">
+							<div class="card">
+								<img src="{{ asset('assets/images/icon_confirmar.png') }}" width="110" height="110">
+								<p class="title-card"style="font-size:0.9em !important;">Validar fichas de Pre-Inscritos</p>
+							</div>
+						</a>
+					</div>
+				{% endif %}
+
+				<div id="option-horarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
+					<a href="{{url('akademia_horarios',{'idTemporada':idTemporada})}}">
 						<div class="card">
-							<img src="{{ asset('assets/images/icon_data.png') }}" width="110" height="110">
-							<p class="title-card"style="font-size:0.9em !important;">Exportación de datos </p>
+							<img src="{{ asset('assets/images/icon_horarios.png') }}" width="110" height="110">
+							<p class="title-card"style="font-size:0.9em !important;">Disciplinas/ Horarios/ Beneficiarios</p>
 						</div>
 					</a>
 				</div>
 
+				{% if faseTemporada != 10 %}
+					<div id="option-exportacion" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
+						<a href="{{url('akademia_exportData',{'idTemporada':idTemporada})}}">
+							<div class="card">
+								<img src="{{ asset('assets/images/icon_data.png') }}" width="110" height="110">
+								<p class="title-card"style="font-size:0.9em !important;">Exportación de datos </p>
+							</div>
+						</a>
+					</div>
 
-				<div id="option-beneficiarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
-					<a href="{{url('akademia_fichaPreInscripcion',{'idTemporada':idTemporada})}}">
-						<div class="card">
-							
-							<img src="{{ asset('assets/images/preinscripcion-directa.png') }}" width="110" height="110">
-							<p class="title-card"style="font-size:0.9em !important;">Inscripción directa</p>
-						</div>
-					</a>
-				</div>
+
+					<div id="option-beneficiarios" class="col col-xs-12 col-sm-6 col-md-6 col-lg-3 text-center">
+						<a href="{{url('akademia_fichaPreInscripcion',{'idTemporada':idTemporada})}}">
+							<div class="card">
+								
+								<img src="{{ asset('assets/images/preinscripcion-directa.png') }}" width="110" height="110">
+								<p class="title-card"style="font-size:0.9em !important;">Inscripción directa</p>
+							</div>
+						</a>
+					</div>				
+				{% endif %}
 
 			{% endif %}	
 

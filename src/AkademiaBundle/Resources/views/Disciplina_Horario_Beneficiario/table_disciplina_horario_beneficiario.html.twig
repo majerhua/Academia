@@ -1,5 +1,101 @@
 <div class="row" style="margin:0 auto; width:92%;" >
 	<h3 style="color:grey" class="text-center">{{nombreComplejo}}</h3>
+
+	{% if is_granted('ROLE_PROFESOR') == false %}
+		<div class="container">
+			<div class="row">
+				<h3>Usuarios</h3>
+			</div>
+		</div>
+
+		<div id="ficha-participante-container" class="container-card col-xs-12 col-sm-10 col-md-11 col-lg-12">	
+
+			<div class="card" id="listadoDisciplinas">
+				<div class="card-header text-center" role="tab" id="" style="height:50px; padding-top:12px;" >
+					<a class="title-card" data-toggle="collapse" href="#cajaProfesores" >
+						<strong>Profesores</strong>
+					</a>
+				</div>
+				
+				<div id="cajaProfesores" class="collapse" role="tabpanel" data-parent="#accordion">
+					<hr>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+								<div class="row">
+
+									<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+										<div class="input-group col-xs-8 col-sm-8 col-md-8 col-lg-8">
+										  <span class="input-group-addon">Buscar</span>
+										  <input class="filtrar form-control" type="text" ident-buscar="profesores"  placeholder=" ingresa los campos a buscar ">
+										</div>
+									</div>
+								</div>
+								<br>
+								<div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:50vh;">
+									<table class="table"  style="width: 100%;"> 
+										<thead style="background:#cb2f1d; color:#F2F2F2;" class="text-center"> 
+											<tr> 
+												<th class="text-center" style="font-size:14px">Código</th>
+												<th class="text-center" style="font-size:14px">Disciplina</th>
+												<th class="text-center" style="font-size:14px">Nombre</th>
+												<th class="text-center" style="font-size:14px">Correo</th> 
+												<th class="text-center" style="font-size:14px">Telefono</th>
+												<th></th>
+												<th></th>
+												<th></th>
+											</tr>
+											
+										</thead> 
+										
+										<tbody id="1Profesores" class="buscar"> 
+										
+										{% for user in usuarios %}
+
+											<tr> 
+												<td class="text-center">{{user['usuarioId']}}</td>
+												<td class="text-center">{{user['disciplinaNombre']}}</td>
+												<td class="text-center">{{user['usuarioNombre']}}</td> 
+												<td class="text-center">{{user['usuarioCorreo']}}</td>
+												<td class="text-center">{{user['usuarioTelefono']}}</td>
+												<td>
+													<button class="btn btn-primary" onclick="getDatosUsuariosByEditar({{user['usuarioId']}})"  data-toggle="modal" data-target="#modal-editar-usuario"><i class="icon-pencil-square-o" style="color:white;font-size:13px;" ></i></button>
+												</td>
+												<td  class="text-center" style="font-size:14px">
+													<button class="btn btn-info" onclick="getDatosUsuariosByDetalle({{user['usuarioId']}},{{user['usuarioPerfilId']}})" data-toggle="modal" data-target="#modal-detalle-usuario"><i class="icon-eye" style="color:white;font-size:13px;" ></i></button>
+												</td>
+												<td  class="text-center" style="font-size:14px">
+													<button class="btn btn-danger" data-toggle="modal" data-target="#modal-eliminar-usuario" onclick="setInputModalUsuarioIdEliminar({{user['usuarioId']}},{{user['usuarioPerfilId']}})" ><i class="icon-trash" style="color:white;font-size:13px;"></i></button>
+												</td>
+											</tr> 
+																	
+									    {% endfor %}
+
+										</tbody>
+
+									</table>
+								</div>
+							</div>
+						</div>
+						<hr>
+						
+						{# {% if is_granted('ROLE_ADMIN')  and idTemporadaActiva == idTemporada %} #}
+
+							<div class="row text-right">
+								<button type="button" data-toggle="modal" data-target="#modal-crear-usuario" id="btn-crear-nuevo-profesor" onclick="mostrarListaTipoUsuario()" class="btn btn-danger" style="margin-right: 18px;">Crear nuevo profesor</button>
+							</div>
+						{# {% endif %} #}
+					</div>
+				</div>
+			</div>       
+		</div>
+	{% endif %}
+	<div class="container">
+		<div class="row">
+			<h3>Disciplinas</h3>
+		</div>
+	</div>
+	
 	{% set cont = 0 %}
 	{% for complejosDisciplina in complejosDisciplinas %}
 
@@ -29,11 +125,12 @@
 								<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 
 									{% if idTemporadaActiva == idTemporada %}
-											
-									<div style="float:right; margin-right:20px">
-										<span style="color:grey">Eliminar disciplina </span>
-										<button title="Eliminar disciplina" type="button" id="{{complejosDisciplina['idDisciplina']}}"  class="btn btn-default btn-xs" data-toggle="modal" data-target="#confirmarEliminarDisciplina" onclick="xDisciplina({{complejosDisciplina['idDisciplina']}})"><i class="icon-trash" style="font-size:1.6em; margin-top:5px; color:#B45F04" ></i></button>
-									</div>
+										{% if is_granted('ROLE_PROFESOR') == false %}
+											<div style="float:right; margin-right:20px">
+												<span style="color:grey">Eliminar disciplina </span>
+												<button title="Eliminar disciplina" type="button" id="{{complejosDisciplina['idDisciplina']}}"  class="btn btn-default btn-xs" data-toggle="modal" data-target="#confirmarEliminarDisciplina" onclick="xDisciplina({{complejosDisciplina['idDisciplina']}})"><i class="icon-trash" style="font-size:1.6em; margin-top:5px; color:#B45F04" ></i></button>
+											</div>
+										{% endif %}
 
 									{% endif %}
 								</div>
@@ -43,7 +140,6 @@
 							<br>
 
 							<div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:50vh; ">			
-
 								<table class="table"  style="width: 100%;"> 
 									<thead style="background:#cb2f1d; color:#F2F2F2;" class="text-center"> 
 										<tr> 
@@ -153,14 +249,14 @@
 	{% set cont = cont + 1 %}
 	{% endfor %}
 
-	{# {% if is_granted('ROLE_ADMIN') %} #}
+	 {% if is_granted('ROLE_PROFESOR') == false %} 
 		<div class="container-card col-xs-12 col-sm-10 col-md-10 col-lg-10 col-lg-offset-1" style="padding-top:20px;" >				
 			<div class="card-header text-center">
 				<p style="font-size:16px; color:grey">¿Quieres aperturar una nueva disciplina en tu complejo deportivo?</p>
 				<button type="button" data-toggle="modal" data-target="#modal-disciplina" class="btn btn-danger" id="CrearDisc" style="margin-right: 18px;">Crear nueva disciplina</button>		
 			</div>
 		</div>
-	{# {% endif %} #}
+	 {% endif %} 
 	
 	<input type="hidden" name="input-hidden-id-complejo" id="input-hidden-id-complejo" value="{{idComplejo}}">
 
@@ -213,3 +309,6 @@
 		</div>
 	</div>
 </div>
+
+{% include 'AkademiaBundle:Disciplina_Horario_Beneficiario:modal_crear_usuario_profesor.html.twig' %}
+{% include 'AkademiaBundle:Disciplina_Horario_Beneficiario:modal_editar_usuario_profesor.html.twig' %}

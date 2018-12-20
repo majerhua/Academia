@@ -1,0 +1,138 @@
+<div id="modal-detalle-usuario" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<button type="button" class="close text-center" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div id="alert-crear-info" class="alert alert-warning alert-dismissible text-center" role="alert">
+							<button id="btn-close-alert-crear-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+							<p style="font-size:14px">Detalle Usuarios <b id="nombre-tipo-usuario-modal-detalle"></b> </p>
+						</div>
+						<div id="alerta-errorCrear" class="alert alert-danger collapse text-center"></div>
+
+						<ul class="list-group">
+
+							<li class="list-group-item">
+
+								<div class="row">
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-3">
+										<p><strong>Tipo Doc</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-3" >
+										<p id="tipo-documento-detalle"></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-2 col-md-1 col-lg-3">
+										<p><strong>Número</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-3">
+										<p id="numero-documento-detalle"></p>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-4">
+										<p><strong>Nombre</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-8">
+										<p id="nombre-detalle">
+									</div>
+								</div>
+							</li>
+
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-6">
+										<p><strong>Apellido Paterno</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-6" >
+										<p id="apellido-parterno-detalle" ></p>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-6">
+										<p><strong>Apellido Materno</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-6" >
+										<p id="apellido-materno-detalle"></p>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
+										<p><strong>Teléfono</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" >
+										<p id="telefono-detalle"></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
+										<p><strong>Correo</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4">
+										<p id="correo-detalle"></p>
+									</div>
+
+								</div>
+							</li>
+
+
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
+										<p><strong>Usuario</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4" >
+										<p id="usuario-detalle"></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
+										<p><strong>Password</strong></p>
+									</div>
+
+									<div class="col-xs-3 col-sm-4 col-md-4 col-lg-4">
+										<p id="password-detalle"></p>
+									</div>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="row">
+									<p><b id="titulo-coleccion-detalle"></b></p>
+								</div>
+								<div class="row" id="lista-coleccion-detalle">
+								</div>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>

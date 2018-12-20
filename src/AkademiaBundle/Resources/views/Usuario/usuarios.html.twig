@@ -95,9 +95,42 @@
 																					<th class="text-center" style="font-size:14px">Nombre</th>
 																					<th class="text-center" style="font-size:14px">Correo</th>
 																					<th class="text-center" style="font-size:14px">Telefono</th> 
+																					{% if  perfil['id'] == perfilUsuario['macro'] %}
+																						{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] %}
+																							<th></th>
+																						{% endif %}
+
+																					{% elseif  perfil['id'] == perfilUsuario['monitor'] %}
+																						{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] or sessionUsuarioPerfilId == perfilUsuario['macro'] %}
+																							<th></th>
+																						{% endif %}
+
+																					{% elseif  perfil['id'] == perfilUsuario['promotor'] %}
+																						{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] or sessionUsuarioPerfilId == perfilUsuario['macro'] or sessionUsuarioPerfilId == perfilUsuario['monitor'] %}
+																							<th></th>
+																						{% endif %}
+
+																					{% endif %}
+
 																					<th></th>
-																					<th></th>
-																					<th></th>
+
+																					{% if  perfil['id'] == perfilUsuario['macro'] %}
+																						{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] %}
+																							<th></th>
+																						{% endif %}
+
+																					{% elseif  perfil['id'] == perfilUsuario['monitor'] %}
+																						{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] or sessionUsuarioPerfilId == perfilUsuario['macro'] %}
+																							<th></th>
+																						{% endif %}
+
+																					{% elseif  perfil['id'] == perfilUsuario['promotor'] %}
+																						{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] or sessionUsuarioPerfilId == perfilUsuario['macro'] or sessionUsuarioPerfilId == perfilUsuario['monitor'] %}
+																							<th></th>
+																						{% endif %}
+
+																					{% endif %}
+
 																				</tr>
 																			</thead> 
 																			
@@ -110,29 +143,91 @@
 																							<td  class="text-center" style="font-size:14px">{{user['nombre']}}</td>
 																							<td  class="text-center" style="font-size:14px">{{user['correo']}}</td>
 																							<td  class="text-center" style="font-size:14px">{{user['telefono']}}</td>
+
+																							{% if  perfil['id'] == perfilUsuario['macro'] %}
+
+																								{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] %}
+																									<td  class="text-center" style="font-size:14px">
+																										<button class="btn btn-primary" onclick="getDatosUsuariosByEditar({{perfil['id']}},{{user['id']}})"  data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="color:white;font-size:13px;" ></i></button>
+																									</td>
+																								{% endif %}
+																			
+																							{% elseif  perfil['id'] == perfilUsuario['monitor'] %}
+
+																								{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] or sessionUsuarioPerfilId == perfilUsuario['macro'] %}
+																									<td  class="text-center" style="font-size:14px">
+																										<button class="btn btn-primary" onclick="getDatosUsuariosByEditar({{perfil['id']}},{{user['id']}})"  data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="color:white;font-size:13px;" ></i></button>
+																									</td>
+																								{% endif %}
+
+																							{% elseif  perfil['id'] == perfilUsuario['promotor'] %}
+
+																								{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] or sessionUsuarioPerfilId == perfilUsuario['macro'] or sessionUsuarioPerfilId == perfilUsuario['monitor'] %}
+																									<td  class="text-center" style="font-size:14px">
+																										<button class="btn btn-primary" onclick="getDatosUsuariosByEditar({{perfil['id']}},{{user['id']}})"  data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="color:white;font-size:13px;" ></i></button>
+																									</td>
+																								{% endif %}
+
+																							{% endif %}
+
+
 																							<td  class="text-center" style="font-size:14px">
-																								<button class="btn btn-primary" onclick="getDatosUsuariosByEditar({{perfil['id']}},{{user['id']}})"  data-toggle="modal" data-target="#modal-editar"><i class="icon-pencil-square-o" style="color:white;font-size:13px;" ></i></button>
+																								<button class="btn btn-info" onclick="getDatosUsuariosByDetalle({{user['id']}},{{perfil['id']}})" data-toggle="modal" data-target="#modal-detalle"><i class="icon-eye" style="color:white;font-size:13px;" ></i></button>
 																							</td>
-																							<td  class="text-center" style="font-size:14px">
-																								<button class="btn btn-info"><i class="icon-eye" style="color:white;font-size:13px;" ></i></button>
-																							</td>
-																							<td  class="text-center" style="font-size:14px">
-																								<button class="btn btn-danger"><i class="icon-trash" style="color:white;font-size:13px;"></i></button>
-																							</td>
+
+																							{% if  perfil['id'] == perfilUsuario['macro'] %}
+
+																								{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] %}
+																									<td  class="text-center" style="font-size:14px">
+																										<button class="btn btn-danger" data-toggle="modal" data-target="#modal-eliminar" onclick="setInputModalUsuarioIdEliminar({{user['id']}},{{perfil['id']}})" ><i class="icon-trash" style="color:white;font-size:13px;"></i></button>
+																									</td>
+																								{% endif %}
+																			
+																							{% elseif  perfil['id'] == perfilUsuario['monitor'] %}
+
+																								{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] or sessionUsuarioPerfilId == perfilUsuario['macro'] %}
+																									<td  class="text-center" style="font-size:14px">
+																										<button class="btn btn-danger" data-toggle="modal" data-target="#modal-eliminar" onclick="setInputModalUsuarioIdEliminar({{user['id']}},{{perfil['id']}})" ><i class="icon-trash" style="color:white;font-size:13px;"></i></button>
+																									</td>
+																								{% endif %}
+
+																							{% elseif  perfil['id'] == perfilUsuario['promotor'] %}
+
+																								{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] or sessionUsuarioPerfilId == perfilUsuario['macro'] or sessionUsuarioPerfilId == perfilUsuario['monitor'] %}
+																									<td  class="text-center" style="font-size:14px">
+																										<button class="btn btn-danger" data-toggle="modal" data-target="#modal-eliminar" onclick="setInputModalUsuarioIdEliminar({{user['id']}},{{perfil['id']}})" ><i class="icon-trash" style="color:white;font-size:13px;"></i></button>
+																									</td>
+																								{% endif %}
+
+																							{% endif %}
 																						</tr>
 
 																					{% endif %}
 																				{% endfor %}
 
 																			</tbody> 
-
 																		</table>
 																	</div>
 
 																	<div class="row">
 																		<div class="col-md-3 col-lg-2 col-md-offset-9 col-lg-offset-10">
 																			<div style="padding:0 0 0 50px;">
-																				<button class="btn btn-danger" data-toggle="modal" onclick="mostrarListaTipoUsuario({{perfil['id']}})" data-target="#modal-crear">Agregar</button>
+
+																				{% if  perfil['id'] == perfilUsuario['macro'] %}
+																					{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] %}
+																						<button class="btn btn-danger" data-toggle="modal" onclick="mostrarListaTipoUsuario({{perfil['id']}})" data-target="#modal-crear">Agregar</button>
+																					{% endif %}
+
+																					{% elseif  perfil['id'] == perfilUsuario['monitor'] %}
+																						{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] or sessionUsuarioPerfilId == perfilUsuario['macro'] %}
+																							<button class="btn btn-danger" data-toggle="modal" onclick="mostrarListaTipoUsuario({{perfil['id']}})" data-target="#modal-crear">Agregar</button>
+																					{% endif %}
+
+																					{% elseif  perfil['id'] == perfilUsuario['promotor'] %}
+																						{% if sessionUsuarioPerfilId == perfilUsuario['administrador'] or sessionUsuarioPerfilId == perfilUsuario['macro'] or sessionUsuarioPerfilId == perfilUsuario['monitor'] %}
+																							<button class="btn btn-danger" data-toggle="modal" onclick="mostrarListaTipoUsuario({{perfil['id']}})" data-target="#modal-crear">Agregar</button>
+																						{% endif %}
+																					{% endif %}
 																			</div>
 																		</div>
 																	</div>
@@ -163,6 +258,8 @@
 
 {% include 'AkademiaBundle:Usuario:modal_crear_usuario.html.twig' %}
 {% include 'AkademiaBundle:Usuario:modal_editar_usuario.html.twig' %}
+{% include 'AkademiaBundle:Usuario:modal_detalle_usuario.html.twig' %}
+{% include 'AkademiaBundle:Usuario:modal_eliminar_usuario.html.twig' %}
 
 {% endblock %}
 
@@ -248,13 +345,34 @@
 
 	$nombreTipoUsuarioModal = $("#nombre-tipo-usuario-modal");
 
-	var totalDepartSelect = new Object();
+	/*** DETALLE ***/
+	$perfilUsuarioDetalle = $("#perfil-usuario-detalle");
+	$tipoDocumentoDetalle = $("#tipo-documento-detalle");
+	$numeroDocumentoDetalle = $("#numero-documento-detalle");
+	$nombreDetalle = $("#nombre-detalle");
+	$apellidoParternoDetalle = $("#apellido-parterno-detalle");
+	$apellidoMaternoDetalle = $("#apellido-materno-detalle");
+	$telefonoDetalle = $("#telefono-detalle");
+	$correoDetalle = $("#correo-detalle");
+	$usuarioDetalle = $("#usuario-detalle");
+	$passwordDetalle = $("#password-detalle");
+
+	$nombreTipoUsuarioModalDetalle = $("#nombre-tipo-usuario-modal-detalle");
+	$listaColeccionDetalle = $("#lista-coleccion-detalle");
+	$tituloColeccionDetalle = $("#titulo-coleccion-detalle");
+
+	/*** ELIMINAR ***/
+
+	$usuarioIdEliminar = $("#usuario-id-eliminar");
+	$usuarioPerfilIdEliminar = $("#usuario-perfil-id-eliminar");
+
+	var totalDepSelect = new Object();
 	var totalProvSelect = new Object();
-	var totalEdiSelect = new Object()
+	var totalEdiSelect = new Object();
 
 	$btnCrearUsuario.on('click',function(){
 
-		let arrayDeparSelect = Object.values(totalDepartSelect);
+		let arrayDepSelect = Object.values(totalDepSelect);
 		let arrayProvSelect = Object.values(totalProvSelect);
 		let arrayEdiSelect = Object.values(totalEdiSelect);
 
@@ -272,7 +390,7 @@
 					}
 
 		if( $perfilUsuarioCrear.val() == "{{perfilUsuario['macro']}}" )
-			datos['coleccion'] = arrayDeparSelect;
+			datos['coleccion'] = arrayDepSelect;
 		else if( $perfilUsuarioCrear.val() == "{{perfilUsuario['monitor']}}" )
 			datos['coleccion'] = arrayProvSelect;
 		else if( $perfilUsuarioCrear.val() == "{{perfilUsuario['promotor']}}" )
@@ -311,7 +429,7 @@
 
 	const eliminarDepartamentoSeleccionadoCrear = function(keyObject){
 
-		delete  totalDepartSelect[parseInt(keyObject)];
+		delete  totalDepSelect[parseInt(keyObject)];
 		
 		var divContKeyDep = document.querySelectorAll('.div-cont-key-dep');
 		var divContKeyDepLength = divContKeyDep.length;
@@ -324,11 +442,46 @@
 				break;
 			}
 		}
+	};
+
+	const eliminarProvinciaSeleccionadoCrear = function(keyObject){
+
+		delete  totalProvSelect[parseInt(keyObject)];
+		
+		var divContKeyProv = document.querySelectorAll('.div-cont-key-prov');
+		var divContKeyProvLength = divContKeyProv.length;
+
+		for (let i =0; i < divContKeyProvLength; i++) {
+		
+			if(  keyObject == parseInt( $(divContKeyProv[i]).attr('key-div') ) ){
+				console.log("Se elimino");
+				$(divContKeyProv[i]).empty();
+				break;
+			}
+		}
+	};
+
+	const eliminarEdificacionesSeleccionadoCrear = function(keyObject){
+
+		delete  totalEdiSelect[parseInt(keyObject)];
+		
+		var divContKeyEdi = document.querySelectorAll('.div-cont-key-edi');
+		var divContKeyEdiLength = divContKeyEdi.length;
+
+		for (let i =0; i < divContKeyEdiLength; i++) {
+		
+			if(  keyObject == parseInt( $(divContKeyEdi[i]).attr('key-div') ) ){
+				console.log("Se elimino");
+				$(divContKeyEdi[i]).empty();
+				break;
+			}
+		}
+
 	};
 
 	const eliminarDepartamentoSeleccionadoEditar = function(keyObject){
 
-		delete  totalDepartSelect[parseInt(keyObject)];
+		delete  totalDepSelect[parseInt(keyObject)];
 		
 		var divContKeyDep = document.querySelectorAll('.div-cont-key-dep');
 		var divContKeyDepLength = divContKeyDep.length;
@@ -341,9 +494,26 @@
 				break;
 			}
 		}
-
-		console.log("Elementos Totales A Editar=>",totalDepartSelect);
 	};
+
+	const eliminarProvinciaSeleccionadoEditar = function(keyObject){
+
+		console.log("Eliminar Provincia Editar =>",keyObject);
+
+		delete  totalProvSelect[parseInt(keyObject)];
+		
+		var divContKeyProv = document.querySelectorAll('.div-cont-key-prov');
+		var divContKeyProvLength = divContKeyProv.length;
+
+		for (let i =0; i < divContKeyProvLength; i++) {
+		
+			if(  keyObject == parseInt( $(divContKeyProv[i]).attr('key-div') ) ){
+				console.log("Se elimino");
+				$(divContKeyProv[i]).empty();
+				break;
+			}
+		}
+	}
 
 	const mostrarListaTipoUsuario = function(perfilUsuarioId){
 
@@ -357,7 +527,7 @@
 		$divContProvCrear.empty();
 		$divContEdiCrear.empty();
 
-		totalDepartSelect = new Object();
+		totalDepSelect = new Object();
 		totalProvSelect = new Object();
 		totalEdiSelect = new Object();
 
@@ -384,8 +554,10 @@
 
 		$divContDepEditar.empty();
 		$divContProvEditar.empty();
+		$divContEdiEditar.empty();
 
 		mostrarListaTipoUsuario(perfilUsuarioId);
+
 		var datos = {
 									'usuarioId':usuarioId
 								}
@@ -398,7 +570,10 @@
 			},
 			success:function(data){
 
-				totalDepartSelect = new Object();
+				totalDepSelect = new Object();
+				totalProvSelect = new Object();
+				totalEdiSelect = new Object();
+
 				datosUsuario = data[0];
 				
 				$usuarioIdEditar.val(datosUsuario['id']);
@@ -418,12 +593,21 @@
 				var coleccion = datosUsuario['coleccion'];
 
 				$.each(coleccion,function(index,value){
+
 					let key = generateKey();
-					totalDepartSelect[ key ] = value.ubicodigo;
+					
 					if( datosUsuario['id_perfil'] == "{{perfilUsuario['macro']}}" ){
 						$divContDepEditar.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${value.nombreUbigeo}<i title='eliminar' style='cursor:pointer;' class='icon-trash' onclick='eliminarDepartamentoSeleccionadoEditar(${key})'></i></div>`);
-					}else if( datosUsuario['id_perfil'] == "{{perfilUsuario['monitor']}}"  ){
-						$divContProvEditar.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${value.nombreUbigeo}<i title='eliminar' style='cursor:pointer;' class='icon-trash' onclick='eliminarProvinciaSeleccionadoEditar(${key})'></i></div>`);
+						totalDepSelect[ key ] = value.ubicodigo;
+
+					}else if( datosUsuario['id_perfil'] == "{{perfilUsuario['monitor']}}" ){
+						$divContProvEditar.append(`<div class='col-lg-4 div-cont-key-prov' key-div=${key} >*${value.nombreUbigeo}<i title='eliminar' style='cursor:pointer;' class='icon-trash' onclick='eliminarProvinciaSeleccionadoEditar(${key})'></i></div>`);
+						totalProvSelect[ key ] = value.ubicodigo;
+
+					}else if( datosUsuario['id_perfil'] == "{{perfilUsuario['promotor']}}" ){
+						$divContEdiEditar.append(`<div class='col-lg-4 div-cont-key-edi' key-div=${key} >*${value.complejoNombre}<i title='eliminar' style='cursor:pointer;' class='icon-trash' onclick='eliminarEdificacionesSeleccionadoCrear(${key})'></i></div>`);
+						totalEdiSelect[ key ] = value.complejoId;
+
 					}
 				});
 			},
@@ -433,16 +617,80 @@
 		});
 	}
 
+	const getDatosUsuariosByDetalle = function(usuarioId,usuarioPerfilId){
+
+		var datos = {
+									'usuarioId':usuarioId,
+									'usuarioPerfilId':usuarioPerfilId
+									}
+
+		$.ajax({
+				type:'POST',
+				url:"{{url('akademia_getDatosUsuariosByDetalle')}}",
+				data:datos,
+				beforeSend:function(){
+					console.log("Enviando Datos =>",datos);
+				},
+				success:function(data){
+
+					datosUsuario = data[0];
+					console.log("Datos Usuario Detalle =>",datosUsuario);
+					$listaColeccionDetalle.empty();
+					$tipoDocumentoDetalle.text(datosUsuario['tipoDocumento']);
+					$numeroDocumentoDetalle.text(datosUsuario['numeroDocumento']);
+					$nombreDetalle.text(datosUsuario['nombreUsuario']);
+					$apellidoParternoDetalle.text(datosUsuario['apellidoPaterno']);
+					$apellidoMaternoDetalle.text(datosUsuario['apellidoMaterno']);
+					$telefonoDetalle.text(datosUsuario['telefono']);
+					$correoDetalle.text(datosUsuario['correo']);
+					$usuarioDetalle.text(datosUsuario['username']);
+					$passwordDetalle.text(datosUsuario['contrasena']);
+
+					var coleccion = datosUsuario['coleccion'].split(',');
+
+					$.each(coleccion,function(index,value){
+
+						if( datosUsuario['perfilId'] == "{{perfilUsuario['macro']}}" ){
+							$listaColeccionDetalle.append(`<div class='col-lg-12'>*${value}</div>`);
+							$tituloColeccionDetalle.text("{{nombrePerfilUsuario[2]}}");
+							$nombreTipoUsuarioModalDetalle.text("Departamentos a cargo:");
+
+						}else if( datosUsuario['perfilId'] == "{{perfilUsuario['monitor']}}" ){
+							$listaColeccionDetalle.append(`<div class='col-lg-12'>*${value}</div>`);
+							$nombreTipoUsuarioModalDetalle.text("{{nombrePerfilUsuario[3]}}");
+							$tituloColeccionDetalle.text("Provincias a cargo:");
+
+						}else if( datosUsuario['perfilId'] == "{{perfilUsuario['promotor']}}" ){
+							$listaColeccionDetalle.append(`<div class='col-lg-12'>*${value}</div>`);
+							$nombreTipoUsuarioModalDetalle.text("{{nombrePerfilUsuario[4]}}");
+							$tituloColeccionDetalle.text("Complejos a cargo:");
+						}
+				});			
+
+				},
+				error:function(error){
+					alertify.error("<p>Ocurrio un Error en el Sistema!.</p>");
+				}
+			});
+	}
+
 	const editarUsuario = function(){
-  
-		var coleccion = Object.values(totalDepartSelect);
+  		
+  	var coleccion = null;
+
+		if( $perfilUsuarioEditar.val() == "{{perfilUsuario['macro']}}" )
+			coleccion = Object.values(totalDepSelect);
+		else if( $perfilUsuarioEditar.val() == "{{perfilUsuario['monitor']}}" )
+			coleccion = Object.values(totalProvSelect);
+		else if( $perfilUsuarioEditar.val() == "{{perfilUsuario['promotor']}}" )
+			coleccion = Object.values(totalEdiSelect);
 
 		if( $usuarioIdEditar.val() != "" &&
 			$perfilUsuarioEditar.val()!= "" && 
 			$tipoDocumentoEditar.val() != "" &&  
 			$numeroDocumentoEditar.val() != "" &&
 			$nombreEditar.val() != "" && 
-			$apellidoParternoEditar.val() && 
+			$apellidoParternoEditar.val() != "" && 
 			$apellidoMaternoEditar.val() != "" &&
 			$telefonoEditar.val() != "" && 
 			$correoEditar.val() != "" && 
@@ -458,8 +706,9 @@
 					'nombre': $nombreEditar.val(),
 					'apellidoPaterno': $apellidoParternoEditar.val(),
 					'apellidoMaterno': $apellidoMaternoEditar.val(),
+					'telefono': $telefonoEditar.val(),
 					'correo': $correoEditar.val(),
-					'usuario': $usuarioEditar.val(),
+					'username': $usuarioEditar.val(),
 					'password': $passwordEditar.val(),
 					'coleccion': coleccion
 					}
@@ -472,14 +721,22 @@
 				console.log("Enviando Datos =>",datos);
 			},
 			success:function(data){
-				console.log(data);
+				if(data == "-2"){
+					alertify.warning("<p style='color:black;font-weight:bold;'>El username a editar se encuentra en uso.!</p>");
+				}else if(data == "-1"){
+					alertify.warning("<p style='color:black;font-weight:bold;'>Existen Campos Vacíos.!</p>");
+				}else if(data == "0"){
+					alertify.warning("<p style='color:black;font-weight:bold;'>Ocurrió un error a la hora de editar Usuario.!</p>")
+				}
+				else{
+					alertify.success("Se actualizo correctamente!");
+					$("#1"+$perfilUsuarioEditar.val()).html(data);
+				}
 			},
 			error:function(error){
-				alertify.error("<p>Ocurrio un Error en el Sistema!.</p>")
+				alertify.error("<p>Ocurrió un Error en el Sistema!.</p>")
 			}
 		});
-
-
 
 		}else{
 			alertify.warning("<p style='color:black;font-weight:bold;'>Existen Campos Vacios!.</p>")
@@ -522,19 +779,18 @@
 		{% endfor %}
 	};
 
-
 	const agregarDepartamentoEditar = function(){
 
 		let nameOption = $('option:selected', $departamentoEditar).attr('name-departamento');
 		let valOption = $departamentoEditar.val();
 		let key = generateKey();
 
-		var arrayTotalDepartSelect = Object.values(totalDepartSelect);
+		var arrayTotalDepSelect = Object.values(totalDepSelect);
 
 		var flag = true;
 
-		for (let i = 0; i < arrayTotalDepartSelect.length ; i++) {
-			if( valOption == arrayTotalDepartSelect[i] ){
+		for (let i = 0; i < arrayTotalDepSelect.length ; i++) {
+			if( valOption == arrayTotalDepSelect[i] ){
 				flag = false;
 				break;
 			}
@@ -542,11 +798,77 @@
 
 		if( flag == true ){
 
-			totalDepartSelect[ key ] = valOption;
+			totalDepSelect[ key ] = valOption;
 			$divContDepEditar.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarDepartamentoSeleccionadoEditar(${key})' ></i></div>`);
-				console.log(totalDepartSelect);
+
 		}else{
 			alertify.warning("<p style='color:black;font-weight:bold;'>El departamento ya fue seleccionado</p>");
+		}
+	}
+
+	const agregarProvinciaEditar = function(){
+
+		let nameOption = $('option:selected', $provinciaEditar).attr('name-provincia');
+		let valOption = $provinciaEditar.val();
+		let key = generateKey();
+
+		if(valOption == ''){
+			alertify.warning("<p style='color:black;font-weight:bold;'>Debe seleccionar una provincia!.</p>");
+			return false;
+		}
+
+		var arrayTotalProvSelect = Object.values(totalProvSelect);
+
+		var flag = true;
+
+		for (let i = 0; i < arrayTotalProvSelect.length ; i++) {
+			if( valOption == arrayTotalProvSelect[i] ){
+				flag = false;
+				break;
+			}
+		}
+
+		if( flag == true ){
+
+			totalProvSelect[ key ] = valOption;
+			$divContProvEditar.append(`<div class='col-lg-4 div-cont-key-prov' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarProvinciaSeleccionadoEditar(${key})' ></i></div>`);
+		}else{
+			alertify.warning("<p style='color:black;font-weight:bold;'>La provincia ya fue seleccionado!.</p>");
+		}
+
+
+		console.log("Total Provincias a agregar",totalProvSelect);
+	} 
+
+	const agregarComplejoEditar = function(){
+
+		let nameOption = $('option:selected', $complejoEditar).attr('name-complejo');
+		let valOption = $complejoEditar.val();
+		let key = generateKey();
+
+		if(valOption == ''){
+			alertify.warning("<p style='color:black;font-weight:bold;'>Debe seleccionar un Complejo Deportivo!.</p>");
+			return false;
+		}
+
+		var arrayTotalEdiSelect = Object.values(totalEdiSelect);
+
+		var flag = true;
+
+		for (let i = 0; i < arrayTotalEdiSelect.length ; i++) {
+			if( valOption == arrayTotalEdiSelect[i] ){
+				flag = false;
+				break;
+			}
+		}
+
+		if( flag == true ){
+
+			totalEdiSelect[ key ] = valOption;
+			$divContEdiEditar.append(`<div class='col-lg-4 div-cont-key-edi' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarEdificacionesSeleccionadoEditar(${key})' ></i></div>`);
+				console.log(totalEdiSelect);
+		}else{
+			alertify.warning("<p style='color:black;font-weight:bold;'>El Complejo ya fue seleccionado!.</p>");
 		}
 	}
 
@@ -556,12 +878,12 @@
 		let valOption = $departamentoCrear.val();
 		let key = generateKey();
 
-		var arrayTotalDepartSelect = Object.values(totalDepartSelect);
+		var arrayTotalDepSelect = Object.values(totalDepSelect);
 
 		var flag = true;
 
-		for (let i = 0; i < arrayTotalDepartSelect.length ; i++) {
-			if( valOption == arrayTotalDepartSelect[i] ){
+		for (let i = 0; i < arrayTotalDepSelect.length ; i++) {
+			if( valOption == arrayTotalDepSelect[i] ){
 				flag = false;
 				break;
 			}
@@ -569,9 +891,9 @@
 
 		if( flag == true ){
 
-			totalDepartSelect[ key ] = valOption;
+			totalDepSelect[ key ] = valOption;
 			$divContDepCrear.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarDepartamentoSeleccionadoCrear(${key})' ></i></div>`);
-				console.log(totalDepartSelect);
+				console.log(totalDepSelect);
 		}else{
 			alertify.warning("<p style='color:black;font-weight:bold;'>El departamento ya fue seleccionado</p>");
 		}
@@ -602,18 +924,17 @@
 		if( flag == true ){
 
 			totalProvSelect[ key ] = valOption;
-			$divContProvCrear.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarProvinciaSeleccionadoCrear(${key})' ></i></div>`);
+			$divContProvCrear.append(`<div class='col-lg-4 div-cont-key-prov' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarProvinciaSeleccionadoCrear(${key})' ></i></div>`);
 				console.log(totalProvSelect);
 		}else{
 			alertify.warning("<p style='color:black;font-weight:bold;'>La provincia ya fue seleccionado!.</p>");
 		}
-		
 	} 
 
 	const agregarComplejoCrear = function(){
 
-		let nameOption = $('option:selected', $complejo).attr('name-complejo');
-		let valOption = $complejo.val();
+		let nameOption = $('option:selected', $complejoCrear).attr('name-complejo');
+		let valOption = $complejoCrear.val();
 		let key = generateKey();
 
 		if(valOption == ''){
@@ -636,11 +957,49 @@
 		if( flag == true ){
 
 			totalEdiSelect[ key ] = valOption;
-			$divContEdiCrear.append(`<div class='col-lg-4 div-cont-key-dep' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarEdificacionesSeleccionadoCrear(${key})' ></i></div>`);
+			$divContEdiCrear.append(`<div class='col-lg-4 div-cont-key-edi' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarEdificacionesSeleccionadoCrear(${key})' ></i></div>`);
 				console.log(totalEdiSelect);
 		}else{
 			alertify.warning("<p style='color:black;font-weight:bold;'>El Complejo ya fue seleccionado!.</p>");
 		}
+	}
+
+	const setInputModalUsuarioIdEliminar = function(usuarioId,usuarioPerfilId){
+		$usuarioIdEliminar.val(usuarioId);
+		$usuarioPerfilIdEliminar.val(usuarioPerfilId);
+	}
+
+	const eliminarUsuario = function(){
+
+		var datos = {
+								'usuarioId':$usuarioIdEliminar.val(),
+								'usuarioPerfilId': $usuarioPerfilIdEliminar.val()
+								}
+
+		$.ajax({
+				type:'POST',
+				url:"{{url('akademia_usuarioEliminar')}}",
+				data:datos,
+				beforeSend:function(){
+					console.log("Enviando Datos =>",datos);
+				},
+				success:function(data){
+					if(data == "-1"){
+
+						alertify.warning("<p style='color:black;font-weight:bold;'>No se pudo eliminar Usuario</p>");
+					}else if(data == "0"){
+
+						alertify.error("Ocurrio un error a la hora de eliminar!.")
+					}else{
+						
+						alertify.success("Se elimino usuario correctamente!.");
+						$("#1"+$usuarioPerfilIdEliminar.val()).html(data);
+					}
+				},
+				error:function(error){
+					alertify.error("<p>Ocurrio un Error en el Sistema!.</p>")
+				}
+		});
 	}
 
 	$btnAgregarDepartamentoCrear.on('click',agregarDepartamentoCrear);
@@ -648,6 +1007,8 @@
 	$btnAgregarComplejoCrear.on('click',agregarComplejoCrear);
 
 	$btnAgregarDepartamentoEditar.on('click',agregarDepartamentoEditar);
+	$btnAgregarProvinciaEditar.on('click',agregarProvinciaEditar);
+	$btnAgregarComplejoEditar.on('click',agregarComplejoEditar);
 
 </script>
 

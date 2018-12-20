@@ -10,10 +10,10 @@
 				<button   data-toggle="modal" data-target="#modal-editar" class="btn btn-primary" onclick="getDatosUsuariosByEditar({{perfilUsuarioId}},{{user['id']}})" ><i class="icon-pencil-square-o" style="color:white;font-size:13px;"></i></button>
 			</td>
 			<td  class="text-center" style="font-size:14px">
-				<button class="btn btn-info"><i class="icon-eye" style="color:white;font-size:13px;" ></i></button>
+				<button class="btn btn-info" onclick="getDatosUsuariosByDetalle({{user['id']}},{{perfilUsuarioId}})" data-toggle="modal" data-target="#modal-detalle" ><i class="icon-eye" style="color:white;font-size:13px;" ></i></button>
 			</td>
 			<td  class="text-center" style="font-size:14px">
-				<button class="btn btn-danger"><i class="icon-trash" style="color:white;font-size:13px;"></i></button>
+				<button class="btn btn-danger"  data-toggle="modal" data-target="#modal-eliminar" onclick="setInputModalUsuarioIdEliminar({{user['id']}},{{perfilUsuarioId}})"><i class="icon-trash" style="color:white;font-size:13px;"></i></button>
 			</td>
 		</tr>
 

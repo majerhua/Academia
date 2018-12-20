@@ -41,48 +41,63 @@
 				<div class="col-lg-4">
 					<p style="font-size:1.3em;font-weight:bold;padding-top:25px;">Disciplina/Horario/Beneficiario</p>
 				</div>
-				<div class="col-lg-4">
-					<div class="form-group">
 
-						{% if is_granted('ROLE_MACRO') or is_granted('ROLE_ADMIN') %}
+				{% if is_granted('ROLE_MACRO') or is_granted('ROLE_ADMIN') or is_granted('ROLE_MONITOR') %}
+					<div class="col-lg-4">
+						<div class="form-group">
 
-							<label>Departamento</label>
-							<select class="form-control" id="departamento" name="departamento" onchange="cambiarDepartamento(this)">
-								<option value="" >--Seleccionar--</option>
-								{% for dep in ubigeos %}
-									<option  value={{dep['id']}}>{{dep['nombre']}}</option>
-								{% endfor %} 
-							</select>
+							{% if is_granted('ROLE_MACRO') or is_granted('ROLE_ADMIN') %}
 
-						{% elseif is_granted('ROLE_MONITOR') %}
+								<label>Departamento</label>
+								<select class="form-control" id="departamento" name="departamento" onchange="cambiarDepartamento(this)">
+									<option value="" >--Seleccionar--</option>
+									{% for dep in ubigeos %}
+										<option  value={{dep['id']}}>{{dep['nombre']}}</option>
+									{% endfor %} 
+								</select>
 
-							<label>Provincia</label>
-							<select class="form-control" id="provincia" name="provincia" onchange="cambiarProvincia(this)">
-								<option value="" >--Seleccionar--</option>
-								{% for prov in ubigeos %}
-									<option  data-departamento="{{prov['idDepartamento']}}" value={{prov['idProvincia']}}>{{prov['nombre']}}</option>
-								{% endfor %} 
-							</select>							
+							{% elseif is_granted('ROLE_MONITOR') %}
 
-						{% endif %}
+								<label>Provincia</label>
+								<select class="form-control" id="provincia" name="provincia" onchange="cambiarProvincia(this)">
+									<option value="" >--Seleccionar--</option>
+									{% for prov in ubigeos %}
+										<option  data-departamento="{{prov['idDepartamento']}}" value={{prov['idProvincia']}}>{{prov['nombre']}}</option>
+									{% endfor %} 
+								</select>							
 
+							{% endif %}
+
+						</div>
 					</div>
-				</div>
-				<div class="col-lg-4">
+				{% endif %}
 
+				<div class="col-lg-4">
 					<div class="form-group">
 						<label>Complejo</label>
 						<select class="form-control"  id="complejo" name="complejo" onchange="cambiarComplejo(this)" >
 							<option value="" >--Seleccionar--</option>
-							{%  if is_granted('ROLE_PROMOTOR') %}
+							{%  if is_granted('ROLE_PROMOTOR') or is_granted('ROLE_PROFESOR')  %}
 								{% for comp in complejos %}
 									<option value="{{comp['complejoId']}}">{{comp['complejoNombre']}}</option>
 								{% endfor %}
 							{% endif %} 
 						</select>
 					</div>
-
 				</div>
+
+				{% if is_granted('ROLE_PROFESOR') %}
+
+					<div class="col-lg-4">
+						<div class="form-group">
+							<label>Disciplina</label>
+							<select class="form-control"  id="disciplina" name="disciplina" onchange="cambiarDisciplina(this)">
+								<option value="" >--Seleccionar--</option>
+							</select>
+						</div>
+					</div>
+
+				{% endif %}
 			</div>
 		</div>
 
@@ -95,11 +110,13 @@
 			<hr>
 		</div>
 
+		<input type="hidden" id="input-id-complejo-crear">
+		<input type="hidden" id="input-id-complejo-editar">
+		<input type="hidden" id="input-id-complejo-eliminar">
+
 {% include 'AkademiaBundle:Footer:footer.html.twig' %}
 
 </section>
-
-
 
 <!-- modal -->
 <div id="modal-editar" class="modal fade" role="dialog">
@@ -653,6 +670,9 @@
 
 <input type="hidden" id="input-hidden-id-disciplina">
 
+{% include 'AkademiaBundle:Disciplina_Horario_Beneficiario:modal_detalle_usuario_profesor.html.twig'%}
+{% include 'AkademiaBundle:Disciplina_Horario_Beneficiario:modal_eliminar_usuario_profesor.html.twig'%}
+
 {% endblock %}
 {% block javascripts %}
 
@@ -662,7 +682,397 @@
 <script src="{{asset('assets/vendor/js/Horario/agregarTurnos.js')}}"></script>
 
 <script type="text/javascript">
+	
+	var totalDisSelect = new Object();
+
+	/**** ELIMINAR USUARIO ***/
+	$usuarioIdEliminar = $("#usuario-id-eliminar");
+	$usuarioPerfilIdEliminar = $("#usuario-perfil-id-eliminar");
+
+	const setInputModalUsuarioIdEliminar = function(usuarioId,perfilIdUsuario){
+		$usuarioIdEliminar.val(usuarioId);
+		$usuarioPerfilIdEliminar.val(perfilIdUsuario)
+	}
+
+	const eliminarUsuario = function(){
+
+		var datos = {
+						'usuarioId':$usuarioIdEliminar.val(),
+						'idComplejo': $("#input-id-complejo-eliminar").val(),
+						'idTemporada': "{{idTemporada}}",
+						'usuarioPerfilId': $usuarioPerfilIdEliminar.val()
+					}
+
+		$.ajax({
+				type:'POST',
+				url:"{{url('akademia_usuarioEliminar')}}",
+				data:datos,
+				beforeSend:function(){
+					console.log("Enviando Datos =>",datos);
+				},
+				success:function(data){
+					if(data == "-1"){
+
+						alertify.warning("<p style='color:black;font-weight:bold;'>No se pudo eliminar Usuario</p>");
+					}else if(data == "0"){
+
+						alertify.error("Ocurrio un error a la hora de eliminar!.")
+					}else{
+						
+						alertify.success("Se elimino usuario correctamente!.");
+						$("#1Profesores").html(data);
+					}
+				},
+				error:function(error){
+					alertify.error("<p>Ocurrio un Error en el Sistema!.</p>")
+				}
+		});
+	}
+
+	/**** DETALLE USUARIO ***/
+
+	$perfilUsuarioDetalle = $("#perfil-usuario-detalle");
+	$tipoDocumentoDetalle = $("#tipo-documento-detalle");
+	$numeroDocumentoDetalle = $("#numero-documento-detalle");
+	$nombreDetalle = $("#nombre-detalle");
+	$apellidoParternoDetalle = $("#apellido-parterno-detalle");
+	$apellidoMaternoDetalle = $("#apellido-materno-detalle");
+	$telefonoDetalle = $("#telefono-detalle");
+	$correoDetalle = $("#correo-detalle");
+	$usuarioDetalle = $("#usuario-detalle");
+	$passwordDetalle = $("#password-detalle");
+
+	$listaColeccionDetalle = $("#lista-coleccion-detalle");
+	$tituloColeccionDetalle = $("#titulo-coleccion-detalle");
+	$nombreTipoUsuarioModalDetalle = $("#nombre-tipo-usuario-modal-detalle");
+
+	const getDatosUsuariosByDetalle = function(usuarioId,usuarioPerfilId){
+
+		var datos = {
+									'usuarioId':usuarioId,
+									'usuarioPerfilId':usuarioPerfilId
+									}
+		console.log("Enviando Datos =>",datos);
+		$.ajax({
+				type:'POST',
+				url:"{{url('akademia_getDatosUsuariosByDetalle')}}",
+				data:datos,
+				beforeSend:function(){
+					console.log("Enviando Datos =>",datos);
+				},
+				success:function(data){
+
+					datosUsuario = data[0];
+					console.log("Datos Usuario Detalle =>",datosUsuario);
+
+					$listaColeccionDetalle.empty();
+					$tipoDocumentoDetalle.text(datosUsuario['tipoDocumento']);
+					$numeroDocumentoDetalle.text(datosUsuario['numeroDocumento']);
+					$nombreDetalle.text(datosUsuario['nombreUsuario']);
+					$apellidoParternoDetalle.text(datosUsuario['apellidoPaterno']);
+					$apellidoMaternoDetalle.text(datosUsuario['apellidoMaterno']);
+					$telefonoDetalle.text(datosUsuario['telefono']);
+					$correoDetalle.text(datosUsuario['correo']);
+					$usuarioDetalle.text(datosUsuario['username']);
+					$passwordDetalle.text(datosUsuario['contrasena']);
+
+					var coleccion = datosUsuario['coleccion'].split(',');
+
+					$.each(coleccion,function(index,value){
+
+						$listaColeccionDetalle.append(`<div class='col-lg-12'>*${value}</div>`);
+						$nombreTipoUsuarioModalDetalle.text("{{nombrePerfilUsuario[5]}}");
+						$tituloColeccionDetalle.text("Disciplinas a cargo:");
+				});			
+
+				},
+				error:function(error){
+					alertify.error("<p>Ocurrio un Error en el Sistema!.</p>");
+				}
+			});
+	}
+
+	/***  EDITAR USUARIO ***/
+
+	const editarUsuario = function(){
+  		
+		coleccion = Object.values(totalDisSelect);
+
+		if( $("#usuario-id-editar").val() != "" &&
+			$("#perfil-usuario-editar").val()!= "" && 
+			$("#tipo-documento-editar").val() != "" &&  
+			$("#numero-documento-editar").val()!= "" &&
+			$("#nombre-editar").val() != "" && 
+			$("#apellido-parterno-editar").val() != "" && 
+			$("#apellido-materno-editar").val() != "" &&
+			$("#telefono-editar").val() != "" && 
+			$("#correo-editar").val() != "" && 
+			$("#usuario-editar").val() != "" && 
+			$("#password-editar").val() !="" &&
+			coleccion.length > 0 ){
+
+		var datos = {
+					'usuarioId':$("#usuario-id-editar").val(),
+					'perfilUsuario': $("#perfil-usuario-editar").val(),
+					'tipoDocumento': $("#tipo-documento-editar").val(),
+					'numeroDocumento': $("#numero-documento-editar").val(),
+					'nombre': $("#nombre-editar").val(),
+					'apellidoPaterno': $("#apellido-parterno-editar").val(),
+					'apellidoMaterno': $("#apellido-materno-editar").val(),
+					'telefono': $("#telefono-editar").val(),
+					'correo': $("#correo-editar").val(),
+					'username': $("#usuario-editar").val(),
+					'password': $("#password-editar").val(),
+					'idComplejo': $("#input-id-complejo-editar").val(),
+					'idTemporada': "{{idTemporada}}",
+					'coleccion': coleccion
+					}
+		console.log("Enviando Datos a Editar =>",datos);
+		$.ajax({
+			type:'POST',
+			url:"{{url('akademia_usuarioEditar')}}",
+			data:datos,
+			beforeSend:function(){
+				console.log("Enviando Datos =>",datos);
+			},
+			success:function(data){
+				if(data == "-2"){
+					alertify.warning("<p style='color:black;font-weight:bold;'>El username a editar se encuentra en uso.!</p>");
+				}else if(data == "-1"){
+					alertify.warning("<p style='color:black;font-weight:bold;'>Existen Campos Vacíos.!</p>");
+				}else if(data == "0"){
+					alertify.warning("<p style='color:black;font-weight:bold;'>Ocurrió un error a la hora de editar Usuario.!</p>")
+				}
+				else{
+					alertify.success("Se actualizo correctamente!");
+					$("#1Profesores").html(data);
+				}
+			},
+			error:function(error){
+				alertify.error("<p>Ocurrió un Error en el Sistema!.</p>")
+			}
+		});
+
+		}else{
+			alertify.warning("<p style='color:black;font-weight:bold;'>Existen Campos Vacios!.</p>");
+		}
+	}
+
+	const getDatosUsuariosByEditar = function(usuarioId){
+
+		$("#div-cont-dis-editar").empty();
+
+		mostrarListaTipoUsuario();
+
+		var datos = {
+									'usuarioId':usuarioId
+
+								}
+		$.ajax({
+			type:'POST',
+			url:"{{url('akademia_getDatosUsuariosByEditar')}}",
+			data:datos,
+			beforeSend:function(){
+				console.log("Enviando Datos =>",datos);
+			},
+			success:function(data){
+
+				totalDisSelect = new Object();
+
+				datosUsuario = data[0];
+
+				console.log("Datos Usuario => ",datosUsuario);
+				$("#usuario-id-editar").val(datosUsuario['id']);
+				$("#perfil-usuario-editar").val(datosUsuario['id_perfil'])
+				$("#tipo-documento-editar").val(datosUsuario['tipoDocumento']);
+				$("#numero-documento-editar").val(datosUsuario['numeroDocumento']);
+				$("#nombre-editar").val(datosUsuario['nombre']);
+	 			$("#apellido-parterno-editar").val(datosUsuario['apellidoPaterno']);
+				$("#apellido-materno-editar").val(datosUsuario['apellidoMaterno'])
+				$("#telefono-editar").val(datosUsuario['telefono']);
+				$("#correo-editar").val(datosUsuario['correo']);
+				$("#usuario-editar").val(datosUsuario['usuario']);
+				$("#password-editar").val(datosUsuario['contrasena']);
+
+
+				var coleccion = datosUsuario['coleccion'];
+
+				$.each(coleccion,function(index,value){
+
+					let key = generateKey();
+					$("#div-cont-dis-editar").append(`<div class='col-lg-4 div-cont-key-dis' key-div=${key} >*${value.disciplinaNombre}<i title='eliminar' style='cursor:pointer;' class='icon-trash' onclick='eliminarDisciplinaSeleccionadoEditar(${key})'></i></div>`);
+						totalDisSelect[ key ] = value.ediCodigo;
+					$("#input-id-complejo-editar").val(value.complejoId);
+				});
+			},
+			error:function(error){
+				alertify.error("<p>Ocurrio un Error en el Sistema!.</p>")
+			}
+		});
+	}
+
+	const eliminarDisciplinaSeleccionadoEditar = function(keyObject){
+
+		delete  totalDisSelect[parseInt(keyObject)];
 		
+		var divContKeyDis = document.querySelectorAll('.div-cont-key-dis');
+		var divContKeyDisLength = divContKeyDis.length;
+
+		for (let i =0; i < divContKeyDisLength; i++) {
+		
+			if(  keyObject == parseInt( $(divContKeyDis[i]).attr('key-div') ) ){
+
+				$(divContKeyDis[i]).empty();
+				break;
+			}
+		}
+	};
+
+	const agregarDisciplinaEditar = function(){
+
+		let nameOption = $('option:selected', $("#disciplina-editar")).attr('name-disciplina');
+		let valOption = $("#disciplina-editar").val();
+		let key = generateKey();
+
+		var arrayTotalDisSelect = Object.values(totalDisSelect);
+
+		var flag = true;
+
+		for (let i = 0; i < arrayTotalDisSelect.length ; i++) {
+			if( valOption == arrayTotalDisSelect[i] ){
+				flag = false;
+				break;
+			}
+		}
+
+		if( arrayTotalDisSelect.length < 1  ){
+
+			if( flag == true ){
+
+				totalDisSelect[ key ] = valOption;
+				$("#div-cont-dis-editar").append(`<div class='col-lg-4 div-cont-key-dis' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarDisciplinaSeleccionadoEditar(${key})' ></i></div>`);
+			}else{
+				alertify.warning("<p style='color:black;font-weight:bold;'>La disciplina ya fue seleccionado</p>");
+			}			
+		}else {
+			alertify.warning("<p style='color:black;font-weight:bold;'>El profesor solo puede estar a cargo de una disciplina.</p>");
+		}
+	}
+	/*** CREAR USUARIO ***/
+
+
+	const generateKey = ()=>{
+		let numberRandom = Math.floor(Math.random() * 10000000) + 1 ;
+		return numberRandom;
+	}
+
+	const crearUsuarioProfesor =  function(){
+
+		let arrayDisSelect = Object.values(totalDisSelect);
+
+		var datos = {
+						'tipoDocumento': $("#tipo-documento-crear").val(),
+						'numeroDocumento': $("#numero-documento-crear").val(),
+						'nombre': $("#nombre-crear").val(),
+						'apellidoPaterno': $("#apellido-parterno-crear").val(),
+						'apellidoMaterno': $("#apellido-materno-crear").val(),
+						'telefono': $("#telefono-crear").val(),
+						'correo': $("#correo-crear").val(),
+						'username': $("#usuario-crear").val(),
+						'password': $("#password-crear").val(),
+						'perfilUsuario': $("#perfil-usuario-crear").val(),
+						'idComplejo': $("#input-id-complejo-crear").val(),
+						'idTemporada': "{{idTemporada}}"
+					}
+
+			datos['coleccion'] = arrayDisSelect;
+
+			console.log("Enviando datos a guardar => ",datos);
+			$.ajax({
+				type:'POST',
+				url:"{{url('akademia_usuarioCrear')}}",
+				data:datos,
+				beforeSend:function(){
+					console.log("Enviando Datos =>",datos);
+				},
+				success:function(data){
+
+					if(data == -2){
+						alertify.warning("<p style='color:black; font-weight=bold;' >El username esta en uso.!</p>");
+					}else if(data == -1){
+						alertify.warning("<p style='color:black; font-weight=bold;' >Existen Campos Vacios.!</p>");
+					}else if(data == 0){
+						alertify.warning("<p style='color:black; font-weight=bold;' >Ocurrio un error al editar, actulize la pagina porfavor.!</p>");
+					}else {
+						alertify.success('<p>Se creo el Usuario Correctamente</p>');
+						$("#1Profesores").html(data);
+					}
+				},
+				error:function(error){
+					alertify.error("<p>Ocurrio un Error en el Sistema!.</p>")
+				}
+			});	
+	};
+
+	const eliminarDisciplinaSeleccionadoCrear = function(keyObject){
+
+		delete  totalDisSelect[parseInt(keyObject)];
+		
+		var divContKeyDis = document.querySelectorAll('.div-cont-key-dis');
+		var divContKeyDisLength = divContKeyDis.length;
+
+		for (let i =0; i < divContKeyDisLength; i++) {
+		
+			if(  keyObject == parseInt( $(divContKeyDis[i]).attr('key-div') ) ){
+
+				$(divContKeyDis[i]).empty();
+				break;
+			}
+		}
+	};
+
+	const agregarDisciplinaCrear = function(){
+
+		let nameOption = $('option:selected', $("#disciplina-crear")).attr('name-disciplina');
+		let valOption = $("#disciplina-crear").val();
+		let key = generateKey();
+
+		var arrayTotalDisSelect = Object.values(totalDisSelect);
+
+		var flag = true;
+
+		for (let i = 0; i < arrayTotalDisSelect.length ; i++) {
+			if( valOption == arrayTotalDisSelect[i] ){
+				flag = false;
+				break;
+			}
+		}
+
+		if( arrayTotalDisSelect.length < 1  ){
+
+			if( flag == true ){
+
+				totalDisSelect[ key ] = valOption;
+				$("#div-cont-dis-crear").append(`<div class='col-lg-4 div-cont-key-dis' key-div=${key} >*${nameOption}<i title='eliminar' style='cursor:pointer;'class='icon-trash' onclick='eliminarDisciplinaSeleccionadoCrear(${key})' ></i></div>`);
+			}else{
+				alertify.warning("<p style='color:black;font-weight:bold;'>La disciplina ya fue seleccionado</p>");
+			}			
+		}else {
+			alertify.warning("<p style='color:black;font-weight:bold;'>El profesor solo puede estar a cargo de una disciplina.</p>");
+		}
+	}
+
+	const mostrarListaTipoUsuario = function(){
+
+		$("#div-cont-dis-crear").empty();
+		totalDisSelect = new Object();
+
+		let nombreTipoUsuario = "Profesor";
+
+		$("#nombre-tipo-usuario-modal").text(nombreTipoUsuario);
+		$("#perfil-usuario-crear").val("{{perfilUsuario['profesor']}}");
+	};
+	
 	$btnCrearDisciplina = $("#btn-crear-disciplina");
 	$inputHiddenIdDisciplina = $("#input-hidden-id-disciplina");
 	var modalConfElimHor = document.getElementById('modal-confirmar-eliminar-horario');
@@ -703,10 +1113,55 @@
 
 	function cambiarComplejo(complejo){
 
+		$("#input-id-complejo-crear").val(complejo.value);
+		$("#input-id-complejo-eliminar").val(complejo.value);
+
+		{% if is_granted('ROLE_PROFESOR') %}
+
+			var complejoId = complejo.value;
+			$("#disciplina").empty();
+			$("#disciplina").append("<option value=''>--Seleccionar--</option>");
+			{% for  dis in disciplinasComplejo %}
+
+				if("{{dis['complejoId']}}" == complejoId )
+					$("#disciplina").append("<option data-complejo-id= {{dis['complejoId']}} value={{dis['disciplinaId']}}>{{dis['disciplinaNombre']}}</option>");
+
+			{% endfor %}
+
+		{% else %}
+
+			var datos = {
+							'idComplejo':complejo.value,
+							'idTemporada':"{{idTemporada}}"
+						}			
+			$.ajax({
+				type:'POST',
+				url: "{{url('akademia_tableHorarioComplejoBeneficiario')}}",
+				data: datos,
+				beforeSend: function(){				
+				},
+				success : function(data){
+					$("#container-complejo-disciplina-horarios").html(data);
+				},
+				error : function(error){
+					alertify.error('Ocurrio un error en el sistema!.');
+				},
+			});
+
+		{% endif %}
+	}
+
+	function cambiarDisciplina(disciplina){
+
+		idDisciplina = disciplina.value;
+		var idComplejo =  $('option:selected', disciplina).attr('data-complejo-id');
+
 		var datos = {
-						'idComplejo':complejo.value,
+						'idComplejo':idComplejo,
+						'idDisciplina': idDisciplina,
 						'idTemporada':"{{idTemporada}}"
-					}			
+					}
+			
 		$.ajax({
 			type:'POST',
 			url: "{{url('akademia_tableHorarioComplejoBeneficiario')}}",
@@ -719,7 +1174,7 @@
 			error : function(error){
 				alertify.error('Ocurrio un error en el sistema!.');
 			},
-		})
+		});
 	}
 
 	/* EDITAR HORARIO*/
@@ -1031,7 +1486,8 @@
 				type:'POST',
 				url: "{{url('akademia_crearDisciplina')}}",
 				data: datos,
-				beforeSend: function(){				
+				beforeSend: function(){
+					console.log("Datos a enviar => ",datos);				
 				},
 
 				success: function(data){

@@ -15,6 +15,11 @@ akademia_usuarioCrear:
   defaults: { _controller: AkademiaBundle:Usuarios:usuariosCrear }
   methods: [GET,POST]
 
+akademia_usuarioEliminar:
+  path: /eliminar/usuarios
+  defaults: { _controller: AkademiaBundle:Usuarios:usuariosEliminar }
+  methods: [GET,POST]
+
 akademia_usuarioEditar:
   path: /editar/usuarios
   defaults: { _controller: AkademiaBundle:Usuarios:usuariosEditar }
@@ -24,6 +29,12 @@ akademia_getDatosUsuariosByEditar:
   path: /get/usuario
   defaults: { _controller: AkademiaBundle:Usuarios:getDatosUsuariosByEditar }
   methods: [GET,POST]
+
+akademia_getDatosUsuariosByDetalle:
+  path: /detalle/usuario
+  defaults: { _controller: AkademiaBundle:Usuarios:getDatosUsuariosByDetalle }
+  methods: [GET,POST]
+
 ##
 
 ##ADMINISTRACION COMPLEJOS
@@ -354,9 +365,14 @@ akademia_exportData:
    defaults: {_controller: AkademiaBundle:ExportacionData:exportData}
    methods: [GET,POST]
 
-akademia_exportDataBeneficiariosAnalista:
-   path:    /exportDataBeneficiariosAnalista
-   defaults: {_controller: AkademiaBundle:ExportacionData:exportDataBeneficiariosAnalista}
+akademia_exportDataBeneficiariosAdminMacro:
+   path:    /exportDataBeneficiariosAdminMacro
+   defaults: {_controller: AkademiaBundle:ExportacionData:exportDataBeneficiariosAdminMacro}
+   methods: [GET,POST]
+
+akademia_exportDataBeneficiariosMonitor:
+   path:    /exportDataBeneficiariosMonitor
+   defaults: {_controller: AkademiaBundle:ExportacionData:exportDataBeneficiariosMonitor}
    methods: [GET,POST]
 
 akademia_exportDataBeneficiariosComplejo:

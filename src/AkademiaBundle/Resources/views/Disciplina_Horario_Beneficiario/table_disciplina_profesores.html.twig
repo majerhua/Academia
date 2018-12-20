@@ -1,0 +1,20 @@
+{% for user in usuarios %}
+
+	<tr> 
+		<td class="text-center">{{user['usuarioId']}}</td>
+		<td class="text-center">{{user['disciplinaNombre']}}</td>
+		<td class="text-center">{{user['usuarioNombre']}}</td> 
+		<td class="text-center">{{user['usuarioCorreo']}}</td>
+		<td class="text-center">{{user['usuarioTelefono']}}</td>
+		<td>
+			<button class="btn btn-primary" onclick="getDatosUsuariosByEditar({{user['usuarioId']}})"  data-toggle="modal" data-target="#modal-editar-usuario"><i class="icon-pencil-square-o" style="color:white;font-size:13px;" ></i></button>
+		</td>
+		<td  class="text-center" style="font-size:14px">
+			<button class="btn btn-info" onclick="getDatosUsuariosByDetalle({{user['usuarioId']}},{{user['usuarioPerfilId']}})" data-toggle="modal" data-target="#modal-detalle-usuario"><i class="icon-eye" style="color:white;font-size:13px;" ></i></button>
+		</td>
+		<td  class="text-center" style="font-size:14px">
+			<button class="btn btn-danger" data-toggle="modal" data-target="#modal-eliminar-usuario" onclick="setInputModalUsuarioIdEliminar({{user['usuarioId']}},{{user['usuarioPerfilId']}})" ><i class="icon-trash" style="color:white;font-size:13px;"></i></button>
+		</td>
+	</tr> 
+																
+{% endfor %}

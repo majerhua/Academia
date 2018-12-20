@@ -81,6 +81,48 @@ class ComplejoDeportivoRepository extends \Doctrine\ORM\EntityRepository
 		return $complejos;
 	}
 
+	public function getComplejosDisciplinaUsuario($usuarioId){
+
+		$query = "  SELECT 
+					usu.id usuarioId,
+					ede.ede_codigo complejoId,
+					ede.ede_nombre complejoNombre,
+					ubi.ubidpto departamentoId,
+					ubi.ubiprovincia provinciaId
+					FROM ACADEMIA.usuario usu
+					INNER JOIN  ACADEMIA.Usuario_EdificacionDisciplina usuEdi ON usuEdi.usuario_id = usu.id
+					INNER JOIN CATASTRO.edificacionDisciplina edi ON edi.edi_codigo = usuEdi.edi_codigo
+					INNER JOIN CATASTRO.edificacionesdeportivas ede ON ede.ede_codigo = edi.ede_codigo
+					INNER JOIN grubigeo ubi ON ubi.ubicodigo= ede.ubicodigo
+					WHERE 
+					usu.id = $usuarioId ";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
+		$stmt->execute();
+		$complejos = $stmt->fetchAll();
+		return $complejos;
+	}
+
+	public function getDisciplinaComplejoUsuario($usuarioId){
+
+		$query = "  SELECT 
+					usu.id usuarioId,
+					ede.ede_codigo complejoId,
+					ede.ede_nombre complejoNombre,
+					dis.dis_descripcion disciplinaNombre,
+					dis.dis_codigo disciplinaId
+					 FROM ACADEMIA.usuario usu
+					INNER JOIN  ACADEMIA.Usuario_EdificacionDisciplina usuEdi ON usuEdi.usuario_id = usu.id
+					INNER JOIN CATASTRO.edificacionDisciplina edi ON edi.edi_codigo = usuEdi.edi_codigo
+					INNER JOIN CATASTRO.edificacionesdeportivas ede ON ede.ede_codigo = edi.ede_codigo
+					INNER JOIN CATASTRO.disciplina dis ON dis.dis_codigo = edi.dis_codigo
+					WHERE 
+					usu.id = $usuarioId ";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
+		$stmt->execute();
+		$disciplinas = $stmt->fetchAll();
+		return $disciplinas;
+	}
+
 	public function getComplejoById($codigo){
 
 		$query = "SELECT 

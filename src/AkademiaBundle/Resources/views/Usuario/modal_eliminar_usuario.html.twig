@@ -1,0 +1,43 @@
+<div class="modal fade" id="modal-eliminar" role="dialog" aria-hidden="true">
+    
+    <div class="modal-dialog modal-sm">
+
+        <div class="modal-content">
+
+            <div class="modal-header header-modal container-header-yellow">
+
+                <p class="modal-title"><strong>¿Desea eliminar al usuario?</strong></p>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                
+                    <span aria-hidden="true" style="color:white;">&times;</span>
+                
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-lg-6">
+        
+                            <input type="hidden" id="usuario-id-eliminar">
+                            <input type="hidden" id="usuario-perfil-id-eliminar">
+                            <button class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            
+                        </div>
+
+                        <div class="col-lg-6">
+
+                            <button class="btn btn-danger" data-dismiss="modal"  onclick="eliminarUsuario()">Eliminar</button>
+
+                        </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

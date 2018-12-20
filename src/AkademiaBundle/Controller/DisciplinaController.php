@@ -56,8 +56,10 @@ class DisciplinaController extends Controller
             $mensaje = NULL;
             $idDisciplina = $request->request->get('idDisciplina'); 
             $idTemporada = $request->request->get('idTemporada');  
-            $idComplejo = $request->request->get('idComplejo'); 
+            $idComplejo = $request->request->get('idComplejo');
+
             $usuario = $this->getUser()->getId();
+
 
             if( !empty($idDisciplina) && isset($idDisciplina) &&
                 !empty($idTemporada) && isset($idTemporada) &&
@@ -94,17 +96,21 @@ class DisciplinaController extends Controller
 
                         $Horarios = $em->getRepository('AkademiaBundle:Horario')->getHorariosComplejos($idComplejo,$idTemporada);
                         $turnos = $em->getRepository('AkademiaBundle:Horario')->getTurnosComplejos($idComplejo);
+                        $usuarios = $em->getRepository('AkademiaBundle:Usuarios')->getUsuariosProfesoresAll($idComplejo,$idTemporada);
+                        $disciplinasByComplejoTemporada = $em->getRepository('AkademiaBundle:Usuarios')->disciplinasByComplejoTemporada($idComplejo,$idTemporada);
 
                         echo $this->renderView('AkademiaBundle:Disciplina_Horario_Beneficiario:table_disciplina_horario_beneficiario.html.twig',
                                 array(
                                         "complejosDisciplinas" => $ComplejoDisciplinas ,
                                         "disciplinas" => $Disciplinas,
-                                        "horarios" => $Horarios, 
+                                        "horarios" => $Horarios,
+                                        'usuarios' => $usuarios, 
                                         "nombreComplejo"=> $nombreComplejo, 
                                         'turnos'=> $turnos,
                                         'idTemporada' => $idTemporada,
                                         'idTemporadaActiva' => $idTemporadaActiva,
-                                        'idComplejo' => $idComplejo
+                                        'idComplejo' => $idComplejo,
+                                        'disciplinasByComplejoTemporada' => $disciplinasByComplejoTemporada
                                 )
                             );
                         exit; 
@@ -143,8 +149,9 @@ class DisciplinaController extends Controller
             
             }else{
 
-                $usuario = $this->getUser()->getId();
-                $em->getRepository('AkademiaBundle:Horario')->eliminarDisciplina($codigoEdi,$usuario);
+                $usuario = $this->getUser();
+                $usuarioId = $usuario->getId();
+                $em->getRepository('AkademiaBundle:Horario')->eliminarDisciplina($codigoEdi,$usuarioId);
 
                 $temporadaActiva = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
 
@@ -153,7 +160,13 @@ class DisciplinaController extends Controller
                 else
                     $idTemporadaActiva = null;
 
-                $ComplejoDisciplinas = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getComplejosDisciplinasHorarios($idComplejo,$idTemporada);
+                $confPerfilUsuario = $this->container->getParameter('perfilUsuario');
+
+                if( $usuario->getIdPerfil() == $confPerfilUsuario['profesor'] )
+                    $ComplejoDisciplinas = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getComplejosDisciplinasHorariosByDisciplinaId($idComplejo,$idTemporada,$idDisciplina);
+                else
+                    $ComplejoDisciplinas = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getComplejosDisciplinasHorarios($idComplejo,$idTemporada); 
+
                 $Disciplinas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasDiferentes($idComplejo,$idTemporada);
                 $complejo = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplejoById($idComplejo);
                 $nombreComplejo = $complejo[0]['complejoNombre'];

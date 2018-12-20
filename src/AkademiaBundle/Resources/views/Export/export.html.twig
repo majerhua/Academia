@@ -21,7 +21,7 @@
 				</span>
 				<br>
 				<ul class="nav navbar-nav navbar-right">
-                    <li title="Inicio"><a href="{{url('akademia_panel',{'idTemporada':idTemporadaHabilitada})}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
+                    <li title="Inicio"><a href="{{url('akademia_panel',{'idTemporada':idTemporada})}}"><i class="icon-home" style="font-size:1.5em; color:white"></i></a></li>
                     <li title="Cerrar sesión"><a href="{{url('akademia_logout')}}"><i class="icon-logout" style="font-size:1.5em; color:white" ></i></a></li>
 				</ul>
 				<span class="navbar-text navbar-right" style="margin-right:30px;">
@@ -34,250 +34,238 @@
 
 <section>
 
-{% set meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'] %}
-{% set cont = 1 %}
-{% set cont2 = 1 %}		
-
-<div class="proceso">
-
-	<h2 class="text-center">Módulo de exportación</h2>
-	<h4 style="color:grey">EXPORTACIÓN EN FORMATO CSV</h4>
-
-
-	<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px;">
-		<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
-		<p>En este módulo podrás exportar data sobre los movimientos de los participantes de acuerdo a la fecha, complejo y deporte.</p>
-	</div>
-
+	{% set meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'] %}
+	{% set cont = 1 %}
+	{% set cont2 = 1 %}		
 
 	<div class="proceso">
-	
-	</div>
 
-	{% if app.user.idComplejo == 0 %}
-	<div class="container container-analista">
+		<h2 class="text-center">Módulo de exportación</h2>
+		<h4 style="color:grey">EXPORTACIÓN EN FORMATO CSV</h4>
 
-		<strong><h2 class="text-center">Parametros de Exportación</h2></strong>
+		<div id="alert-info" class="alert alert-warning alert-dismissible text-center" role="alert" style="margin-top: 10px;">
+			<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+			<p>En este módulo podrás exportar data sobre los movimientos de los participantes de acuerdo a la fecha, complejo y deporte.</p>
+		</div>
 
-		<div class="container-card col-xs-12 col-sm-8 col-md-5  col-lg-5  col-md-offset-1">
-			<div class="card">	
-				<p class="title-card text-center">Beneficiarios</p>
-				<div class="alert alert-success">
-					<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
-					<p class="text-center">Lista de beneficiarios hasta su último estado.</p>
-				</div>
-				<hr>
-				<div class="row">
+		<div class="container container-analista">
 
-					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+			<strong><h2 class="text-center">Parametros de Exportación</h2></strong>
 
-						
-						<label>Hasta el mes de</label>
-						<select class="form-control" id="select-mes" >
+			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MACRO') %}
 
-							<option value="">--Seleccionar--</option>
-							{% for mes in meses %}
-								{% if cont  >= mesInicioFinTemporada['mes_inicio_temporada'] and cont <= mesInicioFinTemporada['mes_fin_temporada'] %}
-									<option value="{{cont}}">{{mes}}</option>
-								{% endif %}
-							{% set cont = cont + 1 %}
-							{% endfor %}
-						</select>
+				<div class="container-card col-xs-12 col-sm-8 col-md-5  col-lg-5  col-md-offset-1">
+					<div class="card">	
+						<p class="title-card text-center">Beneficiarios</p>
+						<div class="alert alert-success">
+							<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+							<p class="text-center">Lista de beneficiarios hasta su último estado.</p>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+								<label>Hasta el mes de</label>
+								<select class="form-control" id="select-mes" >
 
-					</div>
+									<option value="">--Seleccionar--</option>
+									{% for mes in meses %}
+										{% if cont  >= mesInicioFinTemporada['mes_inicio_temporada'] and cont <= mesInicioFinTemporada['mes_fin_temporada'] %}
+											<option value="{{cont}}">{{mes}}</option>
+										{% endif %}
+									{% set cont = cont + 1 %}
+									{% endfor %}
+								</select>
 
-					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+							</div>
 
-						<label>Departamentos</label>
-						<select class="form-control"  id="select-departamento" >
-							{% if app.user.idPerfil == 2 %}	
-								<option value="">--Seleccionar--</option>
-							{% endif %}
-				        	{% for  dep in  departamentosAll  %}
-								{% for depFlag in departamentosExport %}
-									{%  if dep['id'] == depFlag['idDepartamento'] %}
-										<option value="{{dep['id']}}">{{dep['nombre']}}</option>
+							<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+								<label>Departamentos</label>
+								<select class="form-control"  id="select-departamento" >
+									{% if app.user.idPerfil == 2 %}	
+										<option value="">--Seleccionar--</option>
 									{% endif %}
-								{% endfor %}
-				        	{% endfor %}	
-				    	</select>
+						        	{% for  dep in  departamentosAll  %}
+										{% for depFlag in departamentosExport %}
+											{%  if dep['id'] == depFlag['idDepartamento'] %}
+												<option value="{{dep['id']}}">{{dep['nombre']}}</option>
+											{% endif %}
+										{% endfor %}
+						        	{% endfor %}	
+						    	</select>
 
-					</div>
+							</div>
 
+						</div>
+
+						<div class="container-button-exportPREINS">
+							<button class="btn btn-danger" id="export-beneficiarios-admin-macro">Descargar Beneficiarios</button>
+						</div>
+
+					</div>		   
 				</div>
 
-				<div class="container-button-exportPREINS">
-					<button class="btn btn-danger" id="export-beneficiarios-analista">Descargar Beneficiarios</button>
+			{% endif %}
+
+			{% if is_granted('ROLE_MONITOR') %}
+
+				<div class="container-card col-xs-12 col-sm-8 col-md-5  col-lg-5  col-md-offset-1">
+					<div class="card">	
+						<p class="title-card text-center">Beneficiarios</p>
+						<div class="alert alert-success">
+							<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+							<p class="text-center">Lista de beneficiarios hasta su último estado.</p>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+								<label>Hasta el mes de</label>
+								<select class="form-control" id="select-mes" >
+
+									<option value="">--Seleccionar--</option>
+									{% for mes in meses %}
+										{% if cont  >= mesInicioFinTemporada['mes_inicio_temporada'] and cont <= mesInicioFinTemporada['mes_fin_temporada'] %}
+											<option value="{{cont}}">{{mes}}</option>
+										{% endif %}
+									{% set cont = cont + 1 %}
+									{% endfor %}
+								</select>
+
+							</div>
+
+							<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+								<label>Provincias</label>
+								<select class="form-control"  id="select-provincia" >
+										{% for prov in provinciasExport %}
+												<option  data-departamento-id="{{prov['idDepartamento']}}" value="{{prov['idProvincia']}}">{{prov['nombreProvincia']}}</option>
+										{% endfor %}
+						    	</select>
+							</div>
+						</div>
+
+						<div class="container-button-exportPREINS">
+							<button class="btn btn-danger" id="export-beneficiarios-monitor">Descargar Beneficiarios</button>
+						</div>
+
+					</div>		   
 				</div>
 
-			</div>		   
-		</div>
+			{% endif %}
 
-		<div class="container-card col-xs-12 col-sm-8 col-md-5 col-lg-5">
-			<div class="card">	
-				<p class="title-card text-center" >Informes</p>
-				<div class="alert alert-success">
-					<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
-					<p>Resumen de inscritos totales/vigentes y retiros.</p>
-				</div>
-				<hr>
-				<div class="row">
-					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+			{% if is_granted('ROLE_PROMOTOR') %}
 
-						<label>Hasta el mes de</label>
-						<select class="form-control" id="select-mes-informe">
-							<option value="">--Seleccionar--</option>
-							{% for mes in meses %}
+				<div class="container-card col-xs-12 col-sm-8 col-md-5  col-lg-5  col-md-offset-1">
+					<div class="card">	
+						<p class="title-card text-center">Beneficiarios</p>
+						<div class="alert alert-success">
+							<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+							<p class="text-center">Lista de beneficiarios hasta su último estado.</p>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+								<label>Hasta el mes de</label>
+								<select class="form-control" id="select-mes" >
 
-								{% if cont2  >= mesInicioFinTemporada['mes_inicio_temporada'] and cont2 <= mesInicioFinTemporada['mes_fin_temporada'] %}
+									<option value="">--Seleccionar--</option>
+									{% for mes in meses %}
+										{% if cont  >= mesInicioFinTemporada['mes_inicio_temporada'] and cont <= mesInicioFinTemporada['mes_fin_temporada'] %}
+											<option value="{{cont}}">{{mes}}</option>
+										{% endif %}
+									{% set cont = cont + 1 %}
+									{% endfor %}
+								</select>
 
-									<option value="{{cont2}}">{{mes}}</option>
-								
-								{% endif %}
+							</div>
 
-							{% set cont2 = cont2 + 1 %}
-							{% endfor %}
-						</select>
+							<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
-					</div>
+								<label>Complejo</label>
+								<select class="form-control"  id="select-complejo" >
+										{% for comp in complejosExport %}
+												<option  value="{{comp['complejoId']}}">{{comp['complejoNombre']}}</option>
+										{% endfor %}
+						    	</select>
+							</div>
+						</div>
 
-					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						<div class="container-button-exportPREINS">
+							<button class="btn btn-danger" id="export-beneficiarios-promotor">Descargar Beneficiarios</button>
+						</div>
 
-						<label>Reporte</label>
-						<select class="form-control"  id="select-informe" >
-							<option value="1" >Regional</option>
-							<option value="2">Lima-Callao</option>
-				    	</select>
-
-					</div>
-				</div>
-
-
-				<div class="container-button-exportPREINS">
-					<button class="btn btn-danger" id="export-informe">Descargar Informes</button>
-				</div>
-
-			</div>		   
-		</div>
-
-		<div class="container-card col-xs-12 col-sm-12 col-md-12  col-lg-8  col-lg-offset-2 ">
-			<div class="card">	
-				<p class="title-card text-center">Gestión de Procesos</p>
-				<hr>
-				<div class="row">
-					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6  container-button-gp">
-						<button class="btn btn-danger" id="export-horario-creados" >REPORTE DE INSCRITOS POR HORARIO</button>
-					</div>
-
-					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6 container-button-gp container-analista">
-						<button class="btn btn-danger" id="export-usuarios-password-complejos" >USUARIOS CONTRASEÑAS DE COMPLEJOS</button>
-					</div>
+					</div>		   
 				</div>
 
+			{% endif %}
 
-			</div>		   
+			{% if is_granted('ROLE_ADMIN') %}
+
+				<div class="container-card col-xs-12 col-sm-8 col-md-5 col-lg-5">
+					<div class="card">	
+						<p class="title-card text-center" >Informes</p>
+						<div class="alert alert-success">
+							<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+							<p>Resumen de inscritos totales/vigentes y retiros.</p>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+								<label>Hasta el mes de</label>
+								<select class="form-control" id="select-mes-informe">
+									<option value="">--Seleccionar--</option>
+									{% for mes in meses %}
+
+										{% if cont2  >= mesInicioFinTemporada['mes_inicio_temporada'] and cont2 <= mesInicioFinTemporada['mes_fin_temporada'] %}
+											<option value="{{cont2}}">{{mes}}</option>
+										{% endif %}
+
+									{% set cont2 = cont2 + 1 %}
+									{% endfor %}
+								</select>
+							</div>
+
+							<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+								<label>Reporte</label>
+								<select class="form-control"  id="select-informe" >
+									<option value="1" >Regional</option>
+									<option value="2">Lima-Callao</option>
+						    	</select>
+							</div>
+						</div>
+
+						<div class="container-button-exportPREINS">
+							<button class="btn btn-danger" id="export-informe-admin">Descargar Informes</button>
+						</div>
+
+					</div>		   
+				</div>
+
+				<div class="container-card col-xs-12 col-sm-12 col-md-12  col-lg-8  col-lg-offset-2 ">
+					<div class="card">	
+						<p class="title-card text-center">Gestión de Procesos</p>
+						<hr>
+						<div class="row">
+							<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6  container-button-gp">
+								<button class="btn btn-danger" id="export-horario-creados-admin" >REPORTE DE INSCRITOS POR HORARIO</button>
+							</div>
+
+							<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6 container-button-gp container-analista">
+								<button class="btn btn-danger" id="export-usuarios-password-complejos" >USUARIOS CONTRASEÑAS DE COMPLEJOS</button>
+							</div>
+						</div>
+					</div>		   
+				</div>
+			{% endif %}
 		</div>
 	</div>
-	{% endif %}
-
-	<!--CONTAINER COMPLEJO-->
-	{%  if app.user.idComplejo != 0 %}
-	<div class="container container-complejo">
-
-		<strong><h2 class="text-center">Parametros de Exportación</h2></strong>
-
-		<div class="container-card col-xs-12 col-sm-8 col-md-6  col-lg-6  col-md-offset-3">
-			<div class="card">	
-				<p class="title-card text-center">Beneficiarios</p>
-				<div class="alert alert-success">
-					<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
-					<p class="text-center" >Lista de beneficiarios acumulados hasta su último estado.</p>
-				</div>
-				<hr>
-				<div class="row">
-
-					<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6 col-lg-offset-3 ">
-
-						<label for="select-mes">Hasta el mes de</label>
-						<select class="form-control" id="select-mes" >
-
-							<option value="">--Seleccionar--</option>
-							{% for mes in meses %}
-
-								{% if cont  >= mesInicioFinTemporada['mes_inicio_temporada'] and cont <= mesInicioFinTemporada['mes_fin_temporada'] %}
-									<option value="{{cont}}">{{mes}}</option>
-								
-								{% endif %}	
-							{% set cont = cont + 1 %}
-
-							{% endfor %}
-						</select>
-
-					</div>
-				</div>
-
-				<div class="container-button-exportPREINS">
-					<button class="btn btn-danger" id="export-beneficiarios-complejo">Descargar Beneficiarios</button>
-				</div>
-
-			</div>		   
-		</div>
-
-		<div class="container-card col-xs-12 col-sm-12 col-md-12  col-lg-6  col-lg-offset-3 ">
-			<div class="card">	
-				<p class="title-card text-center">Gestión de Procesos</p>
-				<hr>
-				<div class="row">
-					<div class="form-group col-xs-6 col-sm-6 col-md-10 col-lg-12  container-button-gp">
-						<button class="btn btn-danger" id="export-horario-creados" >REPORTE DE INSCRITOS POR HORARIO</button>
-					</div>
-				</div>
-
-
-			</div>		   
-		</div>
-	</div>
-	{% endif %}
-
-</div>
-<hr>
 </section>
+
 <br>
 <br>
 
-<footer class="footer">
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center">
-				<br>
-				<br>
-				<br>
-				<img class="align-self-center foot" src="{{ asset('assets/images/ipdfooter.png')}}">
-			</div>
-			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-				<br><br>
-				<h4>La Academia</h4>
-				<p class="footerTex">
-					Dirección:Calle Madre de Dios N° 463
-				</p>
-				<p class="footerTex">
-					Teléfono: 204-8420 /anexo 1302
-				</p>
-			</div>
-			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-				<br><br>
-				<h4>Enlaces de Interés</h4>
-				<p><a class="footerTex" href="http://www.ipd.gob.pe/">Instituto Peruano del Deporte</a></p>
-				<p><a class="footerTex" href="https://www.facebook.com/recreacion.ipd/">Facebook Recreación</a></p>
-				<p><a class="footerTex" href="http://www.ipd.gob.pe/formacion-deportiva">Formación Deportiva</a></p>
-			</div>
-		</div>
-		<br>
-    	<p class="col-xs-12 col-sm-12 col-md-12 col-lg-12 copyright">&copy; 2018 Todos los derechos reservados</p>
-	</div>
-</footer>
-
-<h1></h1>
+{% include 'AkademiaBundle:Footer:footer.html.twig' %}
 
 {% endblock %}
 
@@ -288,47 +276,53 @@
 
 <script>
 	
-	const $containerCompelejo = $(".container-complejo");
-	const $containerAnalista = $(".container-analista");
-		
-	const $exportBeneficiariosAnalista = $("#export-beneficiarios-analista");
-	const $exportBeneficiariosComplejo = $("#export-beneficiarios-complejo");
 
-	const $exportInforme = $("#export-informe");
+	const $exportBeneficiariosAdminMacro = $("#export-beneficiarios-admin-macro");
+	const $exportBeneficiariosMonitor = $("#export-beneficiarios-monitor");
+	const $exportBeneficiariosPromotor = $("#export-beneficiarios-promotor");
+
+	const $exportInformeAdmin = $("#export-informe-admin");
 	const $selectInforme = $("#select-informe");
 	const $selectMesInforme = $("#select-mes-informe");
 
 
-	const $exportHorarioCreados = $("#export-horario-creados");
+	const $exportHorarioCreadosAdmin = $("#export-horario-creados-admin");
 	const $exportUsuariosPasswordComplejos = $("#export-usuarios-password-complejos");
 
-	
-	const $containerDepartamento = $("#container-departamento");
 	const $selectMes = $("#select-mes");
 	const $selectDepartamento = $("#select-departamento");
+	const $selectProvincia = $("#select-provincia");
+	const $selectComplejo = $("#select-complejo");
 
 	
-	$exportBeneficiariosAnalista.on('click',function(){
+	$exportBeneficiariosAdminMacro.on('click',function(){
 
-			location.href='exportDataBeneficiariosAnalista?mes='+$selectMes.val()+'&departamento='+$selectDepartamento.val()+'&idTemporada={{idTemporadaHabilitada}}';
+		location.href='exportDataBeneficiariosAdminMacro?mes='+$selectMes.val()+'&departamento='+$selectDepartamento.val()+'&idTemporada={{idTemporada}}';
 	});
 
-	$exportBeneficiariosComplejo.on('click',function(){
-
-			location.href='exportDataBeneficiariosComplejo?mes='+$selectMes.val()+'&idTemporada={{idTemporadaHabilitada}}';
+	$exportBeneficiariosMonitor.on('click',function(){
+		
+		let departamentoId = $('option:selected', $selectProvincia).attr('data-departamento-id');
+		
+		location.href='exportDataBeneficiariosMonitor?mes='+$selectMes.val()+'&departamento='+departamentoId+'&provincia='+$selectProvincia.val()+'&idTemporada={{idTemporada}}';
 	});
 
-	$exportInforme.on('click',function(){
+	$exportBeneficiariosPromotor.on('click',function(){
+		
+		location.href='exportDataBeneficiariosComplejo?mes='+$selectMes.val()+'&idComplejo='+$selectComplejo.val()+'&idTemporada={{idTemporada}}';
+	});
+
+	$exportInformeAdmin.on('click',function(){
 	
 		if ($selectInforme.val() == 1)
-			location.href='exportInscripcionesRegiones?mes='+$selectMesInforme.val()+'&idTemporada={{idTemporadaHabilitada}}';
+			location.href='exportInscripcionesRegiones?mes='+$selectMesInforme.val()+'&idTemporada={{idTemporada}}';
 		else if($selectInforme.val() == 2)
-			location.href='exportInscripcionesLimaCallaos?mes='+$selectMesInforme.val()+'&idTemporada={{idTemporadaHabilitada}}';
+			location.href='exportInscripcionesLimaCallaos?mes='+$selectMesInforme.val()+'&idTemporada={{idTemporada}}';
 	});
 
 
-	$exportHorarioCreados.on('click',function(){
-		location.href='exportCantidadHorariosCreadosRegion?idComplejo='+'{{app.user.idComplejo}}'+'&idTemporada={{idTemporadaHabilitada}}';
+	$exportHorarioCreadosAdmin.on('click',function(){
+		location.href='exportCantidadHorariosCreadosRegion?idComplejo='+'{{app.user.idComplejo}}'+'&idTemporada={{idTemporada}}';
 	});
 
 	$exportUsuariosPasswordComplejos.on('click',function(){

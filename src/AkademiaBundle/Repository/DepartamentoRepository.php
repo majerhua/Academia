@@ -118,6 +118,48 @@ class DepartamentoRepository extends \Doctrine\ORM\EntityRepository
         return $departamentos;
     }
 
+    public function departamentosExportByUsuarioId($usuarioId){
+
+        $query = "  SELECT distinct ubiDpto.ubidpto idDepartamento
+                    FROM CATASTRO.edificacionDisciplina edi
+                    inner join CATASTRO.edificacionesdeportivas ede on ede.ede_codigo = edi.ede_codigo
+                    inner join grubigeo ubi on ubi.ubicodigo = ede.ubicodigo
+                    inner join grubigeo ubiDpto on ubiDpto.ubidpto = ubi.ubidpto
+                    inner join ACADEMIA.Usuario_Ubigeo usuUbi ON usuUbi.ubicodigo = ubiDpto.ubicodigo
+                    WHERE 
+                    ubiDpto.ubidistrito = 0 AND 
+                    ubiDpto.ubiprovincia = 0 AND 
+                    ubiDpto.ubidpto != 0 AND
+                    usuUbi.usuario_id = $usuarioId;";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $departamentos = $stmt->fetchAll();
+        return $departamentos;
+    }
+
+    public function provinciasExportByUsuarioId($usuarioId){
+
+        $query = "  SELECT distinct ubiProv.ubidpto idDepartamento,
+                    ubiProv.ubiprovincia idProvincia,
+                    ubiProv.ubinombre nombreProvincia
+                    FROM CATASTRO.edificacionDisciplina edi
+                    inner join CATASTRO.edificacionesdeportivas ede on ede.ede_codigo = edi.ede_codigo
+                    inner join grubigeo ubi on ubi.ubicodigo = ede.ubicodigo
+                    inner join grubigeo ubiProv on ubiProv.ubidpto = ubi.ubidpto
+                    inner join ACADEMIA.Usuario_Ubigeo usuUbi ON usuUbi.ubicodigo = ubiProv.ubicodigo
+                    WHERE 
+                    ubiProv.ubidistrito = 0 AND 
+                    ubiProv.ubiprovincia != 0 AND 
+                    ubiProv.ubidpto != 0 AND
+                    usuUbi.usuario_id = $usuarioId;";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $provincias = $stmt->fetchAll();
+        return $provincias;        
+    }
+
     public function departamentosExportFind($id){
 
         $query = " SELECT distinct ubiDpto.ubidpto idDepartamento

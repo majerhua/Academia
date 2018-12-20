@@ -15,6 +15,58 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class UsuariosController extends Controller
 {
 
+    public function usuariosEliminarAction(Request $request){
+
+        $usuarioId = $request->get('usuarioId');
+        $perfilUsuario = $request->get('usuarioPerfilId');
+
+        $idComplejo = $request->get('idComplejo');
+        $idTemporada = $request->get('idTemporada');
+
+        $confPerfilUsuario = $this->container->getParameter('perfilUsuario');
+
+        if( isset($usuarioId) && !empty($usuarioId) ){
+            $em = $this->getDoctrine()->getManager(); 
+            $estadoEliminar = $em->getRepository('AkademiaBundle:Usuarios')->usuarioEliminar($usuarioId);
+
+            if( !empty($estadoEliminar) ){
+
+                if( $perfilUsuario == $confPerfilUsuario['profesor'] ){
+
+                    $usuarios = $em->getRepository('AkademiaBundle:Usuarios')->getUsuariosProfesoresAll($idComplejo,$idTemporada);
+                    echo $this->renderView('AkademiaBundle:Disciplina_Horario_Beneficiario:table_disciplina_profesores.html.twig',
+                                            array(
+                                                'usuarios' => $usuarios
+                                            )
+                                );
+                    exit; 
+
+                }else{
+
+                    $usuarios = $em->getRepository('AkademiaBundle:Usuarios')->getUsuariosAll();
+                    echo $this->renderView('AkademiaBundle:Usuario:table_usuario.html.twig',
+                                            array(
+                                                'perfilUsuarioId'=>$perfilUsuario,
+                                                'usuarios' => $usuarios
+                                            )
+                                );
+                    exit;
+                }
+
+
+
+            }else{
+                echo "0"; //OCURRIO UN ERROR NO SE PUDO ELIMINAR USUARIO
+                exit;
+            }
+
+        }else{
+
+            echo "-1"; //NO SE PUDO ELIMINAR USUARIO
+            exit;
+        }        
+    }
+
     public function usuariosEditarAction(Request $request){
 
         $usuarioId = $request->get('usuarioId');
@@ -30,12 +82,14 @@ class UsuariosController extends Controller
         $password = $request->get('password');
         $coleccion = $request->get('coleccion');
 
-        $em = $this->getDoctrine()->getManager(); 
-        $usuarioDuplicado = $em->getRepository('AkademiaBundle:Usuarios')->verificarDuplicidadUsuario($username);
+        $idComplejo = $request->get('idComplejo');
+        $idTemporada = $request->get('idTemporada');
 
-        var_dump($usuarioDuplicado);
-        exit;
-        
+        $em = $this->getDoctrine()->getManager(); 
+        $usuarioDuplicado = $em->getRepository('AkademiaBundle:Usuarios')->verificarDuplicidadUsuarioEditar($username,$usuarioId);
+
+        $confPerfilUsuario = $this->container->getParameter('perfilUsuario');
+
         $flag = TRUE;
 
         if(!empty($usuarioDuplicado)){
@@ -62,42 +116,66 @@ class UsuariosController extends Controller
             isset($coleccion) && !empty($coleccion) &&
             $flag == TRUE
         ){
-            $estadoEditar = $em->getRepository('AkademiaBundle:Usuarios')->editarUsuario($usuarioId,$perfilUsuario,$tipoDocumento,$numeroDocumento,$nombre,$apellidoPaterno,$apellidoMaterno,$telefono,$username,$password);
+
+
+            $estadoEditar = $em->getRepository('AkademiaBundle:Usuarios')->editarUsuario($usuarioId,$perfilUsuario,$tipoDocumento,$numeroDocumento,$nombre,$apellidoPaterno,$apellidoMaterno,$telefono,$correo,$username,$password);
 
             if($estadoEditar == "1"){
-               $coleccionInicio = $em->getRepository('AkademiaBundle:Usuarios')->getUsuarioUbigeoByUsuarioId($usuarioId);
 
-                if( !empty($coleccionInicio) ) //SI EXISTEN MODALIDADES
-                  $arrayColeccionInicio = explode(',',$coleccionInicio);
-                else
-                  $arrayColeccionInicio = Array();
+                $em = $this->getDoctrine()->getManager();
 
-                if(count($coleccion) >= count($arrayColeccionInicio)){
+                if( $perfilUsuario == $confPerfilUsuario['macro'] ){
 
-                  for ($i=0; $i < count($coleccion) ; $i++) { 
-
-                      $em = $this->getDoctrine()->getManager();
-                      if($i < count($arrayColeccionInicio)){
-                          $em->getRepository('SudJuvenilesBundle:Inscripcion')->updateUsuarioUbigeo($usuarioId, $arrayColeccionInicio[$i], $coleccion[$i],$usuarioIdSis);
-                      }else{
-                          $em->getRepository('SudJuvenilesBundle:Inscripcion')->insertUsuarioUbigeo($usuarioId,$coleccion[$i],$usuarioIdSis);
-                      }    
-                  }
-                }
-
-                else if( count($coleccion) < count($arrayColeccionInicio)  && count($coleccion)> -1 ){
-
-                    $em = $this->getDoctrine()->getManager();
-                    $em->getRepository('SudJuvenilesBundle:Inscripcion')->removeUsuarioUbigeo($usuarioId);
+                    $em->getRepository('AkademiaBundle:Usuarios')->removeUsuarioUbigeo($usuarioId);
 
                     for ($i=0; $i < count($coleccion) ; $i++) { 
-
-                        $em->getRepository('SudJuvenilesBundle:Inscripcion')->insertUsuarioUbigeo($usuarioId,$coleccion[$i]);
+                        $em->getRepository('AkademiaBundle:Usuarios')->insertUsuarioUbigeo($usuarioId,$coleccion[$i],$usuarioIdSis);
                     }
+                }else if( $perfilUsuario == $confPerfilUsuario['monitor'] ){
+
+                    $em->getRepository('AkademiaBundle:Usuarios')->removeUsuarioUbigeo($usuarioId);
+
+                    for ($i=0; $i < count($coleccion) ; $i++) { 
+                        $em->getRepository('AkademiaBundle:Usuarios')->insertUsuarioUbigeo($usuarioId,$coleccion[$i],$usuarioIdSis);
+                    }
+                }else if( $perfilUsuario == $confPerfilUsuario['promotor'] ){
+
+                    $em->getRepository('AkademiaBundle:Usuarios')->removeUsuarioEdificacion($usuarioId);
+
+                    for ($i=0; $i < count($coleccion) ; $i++) { 
+                        $em->getRepository('AkademiaBundle:Usuarios')->insertUsuarioUbigeoEdificacion($usuarioId,$coleccion[$i],$usuarioIdSis);
+                    }
+                }else if( $perfilUsuario == $confPerfilUsuario['profesor'] ){
+                    $em->getRepository('AkademiaBundle:Usuarios')->removeUsuarioEdificacionDisciplina($usuarioId);
+
+                    for ($i=0; $i < count($coleccion) ; $i++) { 
+                        $em->getRepository('AkademiaBundle:Usuarios')->insertUsuarioEdificacionDisciplina($usuarioId,$coleccion[$i],$usuarioIdSis);
+                    }                    
                 }
 
-                echo "1";//SE MODIFICO CORRECTAMENTE
-                exit;
+                if( $perfilUsuario == $confPerfilUsuario['profesor'] ){
+
+                    $usuarios = $em->getRepository('AkademiaBundle:Usuarios')->getUsuariosProfesoresAll($idComplejo,$idTemporada);
+                    echo $this->renderView('AkademiaBundle:Disciplina_Horario_Beneficiario:table_disciplina_profesores.html.twig',
+                                            array(
+                                                'usuarios' => $usuarios
+                                            )
+                                );
+                    exit; 
+                }
+
+                else {
+
+                    $usuarios = $em->getRepository('AkademiaBundle:Usuarios')->getUsuariosAll();
+                    echo $this->renderView('AkademiaBundle:Usuario:table_usuario.html.twig',
+                                        array(
+                                            'perfilUsuarioId'=>$perfilUsuario,
+                                            'usuarios' => $usuarios
+                                        )
+                            );
+                    //SE MODIFICO CORRECTAMENTE
+                    exit;
+                }
 
             }else{
                 echo "0"; //OCURRIO UN ERROR EN EL SISTEMA
@@ -117,13 +195,46 @@ class UsuariosController extends Controller
         $usuario = $em->getRepository('AkademiaBundle:Usuarios')->getUsuarioById($usuarioId);
 
         if( $usuario[0]["id_perfil"] == $confPerfilUsuario['macro'] ){
-            $ubigeos = $em->getRepository('AkademiaBundle:Usuarios')->getUbigeoByUsuarioId($usuario[0]["id"]);
+            $coleccion = $em->getRepository('AkademiaBundle:Usuarios')->getUbigeoByUsuarioId($usuario[0]["id"]);
 
         }else if( $usuario[0]["id_perfil"] == $confPerfilUsuario['monitor'] ){
-            $ubigeos = $em->getRepository('AkademiaBundle:Usuarios')->getUbigeoByUsuarioId($usuario[0]["id"]);
+            $coleccion = $em->getRepository('AkademiaBundle:Usuarios')->getUbigeoByUsuarioId($usuario[0]["id"]);
+
+        }else if( $usuario[0]["id_perfil"] == $confPerfilUsuario['promotor'] ){
+            $coleccion = $em->getRepository('AkademiaBundle:Usuarios')->getEdificacionByUsuarioId($usuario[0]["id"]);
+
+        }else if( $usuario[0]["id_perfil"] == $confPerfilUsuario['profesor'] ){
+            $coleccion = $em->getRepository('AkademiaBundle:Usuarios')->getDisciplinaByUsuarioId($usuario[0]["id"]);
+
         }
 
-        $usuario[0]["coleccion"] = $ubigeos;
+        $usuario[0]["coleccion"] = $coleccion;
+
+
+        return new JsonResponse($usuario);
+    }
+
+
+    public function getDatosUsuariosByDetalleAction(Request $request){
+
+        $confPerfilUsuario = $this->container->getParameter('perfilUsuario');
+        $usuarioId = $request->get('usuarioId');
+        $usuarioPerfilId = $request->get('usuarioPerfilId');
+        $em = $this->getDoctrine()->getManager();
+
+        if( $usuarioPerfilId == $confPerfilUsuario['macro'] ){
+
+            $usuario = $em->getRepository('AkademiaBundle:Usuarios')->getUsuarioDetalleUbigeoById($usuarioId);
+
+        }else if( $usuarioPerfilId == $confPerfilUsuario['monitor'] ){
+            $usuario = $em->getRepository('AkademiaBundle:Usuarios')->getUsuarioDetalleUbigeoById($usuarioId);
+
+        }else if( $usuarioPerfilId == $confPerfilUsuario['promotor'] ){
+            $usuario = $em->getRepository('AkademiaBundle:Usuarios')->getUsuarioDetalleEdificacionById($usuarioId);
+
+        }else if( $usuarioPerfilId == $confPerfilUsuario['profesor'] ){
+            $usuario = $em->getRepository('AkademiaBundle:Usuarios')->getUsuarioDetalleEdificacionDisciplinaById($usuarioId);
+        }
 
         return new JsonResponse($usuario);
     }
@@ -132,7 +243,9 @@ class UsuariosController extends Controller
 
 		$em = $this->getDoctrine()->getManager();
        
-        $usuario = $this->getUser()->getId();
+        $usuario = $this->getUser();
+        $sessionUsuarioPerfilId = $usuario->getIdPerfil();
+
 		$descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
 		$perfilUsuarios = $em->getRepository('AkademiaBundle:Usuarios')->getPerfilUsuariosAll();
 		$departamentos = $em->getRepository('AkademiaBundle:Distrito')->getDepartamentos();
@@ -148,7 +261,8 @@ class UsuariosController extends Controller
 					      				'departamentos'=> $departamentos,
 					      				'provincias' => $provincias,
 					      				'complejos' => $complejos,
-					      				'usuarios' => $usuarios
+					      				'usuarios' => $usuarios,
+                                        'sessionUsuarioPerfilId' => $sessionUsuarioPerfilId
 					      			)
       						);
 	}
@@ -172,6 +286,10 @@ class UsuariosController extends Controller
         $username = $request->get('username');
         $password = $request->get('password');
         $coleccion = $request->get('coleccion');
+
+        $idComplejo = $request->get('idComplejo');
+        $idTemporada = $request->get('idTemporada');
+
         $usuario = $this->getUser()->getId();
 
         $em = $this->getDoctrine()->getManager(); 
@@ -203,14 +321,26 @@ class UsuariosController extends Controller
             
             if( $estadoCrear != 0){
 
-            	$usuarios = $em->getRepository('AkademiaBundle:Usuarios')->getUsuariosAll();
-    	        echo $this->renderView('AkademiaBundle:Usuario:table_usuario.html.twig',
-					    	        	array(
-					    	        		'perfilUsuarioId'=>$perfilUsuario,
-					    	        		'usuarios' => $usuarios
-					    	        	)
-	    					);
-        		exit;
+                if( $perfilUsuario == $confPerfilUsuario['profesor'] ){
+
+                    $usuarios = $em->getRepository('AkademiaBundle:Usuarios')->getUsuariosProfesoresAll($idComplejo,$idTemporada);
+                    echo $this->renderView('AkademiaBundle:Disciplina_Horario_Beneficiario:table_disciplina_profesores.html.twig',
+                                            array(
+                                                'usuarios' => $usuarios
+                                            )
+                                );
+                    exit;                  
+                }else{
+                    $usuarios = $em->getRepository('AkademiaBundle:Usuarios')->getUsuariosAll();
+                    echo $this->renderView('AkademiaBundle:Usuario:table_usuario.html.twig',
+                                            array(
+                                                'perfilUsuarioId'=>$perfilUsuario,
+                                                'usuarios' => $usuarios
+                                            )
+                                );
+                    exit;                      
+                }
+
                 // echo "1";
             }else{
                 echo "0";//Ocurrio un Error a la hora de editar

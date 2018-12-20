@@ -12,7 +12,17 @@ use Doctrine\DBAL\DBALException;
 class UsuariosRepository extends \Doctrine\ORM\EntityRepository
 {
 
-	public function editarUsuario($usuarioId,$perfilUsuario,$tipoDocumento,$numeroDocumento,$nombre,$apellidoPaterno,$apellidoMaterno,$telefono,$username,$password){
+	public function usuarioEliminar($usuarioId){
+	    $query = "	UPDATE ACADEMIA.usuario
+ 					SET estado = 0
+					WHERE id = $usuarioId ";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    return "1";
+	}
+
+	public function editarUsuario($usuarioId,$perfilUsuario,$tipoDocumento,$numeroDocumento,$nombre,$apellidoPaterno,$apellidoMaterno,$telefono,$correo,$username,$password){
 
 	    $query = "	UPDATE ACADEMIA.usuario 
 					SET usuario='$username', contrasena ='$password',tipoDocumento='$tipoDocumento',telefono='$telefono',numeroDocumento='$numeroDocumento',apellidoPaterno='$apellidoPaterno',apellidoMaterno='$apellidoMaterno',correo='$correo',nombre='$nombre'
@@ -21,7 +31,6 @@ class UsuariosRepository extends \Doctrine\ORM\EntityRepository
 	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
 	    $stmt->execute();
 	    return "1";
-
 	}
 
 public function updateUsuarioUbigeo($usuarioId, $ubicodigo, $newUbicodigo,$usuarioIdSis){
@@ -45,7 +54,7 @@ public function updateUsuarioUbigeo($usuarioId, $ubicodigo, $newUbicodigo,$usuar
        // }
   	}
 
-public function insertUsuarioUbigeo($usuarioId, $ubicodigo,$usuarioIdSis){
+	public function insertUsuarioUbigeo($usuarioId, $ubicodigo,$usuarioIdSis){
 
     	try {
           $query="  INSERT INTO ACADEMIA.Usuario_Ubigeo(usuario_id,ubicodigo,usuario_crea)
@@ -76,6 +85,68 @@ public function insertUsuarioUbigeo($usuarioId, $ubicodigo,$usuarioIdSis){
         //}
     }
 
+	public function insertUsuarioEdificacionDisciplina($usuarioId, $ediCodigo ,$usuarioIdSis){
+
+    	try {
+          $query="  INSERT INTO ACADEMIA.Usuario_EdificacionDisciplina(usuario_id,edi_codigo,usuario_crea)
+					VALUES($usuarioId,$ediCodigo,$usuarioIdSis)";
+
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+
+            $result = '1';
+            return $result;
+
+        }catch (DBALException $e) {
+            $message = $e->getCode();
+            return $message;
+        }
+  	}
+
+	public function removeUsuarioEdificacionDisciplina($usuarioId){
+		//try {
+	        $query = "DELETE FROM ACADEMIA.Usuario_EdificacionDisciplina  WHERE usuario_id='$usuarioId';";
+	        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	        $stmt->execute();
+            $result = '1';
+            return $result;
+       //}catch (DBALException $e) {
+        //    $message = $e->getCode();
+        //    return $message;
+        //}
+    }
+
+	public function insertUsuarioUbigeoEdificacion($usuarioId, $complejoId,$usuarioIdSis){
+
+    	try {
+          $query="  INSERT INTO ACADEMIA.Usuario_Edificacion(usuario_id,ede_codigo,usuario_crea)
+					VALUES($usuarioId,$complejoId,$usuarioIdSis)";
+
+            $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+            $stmt->execute();
+
+            $result = '1';
+            return $result;
+
+        }catch (DBALException $e) {
+            $message = $e->getCode();
+            return $message;
+        }
+  	}
+
+	public function removeUsuarioEdificacion($usuarioId){
+		//try {
+	        $query = "DELETE FROM ACADEMIA.Usuario_Edificacion  WHERE usuario_id='$usuarioId';";
+	        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	        $stmt->execute();
+            $result = '1';
+            return $result;
+       //}catch (DBALException $e) {
+        //    $message = $e->getCode();
+        //    return $message;
+        //}
+    }
+
 	public function getUsuarioUbigeoByUsuarioId($usuarioId){
 	    $query = "	SELECT 
   					CONVERT(VARCHAR(100),STUFF(( SELECT  ',' +
@@ -84,11 +155,12 @@ public function insertUsuarioUbigeo($usuarioId, $ubicodigo,$usuarioIdSis){
           			WHERE   usuUbi.usuario_id = usu.id
           			FOR XML PATH('') ), 1, 1, '') ) AS ubigeos
 					FROM ACADEMIA.usuario usu
-					WHERE usu.id = 217;";
+					WHERE usu.id = $usuarioId;";
 	    
 	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
 	    $stmt->execute();
 	    $ubigeoUsuario = $stmt->fetchAll();
+	    return $ubigeoUsuario[0]['ubigeos'];
 	}
 
 	public function crearUsuario($tipoDocumento,$numeroDocumento,$nombre,$apellidoPaterno,$apellidoMaterno,$telefono,$correo,$username,$password,$coleccion,$perfilUsuario,$rol,$usuario,$confPerfilUsuario){
@@ -114,6 +186,13 @@ public function insertUsuarioUbigeo($usuarioId, $ubicodigo,$usuarioIdSis){
 	    		}else if( $confPerfilUsuario['promotor'] == $perfilUsuario ){
 
 				    $query = "INSERT INTO ACADEMIA.Usuario_Edificacion(usuario_id,ede_codigo,usuario_crea)
+				    		VALUES($usuarioId,$value,$usuario)";
+				   	$stmt = $this->getEntityManager()->getConnection()->prepare($query);
+				    $stmt->execute();
+
+	    		}else if( $confPerfilUsuario['profesor'] == $perfilUsuario ){
+
+				    $query = "INSERT INTO ACADEMIA.Usuario_EdificacionDisciplina(usuario_id,edi_codigo,usuario_crea)
 				    		VALUES($usuarioId,$value,$usuario)";
 				   	$stmt = $this->getEntityManager()->getConnection()->prepare($query);
 				    $stmt->execute();
@@ -168,6 +247,17 @@ public function insertUsuarioUbigeo($usuarioId, $ubicodigo,$usuarioIdSis){
 	    return $perfilUsuarios;
 	}
 
+	public function verificarDuplicidadUsuarioEditar($username,$usuarioId){
+
+		$query = "SELECT TOP 1 * FROM ACADEMIA.usuario WHERE usuario = '$username' AND id != $usuarioId;";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    $usuario = $stmt->fetchAll();
+	    
+	    return $usuario;
+	}
+
 	public function verificarDuplicidadUsuario($username){
 
 		$query = "SELECT TOP 1 * FROM ACADEMIA.usuario WHERE usuario = '$username';";
@@ -177,14 +267,13 @@ public function insertUsuarioUbigeo($usuarioId, $ubicodigo,$usuarioIdSis){
 	    $usuario = $stmt->fetchAll();
 	    
 	    return $usuario;
-
 	}
 
 
 	public function getUsuariosAll(){
 
 		$query = "	SELECT *FROM ACADEMIA.usuario
-					WHERE id_complejo IS NULL 
+					WHERE id_complejo IS NULL AND estado=1
 					ORDER BY id DESC";
 	    
 	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
@@ -194,10 +283,161 @@ public function insertUsuarioUbigeo($usuarioId, $ubicodigo,$usuarioIdSis){
 	    return $usuarios;
 	}
 
+	public function getUsuariosProfesoresAll($complejoId,$temporadaId){
+
+		$query = "	SELECT 
+					usu.id usuarioId,
+					dis.dis_descripcion disciplinaNombre,
+					usu.nombre usuarioNombre,
+					usu.correo usuarioCorreo,
+					usu.telefono usuarioTelefono,
+					usuEdi.edi_codigo ediCodigo,
+					usu.id_perfil usuarioPerfilId,
+					edi.ede_codigo complejoId
+					FROM ACADEMIA.usuario usu
+					INNER JOIN ACADEMIA.Usuario_EdificacionDisciplina usuEdi ON usuEdi.usuario_id = usu.id
+					INNER JOIN CATASTRO.edificacionDisciplina edi ON edi.edi_codigo = usuEdi.edi_codigo
+					INNER JOIN CATASTRO.disciplina dis ON dis.dis_codigo = edi.dis_codigo
+					WHERE 
+					id_complejo IS NULL 
+					AND usu.estado = 1
+					AND usu.id_perfil IN (5)
+					AND edi.ede_codigo = $complejoId
+					AND edi.temporada_id = $temporadaId
+					ORDER BY usu.id DESC";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    $usuarios = $stmt->fetchAll();
+	    
+	    return $usuarios;	
+	}
+
+	public function disciplinasByComplejoTemporada($complejoId,$temporadaId){
+
+		$query = "	SELECT 
+					dis.dis_codigo disciplinaId,
+					dis.dis_descripcion disciplinaNombre,
+					edi.edi_codigo ediCodigo
+					FROM CATASTRO.edificacionesdeportivas ede
+					INNER JOIN CATASTRO.edificacionDisciplina edi ON edi.ede_codigo = ede.ede_codigo
+					INNER JOIN CATASTRO.disciplina dis ON dis.dis_codigo = edi.dis_codigo
+					WHERE 
+					ede.ede_codigo = $complejoId
+					AND edi.temporada_id = $temporadaId;";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    $disciplinas = $stmt->fetchAll();
+	    
+	    return $disciplinas;
+
+	}
+
 	public function getUsuarioById($usuarioId){
 
 		$query = "	SELECT *FROM ACADEMIA.usuario
-					WHERE id=$usuarioId";
+					WHERE id=$usuarioId;";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    $usuario = $stmt->fetchAll();
+	    
+	    return $usuario;
+	}
+
+	public function getUsuarioDetalleUbigeoById($usuarioId){
+
+		$query = "	SELECT 
+					CASE usu.tipoDocumento
+					WHEN '30' THEN 'DNI'
+					WHEN '31' THEN 'Carnet Extranjeria'
+					END tipoDocumento,
+					usu.numeroDocumento numeroDocumento,
+					usu.nombre nombreUsuario,
+					usu.apellidoPaterno apellidoPaterno,
+					usu.apellidoMaterno apellidoMaterno,
+					usu.telefono telefono,
+					usu.correo correo,
+					usu.usuario username,
+					usu.contrasena contrasena,
+					usu.id_perfil perfilId,
+					 CONVERT(VARCHAR(100),STUFF(( SELECT  ',' +
+					CONVERT(VARCHAR(100),ubi.ubinombre)
+					FROM  ACADEMIA.Usuario_Ubigeo AS usuUbi
+					INNER JOIN grubigeo ubi ON ubi.ubicodigo = usuUbi.ubicodigo 
+					WHERE   usuUbi.usuario_id = usu.id
+					FOR XML PATH('') ), 1, 1, '') ) AS coleccion
+					FROM ACADEMIA.usuario usu
+					WHERE usu.id_complejo IS NULL AND usu.id_perfil IN (2,3)
+					AND usu.id=$usuarioId;";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    $usuario = $stmt->fetchAll();
+	    
+	    return $usuario;
+	}
+
+	public function getUsuarioDetalleEdificacionById($usuarioId){
+
+		$query = "	SELECT 
+					CASE usu.tipoDocumento
+					WHEN '30' THEN 'DNI'
+					WHEN '31' THEN 'Carnet Extranjeria'
+					END tipoDocumento,
+					usu.numeroDocumento numeroDocumento,
+					usu.nombre nombreUsuario,
+					usu.apellidoPaterno apellidoPaterno,
+					usu.apellidoMaterno apellidoMaterno,
+					usu.telefono telefono,
+					usu.correo correo,
+					usu.usuario username,
+					usu.contrasena contrasena,
+					usu.id_perfil perfilId,
+					 CONVERT(VARCHAR(100),STUFF(( SELECT  ',' +
+					CONVERT(VARCHAR(100),ede.ede_nombre)
+					FROM  ACADEMIA.Usuario_Edificacion AS usuEde
+					INNER JOIN CATASTRO.edificacionesdeportivas ede ON ede.ede_codigo = usuEde.ede_codigo 
+					WHERE   usuEde.usuario_id = usu.id
+					FOR XML PATH('') ), 1, 1, '') ) AS coleccion
+					FROM ACADEMIA.usuario usu
+					WHERE usu.id_complejo IS NULL AND usu.id_perfil IN (4) 
+					AND usu.id=$usuarioId;";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    $usuario = $stmt->fetchAll();
+	    
+	    return $usuario;
+	}
+
+	public function getUsuarioDetalleEdificacionDisciplinaById($usuarioId){
+
+		$query = "	SELECT 
+					CASE usu.tipoDocumento
+					WHEN '30' THEN 'DNI'
+					WHEN '31' THEN 'Carnet Extranjeria'
+					END tipoDocumento,
+					usu.numeroDocumento numeroDocumento,
+					usu.nombre nombreUsuario,
+					usu.apellidoPaterno apellidoPaterno,
+					usu.apellidoMaterno apellidoMaterno,
+					usu.telefono telefono,
+					usu.correo correo,
+					usu.usuario username,
+					usu.contrasena contrasena,
+					usu.id_perfil perfilId,
+					 CONVERT(VARCHAR(100),STUFF(( SELECT  ',' +
+					CONVERT(VARCHAR(100),dis.dis_descripcion)
+					FROM  ACADEMIA.Usuario_EdificacionDisciplina AS usuEdi
+					INNER JOIN CATASTRO.edificacionDisciplina edi ON edi.edi_codigo = usuEdi.edi_codigo
+					INNER JOIN CATASTRO.disciplina dis ON dis.dis_codigo = edi.dis_codigo 
+					WHERE   usuEdi.usuario_id = usu.id
+					FOR XML PATH('') ), 1, 1, '') ) AS coleccion
+					FROM ACADEMIA.usuario usu
+					WHERE usu.id_complejo IS NULL AND usu.id_perfil IN (5) 
+					AND usu.id = $usuarioId;";
 	    
 	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
 	    $stmt->execute();
@@ -221,6 +461,43 @@ public function insertUsuarioUbigeo($usuarioId, $ubicodigo,$usuarioIdSis){
 	    $ubigeoUsuario = $stmt->fetchAll();
 	    
 	    return $ubigeoUsuario;
+	}
+
+	public function getEdificacionByUsuarioId($usuarioId){
+
+		$query = "	SELECT 
+					usuEde.ede_codigo complejoId,
+					usuEde.usuario_id usuarioId,
+					ede.ede_nombre complejoNombre
+					FROM ACADEMIA.Usuario_Edificacion usuEde
+					INNER JOIN CATASTRO.edificacionesdeportivas ede  ON ede.ede_codigo = usuEde.ede_codigo
+					WHERE usuEde.usuario_id = $usuarioId;";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    $edeUsuario = $stmt->fetchAll();
+	    
+	    return $edeUsuario;
+	}
+
+	public function getDisciplinaByUsuarioId($usuarioId){
+
+		$query = "	SELECT 
+					usuEdi.edi_codigo ediCodigo,
+					edi.ede_codigo complejoId,
+					edi.temporada_id temporadaId,
+					usuEdi.usuario_id usuarioId,
+					dis.dis_descripcion disciplinaNombre
+					FROM ACADEMIA.Usuario_EdificacionDisciplina usuEdi
+					INNER JOIN CATASTRO.edificacionDisciplina edi  ON edi.edi_codigo= usuEdi.edi_codigo
+					INNER JOIN CATASTRO.disciplina dis ON dis.dis_codigo = edi.dis_codigo
+					WHERE usuEdi.usuario_id = $usuarioId;";
+	    
+	    $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+	    $stmt->execute();
+	    $edeUsuario = $stmt->fetchAll();
+	    
+	    return $edeUsuario;
 	}
 
 }
