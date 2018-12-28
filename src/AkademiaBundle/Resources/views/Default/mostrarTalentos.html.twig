@@ -47,10 +47,59 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Departamento</label>
+                                        <select class="form-control" id="departamento"  onchange="cambiarDepartamento(this)" >
+                                            <option value="">--Seleccionar--</option>
+                                            {% for dep in departamentos %}
+                                                <option value="{{dep['departamentoId']}}">{{dep['departamentoNombre']}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Complejo</label>
+                                        <select class="form-control" id="complejo" onchange="cambiarComplejo(this)">
+                                            <option value="">--Seleccionar--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Disciplina</label>
+                                        <select class="form-control" id="disciplina">
+                                            <option value="">--Seleccionar--</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <div class="form-group" style="padding-top:27px;" >
+                                        <div class="row" >
+                                            <button class="btn btn-default col-lg-5" id="btn-buscar-talentos" style="margin-right:10px;" >Buscar</button>
+                                            <button class="btn btn-default col-lg-5" id="btn-reset-talentos" >Reset</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-1">
+                                    <div class="form-group" style="padding-top:27px;">
+                                        <img class="test" id="descargar-lista-talentos"  style="cursor:pointer;" src="{{asset('assets/images/icon-excel.png')}}" width="35" height="35" title="Descargar Talentos">
+                                    </div>
+                                </div>
+
+                            </div>
+
+
                             <div class="input-group col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                 <span class="input-group-addon">Buscar</span>
-                                <input class="filtrar form-control" ident-buscar="{{cont}}" type="text" placeholder="Ingresa los campos a buscar ">
+                                <input class="filtrar form-control" ident-buscar="{{cont}}" type="text" placeholder="Ingresa los campos a buscar">
                             </div>
+                            
                             <br>
                             <div class="panel panel-default" style="overflow-x:auto; overflow-y:scroll; height:80vh">
                                 <table class="table"> 
@@ -71,33 +120,32 @@
                                         </tr>
                                     </thead> 
 
-                                    <tbody class="buscar" style="color:#494343"> 
+                                    <tbody class="buscar" style="color:#494343" id="list-talentos" > 
                                         {% for talento in talentos %}
-                                        <tr> 
-                                            <td>{{cont + 1}}</td>
-                                            <td class="text-center">{{talento['idInscribete']}}</td>
-                                            <td>{{talento['dni']}}</td> 
-                                            <td>{{talento['nombre']}}</td> 
-                                            <td>{{talento['edad']}} años</td> 
+                                            <tr> 
+                                                <td>{{cont + 1}}</td>
+                                                <td class="text-center">{{talento['idInscribete']}}</td>
+                                                <td>{{talento['dni']}}</td> 
+                                                <td>{{talento['nombre']}}</td> 
+                                                <td>{{talento['edad']}} años</td> 
 
-                                            {% if  talento['sexo'] == 2 %}
-                                                <td>Femenino</td>   
-                                            {% else %}
-                                                <td>Masculino</td> 
-                                            {% endif %} 
-                                            <td class="text-center">{{talento['departamento']}}</td>
-                                            <td class="text-center">{{talento['nombreComplejo']}}</td>
-                                            <td class="text-center">{{talento['nombreDisciplina']}}</td>
-                                            {% if talento['visibilidad'] == 0 %}
-                                            <td  style="background: #F8D8CF;" class="text-center">No</td>
-                                            {% else %}
-                                            <td style=" background: #B6E09A;"class="text-center"> Si</td>
-                                            {% endif %}
-                                            <td>
-                                                <a href="{{url('akademia_mostrarDetalleTalento',{idParticipante: talento['idParticipante'],'idTemporada':idTemporada})}}" title="Más detalles" type="button" class="btn btn-default"><i class="icon-checklist" style="font-size: 1.3em"></i></a>
-                                            </td>
-                                        </tr>
-                                        
+                                                {% if  talento['sexo'] == 2 %}
+                                                    <td>Femenino</td>   
+                                                {% else %}
+                                                    <td>Masculino</td> 
+                                                {% endif %} 
+                                                <td class="text-center">{{talento['departamento']}}</td>
+                                                <td class="text-center">{{talento['nombreComplejo']}}</td>
+                                                <td class="text-center">{{talento['nombreDisciplina']}}</td>
+                                                {% if talento['visibilidad'] == 0 %}
+                                                <td  style="background: #F8D8CF;" class="text-center">No</td>
+                                                {% else %}
+                                                <td style=" background: #B6E09A;"class="text-center"> Si</td>
+                                                {% endif %}
+                                                <td>
+                                                    <a href="{{url('akademia_mostrarDetalleTalento',{idParticipante: talento['idParticipante'],'idTemporada':idTemporada})}}" title="Más detalles" type="button" class="btn btn-default"><i class="icon-checklist" style="font-size: 1.3em"></i></a>
+                                                </td>
+                                            </tr>
                                         {% set cont = cont + 1 %}
                                         {% endfor %}
  
@@ -180,6 +228,113 @@
         }(jQuery));
 
     });
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+    const $departamento = $("#departamento");
+    const $complejo = $("#complejo");
+    const $disciplina = $("#disciplina");
+
+    const $btnBuscarTalentos = $("#btn-buscar-talentos");
+    const $btnResetTalentos = $("#btn-reset-talentos");
+
+    const $descargarListaTalentos = $("#descargar-lista-talentos");
+
+    $btnBuscarTalentos.on('click',function(){
+
+        var datos = {
+            'temporadaId': "{{idTemporada}}",
+            'complejoId':$complejo.val(),
+            'disciplinaId':$disciplina.val(),
+            'departamentoId':$departamento.val()
+        }
+
+        $.ajax({
+            type:'POST',
+            url:"{{url('akademia_tableMostrarTalentos')}}",
+            data:datos,
+            beforeSend:function(){
+                console.log("Enviando Datos =>",datos);
+            },
+            success:function(data){
+                $("#list-talentos").html(data);
+            },
+            error:function(error){
+                alertify.error("<p>Ocurrió un Error en el Sistema!.</p>")
+            }
+        });
+    });
+
+    $descargarListaTalentos.on('click',function(){
+        window.location.href = "{{url('talentosExport',{temporadaId:idTemporada})}}"
+    });
+
+    $btnResetTalentos.on('click',function(){
+
+        $departamento.empty();
+        $complejo.empty();
+        $disciplina.empty();
+
+        $departamento.appen("<option value='' >--Seleccionar--</option>");
+        $complejo.appen("<option value='' >--Seleccionar--</option>");
+        $disciplina.appen("<option value='' >--Seleccionar--</option>");
+
+        var datos = {
+            'temporadaId': "{{idTemporada}}",
+            'complejoId': "",
+            'disciplinaId': "",
+            'departamentoId': ""
+        }
+
+        $.ajax({
+            type:'POST',
+            url:"{{url('akademia_tableMostrarTalentos')}}",
+            data:datos,
+            beforeSend:function(){
+                console.log("Enviando Datos =>",datos);
+            },
+            success:function(data){
+                $("#list-talentos").html(data);
+            },
+            error:function(error){
+                alertify.error("<p>Ocurrió un Error en el Sistema!.</p>")
+            }
+        });
+    });
+
+    const cambiarDepartamento = function(departamento){
+
+        var departamentoId = departamento.value;
+
+        $complejo.empty(); 
+        $disciplina.empty();
+        $complejo.append("<option value='' >--Seleccionar--</option>");
+        $disciplina.append("<option value='' >--Seleccionar--</option>");
+
+        {% for comp in complejos %}
+
+            if( parseInt("{{comp['departamentoId']}}") == parseInt(departamentoId) ){
+                $complejo.append("<option value = {{comp['complejoId']}} > {{comp['complejoNombre']}} </option>");
+            }
+
+        {% endfor %}
+    }
+
+    const cambiarComplejo = function(complejo){
+
+        var complejoId = complejo.value;
+
+        $disciplina.empty();
+        $disciplina.append("<option value='' >--Seleccionar--</option>");
+
+        {% for dis in disciplinas %}
+            if( parseInt("{{dis['complejoId']}}") == parseInt(complejoId ) ){
+                $disciplina.append("<option value = {{dis['disciplinaId']}} > {{dis['disciplinaNombre']}} </option>");
+            }
+
+        {% endfor %}        
+    }
+
 
     /* MOSTRAR MENSAJE DE ALERTA */
     function showAlertMessage(alert, mensaje){

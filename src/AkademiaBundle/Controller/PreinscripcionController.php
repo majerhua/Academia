@@ -226,7 +226,6 @@ class PreinscripcionController extends Controller
             
 
             $mdlDisciplinesByDisability = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinesPublicGeneralByDisability($disability,$ageBeneficiario,$idTemporada);
-               
         }
 
         if($disability == 1){
@@ -530,7 +529,6 @@ class PreinscripcionController extends Controller
         $em = $this->getDoctrine()->getManager();
         $mdlFicha = $em->getRepository('AkademiaBundle:Inscribete')->getFicha($id,$idTemporada);
 
-        
         $fichaTurnoHorario = $em->getRepository('AkademiaBundle:Horario')->getTurnosIndividual($mdlFicha[0]['horario_id']);
         $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaByFicha($id);
 
@@ -540,7 +538,7 @@ class PreinscripcionController extends Controller
         $html = $this->renderView('AkademiaBundle:Pdf:inscripcionPdf.html.twig', ["inscripcion" => $mdlFicha]);
 
         $pdf = $this->container->get("white_october.tcpdf")->create(
-               'PORTRAID', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false
+               'PORTRAID', PDF_UNIT, PDF_PAGE_FORMAT, true , 'UTF-8', false
         );
         $pdf->SetAuthor('DNRPD');
         $pdf->SetTitle('La Academia IPD');
@@ -591,6 +589,7 @@ class PreinscripcionController extends Controller
     // ENVIO DE CORREO: RECEPCION DE LAS CONSULTAS Y/O QUEJAS DE LA WEB 
 
     public function sendemailAction(Request $request){
+
         if($request->isXmlHttpRequest()){
 
             $nombre = $request->request->get('nombre');
@@ -610,7 +609,9 @@ class PreinscripcionController extends Controller
     // FUNCION PARA ENVIAR CORREOS AL APODERADO DESPUES DE LA PRE-INSCRIPCION CON LA FICHA Y DECLARACION JURADA.
 
     public function sendemailapoderadoAction(Request $request){
+
         if($request->isXmlHttpRequest()){
+
             $correoApoderado = $request->request->get('correo');
             $nombre = $request->request->get('nombre');
             $id = $request->request->get('id');
@@ -640,5 +641,89 @@ class PreinscripcionController extends Controller
         }
     }
 
+    /*************prueba*///////////////
+
+    public function sendemailMasivoAction(Request $request){
+
+        if($request->isXmlHttpRequest()){
+            
+            $inicio = $request->request->get('inicio');
+            $fin = $request->request->get('fin');
+
+            $em = $this->getDoctrine()->getManager();
+            $participantes = $em->getRepository('AkademiaBundle:Participante')->envioEmailMasivo($inicio,$fin);
+
+            foreach ($participantes as $key => $value){
+
+                $subject =  'PRE INSCRIPCION CONFIRMADA PARA '.$value['nombreApoderado'].'';
+                $message =  '<html>'.
+                            '<head><title>IPD</title></head>'.
+                            '<body><h2>Hola! '.$value['nombreApoderado'].'</h2>'.
+                            '<hr>'.
+                            'Aquí puedes descargar tu ficha de inscripción y la declaración jurada, haz click en estos enlaces:'.
+                            '<br>'.
+                            '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/inscripcion/'.$value['inscribeteId'].'"> Ficha de Inscripción </a>'.
+                            '<br>'.
+                            '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/declaracion-jurada/'.$value['inscribeteId'].'"> Declaración Jurada </a>'.
+                            '<br>'.
+                            '<p>Acércate al complejo que eligiste para finalizar tu inscripción.</p>'.
+                            '<br>'.
+                            '<p>NO SE RESERVAN VACANTES</p>'.
+                            '<br>'.
+                            '<h2><OBLIGATORIO</h2>'.
+                            '<ol><li>Presentar ficha de inscripción y declaración jurada firmada y con la huella dactilar del apoderado</li><li>DNI del menor de edad y del apoderado (original y copia).</li><li>Presentar ficha de seguro activo (SIS, EsSalud, o privado).</li><li>Foto tamaño carnet del menor de edad (actual).</li></ol>'.
+                            '</body>'.
+                            '</html>'
+                        ;
+                $headers = 'From: soporte@ipd.gob.pe' . "\r\n" .'MIME-Version: 1.0'. "\r\n" .'Content-Type: text/html; charset=ISO-8859-1'. "\r\n";
+                mail($value['correoApoderado'],$subject,$message,$headers);
+            }
+            
+            return new JsonResponse("1");
+        }
+
+        return $this->render( 'AkademiaBundle:Prueba:masivo.html.twig');
+    }
+
+
+    public function sendemailIndividualAction(Request $request){
+
+        if($request->isXmlHttpRequest()){
+            
+            $codigoInscripcion = $request->request->get('codigoInscripcion');
+
+            $em = $this->getDoctrine()->getManager();
+            $participante = $em->getRepository('AkademiaBundle:Participante')->envioEmailIndividual($codigoInscripcion);
+
+
+            if(!empty($participante)){
+                $subject =  'PRE INSCRIPCION CONFIRMADA PARA '.$participante[0]['nombreApoderado'].'';
+                $message =  '<html>'.
+                            '<head><title>IPD</title></head>'.
+                            '<body><h2>Hola! '.$participante[0]['nombreApoderado'].'</h2>'.
+                            '<hr>'.
+                            'Aquí puedes descargar tu ficha de inscripción y la declaración jurada, haz click en estos enlaces:'.
+                            '<br>'.
+                            '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/inscripcion/'.$participante[0]['inscribeteId'].'"> Ficha de Inscripción </a>'.
+                            '<br>'.
+                            '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/declaracion-jurada/'.$participante[0]['inscribeteId'].'"> Declaración Jurada </a>'.
+                            '<br>'.
+                            '<p>Acércate al complejo que eligiste para finalizar tu inscripción.</p>'.
+                            '<br>'.
+                            '<p>NO SE RESERVAN VACANTES</p>'.
+                            '<br>'.
+                            '<h2><OBLIGATORIO</h2>'.
+                            '<ol><li>Presentar ficha de inscripción y declaración jurada firmada y con la huella dactilar del apoderado</li><li>DNI del menor de edad y del apoderado (original y copia).</li><li>Presentar ficha de seguro activo (SIS, EsSalud, o privado).</li><li>Foto tamaño carnet del menor de edad (actual).</li></ol>'.
+                            '</body>'.
+                            '</html>'
+                        ;
+                $headers = 'From: soporte@ipd.gob.pe' . "\r\n" .'MIME-Version: 1.0'. "\r\n" .'Content-Type: text/html; charset=ISO-8859-1'. "\r\n";
+                mail($participante[0]['correoApoderado'],$subject,$message,$headers);
+                return new JsonResponse("1");
+            }else{
+                return new JsonResponse("-1");
+            }
+        }
+    }
 
 }

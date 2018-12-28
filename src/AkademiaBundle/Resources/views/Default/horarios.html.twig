@@ -65,46 +65,37 @@
 										<option  data-departamento="{{prov['idDepartamento']}}" value={{prov['idProvincia']}}>{{prov['nombre']}}</option>
 									{% endfor %} 
 								</select>							
-
 							{% endif %}
 
 						</div>
 					</div>
 				{% endif %}
 
-				<div class="col-lg-4">
-					<div class="form-group">
-						<label>Complejo</label>
-						<select class="form-control"  id="complejo" name="complejo" onchange="cambiarComplejo(this)" >
-							<option value="" >--Seleccionar--</option>
-							{%  if is_granted('ROLE_PROMOTOR') or is_granted('ROLE_PROFESOR')  %}
-								{% for comp in complejos %}
-									<option value="{{comp['complejoId']}}">{{comp['complejoNombre']}}</option>
-								{% endfor %}
-							{% endif %} 
-						</select>
-					</div>
-				</div>
-
-				{% if is_granted('ROLE_PROFESOR') %}
-
+				{% if  is_granted('ROLE_PROFESOR')  == false %}
 					<div class="col-lg-4">
 						<div class="form-group">
-							<label>Disciplina</label>
-							<select class="form-control"  id="disciplina" name="disciplina" onchange="cambiarDisciplina(this)">
+							<label>Complejo</label>
+							<select class="form-control"  id="complejo" name="complejo" onchange="cambiarComplejo(this)" >
 								<option value="" >--Seleccionar--</option>
+								{%  if is_granted('ROLE_PROMOTOR') %}
+									{% for comp in complejos %}
+										<option value="{{comp['complejoId']}}">{{comp['complejoNombre']}}</option>
+									{% endfor %}
+								{% endif %} 
 							</select>
 						</div>
 					</div>
-
 				{% endif %}
+
 			</div>
 		</div>
 
 		<div id="proceso1" class="proceso" style="margin-bottom: 60px;min-height: 26.4vh;" >	
 		    
 			<div id="container-complejo-disciplina-horarios" style="width:100%;" >
-				
+				{% if is_granted('ROLE_PROFESOR') %}
+					{% include 'AkademiaBundle:Disciplina_Horario_Beneficiario:table_disciplina_horario_beneficiario.html.twig' %}
+				{% endif %}
 			</div>
 			
 			<hr>

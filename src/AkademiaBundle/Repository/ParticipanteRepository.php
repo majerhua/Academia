@@ -10,6 +10,49 @@ namespace AkademiaBundle\Repository;
  */
 class ParticipanteRepository extends \Doctrine\ORM\EntityRepository
 {
+/****** INICIO PRUEBA ***/
+
+    public function envioEmailIndividual($codigoInscripcion){
+
+        $query = "SELECT 
+                    ins.id as inscribeteId,
+                    perApod.pernombres as nombreApoderado,
+                    perApod.percorreo correoApoderado
+                    FROM
+                    ACADEMIA.inscribete ins 
+                    INNER JOIN ACADEMIA.participante par ON par.id = ins.participante_id
+                    INNER JOIN ACADEMIA.apoderado apod ON apod.id = par.apoderado_id
+                    INNER JOIN grpersona as perApod ON perApod.percodigo = apod.percodigo
+                    WHERE ins.id = '$codigoInscripcion';";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $participantes = $stmt->fetchAll();
+        return $participantes;
+    }
+
+    public function envioEmailMasivo($inicio,$fin){
+
+        $query = "WITH ParticipantesOrdenados AS(
+                    SELECT 
+                    ROW_NUMBER() OVER(ORDER BY par.id ASC) AS num_id,
+                    ins.id as inscribeteId,
+                    perApod.pernombres as nombreApoderado,
+                    perApod.percorreo correoApoderado
+                    FROM
+                    ACADEMIA.inscribete ins 
+                    INNER JOIN ACADEMIA.participante par ON par.id = ins.participante_id
+                    INNER JOIN ACADEMIA.apoderado apod ON apod.id = par.apoderado_id
+                    INNER JOIN grpersona as perApod ON perApod.percodigo = apod.percodigo
+                    WHERE ins.id >= 37301 )
+
+                    SELECT *FROM ParticipantesOrdenados
+                    WHERE num_id BETWEEN '$inicio' AND '$fin';";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $participantes = $stmt->fetchAll();
+        return $participantes;
+    }
+/****FIN PRUEBA ***/
 
     public function getPreInscripcionUnica($dniParticipante,$idTemporada){
         $query = "EXEC ACADEMIA.preInscripcionUnica '$dniParticipante',$idTemporada ";
@@ -306,11 +349,10 @@ class ParticipanteRepository extends \Doctrine\ORM\EntityRepository
                 inner join academia.participante par on ins.participante_id = par.id
                
                 inner join academia.movimientos mov on mov.id = ids.mov_id
-                 inner join grpersona per on per.percodigo = par.percodigo
-                 inner join grubigeo ubi on ede.ubicodigo = ubi.ubicodigo
+                inner join grpersona per on per.percodigo = par.percodigo
+                inner join grubigeo ubi on ede.ubicodigo = ubi.ubicodigo
                 inner join grubigeo ubiDpto on ubiDpto.ubidpto = ubi.ubidpto
-
-               WHERE 
+                WHERE 
                 ubi.ubidistrito <> '00' AND 
                 ubi.ubiprovincia <> '00' AND 
                 ubiDpto.ubidistrito = '00' AND 
@@ -326,9 +368,75 @@ class ParticipanteRepository extends \Doctrine\ORM\EntityRepository
         $datos = $stmt->fetchAll();
 
         return $datos;
-
     }
 
+
+    public function listarTalentosByDepCompDis($idTemporada,$departamentoId,$complejoId,$disciplinaId){
+
+        $arrayLetter = [" AND dis.dis_codigo = $disciplinaId"," AND ede.ede_codigo = 
+                $complejoId", " AND ubiDpto.ubidpto = $departamentoId"];
+        $arrayNum = [$disciplinaId,$complejoId,$departamentoId];
+        $arrayAux = [];
+
+        for($i =0 ;$i<count($arrayNum);$i++){
+            
+            if($arrayNum[$i]!= "")
+                array_push($arrayAux,$arrayLetter[$i]);
+        }
+
+        $subQuery = implode(" ", $arrayAux);
+
+
+        $query ="SELECT 
+                (per.perapepaterno+' '+per.perapematerno+' '+per.pernombres) as nombre,
+                per.pernombres as nombreTalento,
+                per.perapepaterno as apellidoPaterno,
+                per.perapematerno as apellidoMaterno,
+                per.perfecnacimiento as fechaNacimiento,
+                par.id as idParticipante,
+                par.visible_app as visibilidad,
+                per.perdni as dni, 
+                (cast(datediff(dd,per.perfecnacimiento,GETDATE()) / 365.25 as int)) as edad,
+                per.persexo as sexo,
+                ins.id as idInscribete,
+                mov.categoria_id as idCategoria,
+                mov.asistencia_id as idAsistencia,
+                mov.fecha_modificacion as fechita,
+                dis.dis_descripcion as nombreDisciplina,
+                ede.ede_nombre as nombreComplejo,
+                ubiDpto.ubinombre as departamento
+                FROM 
+                ACADEMIA.inscribete ins 
+                inner join (SELECT m.inscribete_id as mov_ins_id, MAX(m.id) mov_id
+                FROM ACADEMIA.movimientos m
+                GROUP BY m.inscribete_id) ids ON ins.id = ids.mov_ins_id
+                inner join academia.horario hor on ins.horario_id = hor.id
+                inner join catastro.edificacionDisciplina edi on edi.edi_codigo = hor.edi_codigo
+                inner join catastro.disciplina dis on dis.dis_codigo = edi.dis_codigo
+                inner join catastro.edificacionesdeportivas ede on ede.ede_codigo = edi.ede_codigo   
+                inner join academia.participante par on ins.participante_id = par.id
+               
+                inner join academia.movimientos mov on mov.id = ids.mov_id
+                inner join grpersona per on per.percodigo = par.percodigo
+                inner join grubigeo ubi on ede.ubicodigo = ubi.ubicodigo
+                inner join grubigeo ubiDpto on ubiDpto.ubidpto = ubi.ubidpto
+                WHERE 
+                ubi.ubidistrito <> '00' AND 
+                ubi.ubiprovincia <> '00' AND 
+                ubiDpto.ubidistrito = '00' AND 
+                ubiDpto.ubiprovincia = '00' AND 
+                ubiDpto.ubidpto <> '00' AND
+                ins.estado = 2 AND 
+                edi.temporada_id = '$idTemporada' AND
+                mov.categoria_id = 4 AND 
+                mov.asistencia_id != 3 ".$subQuery;
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $datos = $stmt->fetchAll();
+
+        return $datos;
+    }
 
 }
 

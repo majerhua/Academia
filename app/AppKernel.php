@@ -21,6 +21,8 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Liuggio\ExcelBundle\LiuggioExcelBundle(),
             
+            new MewesK\TwigExcelBundle\MewesKTwigExcelBundle(),
+            
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),

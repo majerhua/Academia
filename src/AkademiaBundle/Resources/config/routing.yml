@@ -3,6 +3,12 @@
 #  path: /exporExcelPrueba
 #  defaults: { _controller: AkademiaBundle:ExportacionData:exportPrueba }
 
+## EXPORT TALENTOSS
+akademia_talentosExport:
+  path: /export/talentos/{idTemporada}
+  defaults: { _controller: AkademiaBundle:Talentos:talentosExport, _format: xlsx }
+##
+
 ##ADMINISTRACION USUARIOS
 
 akademia_usuario:
@@ -179,7 +185,17 @@ akademia_sendemailapoderado:
     path:     /ajax/sendemailapoderado
     defaults: { _controller: AkademiaBundle:Preinscripcion:sendemailapoderado}
     methods:  [GET,POST]
+####PRUEBA
+akademia_sendemailMasivo:
+    path:     /ajax/sendemailMasivo
+    defaults: { _controller: AkademiaBundle:Preinscripcion:sendemailMasivo}
+    methods:  [GET,POST]
 
+akademia_sendemailIndividual:
+    path:     /ajax/sendemailIndividual
+    defaults: { _controller: AkademiaBundle:Preinscripcion:sendemailIndividual}
+    methods:  [GET,POST]
+##FIN PRUEBA
 ## END 
 
 akademia_prueba:
@@ -285,6 +301,11 @@ akademia_evaluados:
     defaults: { _controller: AkademiaBundle:Talentos:evaluados,idTemporada:0}
     methods:  [GET,POST]
 
+akademia_tableMostrarTalentos:
+    path:     /ajax/table/mostrarTalentos
+    defaults: { _controller: AkademiaBundle:Talentos:tableMostrarTalentos}
+    methods:  [GET,POST]
+
 akademia_talentos:
     path:     /ajax/talentos/{idParticipante}/temporada/{idTemporada}
     defaults: { _controller: AkademiaBundle:Talentos:talentos}
@@ -375,10 +396,16 @@ akademia_exportDataBeneficiariosMonitor:
    defaults: {_controller: AkademiaBundle:ExportacionData:exportDataBeneficiariosMonitor}
    methods: [GET,POST]
 
-akademia_exportDataBeneficiariosComplejo:
-   path:    /exportDataBeneficiariosComplejo
-   defaults: {_controller: AkademiaBundle:ExportacionData:exportDataBeneficiariosComplejo}
+akademia_exportDataBeneficiariosPromotor:
+   path:    /exportDataBeneficiariosPromotor
+   defaults: {_controller: AkademiaBundle:ExportacionData:exportDataBeneficiariosPromotor}
    methods: [GET,POST]
+
+akademia_exportDataBeneficiariosProfesor:
+   path:    /exportDataBeneficiariosProfesor
+   defaults: {_controller: AkademiaBundle:ExportacionData:exportDataBeneficiariosProfesor}
+   methods: [GET,POST]
+
 #FIN 
 
 ## LOGIN - INICIO DE SESSION

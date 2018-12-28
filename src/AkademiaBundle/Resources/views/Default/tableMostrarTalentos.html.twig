@@ -1,0 +1,28 @@
+{% set cont = 0 %}
+{% for talento in talentos %}
+    <tr> 
+        <td>{{cont + 1}}</td>
+        <td class="text-center">{{talento['idInscribete']}}</td>
+        <td>{{talento['dni']}}</td> 
+        <td>{{talento['nombre']}}</td> 
+        <td>{{talento['edad']}} años</td> 
+
+        {% if  talento['sexo'] == 2 %}
+            <td>Femenino</td>   
+        {% else %}
+            <td>Masculino</td> 
+        {% endif %} 
+        <td class="text-center">{{talento['departamento']}}</td>
+        <td class="text-center">{{talento['nombreComplejo']}}</td>
+        <td class="text-center">{{talento['nombreDisciplina']}}</td>
+        {% if talento['visibilidad'] == 0 %}
+        <td  style="background: #F8D8CF;" class="text-center">No</td>
+        {% else %}
+        <td style=" background: #B6E09A;"class="text-center"> Si</td>
+        {% endif %}
+        <td>
+            <a href="{{url('akademia_mostrarDetalleTalento',{idParticipante: talento['idParticipante'],'idTemporada':idTemporada})}}" title="Más detalles" type="button" class="btn btn-default"><i class="icon-checklist" style="font-size: 1.3em"></i></a>
+        </td>
+    </tr>
+{% set cont = cont + 1 %}
+{% endfor %}

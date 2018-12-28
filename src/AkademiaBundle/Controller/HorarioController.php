@@ -91,6 +91,15 @@ class HorarioController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
+        //OBTENEMOS LA TEMPORADA COMPARAR CON LA TEMPORADA QUE RECIBIMOS COMO PARAMETRO
+        $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
+
+        if(!empty($arrayTemporada))
+            $idTemporadaActiva = $arrayTemporada[0]['temporadaId'];
+        else
+            $idTemporadaActiva = null;
+
         if( $usuario->getIdPerfil() == $confPerfilUsuario['administrador'] ){
             $disciplinasComplejo=NULL;
             $ubigeos = $em->getRepository('AkademiaBundle:Distrito')->getDepartamentos();
@@ -115,17 +124,38 @@ class HorarioController extends Controller
             $ubigeos = NULL;
             $complejos = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplejosDisciplinaUsuario($usuario->getId());
             $disciplinasComplejo = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getDisciplinaComplejoUsuario($usuario->getId());
+            $idDisciplina = $disciplinasComplejo[0]['disciplinaId'];
+
+
+            $idComplejo = $disciplinasComplejo[0]['complejoId'];
+            $complejo = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplejoById($idComplejo);
+            $nombreComplejo = $complejo[0]['complejoNombre'];
+
+            $Horarios = $em->getRepository('AkademiaBundle:Horario')->getHorariosComplejos($idComplejo,$idTemporada);
+            $turnos = $em->getRepository('AkademiaBundle:Horario')->getTurnosComplejos($idComplejo);
+
+            $ComplejoDisciplinas = $em->getRepository('AkademiaBundle:ComplejoDisciplina')->getComplejosDisciplinasHorariosByDisciplinaId($idComplejo,$idTemporada,$idDisciplina);
+
+            $Disciplinas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasDiferentes($idComplejo,$idTemporada);
+            $disciplinasByComplejoTemporada = $em->getRepository('AkademiaBundle:Usuarios')->disciplinasByComplejoTemporada($idComplejo,$idTemporada);
+            return $this->render('AkademiaBundle:Default:horarios.html.twig', 
+                                array(
+                                    "complejosDisciplinas" => $ComplejoDisciplinas,
+                                    'idTemporada' => $idTemporada,
+                                    'idTemporadaActiva' => $idTemporadaActiva,
+                                    'descripcionTemporada' => $descripcionTemporada ,
+                                    'horarios' => $Horarios,
+                                    'ubigeos' => $ubigeos,
+                                    'turnos'=> $turnos,
+                                    'complejos' => $complejos,
+                                    "disciplinas" => $Disciplinas,
+                                    'idComplejo' => $idComplejo,
+                                    "nombreComplejo"=> $nombreComplejo,
+                                    'disciplinasComplejo' => $disciplinasComplejo,
+                                    'disciplinasByComplejoTemporada' => $disciplinasByComplejoTemporada
+                                )
+                    );
         }
-        
-
-        $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
-        //OBTENEMOS LA TEMPORADA COMPARAR CON LA TEMPORADA QUE RECIBIMOS COMO PARAMETRO
-        $arrayTemporada = $em->getRepository('AkademiaBundle:Temporada')->getTemporadaActiva();
-
-        if(!empty($arrayTemporada))
-            $idTemporadaActiva = $arrayTemporada[0]['temporadaId'];
-        else
-            $idTemporadaActiva = null;
 
         return $this->render('AkademiaBundle:Default:horarios.html.twig', 
                                 array(

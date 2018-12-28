@@ -20,6 +20,8 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 
+
+
 class TalentosController extends controller
 {
 
@@ -47,6 +49,14 @@ class TalentosController extends controller
    
     }
 
+
+    public function talentosExportAction(Request $request,$temporadaId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $talentos = $em->getRepository('AkademiaBundle:Participante')->listarTalentos($temporadaId);
+        return $this->render('AkademiaBundle:Excel:talentos.xlsx.twig',['data' => $talentos]); 
+    }
+
     public function mostrarTalentosAction(Request $request,$idTemporada){
 
         $em = $this->getDoctrine()->getManager();
@@ -67,7 +77,40 @@ class TalentosController extends controller
 
         $descripcionTemporada = $em->getRepository('AkademiaBundle:Temporada')->getDescripcionTemporadaById($idTemporada);
 
-        return $this->render('AkademiaBundle:Default:mostrarTalentos.html.twig', array("talentos" => $talentos,'idTemporada' => $idTemporada, 'descripcionTemporada' => $descripcionTemporada));
+        $departamentos = $em->getRepository('AkademiaBundle:Departamento')->getDepartamentosByTalentos($idTemporada);
+        $complejos = $em->getRepository('AkademiaBundle:ComplejoDeportivo')->getComplejosByTalentos($idTemporada);
+        $disciplinas = $em->getRepository('AkademiaBundle:DisciplinaDeportiva')->getDisciplinasByTalentos($idTemporada);
+
+        return $this->render('AkademiaBundle:Default:mostrarTalentos.html.twig', 
+                      array(
+                            "talentos" => $talentos,
+                            'idTemporada' => $idTemporada,
+                            'descripcionTemporada' =>$descripcionTemporada,
+                            'departamentos' => $departamentos,
+                            'complejos' => $complejos,
+                            'disciplinas' => $disciplinas
+                          )
+                        );
+    }
+
+    public function tableMostrarTalentosAction(Request $request){
+
+      $temporadaId = $request->get('temporadaId');
+      $departamentoId = $request->get('departamentoId');
+      $disciplinaId = $request->get('disciplinaId');
+      $complejoId = $request->get('complejoId');
+
+      $em = $this->getDoctrine()->getManager();
+      $talentos = $em->getRepository('AkademiaBundle:Participante')->listarTalentosByDepCompDis($temporadaId,$departamentoId,$complejoId,$disciplinaId);
+
+      $em = $this->getDoctrine()->getManager();
+      echo $this->renderView('AkademiaBundle:Default:tableMostrarTalentos.html.twig', 
+                      array(
+                            'talentos' => $talentos,
+                            'idTemporada' => $temporadaId
+                          )
+                        );
+      exit;
     }
     
     public function talentosAction( Request $request, $idParticipante , $idTemporada ){

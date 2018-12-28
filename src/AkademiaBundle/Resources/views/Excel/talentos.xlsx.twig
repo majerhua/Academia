@@ -1,0 +1,73 @@
+{% xlsdocument %}
+    {% xlssheet 'Worksheet' 
+
+    %}
+        {% xlsrow %}
+
+            {% xlscell  {  
+
+                        style: { 
+                                font: { 
+                                        size: '18', 
+                                        color: { rgb: 'f9f7f7' },
+                                        bold:'true'
+                                      },
+                                alignment:{
+                                        horizontal: 'center'
+                                        },
+                                fill:{
+                                        type: 'solid',
+                                        color: { rgb: 'F48128' }
+                                    } 
+                                },
+
+                        merge: 12
+                        }
+
+            %}Datos de los Talentos{% endxlscell %}
+
+        {% endxlsrow %}
+
+        {% xlsrow %}
+            {% xlscell { style: { font: { size: '13', bold:'true' },autosize:'true' } } %}Codigo{% endxlscell %}
+            {% xlscell { style: { font: { size: '13',bold:'true' } } } %}Dni{% endxlscell %}
+            {% xlscell { style: { font: { size: '13',bold:'true' } } } %}Nombre{% endxlscell %}
+            {% xlscell { style: { font: { size: '13',bold:'true' } } } %}Apellido Paterno{% endxlscell %}
+            {% xlscell { style: { font: { size: '13',bold:'true' } } } %}Apellido Materno{% endxlscell %}
+            {% xlscell { style: { font: { size: '13',bold:'true' } } } %}Fecha de Nacimiento{% endxlscell %}
+            {% xlscell { style: { font: { size: '13',bold:'true' } } } %}Edad{% endxlscell %}
+            {% xlscell { style: { font: { size: '13',bold:'true' } } } %}Sexo{% endxlscell %}
+            {% xlscell { style: { font: { size: '13',bold:'true' } } } %}Departamento{% endxlscell %}
+            {% xlscell { style: { font: { size: '13',bold:'true' } } } %}Complejo{% endxlscell %}
+            {% xlscell { style: { font: { size: '13',bold:'true' } } } %}Disciplina{% endxlscell %}
+            {% xlscell { style: { font: { size: '13',bold:'true' } } } %}Visible{% endxlscell %}
+        {% endxlsrow %}
+        {% for value in data %}
+            {% xlsrow %}
+                {% xlscell %}{{ value.idInscribete }}{% endxlscell %}
+                {% xlscell %}{{ value.dni }}{% endxlscell %}
+                {% xlscell %}{{ value.nombreTalento }}{% endxlscell %}
+                {% xlscell %}{{ value.apellidoPaterno }}{% endxlscell %}
+                {% xlscell %}{{ value.apellidoMaterno }}{% endxlscell %}
+                {% xlscell %}{{ value.fechaNacimiento }}{% endxlscell %}
+                {% xlscell %}{{ value.edad }}{% endxlscell %}
+                {% if value.sexo == 2 %}
+                    {% xlscell %}Femenino{% endxlscell %}
+                {% else %}
+                    {% xlscell %}Masculino{% endxlscell %}
+                {% endif %}
+                
+                {% xlscell %}{{ value.departamento }}{% endxlscell %}
+                {% xlscell %}{{ value.nombreComplejo }}{% endxlscell %}
+                {% xlscell %}{{ value.nombreDisciplina }}{% endxlscell %}
+                
+                {% if value.visibilidad == 0 %}
+                    {% xlscell %}Si{% endxlscell %}
+                {% else value.visibilidad == 1 %}
+                    {% xlscell %}No{% endxlscell %}
+                {% endif %}
+                
+            {% endxlsrow %}
+        {% endfor %}
+    {% endxlssheet %}
+{% endxlsdocument %}

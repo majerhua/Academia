@@ -366,4 +366,41 @@ class ComplejoDeportivoRepository extends \Doctrine\ORM\EntityRepository
 
 		return $nombre;
 	}
+
+
+	public function getComplejosByTalentos($idTemporada){
+		
+		$query = "SELECT DISTINCT
+					ubiDep.ubidpto departamentoId,
+				   	ubiDep.ubinombre departamentoNombre,
+				   	ede.ede_codigo complejoId,
+				   	ede.ede_nombre complejoNombre		 
+					FROM ACADEMIA.inscribete ins
+					inner join (SELECT m.inscribete_id as mov_ins_id, MAX(m.id) mov_id
+					FROM ACADEMIA.movimientos m
+					GROUP BY m.inscribete_id) ids ON ins.id = ids.mov_ins_id
+					inner join academia.movimientos mov on mov.id = ids.mov_id
+					INNER JOIN ACADEMIA.horario hor On ins.horario_id = hor.id
+					INNER JOIN CATASTRO.edificacionDisciplina edi ON edi.edi_codigo = hor.edi_codigo
+					INNER JOIN CATASTRO.edificacionesdeportivas ede ON ede.ede_codigo = edi.ede_codigo
+					INNER JOIN grubigeo ubi ON ubi.ubicodigo = ede.ubicodigo
+					INNER JOIN grubigeo ubiDep ON ubiDep.ubidpto = ubi.ubidpto
+					WHERE
+					ubi.ubidpto <> '00' AND
+					ubi.ubiprovincia <> '00' AND
+					ubi.ubidistrito <> '00'  AND
+					ubiDep.ubidpto <> '00' AND
+					ubiDep.ubiprovincia = '00' AND
+					ubiDep.ubidistrito = '00' AND
+					ins.estado = 2 AND
+					edi.temporada_id = '$idTemporada' AND
+					mov.categoria_id = 4 AND 
+					mov.asistencia_id != 3;";
+		
+		$stmt = $this->getEntityManager()->getConnection()->prepare($query);
+		$stmt->execute();
+		$complejos = $stmt->fetchAll();
+		return $complejos;
+	}
+
 }

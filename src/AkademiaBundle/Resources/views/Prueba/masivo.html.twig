@@ -1,0 +1,94 @@
+{% extends '::base.html.twig' %}
+{% block title %}La Academia{% endblock %}
+{% block body  %}
+
+<div class="row">
+	<div class="form-group col-md-6 col-lg-6" >
+		<h2>Envio Email Masivo</h2>
+		<label>Inicio</label>
+		<input type="number" id="inicio">
+
+		<label>Fin</label>
+		<input type="number" id="fin">
+
+		<button  id="enviar-email-masivo">Enviar Email</button>
+	</div>
+
+	<div class="form-group col-md-6 col-lg-6">
+		<h2>Envio Email Individual</h2>
+		<label>Codigo Inscripcion</label>
+		<input type="number" id="codigo-inscripcion">
+		<button  id="enviar-email-id">Enviar Email</button>
+	</div>
+</div>
+
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+
+<script src="{{asset('assets/vendor/jquery/dist/jquery.js')}}"></script>
+
+<script>
+
+$("#enviar-email-masivo").on('click',function(){
+
+	var datos = {
+		'inicio':$("#inicio").val(),
+		'fin':$("#fin").val()
+	}
+
+	$.ajax({
+			type:'POST',
+			url: "{{url('akademia_sendemailMasivo')}}",
+			data: datos,
+			beforeSend: function(){		
+			},
+			success: function(data){
+
+				if(data == "1")
+					alertify.success("Se envio el Correo Correctamente.!");
+				else
+					alertify.error("Hubo Error al Enviar Correo.!");
+			},
+			error: function(error){
+				alertify.error('<p style="color:white">Error </p>');	
+				console.log(error);
+				},
+	});
+
+});
+
+$("#enviar-email-id").on('click',function(){
+
+	var datos = {
+		'codigoInscripcion':$("#codigo-inscripcion").val()
+	}
+
+	$.ajax({
+			type:'POST',
+			url: "{{url('akademia_sendemailIndividual')}}",
+			data: datos,
+			beforeSend: function(){		
+			},
+			success: function(data){
+				if(data == "1")
+					alertify.success("Se envio el Correo Correctamente.!");
+				else if(data == "-1")
+					alertify.warning("No se Encontro Inscripcion.!");
+				else
+					alertify.error("Hubo Error al Enviar Correo.!");
+			},
+			error: function(error){
+				alertify.error('<p style="color:white">Error </p>');	
+				console.log(error);
+				},
+	});
+
+});
+
+</script>
+
+{% endblock %}

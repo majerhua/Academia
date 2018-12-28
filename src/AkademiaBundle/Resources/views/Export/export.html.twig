@@ -182,9 +182,10 @@
 							<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
 								<label>Complejo</label>
-								<select class="form-control"  id="select-complejo" >
+								<select class="form-control" id="select-complejo">
+									
 										{% for comp in complejosExport %}
-												<option  value="{{comp['complejoId']}}">{{comp['complejoNombre']}}</option>
+											<option  value="{{comp['complejoId']}}">{{comp['complejoNombre']}}</option>
 										{% endfor %}
 						    	</select>
 							</div>
@@ -192,6 +193,60 @@
 
 						<div class="container-button-exportPREINS">
 							<button class="btn btn-danger" id="export-beneficiarios-promotor">Descargar Beneficiarios</button>
+						</div>
+
+					</div>		   
+				</div>
+
+			{% endif %}
+
+			{% if is_granted('ROLE_PROFESOR') %}
+
+				<div class="container-card col-xs-12 col-sm-8 col-md-5  col-lg-8  col-md-offset-2">
+					<div class="card">	
+						<p class="title-card text-center">Beneficiarios</p>
+						<div class="alert alert-success">
+							<button id="btn-close-alert-info" type="button" class="close"><span aria-hidden="true">&times;</span></button>
+							<p class="text-center">Lista de beneficiarios hasta su último estado.</p>
+						</div>
+						<hr>
+						<div class="row">
+
+							<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-4">
+								<label>Hasta el mes de</label>
+								<select class="form-control" id="select-mes" >
+									<option value="">--Seleccionar--</option>
+									{% for mes in meses %}
+										{% if cont  >= mesInicioFinTemporada['mes_inicio_temporada'] and cont <= mesInicioFinTemporada['mes_fin_temporada'] %}
+											<option value="{{cont}}">{{mes}}</option>
+										{% endif %}
+									{% set cont = cont + 1 %}
+									{% endfor %}
+								</select>
+							</div>
+
+							<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-4">
+
+								<label>Complejo</label>
+								<select class="form-control"  id="select-complejo">
+									<option value="">--seleccionar--</option>
+									{% for comp in complejosExport %}
+										<option  value="{{comp['complejoId']}}">{{comp['complejoNombre']}}</option>
+									{% endfor %}
+						    	</select>
+							</div>
+
+							<div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-4">
+								<label>Disciplina</label>
+								<select class="form-control" id="select-disciplina">
+									<option value="">--Seleccionar--</option>
+						    	</select>
+							</div>
+
+						</div>
+
+						<div class="container-button-exportPREINS">
+							<button class="btn btn-danger" id="export-beneficiarios-profesor">Descargar Beneficiarios</button>
 						</div>
 
 					</div>		   
@@ -258,6 +313,9 @@
 					</div>		   
 				</div>
 			{% endif %}
+
+
+
 		</div>
 	</div>
 </section>
@@ -276,15 +334,14 @@
 
 <script>
 	
-
 	const $exportBeneficiariosAdminMacro = $("#export-beneficiarios-admin-macro");
 	const $exportBeneficiariosMonitor = $("#export-beneficiarios-monitor");
 	const $exportBeneficiariosPromotor = $("#export-beneficiarios-promotor");
+	const $exportBeneficiariosProfesor = $("#export-beneficiarios-profesor");
 
 	const $exportInformeAdmin = $("#export-informe-admin");
 	const $selectInforme = $("#select-informe");
 	const $selectMesInforme = $("#select-mes-informe");
-
 
 	const $exportHorarioCreadosAdmin = $("#export-horario-creados-admin");
 	const $exportUsuariosPasswordComplejos = $("#export-usuarios-password-complejos");
@@ -293,8 +350,8 @@
 	const $selectDepartamento = $("#select-departamento");
 	const $selectProvincia = $("#select-provincia");
 	const $selectComplejo = $("#select-complejo");
+	const $selectDisciplina = $("#select-disciplina");
 
-	
 	$exportBeneficiariosAdminMacro.on('click',function(){
 
 		location.href='exportDataBeneficiariosAdminMacro?mes='+$selectMes.val()+'&departamento='+$selectDepartamento.val()+'&idTemporada={{idTemporada}}';
@@ -303,13 +360,38 @@
 	$exportBeneficiariosMonitor.on('click',function(){
 		
 		let departamentoId = $('option:selected', $selectProvincia).attr('data-departamento-id');
-		
+
 		location.href='exportDataBeneficiariosMonitor?mes='+$selectMes.val()+'&departamento='+departamentoId+'&provincia='+$selectProvincia.val()+'&idTemporada={{idTemporada}}';
 	});
 
 	$exportBeneficiariosPromotor.on('click',function(){
 		
-		location.href='exportDataBeneficiariosComplejo?mes='+$selectMes.val()+'&idComplejo='+$selectComplejo.val()+'&idTemporada={{idTemporada}}';
+		location.href='exportDataBeneficiariosPromotor?mes='+$selectMes.val()+'&idComplejo='+$selectComplejo.val()+'&idTemporada={{idTemporada}}';
+	});
+
+	$exportBeneficiariosProfesor.on('click',function(){
+		
+		if( $selectDisciplina.val() != "" ){
+			location.href='exportDataBeneficiariosProfesor?mes='+$selectMes.val()+'&idComplejo='+$selectComplejo.val()+'&idDisciplina='+$selectDisciplina.val()+'&idTemporada={{idTemporada}}';
+		}else{
+			alertify.warning("<p style='color:black;font-weight:bold;' >Debe seleccionar una disciplina para poder exportar datos de beneficiarios.!</p>");
+		}
+	});
+
+	$selectComplejo.on('change',function(){
+
+		{% if is_granted('ROLE_PROFESOR') %}
+
+			$selectDisciplina.empty();
+			$selectDisciplina.append("<option value=''>--Seleccionar--</option>");
+
+			{% for  dis in disciplinasExport %}
+
+				if("{{dis['complejoId']}}" == $selectComplejo.val() )
+					$selectDisciplina.append("<option data-complejo-id = {{dis['complejoId']}} value={{dis['disciplinaId']}}>{{dis['disciplinaNombre']}}</option>");
+			{% endfor %}
+
+		{% endif %}
 	});
 
 	$exportInformeAdmin.on('click',function(){
@@ -319,7 +401,6 @@
 		else if($selectInforme.val() == 2)
 			location.href='exportInscripcionesLimaCallaos?mes='+$selectMesInforme.val()+'&idTemporada={{idTemporada}}';
 	});
-
 
 	$exportHorarioCreadosAdmin.on('click',function(){
 		location.href='exportCantidadHorariosCreadosRegion?idComplejo='+'{{app.user.idComplejo}}'+'&idTemporada={{idTemporada}}';
