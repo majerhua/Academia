@@ -615,6 +615,7 @@ class PreinscripcionController extends Controller
             $correoApoderado = $request->request->get('correo');
             $nombre = $request->request->get('nombre');
             $id = $request->request->get('id');
+
             $subject =  'PRE INSCRIPCION CONFIRMADA PARA '.$nombre.'';
             $message =  '<html>'.
                         '<head><title>IPD</title></head>'.
@@ -622,7 +623,7 @@ class PreinscripcionController extends Controller
                         '<hr>'.
                         'Aquí puedes descargar tu ficha de inscripción y la declaración jurada, haz click en estos enlaces:'.
                         '<br>'.
-                        '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/inscripcion/'.$id.'"> Ficha de Inscripción </a>'.
+                        '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/inscripcion/temporada/2/'.$id.'"> Ficha de Inscripción </a>'.
                         '<br>'.
                         '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/declaracion-jurada/'.$id.'"> Declaración Jurada </a>'.
                         '<br>'.
@@ -662,9 +663,9 @@ class PreinscripcionController extends Controller
                             '<hr>'.
                             'Aquí puedes descargar tu ficha de inscripción y la declaración jurada, haz click en estos enlaces:'.
                             '<br>'.
-                            '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/inscripcion/'.$value['inscribeteId'].'"> Ficha de Inscripción </a>'.
+                            '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/inscripcion/temporada/2/'.$value['inscribeteId'].'"> Ficha de Inscripción </a>'.
                             '<br>'.
-                            '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/declaracion-jurada/'.$value['inscribeteId'].'"> Declaración Jurada </a>'.
+                            '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/declaracion-jurada/temporada/2/'.$value['inscribeteId'].'"> Declaración Jurada </a>'.
                             '<br>'.
                             '<p>Acércate al complejo que eligiste para finalizar tu inscripción.</p>'.
                             '<br>'.
@@ -704,9 +705,9 @@ class PreinscripcionController extends Controller
                             '<hr>'.
                             'Aquí puedes descargar tu ficha de inscripción y la declaración jurada, haz click en estos enlaces:'.
                             '<br>'.
-                            '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/inscripcion/'.$participante[0]['inscribeteId'].'"> Ficha de Inscripción </a>'.
+                            '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/inscripcion/temporada/2/'.$participante[0]['inscribeteId'].'"> Ficha de Inscripción </a>'.
                             '<br>'.
-                            '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/declaracion-jurada/'.$participante[0]['inscribeteId'].'"> Declaración Jurada </a>'.
+                            '<a href="http://appweb.ipd.gob.pe/academia/web/ajax/pdf/declaracion-jurada/temporada/2/'.$participante[0]['inscribeteId'].'"> Declaración Jurada </a>'.
                             '<br>'.
                             '<p>Acércate al complejo que eligiste para finalizar tu inscripción.</p>'.
                             '<br>'.
